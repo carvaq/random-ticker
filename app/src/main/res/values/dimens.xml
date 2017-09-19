@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="editTextMinWidth">48dp</dimen>
+    <dimen name="valueToUnitPadding">4dp</dimen>
+    <dimen name="unitToNextPadding">32dp</dimen>
+    <dimen name="activityPadding">16dp</dimen>
+    <dimen name="sectionMargin">31dp</dimen>
+</resources>

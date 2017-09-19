@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name" translatable="false">Random Ticker</string>
+    <string name="abbrev_minute" translatable="false">m</string>
+    <string name="abbrev_second" translatable="false">s</string>
+</resources>

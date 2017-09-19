@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Interval"/>
+
+    <style name="Interval.EditText" parent="TextAppearance.AppCompat.Large">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/editTextMinWidth</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">2</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:inputType">number</item>
+    </style>
+
+    <style name="Interval.Unit">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/valueToUnitPadding</item>
+        <item name="android:layout_marginEnd">@dimen/unitToNextPadding</item>
+    </style>
+
+    <style name="Interval.Container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/sectionMargin</item>
+    </style>
+
+</resources>
