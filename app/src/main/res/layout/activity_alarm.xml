@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cvv.fanstaticapps.randomticker.AlarmActivity">
+
+    <com.richpath.RichPathView
+        android:id="@+id/alarm_bell_icon"
+        android:layout_width="@dimen/alarm_bell_size"
+        android:layout_height="@dimen/alarm_bell_size"
+        android:layout_centerInParent="true"
+        app:vector="@drawable/ic_alarm_bell"/>
+</RelativeLayout>

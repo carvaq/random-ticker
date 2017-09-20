@@ -4,18 +4,18 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Random;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.min_min)
     EditText minMin;
     @BindView(R.id.min_sec)
@@ -25,13 +25,15 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.max_sec)
     EditText maxSec;
 
+    @Inject
+    NotificationHelper notificationHelper;
+
     private Random randomGenerator = new Random(System.currentTimeMillis());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
     }
 
     @OnClick(R.id.start)
@@ -39,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
         int min = getTotalValueInMillis(minMin, minSec);
         int max = getTotalValueInMillis(maxMin, maxSec);
         if (max > min) {
-            long randomNum = randomGenerator.nextInt((max - min) + 1) + min;
-            //TODO confirmation screen
-            //TODO show notification
-            //TODO New activity for timer
+            long interval = randomGenerator.nextInt((max - min) + 1) + min;
+            notificationHelper.createNotification(this, interval);
         } else {
             Toast.makeText(this, R.string.error_min_is_bigger_than_max, Toast.LENGTH_SHORT).show();
         }

@@ -22,13 +22,20 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    annotationProcessor 'com.github.kobakei.grenade:processor:1.1.0'
+    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.0.8'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.0.8'
+    implementation 'com.github.stephanenicolas.toothpick:smoothie:1.0.8'
+    implementation 'com.github.kobakei.grenade:library:1.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
     implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.github.tarek360.RichPath:animator:0.0.9'
 }

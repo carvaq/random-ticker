@@ -12,11 +12,14 @@
 
     <style name="Interval.EditText" parent="TextAppearance.AppCompat.Large">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">@dimen/editTextMinWidth</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minWidth">@dimen/editTextMinSize</item>
+        <item name="android:minHeight">@dimen/editTextMinSize</item>
         <item name="android:gravity">center</item>
         <item name="android:selectAllOnFocus">true</item>
         <item name="android:text">0</item>
         <item name="android:maxLength">2</item>
+        <item name="android:background">@drawable/edit_text_background</item>
         <item name="android:digits">0123456789</item>
         <item name="android:inputType">number</item>
     </style>
@@ -24,6 +27,7 @@
     <style name="Interval.Unit">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
         <item name="android:layout_marginStart">@dimen/valueToUnitPadding</item>
         <item name="android:layout_marginEnd">@dimen/unitToNextPadding</item>
     </style>
@@ -32,7 +36,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">@dimen/titleMargin</item>
         <item name="android:layout_marginBottom">@dimen/sectionMargin</item>
     </style>
 
+    <dimen name="titleMargin">8dp</dimen>
 </resources>
