@@ -18,8 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.AlarmActivity">
-        </activity>
+        <activity android:name=".activities.AlarmActivity"/>
+        <receiver android:name=".OnAlarmReceive"/>
     </application>
 
 </manifest>

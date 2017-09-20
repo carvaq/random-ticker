@@ -5,12 +5,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activityPadding"
     tools:context="com.cvv.fanstaticapps.randomticker.activities.AlarmActivity">
+
+
+    <TextView
+        android:id="@+id/remaining_time_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/sectionMargin"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:text="@string/remaining_time"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+
+    <TextView
+        android:id="@+id/remaining_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/remaining_time_label"
+        android:layout_marginBottom="@dimen/sectionMargin"
+        android:layout_marginTop="@dimen/titleMargin"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+        tools:text="133s"/>
 
     <com.richpath.RichPathView
         android:id="@+id/alarm_bell_icon"
         android:layout_width="@dimen/alarm_bell_size"
         android:layout_height="@dimen/alarm_bell_size"
         android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:gravity="center"
         app:vector="@drawable/ic_alarm_bell"/>
+
+    <com.shitij.goyal.slidebutton.SwipeButton
+        android:id="@+id/dismiss_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/sectionMargin"
+        android:background="@color/dismissColor"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="@string/button_dimiss"
+        android:textColor="@android:color/black"
+        app:after_confirmation_background="@color/dismissedColor"
+        app:button_confirm_text="@string/button_dismissing"
+        app:button_post_confirm_text="@string/button_dismissed"
+        app:button_swipe_text="@string/button_dismissing"
+        app:gradient_color_1="@color/dismissColor"
+        app:gradient_color_2="@color/dismissingColor"
+        app:gradient_color_3="@color/dismissedColor"
+        app:threshold="0.75"/>
 </RelativeLayout>

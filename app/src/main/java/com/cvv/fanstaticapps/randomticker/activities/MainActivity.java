@@ -42,7 +42,9 @@ public class MainActivity extends BaseActivity {
         int max = getTotalValueInMillis(maxMin, maxSec);
         if (max > min) {
             long interval = randomGenerator.nextInt((max - min) + 1) + min;
-            notificationHelper.createNotification(this, interval);
+            long intervalFinished = System.currentTimeMillis() + interval;
+            notificationHelper.createNotification(this, interval, intervalFinished);
+          //  startActivity(new AlarmActivityNavigator(false, intervalFinished, false).build(this));
         } else {
             Toast.makeText(this, R.string.error_min_is_bigger_than_max, Toast.LENGTH_SHORT).show();
         }

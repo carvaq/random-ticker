@@ -5,4 +5,8 @@
     <string name="error_min_is_bigger_than_max">Nope! The maxinum value has to be greater than the minimum</string>
     <string name="timer_done">Timer done!</string>
     <string name="info_alarm_set">Create countdown timer for %ds</string>
+    <string name="remaining_time">Time remaining:</string>
+    <string name="button_dismissing">Dismissing...</string>
+    <string name="button_dismissed">Dismissed</string>
+    <string name="button_dimiss">Dimiss</string>
 </resources>
