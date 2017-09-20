@@ -30,6 +30,7 @@
         <item name="android:layout_gravity">bottom</item>
         <item name="android:layout_marginStart">@dimen/valueToUnitPadding</item>
         <item name="android:layout_marginEnd">@dimen/unitToNextPadding</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
     </style>
 
     <style name="Interval.Container">

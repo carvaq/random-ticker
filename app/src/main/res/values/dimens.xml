@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="editTextMinSize">48dp</dimen>
+    <dimen name="editTextMinSize">64dp</dimen>
     <dimen name="valueToUnitPadding">4dp</dimen>
     <dimen name="unitToNextPadding">32dp</dimen>
     <dimen name="activityPadding">16dp</dimen>

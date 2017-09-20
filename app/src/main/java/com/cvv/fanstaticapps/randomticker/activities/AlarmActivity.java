@@ -1,10 +1,15 @@
-package com.cvv.fanstaticapps.randomticker;
+package com.cvv.fanstaticapps.randomticker.activities;
 
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.animation.DecelerateInterpolator;
 
+import com.cvv.fanstaticapps.randomticker.R;
+import com.cvv.fanstaticapps.randomticker.helper.NotificationHelper;
 import com.richpath.RichPath;
 import com.richpath.RichPathView;
 import com.richpathanimator.RichPathAnimator;
@@ -22,6 +27,9 @@ public class AlarmActivity extends BaseActivity {
     boolean cancelNotification;
     @Extra
     long interval;
+    @Extra
+    boolean timeElapsed;
+
 
     @BindView(R.id.alarm_bell_icon)
     RichPathView alarmBell;
@@ -42,6 +50,8 @@ public class AlarmActivity extends BaseActivity {
             startActivity(startIntent);
             overridePendingTransition(0, 0);
             finish();
+        } else if (timeElapsed) {
+            playRingtone();
         }
     }
 
@@ -62,4 +72,16 @@ public class AlarmActivity extends BaseActivity {
                 .duration(4000)
                 .start();
     }
+
+
+    private void playRingtone() {
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

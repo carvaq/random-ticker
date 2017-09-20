@@ -1,4 +1,4 @@
-package com.cvv.fanstaticapps.randomticker;
+package com.cvv.fanstaticapps.randomticker.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

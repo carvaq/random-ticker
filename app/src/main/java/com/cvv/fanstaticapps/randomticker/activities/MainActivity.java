@@ -1,12 +1,12 @@
-package com.cvv.fanstaticapps.randomticker;
+package com.cvv.fanstaticapps.randomticker.activities;
 
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cvv.fanstaticapps.randomticker.helper.NotificationHelper;
+import com.cvv.fanstaticapps.randomticker.R;
 
 import java.util.Random;
 
@@ -45,16 +45,6 @@ public class MainActivity extends BaseActivity {
             notificationHelper.createNotification(this, interval);
         } else {
             Toast.makeText(this, R.string.error_min_is_bigger_than_max, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void playRingtone() {
-        try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            r.play();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
