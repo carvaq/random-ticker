@@ -32,7 +32,7 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
+    annotationProcessor 'org.xelevra.libs:prefdata-processor:2.2'
     annotationProcessor 'com.github.kobakei.grenade:processor:1.1.0'
     annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.0.8'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -45,4 +45,5 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.tarek360.RichPath:animator:0.0.9'
+    provided 'org.xelevra.libs:prefdata-annotations:2.2'
 }

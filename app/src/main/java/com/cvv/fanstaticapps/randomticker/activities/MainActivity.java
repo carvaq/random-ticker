@@ -1,6 +1,7 @@
 package com.cvv.fanstaticapps.randomticker.activities;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.EditText;
 
@@ -32,7 +33,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        if (preferences.isCurrentlyTickerRunning()) {
+            startAlarmActivity();
+        } else {
+            setContentView(R.layout.activity_main);
+        }
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        minMin.setText(String.valueOf(preferences.getMinMin()));
+        minSec.setText(String.valueOf(preferences.getMinSec()));
+        maxMin.setText(String.valueOf(preferences.getMaxMin()));
+        maxSec.setText(String.valueOf(preferences.getMaxSec()));
+    }
+
+    private void startAlarmActivity() {
+        startActivity(new AlarmActivityNavigator(false, false).build(this));
+        finish();
     }
 
     @OnClick(R.id.start)
@@ -42,12 +61,24 @@ public class MainActivity extends BaseActivity {
         if (max > min) {
             long interval = randomGenerator.nextInt((max - min) + 1) + min;
             long intervalFinished = System.currentTimeMillis() + interval;
+            saveToPreferences(interval, intervalFinished);
             timerHelper.createNotificationAndAlarm(this, interval, intervalFinished);
-            startActivity(new AlarmActivityNavigator(false, intervalFinished, false).build(this));
-            finish();
+            startAlarmActivity();
         } else {
             toast(R.string.error_min_is_bigger_than_max);
         }
+    }
+
+    private void saveToPreferences(long interval, long intervalFinished) {
+        preferences.edit()
+                .setMaxMin(getIntValue(maxMin))
+                .setMinMin(getIntValue(minMin))
+                .setMaxSec(getIntValue(maxSec))
+                .setMinSec(getIntValue(minSec))
+                .setCurrentlyTickerRunning(true)
+                .setInterval(interval)
+                .setIntervalFinished(intervalFinished)
+                .apply();
     }
 
     private int getTotalValueInMillis(EditText minute, EditText second) {

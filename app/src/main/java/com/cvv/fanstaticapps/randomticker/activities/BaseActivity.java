@@ -1,10 +1,14 @@
 package com.cvv.fanstaticapps.randomticker.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.cvv.fanstaticapps.randomticker.helper.PrefUserSettings;
 
 import butterknife.ButterKnife;
 import toothpick.Scope;
@@ -19,6 +23,7 @@ import toothpick.smoothie.module.SmoothieActivityModule;
 
 public class BaseActivity extends AppCompatActivity {
     private Scope scope;
+    protected PrefUserSettings preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,8 @@ public class BaseActivity extends AppCompatActivity {
         scope.installModules(new SmoothieActivityModule(this));
         super.onCreate(savedInstanceState);
         Toothpick.inject(this, scope);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        preferences = new PrefUserSettings(prefs);
     }
 
     @Override

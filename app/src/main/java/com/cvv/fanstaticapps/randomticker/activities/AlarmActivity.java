@@ -25,6 +25,8 @@ import butterknife.BindView;
 import io.github.kobakei.grenade.annotation.Extra;
 import io.github.kobakei.grenade.annotation.Navigator;
 
+import static com.cvv.fanstaticapps.randomticker.helper.TimerHelper.ONE_SECOND_IN_MILLIS;
+
 @Navigator
 public class AlarmActivity extends BaseActivity {
 
@@ -33,8 +35,6 @@ public class AlarmActivity extends BaseActivity {
 
     @Extra
     boolean cancelNotification;
-    @Extra
-    long intervalFinished;
     @Extra
     boolean timeElapsed;
 
@@ -53,6 +53,7 @@ public class AlarmActivity extends BaseActivity {
 
     private Ringtone playingAlarmSound;
     private RichPathAnimator bellAnimator;
+    private long intervalFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,7 @@ public class AlarmActivity extends BaseActivity {
         if (cancelNotification) {
             timerHelper.cancelNotification(this);
         }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+        intervalFinished = preferences.getIntervalFinished();
     }
 
     @Override
@@ -90,10 +87,10 @@ public class AlarmActivity extends BaseActivity {
     }
 
     private void startCountDownTimer() {
-        new CountDownTimer(intervalFinished - System.currentTimeMillis(), 1000) {
+        new CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
             @Override
             public void onTick(long millisUntilFinished) {
-                remainingTime.setText(String.format(REMAINING_SECONDS, (int) (millisUntilFinished / 1000)));
+                remainingTime.setText(timerHelper.getFormattedElapsedMilliseconds(millisUntilFinished));
             }
 
             @Override

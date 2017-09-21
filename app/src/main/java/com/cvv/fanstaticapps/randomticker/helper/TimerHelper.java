@@ -25,30 +25,40 @@ import javax.inject.Inject;
 public class TimerHelper {
 
     private static final Handler HANDLER = new Handler();
+    public static final long ONE_SECOND_IN_MILLIS = 1000;
 
     @Inject
-    public TimerHelper() {
-
+    TimerHelper() {
     }
 
     private static final int NOTIFICATION_ID = 2312;
 
-    public void createNotificationAndAlarm(Context context, long interval, long intervalFinished) {
+    public void createNotificationAndAlarm(final Context context, final long interval, final long intervalFinished) {
+        showNotification(context, interval, intervalFinished);
 
-        Notification notification = buildNotification(context, interval, intervalFinished);
+        HANDLER.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (intervalFinished <= System.currentTimeMillis()) return;
+                showNotification(context, interval, intervalFinished);
+                HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS);
+            }
+        }, ONE_SECOND_IN_MILLIS);
 
-        updateNotification(context, notification);
         setAlarm(context, intervalFinished);
     }
 
-    private void updateNotification(Context context, Notification notification) {
+    private void showNotification(Context context, long interval, long intervalFinished) {
+        Notification notification = buildNotification(context, interval, intervalFinished);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
+
     private Notification buildNotification(final Context context, long interval, final long intervalFinished) {
-        Intent alarmIntent = getAlarmIntent(context, false, intervalFinished);
-        Intent cancelIntent = getAlarmIntent(context, true, intervalFinished);
+        Intent alarmIntent = getAlarmIntent(context, false);
+        Intent cancelIntent = getAlarmIntent(context, true);
 
         PendingIntent alarmPendingIntent =
                 PendingIntent.getActivity(context, 0, alarmIntent, 0);
@@ -59,34 +69,24 @@ public class TimerHelper {
                         context.getString(android.R.string.cancel), cancelPendingIntent);
         final NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context, NotificationCompat.CATEGORY_ALARM);
-        String formattedInterval = DateUtils.formatElapsedTime(interval / 1000);
+        String formattedInterval = getFormattedElapsedMilliseconds(interval);
         builder
                 .addAction(cancelAction)
                 .setContentTitle(context.getString(R.string.notification_title, formattedInterval))
-                .setContentText(getFormattedElapsedTime(intervalFinished))
+                .setContentText(getFormattedElapsedMilliseconds(intervalFinished - System.currentTimeMillis()))
                 .setAutoCancel(false)
                 .setShowWhen(true)
                 .setContentIntent(alarmPendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
-                .setUsesChronometer(true)
                 .setTicker(context.getString(R.string.info_alarm_set, interval))
                 .setSmallIcon(R.drawable.ic_stat_timer);
 
-        HANDLER.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (intervalFinished > System.currentTimeMillis()) return;
-                builder.setContentText(getFormattedElapsedTime(intervalFinished));
-                updateNotification(context, builder.build());
-                HANDLER.postDelayed(this, 1000);
-            }
-        }, 1000);
         return builder.build();
     }
 
-    public String getFormattedElapsedTime(long intervalFinished) {
-        return DateUtils.formatElapsedTime(intervalFinished - System.currentTimeMillis());
+    public String getFormattedElapsedMilliseconds(long elapsedMilliseconds) {
+        return DateUtils.formatElapsedTime(elapsedMilliseconds / ONE_SECOND_IN_MILLIS);
     }
 
     private void setAlarm(Context context, long intervalFinished) {
@@ -101,8 +101,8 @@ public class TimerHelper {
         return PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private Intent getAlarmIntent(Context context, boolean cancelNotification, long intervalFinished) {
-        return new AlarmActivityNavigator(cancelNotification, intervalFinished, false).build(context);
+    private Intent getAlarmIntent(Context context, boolean cancelNotification) {
+        return new AlarmActivityNavigator(cancelNotification,  false).build(context);
     }
 
     public void cancelNotification(Context context) {
