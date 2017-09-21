@@ -3,10 +3,9 @@ package com.cvv.fanstaticapps.randomticker.activities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.cvv.fanstaticapps.randomticker.helper.NotificationHelper;
 import com.cvv.fanstaticapps.randomticker.R;
+import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
 
 import java.util.Random;
 
@@ -26,7 +25,7 @@ public class MainActivity extends BaseActivity {
     EditText maxSec;
 
     @Inject
-    NotificationHelper notificationHelper;
+    TimerHelper timerHelper;
 
     private Random randomGenerator = new Random(System.currentTimeMillis());
 
@@ -43,10 +42,11 @@ public class MainActivity extends BaseActivity {
         if (max > min) {
             long interval = randomGenerator.nextInt((max - min) + 1) + min;
             long intervalFinished = System.currentTimeMillis() + interval;
-            notificationHelper.createNotification(this, interval, intervalFinished);
-          //  startActivity(new AlarmActivityNavigator(false, intervalFinished, false).build(this));
+            timerHelper.createNotificationAndAlarm(this, interval, intervalFinished);
+            startActivity(new AlarmActivityNavigator(false, intervalFinished, false).build(this));
+            finish();
         } else {
-            Toast.makeText(this, R.string.error_min_is_bigger_than_max, Toast.LENGTH_SHORT).show();
+            toast(R.string.error_min_is_bigger_than_max);
         }
     }
 

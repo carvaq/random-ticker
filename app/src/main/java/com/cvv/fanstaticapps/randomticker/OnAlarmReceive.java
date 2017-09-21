@@ -12,7 +12,6 @@ public class OnAlarmReceive extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // Start the MainActivity
         Intent alarmIntent = new AlarmActivityNavigator(true, 0, true)
-                .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .build(context);
         context.startActivity(alarmIntent);
     }

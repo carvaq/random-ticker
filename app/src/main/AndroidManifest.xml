@@ -18,7 +18,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.AlarmActivity"/>
+        <activity
+            android:name=".activities.AlarmActivity"
+            android:launchMode="singleTask"/>
+
         <receiver android:name=".OnAlarmReceive"/>
     </application>
 

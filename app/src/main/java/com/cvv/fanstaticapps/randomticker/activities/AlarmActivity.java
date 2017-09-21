@@ -7,12 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.cvv.fanstaticapps.randomticker.R;
-import com.cvv.fanstaticapps.randomticker.helper.NotificationHelper;
+import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
 import com.richpath.RichPath;
 import com.richpath.RichPathView;
 import com.richpathanimator.RichPathAnimator;
@@ -28,6 +29,7 @@ import io.github.kobakei.grenade.annotation.Navigator;
 public class AlarmActivity extends BaseActivity {
 
     private static final String REMAINING_SECONDS = "%ss";
+    private static final String TAG = AlarmActivity.class.getSimpleName();
 
     @Extra
     boolean cancelNotification;
@@ -47,7 +49,7 @@ public class AlarmActivity extends BaseActivity {
     TextView label;
 
     @Inject
-    NotificationHelper notificationHelper;
+    TimerHelper timerHelper;
 
     private Ringtone playingAlarmSound;
     private RichPathAnimator bellAnimator;
@@ -59,8 +61,13 @@ public class AlarmActivity extends BaseActivity {
         AlarmActivityNavigator.inject(this, getIntent());
 
         if (cancelNotification) {
-            notificationHelper.cancelNotification(this);
+            timerHelper.cancelNotification(this);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -71,6 +78,14 @@ public class AlarmActivity extends BaseActivity {
         } else {
             startCountDownTimer();
             prepareSwipeButton();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (playingAlarmSound != null) {
+            playingAlarmSound.stop();
         }
     }
 
@@ -100,12 +115,10 @@ public class AlarmActivity extends BaseActivity {
         swipeButton.addOnSwipeCallback(new SwipeButton.Swipe() {
             @Override
             public void onButtonPress() {
-
             }
 
             @Override
             public void onSwipeCancel() {
-
             }
 
             @Override
@@ -122,7 +135,7 @@ public class AlarmActivity extends BaseActivity {
     }
 
     private void cancelNotificationAndGoBack() {
-        notificationHelper.cancelNotification(this);
+        timerHelper.cancelNotification(this);
         Intent startIntent = new Intent(this, MainActivity.class);
         startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(startIntent);
@@ -151,12 +164,16 @@ public class AlarmActivity extends BaseActivity {
 
 
     private void playRingtone() {
-        try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            playingAlarmSound = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            playingAlarmSound.play();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (playingAlarmSound == null) {
+            try {
+                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                playingAlarmSound = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                playingAlarmSound.play();
+            } catch (Exception e) {
+                Log.e(TAG, "Error while trying to play alarm sound",e);
+            }
+        }else{
+            toast("Ringing ma bell");
         }
     }
 

@@ -2,7 +2,9 @@ package com.cvv.fanstaticapps.randomticker.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import toothpick.Scope;
@@ -36,5 +38,13 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         Toothpick.closeScope(this);
         super.onDestroy();
+    }
+
+    protected void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void toast(@StringRes int resId) {
+        Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 }
