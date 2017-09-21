@@ -108,7 +108,6 @@ public class AlarmActivity extends BaseActivity {
         startAnimation();
         label.setVisibility(View.GONE);
         remainingTime.setVisibility(View.GONE);
-        swipeButton.setVisibility(View.GONE);
     }
 
     private void prepareSwipeButton() {
@@ -170,9 +169,9 @@ public class AlarmActivity extends BaseActivity {
                 playingAlarmSound = RingtoneManager.getRingtone(getApplicationContext(), notification);
                 playingAlarmSound.play();
             } catch (Exception e) {
-                Log.e(TAG, "Error while trying to play alarm sound",e);
+                Log.e(TAG, "Error while trying to play alarm sound", e);
             }
-        }else{
+        } else {
             toast("Ringing ma bell");
         }
     }
