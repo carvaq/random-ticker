@@ -3,7 +3,7 @@ package com.cvv.fanstaticapps.randomticker.helper;
 import org.xelevra.prefdata.annotations.PrefData;
 
 @PrefData
- abstract class UserSettings {
+abstract class UserSettings {
     int minMin;
     int minSec;
     int maxMin;

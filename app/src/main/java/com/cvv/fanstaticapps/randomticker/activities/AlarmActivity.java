@@ -17,20 +17,20 @@ import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
 import com.richpath.RichPath;
 import com.richpath.RichPathView;
 import com.richpathanimator.RichPathAnimator;
-import com.shitij.goyal.slidebutton.SwipeButton;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.github.kobakei.grenade.annotation.Extra;
 import io.github.kobakei.grenade.annotation.Navigator;
+import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 import static com.cvv.fanstaticapps.randomticker.helper.TimerHelper.ONE_SECOND_IN_MILLIS;
 
 @Navigator
 public class AlarmActivity extends BaseActivity {
 
-    private static final String REMAINING_SECONDS = "%ss";
     private static final String TAG = AlarmActivity.class.getSimpleName();
 
     @Extra
@@ -41,8 +41,9 @@ public class AlarmActivity extends BaseActivity {
 
     @BindView(R.id.alarm_bell_icon)
     RichPathView alarmBell;
-    @BindView(R.id.dismiss_button)
-    SwipeButton swipeButton;
+
+    @BindView(R.id.pulsator)
+    PulsatorLayout pulsatorLayout;
     @BindView(R.id.remaining_time)
     TextView remainingTime;
     @BindView(R.id.remaining_time_label)
@@ -74,7 +75,6 @@ public class AlarmActivity extends BaseActivity {
             timerFinished();
         } else {
             startCountDownTimer();
-            prepareSwipeButton();
         }
     }
 
@@ -96,6 +96,7 @@ public class AlarmActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 timerFinished();
+                preferences.setCurrentlyTickerRunning(false);
             }
         }.start();
     }
@@ -105,29 +106,18 @@ public class AlarmActivity extends BaseActivity {
         startAnimation();
         label.setVisibility(View.GONE);
         remainingTime.setVisibility(View.GONE);
+        pulsatorLayout.start();
     }
 
-    private void prepareSwipeButton() {
-        swipeButton.addOnSwipeCallback(new SwipeButton.Swipe() {
-            @Override
-            public void onButtonPress() {
-            }
-
-            @Override
-            public void onSwipeCancel() {
-            }
-
-            @Override
-            public void onSwipeConfirm() {
-                if (playingAlarmSound != null) {
-                    playingAlarmSound.stop();
-                }
-                if (bellAnimator != null) {
-                    bellAnimator.cancel();
-                }
-                cancelNotificationAndGoBack();
-            }
-        });
+    @OnClick(R.id.dismiss_button)
+    void onDismissClicked() {
+        if (playingAlarmSound != null) {
+            playingAlarmSound.stop();
+        }
+        if (bellAnimator != null) {
+            bellAnimator.cancel();
+        }
+        cancelNotificationAndGoBack();
     }
 
     private void cancelNotificationAndGoBack() {

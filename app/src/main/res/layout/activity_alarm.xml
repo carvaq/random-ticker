@@ -41,23 +41,6 @@
         android:gravity="center"
         app:vector="@drawable/ic_alarm_bell"/>
 
-    <com.shitij.goyal.slidebutton.SwipeButton
-        android:id="@+id/dismiss_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/sectionMargin"
-        android:background="@color/dismissColor"
-        android:gravity="center"
-        android:minHeight="48dp"
-        android:text="@string/button_dimiss"
-        android:textColor="@android:color/black"
-        app:after_confirmation_background="@color/dismissedColor"
-        app:button_confirm_text="@string/button_dismissing"
-        app:button_post_confirm_text="@string/button_dismissed"
-        app:button_swipe_text="@string/button_dismissing"
-        app:gradient_color_1="@color/dismissColor"
-        app:gradient_color_2="@color/dismissingColor"
-        app:gradient_color_3="@color/dismissedColor"
-        app:threshold="0.75"/>
+    <include layout="@layout/pulsator_button"/>
+
 </RelativeLayout>

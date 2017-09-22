@@ -4,7 +4,7 @@
     <dimen name="valueToUnitPadding">4dp</dimen>
     <dimen name="unitToNextPadding">32dp</dimen>
     <dimen name="activityPadding">16dp</dimen>
-    <dimen name="sectionMargin">31dp</dimen>
+    <dimen name="sectionMargin">36dp</dimen>
     <dimen name="editTextCornerRadius">8dp</dimen>
     <dimen name="editTextStokeWidth">4dp</dimen>
     <dimen name="alarm_bell_size">128dp</dimen>
