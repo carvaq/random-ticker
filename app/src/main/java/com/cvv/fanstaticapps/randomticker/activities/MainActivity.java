@@ -2,6 +2,7 @@ package com.cvv.fanstaticapps.randomticker.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -26,6 +27,8 @@ public class MainActivity extends BaseActivity {
     EditText maxMin;
     @BindView(R.id.max_sec)
     EditText maxSec;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Inject
     TimerHelper timerHelper;
@@ -49,6 +52,8 @@ public class MainActivity extends BaseActivity {
         minSec.setText(String.valueOf(preferences.getMinSec()));
         maxMin.setText(String.valueOf(preferences.getMaxMin()));
         maxSec.setText(String.valueOf(preferences.getMaxSec()));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.app_name);
     }
 
     private void startAlarmActivity() {
@@ -68,7 +73,7 @@ public class MainActivity extends BaseActivity {
             long interval = randomGenerator.nextInt((max - min) + 1) + min;
             long intervalFinished = System.currentTimeMillis() + interval;
             saveToPreferences(interval, intervalFinished);
-            timerHelper.createNotificationAndAlarm(this, interval, intervalFinished);
+            timerHelper.createNotificationAndAlarm(this, preferences);
             startAlarmActivity();
         } else {
             toast(R.string.error_min_is_bigger_than_max);

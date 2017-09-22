@@ -24,8 +24,9 @@ import javax.inject.Inject;
 
 public class TimerHelper {
 
-    private static final Handler HANDLER = new Handler();
     public static final long ONE_SECOND_IN_MILLIS = 1000;
+    private static final Handler HANDLER = new Handler();
+
 
     @Inject
     TimerHelper() {
@@ -33,17 +34,24 @@ public class TimerHelper {
 
     private static final int NOTIFICATION_ID = 2312;
 
-    public void createNotificationAndAlarm(final Context context, final long interval, final long intervalFinished) {
+    public void createNotificationAndAlarm(final Context context, final PrefUserSettings preferences) {
+        final long interval = preferences.getInterval();
+        final long intervalFinished = preferences.getIntervalFinished();
         showNotification(context, interval, intervalFinished);
 
-        HANDLER.postDelayed(new Runnable() {
+        Runnable timerRefreshRunnable = new Runnable() {
             @Override
             public void run() {
-                if (intervalFinished <= System.currentTimeMillis()) return;
+                if (intervalFinished <= System.currentTimeMillis() ||
+                        !preferences.isCurrentlyTickerRunning()) {
+                    HANDLER.removeCallbacks(this);
+                    return;
+                }
                 showNotification(context, interval, intervalFinished);
                 HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS);
             }
-        }, ONE_SECOND_IN_MILLIS);
+        };
+        HANDLER.postDelayed(timerRefreshRunnable, ONE_SECOND_IN_MILLIS);
 
         setAlarm(context, intervalFinished);
     }
@@ -102,7 +110,7 @@ public class TimerHelper {
     }
 
     private Intent getAlarmIntent(Context context, boolean cancelNotification) {
-        return new AlarmActivityNavigator(cancelNotification,  false).build(context);
+        return new AlarmActivityNavigator(cancelNotification, false).build(context);
     }
 
     public void cancelNotification(Context context) {

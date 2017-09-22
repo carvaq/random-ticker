@@ -121,6 +121,7 @@ public class AlarmActivity extends BaseActivity {
     }
 
     private void cancelNotificationAndGoBack() {
+        preferences.setCurrentlyTickerRunning(false);
         timerHelper.cancelNotification(this);
         Intent startIntent = new Intent(this, MainActivity.class);
         startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
