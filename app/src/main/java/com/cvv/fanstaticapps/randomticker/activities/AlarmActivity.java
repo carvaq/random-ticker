@@ -1,6 +1,5 @@
 package com.cvv.fanstaticapps.randomticker.activities;
 
-import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -34,10 +33,7 @@ public class AlarmActivity extends BaseActivity {
     private static final String TAG = AlarmActivity.class.getSimpleName();
 
     @Extra
-    boolean cancelNotification;
-    @Extra
     boolean timeElapsed;
-
 
     @BindView(R.id.alarm_bell_icon)
     RichPathView alarmBell;
@@ -62,11 +58,9 @@ public class AlarmActivity extends BaseActivity {
         setContentView(R.layout.activity_alarm);
         AlarmActivityNavigator.inject(this, getIntent());
 
-        if (cancelNotification) {
-            cancelNotificationAndGoBack();
-        }
         intervalFinished = preferences.getIntervalFinished();
     }
+
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -117,19 +111,8 @@ public class AlarmActivity extends BaseActivity {
         if (bellAnimator != null) {
             bellAnimator.cancel();
         }
-        cancelNotificationAndGoBack();
+        timerHelper.cancelNotificationAndGoBack(this, preferences);
     }
-
-    private void cancelNotificationAndGoBack() {
-        preferences.setCurrentlyTickerRunning(false);
-        timerHelper.cancelNotification(this);
-        Intent startIntent = new Intent(this, MainActivity.class);
-        startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(startIntent);
-        overridePendingTransition(0, 0);
-        finish();
-    }
-
 
     private void startAnimation() {
         RichPath top = alarmBell.findRichPathByName("top");

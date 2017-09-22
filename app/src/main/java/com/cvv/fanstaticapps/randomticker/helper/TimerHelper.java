@@ -1,5 +1,6 @@
 package com.cvv.fanstaticapps.randomticker.helper;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -13,6 +14,8 @@ import android.text.format.DateUtils;
 import com.cvv.fanstaticapps.randomticker.OnAlarmReceive;
 import com.cvv.fanstaticapps.randomticker.R;
 import com.cvv.fanstaticapps.randomticker.activities.AlarmActivityNavigator;
+import com.cvv.fanstaticapps.randomticker.activities.CancelActivity;
+import com.cvv.fanstaticapps.randomticker.activities.MainActivity;
 
 import javax.inject.Inject;
 
@@ -26,7 +29,6 @@ public class TimerHelper {
 
     public static final long ONE_SECOND_IN_MILLIS = 1000;
     private static final Handler HANDLER = new Handler();
-
 
     @Inject
     TimerHelper() {
@@ -65,13 +67,10 @@ public class TimerHelper {
 
 
     private Notification buildNotification(final Context context, long interval, final long intervalFinished) {
-        Intent alarmIntent = getAlarmIntent(context, false);
-        Intent cancelIntent = getAlarmIntent(context, true);
-
         PendingIntent alarmPendingIntent =
-                PendingIntent.getActivity(context, 0, alarmIntent, 0);
+                PendingIntent.getActivity(context, 0, new AlarmActivityNavigator(false).build(context), 0);
         PendingIntent cancelPendingIntent
-                = PendingIntent.getActivity(context, 0, cancelIntent, 0);
+                = PendingIntent.getActivity(context, 0, new Intent(context, CancelActivity.class), 0);
         NotificationCompat.Action cancelAction =
                 new NotificationCompat.Action(R.drawable.ic_action_stop_timer,
                         context.getString(android.R.string.cancel), cancelPendingIntent);
@@ -109,14 +108,21 @@ public class TimerHelper {
         return PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private Intent getAlarmIntent(Context context, boolean cancelNotification) {
-        return new AlarmActivityNavigator(cancelNotification, false).build(context);
-    }
-
-    public void cancelNotification(Context context) {
+    private void cancelNotification(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         alarmManager.cancel(getAlarmPendingIntent(context));
         notificationManager.cancel(NOTIFICATION_ID);
     }
+
+    public void cancelNotificationAndGoBack(Activity activity, PrefUserSettings preferences) {
+        preferences.setCurrentlyTickerRunning(false);
+        cancelNotification(activity);
+        Intent startIntent = new Intent(activity, MainActivity.class);
+        startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(startIntent);
+        activity.overridePendingTransition(0, 0);
+        activity.finish();
+    }
+
 }

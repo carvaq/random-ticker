@@ -14,7 +14,7 @@ public class OnAlarmReceive extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // Start the MainActivity
-        Intent alarmIntent = new AlarmActivityNavigator(true,  true)
+        Intent alarmIntent = new AlarmActivityNavigator(true)
                 .build(context);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         PrefUserSettings preferences = new PrefUserSettings(prefs);

@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startAlarmActivity() {
-        startActivity(new AlarmActivityNavigator(false, false).build(this));
+        startActivity(new AlarmActivityNavigator(false).build(this));
         finish();
     }
 
