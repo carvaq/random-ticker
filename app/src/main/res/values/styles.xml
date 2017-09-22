@@ -10,7 +10,7 @@
 
     <style name="Interval"/>
 
-    <style name="Interval.EditText" parent="TextAppearance.AppCompat.Large">
+    <style name="Interval.EditText" parent="Base.Widget.AppCompat.EditText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:minWidth">@dimen/editTextMinSize</item>
@@ -19,6 +19,8 @@
         <item name="android:selectAllOnFocus">true</item>
         <item name="android:text">0</item>
         <item name="android:maxLength">2</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+        <item name="android:imeOptions">actionNext</item>
         <item name="android:background">@drawable/edit_text_background</item>
         <item name="android:digits">0123456789</item>
         <item name="android:inputType">number</item>

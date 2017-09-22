@@ -86,6 +86,7 @@
 
                     <EditText
                         android:id="@+id/max_sec"
+                        android:imeOptions="actionDone"
                         style="@style/Interval.EditText"/>
 
                     <TextView

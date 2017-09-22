@@ -3,6 +3,7 @@ package com.cvv.fanstaticapps.randomticker.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.cvv.fanstaticapps.randomticker.R;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.min_min)
@@ -56,6 +58,10 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.start)
     void onStartClicked() {
+        createTimer();
+    }
+
+    private void createTimer() {
         int min = getTotalValueInMillis(minMin, minSec);
         int max = getTotalValueInMillis(maxMin, maxSec);
         if (max > min) {
@@ -66,6 +72,16 @@ public class MainActivity extends BaseActivity {
             startAlarmActivity();
         } else {
             toast(R.string.error_min_is_bigger_than_max);
+        }
+    }
+
+    @OnEditorAction(R.id.max_sec)
+    boolean onNextClicked(int actionId) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            createTimer();
+            return true;
+        } else {
+            return false;
         }
     }
 

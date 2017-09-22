@@ -81,11 +81,13 @@
 
                 <EditText
                     android:id="@+id/max_sec"
+                    android:imeOptions="actionDone"
                     style="@style/Interval.EditText"/>
 
                 <TextView
                     style="@style/Interval.Unit"
                     android:labelFor="@+id/max_sec"
+                    android:imeOptions="actionDone"
                     android:text="@string/abbrev_second"/>
 
             </LinearLayout>
