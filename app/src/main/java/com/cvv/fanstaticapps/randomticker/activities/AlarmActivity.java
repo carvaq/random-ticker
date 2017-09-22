@@ -63,7 +63,7 @@ public class AlarmActivity extends BaseActivity {
         AlarmActivityNavigator.inject(this, getIntent());
 
         if (cancelNotification) {
-            timerHelper.cancelNotification(this);
+            cancelNotificationAndGoBack();
         }
         intervalFinished = preferences.getIntervalFinished();
     }
