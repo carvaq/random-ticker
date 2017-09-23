@@ -7,4 +7,7 @@
     <dimen name="sectionMargin">36dp</dimen>
     <dimen name="editTextCornerRadius">8dp</dimen>
     <dimen name="editTextStokeWidth">4dp</dimen>
+    <dimen name="titleMargin">8dp</dimen>
+    <dimen name="touch_height">48dp</dimen>
+    <dimen name="range_container_min_width">99999dp</dimen>
 </resources>

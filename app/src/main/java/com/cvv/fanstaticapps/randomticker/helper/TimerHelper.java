@@ -13,8 +13,8 @@ import android.text.format.DateUtils;
 
 import com.cvv.fanstaticapps.randomticker.OnAlarmReceive;
 import com.cvv.fanstaticapps.randomticker.R;
-import com.cvv.fanstaticapps.randomticker.activities.AlarmActivityNavigator;
 import com.cvv.fanstaticapps.randomticker.activities.CancelActivity;
+import com.cvv.fanstaticapps.randomticker.activities.KlaxonActivityNavigator;
 import com.cvv.fanstaticapps.randomticker.activities.MainActivity;
 
 import javax.inject.Inject;
@@ -29,6 +29,7 @@ public class TimerHelper {
 
     public static final long ONE_SECOND_IN_MILLIS = 1000;
     private static final Handler HANDLER = new Handler();
+    private static final int REQUEST_CODE = 123;
 
     @Inject
     TimerHelper() {
@@ -68,7 +69,7 @@ public class TimerHelper {
 
     private Notification buildNotification(final Context context, long interval, final long intervalFinished) {
         PendingIntent alarmPendingIntent =
-                PendingIntent.getActivity(context, 0, new AlarmActivityNavigator(false).build(context), 0);
+                PendingIntent.getActivity(context, 0, new KlaxonActivityNavigator(false).build(context), 0);
         PendingIntent cancelPendingIntent
                 = PendingIntent.getActivity(context, 0, new Intent(context, CancelActivity.class), 0);
         NotificationCompat.Action cancelAction =
@@ -105,7 +106,7 @@ public class TimerHelper {
 
     private PendingIntent getAlarmPendingIntent(Context context) {
         Intent alarmIntent = new Intent(context, OnAlarmReceive.class);
-        return PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void cancelNotification(Context context) {

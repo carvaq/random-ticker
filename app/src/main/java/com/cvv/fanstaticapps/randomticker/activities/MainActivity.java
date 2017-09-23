@@ -3,12 +3,10 @@ package com.cvv.fanstaticapps.randomticker.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 
 import com.cvv.fanstaticapps.randomticker.R;
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
+import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.util.Random;
 
@@ -16,17 +14,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.OnEditorAction;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.min_min)
-    EditText minMin;
+    NumberPicker minMin;
     @BindView(R.id.min_sec)
-    EditText minSec;
+    NumberPicker minSec;
     @BindView(R.id.max_min)
-    EditText maxMin;
+    NumberPicker maxMin;
     @BindView(R.id.max_sec)
-    EditText maxSec;
+    NumberPicker maxSec;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -48,16 +45,20 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        minMin.setText(String.valueOf(preferences.getMinMin()));
-        minSec.setText(String.valueOf(preferences.getMinSec()));
-        maxMin.setText(String.valueOf(preferences.getMaxMin()));
-        maxSec.setText(String.valueOf(preferences.getMaxSec()));
+        perpareNumberPicker(minMin, preferences.getMinMin());
+        perpareNumberPicker(minSec, preferences.getMinSec());
+        perpareNumberPicker(maxMin, preferences.getMaxMin());
+        perpareNumberPicker(maxSec, preferences.getMaxSec());
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.app_name);
     }
 
+    private void perpareNumberPicker(NumberPicker numberPicker, int startValue) {
+        numberPicker.setValue(startValue);
+    }
+
     private void startAlarmActivity() {
-        startActivity(new AlarmActivityNavigator(false).build(this));
+        startActivity(new KlaxonActivityNavigator(false).build(this));
         finish();
     }
 
@@ -80,38 +81,19 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnEditorAction(R.id.max_sec)
-    boolean onNextClicked(int actionId) {
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            createTimer();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private void saveToPreferences(long interval, long intervalFinished) {
         preferences.edit()
-                .setMaxMin(getIntValue(maxMin))
-                .setMinMin(getIntValue(minMin))
-                .setMaxSec(getIntValue(maxSec))
-                .setMinSec(getIntValue(minSec))
+                .setMaxMin(maxMin.getValue())
+                .setMinMin(minMin.getValue())
+                .setMaxSec(maxSec.getValue())
+                .setMinSec(minSec.getValue())
                 .setCurrentlyTickerRunning(true)
                 .setInterval(interval)
                 .setIntervalFinished(intervalFinished)
                 .apply();
     }
 
-    private int getTotalValueInMillis(EditText minute, EditText second) {
-        return (60 * getIntValue(minute) + getIntValue(second)) * 1000;
-    }
-
-    private int getIntValue(EditText editText) {
-        CharSequence value = editText.getText();
-        if (TextUtils.isEmpty(value)) {
-            return 0;
-        } else {
-            return Integer.valueOf(value.toString());
-        }
+    private int getTotalValueInMillis(NumberPicker minute, NumberPicker second) {
+        return (60 * minute.getValue() + second.getValue()) * 1000;
     }
 }

@@ -10,4 +10,7 @@
     <string name="button_dismissed">Dismissed</string>
     <string name="button_dimiss">Dimiss</string>
     <string name="notification_title">%s timer running</string>
+    <string name="plus">+</string>
+    <string name="minus">—</string>
+    <string name="default_value">0</string>
 </resources>

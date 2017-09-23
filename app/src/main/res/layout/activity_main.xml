@@ -15,16 +15,77 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:minWidth="@dimen/range_container_min_width"
             android:orientation="vertical"
             android:padding="@dimen/activityPadding">
 
-            <include layout="@layout/content_range"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/minimum_time"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+
+            <LinearLayout
+                style="@style/Interval.Container">
+
+                <com.travijuu.numberpicker.library.NumberPicker
+                    android:id="@+id/min_min"
+                    style="@style/Interval.EditText"/>
+
+                <TextView
+                    style="@style/Interval.Unit"
+                    android:labelFor="@+id/min_min"
+                    android:text="@string/abbrev_minute"/>
+
+                <com.travijuu.numberpicker.library.NumberPicker
+                    android:id="@+id/min_sec"
+                    style="@style/Interval.EditText"
+                    tools:text="01"/>
+
+                <TextView
+                    style="@style/Interval.Unit"
+                    android:labelFor="@+id/min_sec"
+                    android:text="@string/abbrev_second"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/maximum_time"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+
+            <LinearLayout
+                style="@style/Interval.Container">
+
+                <com.travijuu.numberpicker.library.NumberPicker
+                    android:id="@+id/max_min"
+                    style="@style/Interval.EditText"/>
+
+                <TextView
+                    style="@style/Interval.Unit"
+                    android:labelFor="@+id/max_min"
+                    android:text="@string/abbrev_minute"/>
+
+                <com.travijuu.numberpicker.library.NumberPicker
+                    android:id="@+id/max_sec"
+                    style="@style/Interval.EditText"
+                    android:imeOptions="actionDone"/>
+
+                <TextView
+                    style="@style/Interval.Unit"
+                    android:labelFor="@+id/max_sec"
+                    android:text="@string/abbrev_second"/>
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/start"
-                android:layout_width="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/start_button"/>
         </LinearLayout>

@@ -50,7 +50,7 @@ public class KlaxonActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_klaxon);
-        AlarmActivityNavigator.inject(this, getIntent());
+        KlaxonActivityNavigator.inject(this, getIntent());
 
         intervalFinished = preferences.getIntervalFinished();
     }

@@ -10,9 +10,10 @@
 
     <style name="Interval"/>
 
-    <style name="Interval.EditText" parent="Base.Widget.AppCompat.EditText">
+    <style name="Interval.EditText">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">4</item>
         <item name="android:minWidth">@dimen/editTextMinSize</item>
         <item name="android:minHeight">@dimen/editTextMinSize</item>
         <item name="android:gravity">center</item>
@@ -21,17 +22,19 @@
         <item name="android:maxLength">2</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
         <item name="android:imeOptions">actionNext</item>
-        <item name="android:background">@drawable/edit_text_background</item>
         <item name="android:digits">0123456789</item>
         <item name="android:inputType">number</item>
+        <item name="min">0</item>
+        <item name="max">59</item>
+        <item name="unit">1</item>
+        <item name="custom_layout">@layout/numer_picker</item>
     </style>
 
     <style name="Interval.Unit">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_gravity">bottom</item>
-        <item name="android:layout_marginStart">@dimen/valueToUnitPadding</item>
-        <item name="android:layout_marginEnd">@dimen/unitToNextPadding</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
     </style>
 
@@ -43,5 +46,4 @@
         <item name="android:layout_marginBottom">@dimen/sectionMargin</item>
     </style>
 
-    <dimen name="titleMargin">8dp</dimen>
 </resources>
