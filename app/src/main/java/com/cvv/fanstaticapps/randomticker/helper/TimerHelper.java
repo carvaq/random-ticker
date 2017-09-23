@@ -105,7 +105,7 @@ public class TimerHelper {
     }
 
     private PendingIntent getAlarmPendingIntent(Context context) {
-        Intent alarmIntent = new Intent(context, OnAlarmReceive.class);
+        Intent alarmIntent = new Intent(context.getApplicationContext(), OnAlarmReceive.class);
         return PendingIntent.getBroadcast(context, REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

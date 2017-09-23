@@ -13,12 +13,13 @@ public class OnAlarmReceive extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // Start the MainActivity
-        Intent alarmIntent = new KlaxonActivityNavigator(true)
-                .build(context);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         PrefUserSettings preferences = new PrefUserSettings(prefs);
-        preferences.setCurrentlyTickerRunning(false);
-        context.startActivity(alarmIntent);
+        if (preferences.isCurrentlyTickerRunning()) {
+            preferences.setCurrentlyTickerRunning(false);
+            Intent alarmIntent = new KlaxonActivityNavigator(true)
+                    .build(context);
+            context.startActivity(alarmIntent);
+        }
     }
 }
