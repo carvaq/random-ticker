@@ -57,7 +57,8 @@ dependencies {
     annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.0.8'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile 'pl.bclogic:pulsator4droid:1.0.3'
+    implementation 'pl.bclogic:pulsator4droid:1.0.3'
+    implementation 'com.shawnlin:number-picker:2.4.4'
     implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.0.8'
     implementation 'com.github.stephanenicolas.toothpick:smoothie:1.0.8'
     implementation 'com.github.kobakei.grenade:library:1.1.0'
@@ -66,4 +67,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.tarek360.RichPath:animator:0.0.9'
     provided 'org.xelevra.libs:prefdata-annotations:2.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }

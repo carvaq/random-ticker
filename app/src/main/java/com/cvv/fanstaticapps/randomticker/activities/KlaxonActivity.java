@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.TextView;
 
 import com.cvv.fanstaticapps.randomticker.R;
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
@@ -28,9 +26,9 @@ import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 import static com.cvv.fanstaticapps.randomticker.helper.TimerHelper.ONE_SECOND_IN_MILLIS;
 
 @Navigator
-public class AlarmActivity extends BaseActivity {
+public class KlaxonActivity extends BaseActivity {
 
-    private static final String TAG = AlarmActivity.class.getSimpleName();
+    private static final String TAG = KlaxonActivity.class.getSimpleName();
 
     @Extra
     boolean timeElapsed;
@@ -40,10 +38,6 @@ public class AlarmActivity extends BaseActivity {
 
     @BindView(R.id.pulsator)
     PulsatorLayout pulsatorLayout;
-    @BindView(R.id.remaining_time)
-    TextView remainingTime;
-    @BindView(R.id.remaining_time_label)
-    TextView label;
 
     @Inject
     TimerHelper timerHelper;
@@ -55,7 +49,7 @@ public class AlarmActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm);
+        setContentView(R.layout.activity_klaxon);
         AlarmActivityNavigator.inject(this, getIntent());
 
         intervalFinished = preferences.getIntervalFinished();
@@ -84,7 +78,7 @@ public class AlarmActivity extends BaseActivity {
         new CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
             @Override
             public void onTick(long millisUntilFinished) {
-                remainingTime.setText(timerHelper.getFormattedElapsedMilliseconds(millisUntilFinished));
+                //nothing to do
             }
 
             @Override
@@ -98,8 +92,6 @@ public class AlarmActivity extends BaseActivity {
     private void timerFinished() {
         playRingtone();
         startAnimation();
-        label.setVisibility(View.GONE);
-        remainingTime.setVisibility(View.GONE);
         pulsatorLayout.start();
     }
 
