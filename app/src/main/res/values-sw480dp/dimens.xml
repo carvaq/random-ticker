@@ -3,4 +3,5 @@
     <dimen name="activityPadding">64dp</dimen>
     <dimen name="touch_height">64dp</dimen>
     <dimen name="range_container_min_width">480dp</dimen>
+    <dimen name="dismiss_button_min_size">128dp</dimen>
 </resources>
