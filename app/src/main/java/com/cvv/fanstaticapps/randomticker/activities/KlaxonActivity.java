@@ -45,6 +45,7 @@ public class KlaxonActivity extends BaseActivity {
     private Ringtone playingAlarmSound;
     private RichPathAnimator bellAnimator;
     private long intervalFinished;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,11 @@ public class KlaxonActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (playingAlarmSound != null) {
-            playingAlarmSound.stop();
-        }
+        cancelEverything();
     }
 
     private void startCountDownTimer() {
-        new CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
+        countDownTimer = new CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
             @Override
             public void onTick(long millisUntilFinished) {
                 //nothing to do
@@ -86,7 +85,7 @@ public class KlaxonActivity extends BaseActivity {
                 timerFinished();
                 preferences.setCurrentlyTickerRunning(false);
             }
-        }.start();
+        };
     }
 
     private void timerFinished() {
@@ -97,13 +96,20 @@ public class KlaxonActivity extends BaseActivity {
 
     @OnClick(R.id.dismiss_button)
     void onDismissClicked() {
+        cancelEverything();
+        timerHelper.cancelNotificationAndGoBack(this, preferences);
+    }
+
+    private void cancelEverything() {
         if (playingAlarmSound != null) {
             playingAlarmSound.stop();
         }
         if (bellAnimator != null) {
             bellAnimator.cancel();
         }
-        timerHelper.cancelNotificationAndGoBack(this, preferences);
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     private void startAnimation() {

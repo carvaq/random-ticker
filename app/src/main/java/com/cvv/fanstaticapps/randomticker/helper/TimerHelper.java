@@ -109,16 +109,15 @@ public class TimerHelper {
         return PendingIntent.getBroadcast(context, REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void cancelNotification(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        alarmManager.cancel(getAlarmPendingIntent(context));
-        notificationManager.cancel(NOTIFICATION_ID);
-    }
-
     public void cancelNotificationAndGoBack(Activity activity, PrefUserSettings preferences) {
         preferences.setCurrentlyTickerRunning(false);
-        cancelNotification(activity);
+
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(getAlarmPendingIntent(activity));
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity);
+        notificationManager.cancel(NOTIFICATION_ID);
+
         Intent startIntent = new Intent(activity, MainActivity.class);
         startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(startIntent);
