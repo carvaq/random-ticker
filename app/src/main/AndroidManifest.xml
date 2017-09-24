@@ -25,6 +25,14 @@
 
         <activity android:name=".activities.CancelActivity">
         </activity>
+        <activity
+            android:name=".LicenseActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cvv.fanstaticapps.randomticker.activities.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

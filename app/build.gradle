@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.cookpad.android.licensetools'
 apply from: 'signing_config.gradle'
 
 def getGitVersionName = { ->
@@ -65,9 +66,7 @@ dependencies {
     implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.0.8'
     implementation 'com.github.stephanenicolas.toothpick:smoothie:1.0.8'
     implementation 'com.github.kobakei.grenade:library:1.1.0'
-    implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.tarek360.RichPath:animator:0.0.9'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }

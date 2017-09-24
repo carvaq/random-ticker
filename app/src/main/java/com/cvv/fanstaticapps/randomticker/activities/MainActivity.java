@@ -1,8 +1,12 @@
 package com.cvv.fanstaticapps.randomticker.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.cvv.fanstaticapps.randomticker.LicenseActivity;
 import com.cvv.fanstaticapps.randomticker.R;
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
@@ -46,6 +50,22 @@ public class MainActivity extends BaseActivity {
         prepareNumberPicker(minSec, preferences.getMinSec());
         prepareNumberPicker(maxMin, preferences.getMaxMin());
         prepareNumberPicker(maxSec, preferences.getMaxSec());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_licenses, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.licenses) {
+            startActivity(new Intent(this, LicenseActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void prepareNumberPicker(ScrollableNumberPicker numberPicker, int startValue) {
