@@ -2,15 +2,7 @@
     <string name="maximum_time">Maximum time interval</string>
     <string name="minimum_time">Smallest time interval possible</string>
     <string name="start_button">Start</string>
-    <string name="error_min_is_bigger_than_max">Nope! The maxinum value has to be greater than the minimum</string>
-    <string name="timer_done">Timer done!</string>
+    <string name="error_min_is_bigger_than_max">Nope! The maximum value has to be greater than the minimum</string>
     <string name="info_alarm_set">Create countdown timer for %ds</string>
-    <string name="remaining_time">Time remaining:</string>
-    <string name="button_dismissing">Dismissing...</string>
-    <string name="button_dismissed">Dismissed</string>
-    <string name="button_dimiss">Dimiss</string>
     <string name="notification_title">%s timer running</string>
-    <string name="plus">+</string>
-    <string name="minus">—</string>
-    <string name="default_value">0</string>
 </resources>

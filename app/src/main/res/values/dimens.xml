@@ -11,4 +11,5 @@
     <dimen name="touch_height">48dp</dimen>
     <dimen name="range_container_min_width">99999dp</dimen>
     <dimen name="dismiss_button_min_size">80dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
