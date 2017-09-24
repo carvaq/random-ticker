@@ -15,8 +15,8 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="2"
-        android:padding="@dimen/sectionMargin"
         android:gravity="center"
+        android:padding="@dimen/sectionMargin"
         app:vector="@drawable/ic_alarm_bell"/>
 
     <pl.bclogic.pulsator4droid.library.PulsatorLayout
@@ -39,11 +39,13 @@
 
         <ImageView
             android:id="@+id/dismiss_button"
+            style="@style/Base.TextAppearance.AppCompat.Widget.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/ic_cancel_filler"
             android:contentDescription="@android:string/cancel"
+            android:elevation="4dp"
             android:minHeight="@dimen/dismiss_button_min_size"
             android:minWidth="@dimen/dismiss_button_min_size"
             android:src="@drawable/ic_cancel"

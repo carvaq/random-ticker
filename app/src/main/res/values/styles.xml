@@ -1,8 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -10,24 +9,23 @@
 
     <style name="Interval"/>
 
-    <style name="Interval.EditText">
+    <style name="Interval.NumberPicker">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">4</item>
-        <item name="android:minWidth">@dimen/editTextMinSize</item>
-        <item name="android:minHeight">@dimen/editTextMinSize</item>
+        <item name="android:minWidth">@dimen/numberPickerMinSize</item>
+        <item name="android:minHeight">@dimen/numberPickerMinSize</item>
         <item name="android:gravity">center</item>
-        <item name="android:selectAllOnFocus">true</item>
-        <item name="android:text">0</item>
-        <item name="android:maxLength">2</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
-        <item name="android:imeOptions">actionNext</item>
-        <item name="android:digits">0123456789</item>
-        <item name="android:inputType">number</item>
-        <item name="min">0</item>
-        <item name="max">59</item>
-        <item name="unit">1</item>
-        <item name="custom_layout">@layout/numer_picker</item>
+        <item name="snp_minValue">0</item>
+        <item name="snp_maxValue">59</item>
+        <item name="snp_stepSize">1</item>
+        <item name="snp_orientation">vertical</item>
+        <item name="snp_buttonBackgroundTintSelector">@color/colorAccent</item>
+        <item name="snp_value_text_appearance">?android:attr/textAppearanceLarge</item>
+        <item name="snp_buttonPaddingBottom">8dp</item>
+        <item name="snp_buttonPaddingLeft">8dp</item>
+        <item name="snp_buttonPaddingRight">8dp</item>
+        <item name="snp_buttonPaddingTop">8dp</item>
     </style>
 
     <style name="Interval.Unit">

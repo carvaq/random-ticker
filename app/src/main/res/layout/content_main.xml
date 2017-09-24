@@ -18,18 +18,18 @@
     <LinearLayout
         style="@style/Interval.Container">
 
-        <com.travijuu.numberpicker.library.NumberPicker
+        <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
             android:id="@+id/min_min"
-            style="@style/Interval.EditText"/>
+            style="@style/Interval.NumberPicker"/>
 
         <TextView
             style="@style/Interval.Unit"
             android:labelFor="@+id/min_min"
             android:text="@string/abbrev_minute"/>
 
-        <com.travijuu.numberpicker.library.NumberPicker
+        <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
             android:id="@+id/min_sec"
-            style="@style/Interval.EditText"
+            style="@style/Interval.NumberPicker"
             tools:text="01"/>
 
         <TextView
@@ -48,18 +48,18 @@
     <LinearLayout
         style="@style/Interval.Container">
 
-        <com.travijuu.numberpicker.library.NumberPicker
+        <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
             android:id="@+id/max_min"
-            style="@style/Interval.EditText"/>
+            style="@style/Interval.NumberPicker"/>
 
         <TextView
             style="@style/Interval.Unit"
             android:labelFor="@+id/max_min"
             android:text="@string/abbrev_minute"/>
 
-        <com.travijuu.numberpicker.library.NumberPicker
+        <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
             android:id="@+id/max_sec"
-            style="@style/Interval.EditText"
+            style="@style/Interval.NumberPicker"
             android:imeOptions="actionDone"/>
 
         <TextView
@@ -71,8 +71,7 @@
 
     <Button
         android:id="@+id/start"
-        android:backgroundTint="@color/colorAccent"
-        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Colored"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/sectionMargin"

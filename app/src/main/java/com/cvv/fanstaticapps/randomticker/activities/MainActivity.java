@@ -2,11 +2,10 @@ package com.cvv.fanstaticapps.randomticker.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 
 import com.cvv.fanstaticapps.randomticker.R;
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
-import com.travijuu.numberpicker.library.NumberPicker;
+import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import java.util.Random;
 
@@ -17,15 +16,13 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.min_min)
-    NumberPicker minMin;
+    ScrollableNumberPicker minMin;
     @BindView(R.id.min_sec)
-    NumberPicker minSec;
+    ScrollableNumberPicker minSec;
     @BindView(R.id.max_min)
-    NumberPicker maxMin;
+    ScrollableNumberPicker maxMin;
     @BindView(R.id.max_sec)
-    NumberPicker maxSec;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    ScrollableNumberPicker maxSec;
 
     @Inject
     TimerHelper timerHelper;
@@ -45,15 +42,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        perpareNumberPicker(minMin, preferences.getMinMin());
-        perpareNumberPicker(minSec, preferences.getMinSec());
-        perpareNumberPicker(maxMin, preferences.getMaxMin());
-        perpareNumberPicker(maxSec, preferences.getMaxSec());
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+        prepareNumberPicker(minMin, preferences.getMinMin());
+        prepareNumberPicker(minSec, preferences.getMinSec());
+        prepareNumberPicker(maxMin, preferences.getMaxMin());
+        prepareNumberPicker(maxSec, preferences.getMaxSec());
     }
 
-    private void perpareNumberPicker(NumberPicker numberPicker, int startValue) {
+    private void prepareNumberPicker(ScrollableNumberPicker numberPicker, int startValue) {
         numberPicker.setValue(startValue);
     }
 
@@ -93,7 +88,7 @@ public class MainActivity extends BaseActivity {
                 .apply();
     }
 
-    private int getTotalValueInMillis(NumberPicker minute, NumberPicker second) {
+    private int getTotalValueInMillis(ScrollableNumberPicker minute, ScrollableNumberPicker second) {
         return (60 * minute.getValue() + second.getValue()) * 1000;
     }
 }

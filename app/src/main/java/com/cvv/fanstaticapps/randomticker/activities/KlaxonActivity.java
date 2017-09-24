@@ -1,5 +1,6 @@
 package com.cvv.fanstaticapps.randomticker.activities;
 
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -56,7 +57,6 @@ public class KlaxonActivity extends BaseActivity {
         intervalFinished = preferences.getIntervalFinished();
     }
 
-
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -64,6 +64,16 @@ public class KlaxonActivity extends BaseActivity {
             timerFinished();
         } else {
             startCountDownTimer();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        KlaxonActivityNavigator.inject(this, intent);
+        if (timeElapsed && countDownTimer != null) {
+            countDownTimer.cancel();
+            timerFinished();
         }
     }
 
@@ -84,8 +94,10 @@ public class KlaxonActivity extends BaseActivity {
             public void onFinish() {
                 timerFinished();
                 preferences.setCurrentlyTickerRunning(false);
+                countDownTimer = null;
             }
         };
+        countDownTimer.start();
     }
 
     private void timerFinished() {
