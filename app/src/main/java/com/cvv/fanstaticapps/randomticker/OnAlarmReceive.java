@@ -17,6 +17,7 @@ public class OnAlarmReceive extends BroadcastReceiver {
         PrefUserSettings preferences = new PrefUserSettings(prefs);
         preferences.setCurrentlyTickerRunning(false);
         Intent klaxonIntent = new KlaxonActivityNavigator(true)
+                .flags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .build(context);
         context.startActivity(klaxonIntent);
     }
