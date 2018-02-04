@@ -62,7 +62,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
-    implementation 'com.michaelmuenzer.android:ScrollableNumberPicker:0.2.2'
     implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.1'
     implementation 'com.github.stephanenicolas.toothpick:smoothie:1.1.1'
     implementation 'com.github.kobakei.grenade:library:1.1.0'

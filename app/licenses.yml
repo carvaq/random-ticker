@@ -126,10 +126,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://github.com/JakeWharton/butterknife/
-- artifact: com.michaelmuenzer.android:ScrollableNumberPicker:+
-  name: ScrollableNumberPicker
-  copyrightHolder: Michael Muenzer
-  license: mit
 - artifact: javax.inject:javax.inject:+
   name: javax.inject
   license: The Apache Software License, Version 2.0

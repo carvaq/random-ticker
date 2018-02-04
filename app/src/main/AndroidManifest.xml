@@ -19,12 +19,12 @@
         </activity>
         <activity
             android:name=".activities.KlaxonActivity"
+            android:theme="@style/AppTheme.FullScreen"
             android:launchMode="singleTask"/>
 
         <receiver android:name=".OnAlarmReceive"/>
 
-        <activity android:name=".activities.CancelActivity">
-        </activity>
+        <activity android:name=".activities.CancelActivity"/>
         <activity
             android:name=".LicenseActivity"
             android:parentActivityName=".activities.MainActivity">
