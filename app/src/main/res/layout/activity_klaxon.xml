@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#9c27b0"
     android:padding="@dimen/activityPadding"
     tools:context="com.cvv.fanstaticapps.randomticker.activities.KlaxonActivity">
 
@@ -46,8 +47,8 @@
             android:background="@drawable/ic_cancel_filler"
             android:contentDescription="@android:string/cancel"
             android:elevation="4dp"
-            android:minHeight="@dimen/dismiss_button_min_size"
-            android:minWidth="@dimen/dismiss_button_min_size"
+            android:minHeight="@dimen/dismissButtonMinSize"
+            android:minWidth="@dimen/dismissButtonMinSize"
             android:src="@drawable/ic_cancel"
             android:tint="@color/dismissColor"/>
     </pl.bclogic.pulsator4droid.library.PulsatorLayout>

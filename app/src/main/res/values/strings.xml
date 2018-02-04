@@ -6,4 +6,7 @@
     <string name="info_alarm_set">Create countdown timer for %ds</string>
     <string name="notification_title">%s timer running</string>
     <string name="bell_ringing">Bell is ringing</string>
+    <string name="abbrev_minute">minutes</string>
+    <string name="abbrev_second">seconds</string>
+
 </resources>

@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name" translatable="false">Random Ticker</string>
-    <string name="abbrev_minute" translatable="false">min</string>
-    <string name="abbrev_second" translatable="false">s</string>
     <string name="license" translatable="false">Open Source Licenses</string>
 </resources>
