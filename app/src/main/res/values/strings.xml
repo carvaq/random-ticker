@@ -5,4 +5,5 @@
     <string name="error_min_is_bigger_than_max">Nope! The maximum value has to be greater than the minimum</string>
     <string name="info_alarm_set">Create countdown timer for %ds</string>
     <string name="notification_title">%s timer running</string>
+    <string name="bell_ringing">Bell is ringing</string>
 </resources>

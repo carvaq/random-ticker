@@ -27,6 +27,7 @@ import javax.inject.Inject;
 
 public class TimerHelper {
 
+    private static final int NOTIFICATION_ID = 2312;
     public static final long ONE_SECOND_IN_MILLIS = 1000;
     private static final Handler HANDLER = new Handler();
     private static final int REQUEST_CODE = 123;
@@ -34,8 +35,6 @@ public class TimerHelper {
     @Inject
     TimerHelper() {
     }
-
-    private static final int NOTIFICATION_ID = 2312;
 
     public void createNotificationAndAlarm(final Context context, final PrefUserSettings preferences) {
         final long interval = preferences.getInterval();
@@ -77,9 +76,9 @@ public class TimerHelper {
                         context.getString(android.R.string.cancel), cancelPendingIntent);
         final NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context, NotificationCompat.CATEGORY_ALARM);
+
         String formattedInterval = getFormattedElapsedMilliseconds(interval);
-        builder
-                .addAction(cancelAction)
+        builder.addAction(cancelAction)
                 .setContentTitle(context.getString(R.string.notification_title, formattedInterval))
                 .setContentText(getFormattedElapsedMilliseconds(intervalFinished - System.currentTimeMillis()))
                 .setAutoCancel(false)
@@ -93,7 +92,7 @@ public class TimerHelper {
         return builder.build();
     }
 
-    public String getFormattedElapsedMilliseconds(long elapsedMilliseconds) {
+    private String getFormattedElapsedMilliseconds(long elapsedMilliseconds) {
         return DateUtils.formatElapsedTime(elapsedMilliseconds / ONE_SECOND_IN_MILLIS);
     }
 

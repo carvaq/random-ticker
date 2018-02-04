@@ -21,7 +21,8 @@ import toothpick.smoothie.module.SmoothieActivityModule;
  * Project: RandomTicker
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
+
     private Scope scope;
     protected PrefUserSettings preferences;
 
@@ -43,12 +44,8 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Toothpick.closeScope(this);
+        Toothpick.closeScope(scope);
         super.onDestroy();
-    }
-
-    protected void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     protected void toast(@StringRes int resId) {

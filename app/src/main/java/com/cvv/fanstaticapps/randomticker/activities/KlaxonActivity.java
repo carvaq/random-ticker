@@ -102,7 +102,7 @@ public class KlaxonActivity extends BaseActivity {
 
     private void timerFinished() {
         playRingtone();
-        startAnimation();
+        startBellAnimation();
         pulsatorLayout.start();
     }
 
@@ -124,7 +124,7 @@ public class KlaxonActivity extends BaseActivity {
         }
     }
 
-    private void startAnimation() {
+    private void startBellAnimation() {
         RichPath top = alarmBell.findRichPathByName("top");
         RichPath bottom = alarmBell.findRichPathByName("bottom");
 
@@ -153,7 +153,7 @@ public class KlaxonActivity extends BaseActivity {
                 Log.e(TAG, "Error while trying to play alarm sound", e);
             }
         } else {
-            toast("Ringing ma bell");
+            toast(R.string.bell_ringing);
         }
     }
 
