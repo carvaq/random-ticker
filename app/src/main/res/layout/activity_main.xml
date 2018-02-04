@@ -32,7 +32,7 @@
 
             <TextView
                 style="@style/AppTheme.Interval.Unit"
-                android:text="@string/abbrev_minute"/>
+                android:text="@string/minutes"/>
 
             <SeekBar
                 android:id="@+id/min_sec"
@@ -40,7 +40,7 @@
 
             <TextView
                 style="@style/AppTheme.Interval.Unit"
-                android:text="@string/abbrev_second"/>
+                android:text="@string/seconds"/>
 
         </LinearLayout>
 
@@ -64,7 +64,7 @@
 
             <TextView
                 style="@style/AppTheme.Interval.Unit"
-                android:text="@string/abbrev_minute"/>
+                android:text="@string/minutes"/>
 
             <SeekBar
                 android:id="@+id/max_sec"
@@ -72,7 +72,7 @@
 
             <TextView
                 style="@style/AppTheme.Interval.Unit"
-                android:text="@string/abbrev_second"/>
+                android:text="@string/seconds"/>
 
         </LinearLayout>
 
