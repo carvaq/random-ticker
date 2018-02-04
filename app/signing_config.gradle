@@ -1,0 +1,10 @@
+android {
+    signingConfigs {
+        release {
+            keyAlias fanstatic_keyalias
+            keyPassword fanstatic_keypassword
+            storeFile file(fanstatic_file)
+            storePassword fanstatic_storepassword
+        }
+    }
+}	
