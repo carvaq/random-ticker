@@ -1,0 +1,9 @@
+<resources>
+    <string name="maximum_time">Maximales Zeitintervall</string>
+    <string name="minimum_time">Kleinstes Zeitintervall möglich</string>
+    <string name="start_button">Starten</string>
+    <string name="error_min_is_bigger_than_max">Nee! Der Maximalwert muss größer sein als der Kleinste</string>
+    <string name="info_alarm_set">Erstellen Countdown-Timer für %ds</string>
+    <string name="notification_title">%s Timer läuft</string>
+    <string name="bell_ringing">Alarm ist am klingeln</string>
+</resources>
