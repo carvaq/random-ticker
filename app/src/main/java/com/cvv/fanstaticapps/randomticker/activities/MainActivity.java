@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.cvv.fanstaticapps.randomticker.LicenseActivity;
 import com.cvv.fanstaticapps.randomticker.R;
+import com.cvv.fanstaticapps.randomticker.helper.TimeSeekBarChangeListener;
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
-import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
 
 import java.util.Random;
 
@@ -19,14 +21,20 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
+
+
+    @BindView(R.id.min_value)
+    TextView minValue;
+    @BindView(R.id.max_value)
+    TextView maxValue;
     @BindView(R.id.min_min)
-    ScrollableNumberPicker minMin;
+    SeekBar minMin;
     @BindView(R.id.min_sec)
-    ScrollableNumberPicker minSec;
+    SeekBar minSec;
     @BindView(R.id.max_min)
-    ScrollableNumberPicker maxMin;
+    SeekBar maxMin;
     @BindView(R.id.max_sec)
-    ScrollableNumberPicker maxSec;
+    SeekBar maxSec;
 
     @Inject
     TimerHelper timerHelper;
@@ -46,10 +54,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        prepareNumberPicker(minMin, preferences.getMinMin());
-        prepareNumberPicker(minSec, preferences.getMinSec());
-        prepareNumberPicker(maxMin, preferences.getMaxMin());
-        prepareNumberPicker(maxSec, preferences.getMaxSec());
+        TimeSeekBarChangeListener minMinuteSeekBarListener =
+                new TimeSeekBarChangeListener(minValue, minMin, minSec);
+        TimeSeekBarChangeListener minSecondSeekBarListener =
+                new TimeSeekBarChangeListener(minValue, minMin, minSec);
+        TimeSeekBarChangeListener maxMinuteSeekBarListener =
+                new TimeSeekBarChangeListener(maxValue, maxMin, maxSec);
+        TimeSeekBarChangeListener maxSecondSeekBarListener =
+                new TimeSeekBarChangeListener(maxValue, maxMin, maxSec);
+
+        prepareValueSelectionView(minMin, preferences.getMinMin(), minMinuteSeekBarListener);
+        prepareValueSelectionView(minSec, preferences.getMinSec(), minSecondSeekBarListener);
+        prepareValueSelectionView(maxMin, preferences.getMaxMin(), maxMinuteSeekBarListener);
+        prepareValueSelectionView(maxSec, preferences.getMaxSec(), maxSecondSeekBarListener);
     }
 
     @Override
@@ -68,8 +85,11 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void prepareNumberPicker(ScrollableNumberPicker numberPicker, int startValue) {
-        numberPicker.setValue(startValue);
+    private void prepareValueSelectionView(SeekBar seekBar, int startValue,
+                                           TimeSeekBarChangeListener seekBarChangeListener) {
+        seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        seekBar.setMax(59);
+        seekBar.setProgress(startValue);
     }
 
     private void startAlarmActivity() {
@@ -98,17 +118,17 @@ public class MainActivity extends BaseActivity {
 
     private void saveToPreferences(long interval, long intervalFinished) {
         preferences.edit()
-                .setMaxMin(maxMin.getValue())
-                .setMinMin(minMin.getValue())
-                .setMaxSec(maxSec.getValue())
-                .setMinSec(minSec.getValue())
+                .setMaxMin(maxMin.getProgress())
+                .setMinMin(minMin.getProgress())
+                .setMaxSec(maxSec.getProgress())
+                .setMinSec(minSec.getProgress())
                 .setCurrentlyTickerRunning(true)
                 .setInterval(interval)
                 .setIntervalFinished(intervalFinished)
                 .apply();
     }
 
-    private int getTotalValueInMillis(ScrollableNumberPicker minute, ScrollableNumberPicker second) {
-        return (60 * minute.getValue() + second.getValue()) * 1000;
+    private int getTotalValueInMillis(SeekBar minute, SeekBar second) {
+        return (60 * minute.getProgress() + second.getProgress()) * 1000;
     }
 }

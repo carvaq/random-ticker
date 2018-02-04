@@ -19,25 +19,27 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
         <LinearLayout
-            style="@style/Interval.Container">
-
-            <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
-                android:id="@+id/min_min"
-                style="@style/Interval.NumberPicker"/>
+            style="@style/AppTheme.Interval.Container">
 
             <TextView
-                style="@style/Interval.Unit"
-                android:labelFor="@+id/min_min"
+                android:id="@+id/min_value"
+                style="@style/AppTheme.Interval.TimeDisplay"
+                tools:text="10m10s"/>
+
+            <SeekBar
+                android:id="@+id/min_min"
+                style="@style/AppTheme.Interval.SeekBar"/>
+
+            <TextView
+                style="@style/AppTheme.Interval.Unit"
                 android:text="@string/abbrev_minute"/>
 
-            <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+            <SeekBar
                 android:id="@+id/min_sec"
-                style="@style/Interval.NumberPicker"
-                tools:text="01"/>
+                style="@style/AppTheme.Interval.SeekBar"/>
 
             <TextView
-                style="@style/Interval.Unit"
-                android:labelFor="@+id/min_sec"
+                style="@style/AppTheme.Interval.Unit"
                 android:text="@string/abbrev_second"/>
 
         </LinearLayout>
@@ -49,35 +51,38 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
         <LinearLayout
-            style="@style/Interval.Container">
-
-            <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
-                android:id="@+id/max_min"
-                style="@style/Interval.NumberPicker"/>
+            style="@style/AppTheme.Interval.Container">
 
             <TextView
-                style="@style/Interval.Unit"
-                android:labelFor="@+id/max_min"
+                android:id="@+id/max_value"
+                style="@style/AppTheme.Interval.TimeDisplay"
+                tools:text="10m10s"/>
+
+            <SeekBar
+                android:id="@+id/max_min"
+                style="@style/AppTheme.Interval.SeekBar"/>
+
+            <TextView
+                style="@style/AppTheme.Interval.Unit"
                 android:text="@string/abbrev_minute"/>
 
-            <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+            <SeekBar
                 android:id="@+id/max_sec"
-                style="@style/Interval.NumberPicker"
-                android:imeOptions="actionDone"/>
+                style="@style/AppTheme.Interval.SeekBar"/>
 
             <TextView
-                style="@style/Interval.Unit"
-                android:labelFor="@+id/max_sec"
+                style="@style/AppTheme.Interval.Unit"
                 android:text="@string/abbrev_second"/>
 
         </LinearLayout>
 
         <Button
             android:id="@+id/start"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@style/AppTheme.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/sectionMargin"
             android:text="@string/start_button"/>
     </LinearLayout>
+
 </ScrollView>

@@ -7,39 +7,32 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Interval"/>
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.NoActionBar"/>
 
-    <style name="Interval.NumberPicker">
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored"/>
+
+    <style name="AppTheme.Interval">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">4</item>
-        <item name="android:minWidth">@dimen/numberPickerMinSize</item>
-        <item name="android:minHeight">@dimen/numberPickerMinSize</item>
-        <item name="android:gravity">center</item>
-        <item name="snp_minValue">0</item>
-        <item name="snp_maxValue">59</item>
-        <item name="snp_stepSize">1</item>
-        <item name="snp_orientation">vertical</item>
-        <item name="snp_buttonBackgroundTintSelector">@color/colorAccent</item>
-        <item name="snp_value_text_appearance">?android:attr/textAppearanceLarge</item>
-        <item name="snp_buttonPaddingBottom">8dp</item>
-        <item name="snp_buttonPaddingLeft">8dp</item>
-        <item name="snp_buttonPaddingRight">8dp</item>
-        <item name="snp_buttonPaddingTop">8dp</item>
-    </style>
-
-    <style name="Interval.Unit">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">2</item>
-        <item name="android:layout_gravity">start|center_vertical</item>
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
-    </style>
-
-    <style name="Interval.Container">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="AppTheme.Interval.SeekBar">
+        <item name="android:layout_marginTop">@dimen/widgetMargin</item>
+    </style>
+
+    <style name="AppTheme.Interval.Unit">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:gravity">end</item>
+    </style>
+
+    <style name="AppTheme.Interval.TimeDisplay">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
+    </style>
+
+    <style name="AppTheme.Interval.Container">
+        <item name="android:orientation">vertical</item>
         <item name="android:layout_marginTop">@dimen/titleMargin</item>
         <item name="android:layout_marginBottom">@dimen/sectionMargin</item>
     </style>
@@ -52,5 +45,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
 
 </resources>
