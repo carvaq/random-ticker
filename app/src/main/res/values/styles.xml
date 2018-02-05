@@ -30,6 +30,7 @@
 
     <style name="AppTheme.Interval.TimeDisplay">
         <item name="android:gravity">center_horizontal</item>
+        <item name="android:fontFamily">monospace</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
     </style>
 
