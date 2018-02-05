@@ -89,7 +89,11 @@ public class MainActivity extends BaseActivity {
                                            TimeSeekBarChangeListener seekBarChangeListener) {
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
         seekBar.setMax(59);
-        seekBar.setProgress(startValue);
+
+        //This is for the configuration change case
+        if (seekBar.getProgress() == 0) {
+            seekBar.setProgress(startValue);
+        }
     }
 
     private void startAlarmActivity() {
