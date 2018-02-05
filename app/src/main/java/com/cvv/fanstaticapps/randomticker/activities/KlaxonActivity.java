@@ -45,6 +45,7 @@ public class KlaxonActivity extends BaseActivity {
 
     private Ringtone playingAlarmSound;
     private RichPathAnimator bellAnimator;
+    //timestamp when the timer should ring
     private long intervalFinished;
     private CountDownTimer countDownTimer;
 
