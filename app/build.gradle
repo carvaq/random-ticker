@@ -55,10 +55,6 @@ android {
 }
 
 dependencies {
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
     provided 'org.xelevra.libs:prefdata-annotations:2.2'
 
     annotationProcessor 'org.xelevra.libs:prefdata-processor:2.2'
@@ -77,4 +73,10 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.6.1'
+
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
 }
