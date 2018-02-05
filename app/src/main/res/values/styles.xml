@@ -1,15 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.NoActionBar"/>
-
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored"/>
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/sectionMargin</item>
+    </style>
 
     <style name="AppTheme.Interval">
         <item name="android:layout_height">wrap_content</item>
@@ -31,10 +33,12 @@
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
     </style>
 
-    <style name="AppTheme.Interval.Container">
-        <item name="android:orientation">vertical</item>
-        <item name="android:layout_marginTop">@dimen/titleMargin</item>
-        <item name="android:layout_marginBottom">@dimen/sectionMargin</item>
+
+    <style name="AppTheme.Interval.Description">
+        <item name="android:minLines">2</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+        <item name="android:layout_marginTop">@dimen/sectionMargin</item>
+        <item name="android:layout_marginBottom">@dimen/titleMargin</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
