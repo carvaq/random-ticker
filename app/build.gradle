@@ -46,10 +46,15 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -68,4 +73,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.tarek360.RichPath:animator:0.0.9'
+
+    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.6.1'
 }

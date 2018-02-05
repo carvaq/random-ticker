@@ -1,5 +1,6 @@
 package com.cvv.fanstaticapps.randomticker.helper;
 
+import android.support.annotation.VisibleForTesting;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -12,7 +13,9 @@ import java.util.Locale;
  */
 
 public class TimeSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
-    private static final String TIME_FORMAT = "%dm %ds";
+
+    @VisibleForTesting
+    public static final String TIME_FORMAT = "%02dm %02ds";
 
     private final TextView displayTextView;
     private final SeekBar minuteSeekbar;
