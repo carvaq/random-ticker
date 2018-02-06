@@ -79,8 +79,8 @@ public class KlaxonActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    protected void onStop() {
+        super.onStop();
         cancelEverything();
     }
 
