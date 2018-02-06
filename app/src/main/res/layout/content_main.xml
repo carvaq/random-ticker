@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_main">
+
+    <include layout="@layout/content_minimum_value"/>
+
+    <include layout="@layout/content_maximum_value"/>
+
+    <Button
+        android:id="@+id/start"
+        style="@style/AppTheme.Button"
+        android:text="@string/start_button"/>
+</merge>

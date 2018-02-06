@@ -3,6 +3,7 @@ package com.cvv.fanstaticapps.randomticker.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SeekBar;
@@ -22,7 +23,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.min_value)
     TextView minValue;
     @BindView(R.id.max_value)
@@ -54,6 +56,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        setSupportActionBar(toolbar);
+
+
         TimeSeekBarChangeListener minMinuteSeekBarListener =
                 new TimeSeekBarChangeListener(minValue, minMin, minSec);
         TimeSeekBarChangeListener minSecondSeekBarListener =

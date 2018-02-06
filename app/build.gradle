@@ -55,13 +55,7 @@ android {
 }
 
 dependencies {
-    provided 'org.xelevra.libs:prefdata-annotations:2.2'
-
-    annotationProcessor 'org.xelevra.libs:prefdata-processor:2.2'
-    annotationProcessor 'com.github.kobakei.grenade:processor:1.1.0'
-    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.0.8'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
+    implementation 'com.android.support:design:26.1.0'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.1'
     implementation 'com.github.stephanenicolas.toothpick:smoothie:1.1.1'
@@ -69,6 +63,13 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.tarek360.RichPath:animator:0.0.9'
+
+    provided 'org.xelevra.libs:prefdata-annotations:2.2'
+
+    annotationProcessor 'org.xelevra.libs:prefdata-processor:2.2'
+    annotationProcessor 'com.github.kobakei.grenade:processor:1.1.0'
+    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.0.8'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'junit:junit:4.12'
