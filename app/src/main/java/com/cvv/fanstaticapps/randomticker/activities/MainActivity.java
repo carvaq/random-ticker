@@ -42,6 +42,8 @@ public class MainActivity extends BaseActivity {
     TimerHelper timerHelper;
 
     private Random randomGenerator = new Random(System.currentTimeMillis());
+    private TimeSeekBarChangeListener minValuesSeekBarListener;
+    private TimeSeekBarChangeListener maxValuesSeekBarListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +61,15 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
 
-        TimeSeekBarChangeListener minMinuteSeekBarListener =
+        minValuesSeekBarListener =
                 new TimeSeekBarChangeListener(minValue, minMin, minSec);
-        TimeSeekBarChangeListener minSecondSeekBarListener =
-                new TimeSeekBarChangeListener(minValue, minMin, minSec);
-        TimeSeekBarChangeListener maxMinuteSeekBarListener =
-                new TimeSeekBarChangeListener(maxValue, maxMin, maxSec);
-        TimeSeekBarChangeListener maxSecondSeekBarListener =
+        maxValuesSeekBarListener =
                 new TimeSeekBarChangeListener(maxValue, maxMin, maxSec);
 
-        prepareValueSelectionView(minMin, preferences.getMinMin(), minMinuteSeekBarListener);
-        prepareValueSelectionView(minSec, preferences.getMinSec(), minSecondSeekBarListener);
-        prepareValueSelectionView(maxMin, preferences.getMaxMin(), maxMinuteSeekBarListener);
-        prepareValueSelectionView(maxSec, preferences.getMaxSec(), maxSecondSeekBarListener);
+        prepareValueSelectionView(minMin, preferences.getMinMin(), minValuesSeekBarListener);
+        prepareValueSelectionView(minSec, preferences.getMinSec(), minValuesSeekBarListener);
+        prepareValueSelectionView(maxMin, preferences.getMaxMin(), maxValuesSeekBarListener);
+        prepareValueSelectionView(maxSec, preferences.getMaxSec(), maxValuesSeekBarListener);
     }
 
     @Override
@@ -112,8 +110,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void createTimer() {
-        int min = getTotalValueInMillis(minMin, minSec);
-        int max = getTotalValueInMillis(maxMin, maxSec);
+        int min = getTotalValueInMillis(minValuesSeekBarListener);
+        int max = getTotalValueInMillis(maxValuesSeekBarListener);
         if (max > min) {
             long interval = randomGenerator.nextInt((max - min) + 1) + min;
             long intervalFinished = System.currentTimeMillis() + interval;
@@ -123,6 +121,10 @@ public class MainActivity extends BaseActivity {
         } else {
             toast(R.string.error_min_is_bigger_than_max);
         }
+    }
+
+    private int getTotalValueInMillis(TimeSeekBarChangeListener seekBarChangeListener) {
+        return (60 * seekBarChangeListener.getMinutes() + seekBarChangeListener.getSeconds()) * 1000;
     }
 
     private void saveToPreferences(long interval, long intervalFinished) {
@@ -135,9 +137,5 @@ public class MainActivity extends BaseActivity {
                 .setInterval(interval)
                 .setIntervalFinished(intervalFinished)
                 .apply();
-    }
-
-    private int getTotalValueInMillis(SeekBar minute, SeekBar second) {
-        return (60 * minute.getProgress() + second.getProgress()) * 1000;
     }
 }
