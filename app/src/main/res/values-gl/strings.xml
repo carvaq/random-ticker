@@ -10,5 +10,9 @@
     <string name="minutes">minutos</string>
     <string name="seconds">segundos</string>
     <string name="channel_name">Alarma</string>
+    <string name="title_activity_settings">Axustes</string>
+    <string name="pref_title_ringtone">Tono de chamada</string>
+    <string name="pref_ringtone_silent">Silencioso</string>
+    <string name="pref_title_vibrate">Vibración</string>
 
 </resources>
