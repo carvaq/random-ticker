@@ -3,6 +3,8 @@ package com.cvv.fanstaticapps.randomticker.helper;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +33,7 @@ public class TimerHelper {
     public static final long ONE_SECOND_IN_MILLIS = 1000;
     private static final Handler HANDLER = new Handler();
     private static final int REQUEST_CODE = 123;
+    private static final String CHANNEL_ID = "RandomTickerChannel:01";
 
     @Inject
     TimerHelper() {
@@ -62,6 +65,7 @@ public class TimerHelper {
         Notification notification = buildNotification(context, interval, intervalFinished);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        createNotificationChannel(context);
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
@@ -75,7 +79,7 @@ public class TimerHelper {
                 new NotificationCompat.Action(R.drawable.ic_action_stop_timer,
                         context.getString(android.R.string.cancel), cancelPendingIntent);
         final NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(context, NotificationCompat.CATEGORY_ALARM);
+                new NotificationCompat.Builder(context, CHANNEL_ID);
 
         String formattedInterval = getFormattedElapsedMilliseconds(interval);
         builder.addAction(cancelAction)
@@ -122,6 +126,20 @@ public class TimerHelper {
         activity.startActivity(startIntent);
         activity.overridePendingTransition(0, 0);
         activity.finish();
+    }
+
+
+    private void createNotificationChannel(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            CharSequence name = context.getString(R.string.channel_name);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 
 }

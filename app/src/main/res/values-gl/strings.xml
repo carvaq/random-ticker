@@ -9,5 +9,6 @@
     <string name="bell_ringing">Campá está tocando</string>
     <string name="minutes">minutos</string>
     <string name="seconds">segundos</string>
+    <string name="channel_name">Alarma</string>
 
 </resources>
