@@ -134,7 +134,7 @@ public class TimerHelper {
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             CharSequence name = context.getString(R.string.channel_name);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
