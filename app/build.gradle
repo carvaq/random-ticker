@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.tarek360.RichPath:animator:0.0.9'
 
+    implementation 'com.android.support:support-v4:26.1.0'
     provided 'org.xelevra.libs:prefdata-annotations:2.2'
 
     annotationProcessor 'org.xelevra.libs:prefdata-processor:2.2'

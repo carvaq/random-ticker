@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_licenses, menu);
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
         return true;
     }
 
@@ -84,6 +84,8 @@ public class MainActivity extends BaseActivity {
         if (item.getItemId() == R.id.licenses) {
             startActivity(new Intent(this, LicenseActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
