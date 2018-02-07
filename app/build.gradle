@@ -11,8 +11,12 @@ def getGitVersionName = { ->
     }
 }
 
-def parseVersionCode = { versionName ->
-    def versionCode = (int) (Double.parseDouble(versionName) * 1000)
+def parseVersionCode = {
+    String versionName = gitVersionName
+    def versionCodeParts = versionName.tokenize('.')
+    int decimals = Integer.parseInt(versionCodeParts.get(1))
+    String formattedVersionCode = String.format("%s%02d00", versionCodeParts.get(0), decimals)
+    def versionCode = Integer.parseInt(formattedVersionCode)
     println "Version name: ${versionName}  Version code: ${versionCode}"
     return versionCode
 }
