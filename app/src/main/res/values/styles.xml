@@ -36,15 +36,8 @@
 
 
     <style name="AppTheme.Interval.Description">
-        <item name="android:minLines">2</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
-        <item name="android:layout_marginTop">@dimen/sectionMargin</item>
         <item name="android:layout_marginBottom">@dimen/titleMargin</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
