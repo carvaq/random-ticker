@@ -90,7 +90,6 @@ public class TimerHelper {
                 .setContentIntent(alarmPendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
-                .setTicker(context.getString(R.string.info_alarm_set, interval))
                 .setSmallIcon(R.drawable.ic_stat_timer);
 
         return builder.build();

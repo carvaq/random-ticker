@@ -4,7 +4,6 @@
     <string name="minimum_time">Intervalo de tempo minimo posible</string>
     <string name="start_button">Comenzar</string>
     <string name="error_min_is_bigger_than_max">Non! O valor máximo debe ser maior que o mínimo</string>
-    <string name="info_alarm_set">Crear temporizador de conta atrás para ds%</string>
     <string name="notification_title">%s en marcha! </string>
     <string name="bell_ringing">Campá está tocando</string>
     <string name="minutes">minutos</string>
