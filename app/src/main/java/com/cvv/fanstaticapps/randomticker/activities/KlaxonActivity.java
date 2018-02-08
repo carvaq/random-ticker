@@ -103,6 +103,7 @@ public class KlaxonActivity extends BaseActivity {
     }
 
     private void timerFinished() {
+        timerHelper.cancelNotification(this, preferences);
         playRingtone();
         startBellAnimation();
         pulsatorLayout.start();

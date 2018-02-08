@@ -112,6 +112,16 @@ public class TimerHelper {
     }
 
     public void cancelNotificationAndGoBack(Activity activity, PrefUserSettings preferences) {
+        cancelNotification(activity, preferences);
+
+        Intent startIntent = new Intent(activity, MainActivity.class);
+        startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(startIntent);
+        activity.overridePendingTransition(0, 0);
+        activity.finish();
+    }
+
+    public void cancelNotification(Activity activity, PrefUserSettings preferences) {
         preferences.setCurrentlyTickerRunning(false);
 
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
@@ -119,12 +129,6 @@ public class TimerHelper {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity);
         notificationManager.cancel(NOTIFICATION_ID);
-
-        Intent startIntent = new Intent(activity, MainActivity.class);
-        startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        activity.startActivity(startIntent);
-        activity.overridePendingTransition(0, 0);
-        activity.finish();
     }
 
 
