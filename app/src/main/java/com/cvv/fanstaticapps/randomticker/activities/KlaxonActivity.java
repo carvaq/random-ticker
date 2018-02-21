@@ -1,5 +1,7 @@
 package com.cvv.fanstaticapps.randomticker.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -9,6 +11,7 @@ import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import com.cvv.fanstaticapps.randomticker.R;
@@ -30,6 +33,7 @@ import static com.cvv.fanstaticapps.randomticker.helper.TimerHelper.ONE_SECOND_I
 @Navigator
 public class KlaxonActivity extends BaseActivity {
 
+    private static final int ANIMATION_DURATION = 750;
     private static final String TAG = KlaxonActivity.class.getSimpleName();
 
     @Extra
@@ -37,7 +41,10 @@ public class KlaxonActivity extends BaseActivity {
 
     @BindView(R.id.alarm_bell_icon)
     RichPathView alarmBell;
-
+    @BindView(R.id.root)
+    View root;
+    @BindView(R.id.dismiss_button)
+    View dismissButton;
     @BindView(R.id.pulsator)
     PulsatorLayout pulsatorLayout;
 
@@ -100,13 +107,44 @@ public class KlaxonActivity extends BaseActivity {
             }
         };
         countDownTimer.start();
+        startBellAnimation();
     }
 
     private void timerFinished() {
         timerHelper.cancelNotification(this, preferences);
         playRingtone();
-        startBellAnimation();
-        pulsatorLayout.start();
+        if (!pulsatorLayout.isStarted()) {
+            hideBellAndMoveCancelButton();
+        }
+    }
+
+    private void hideBellAndMoveCancelButton() {
+        bellAnimator.cancel();
+        alarmBell.animate()
+                .alpha(0)
+                .scaleX(0)
+                .scaleY(0)
+                .setDuration(ANIMATION_DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        alarmBell.setVisibility(View.GONE);
+                    }
+                }).start();
+
+        pulsatorLayout.animate()
+                .scaleX(1.5f)
+                .setStartDelay(100)
+                .scaleY(1.5f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        pulsatorLayout.start();
+                    }
+                })
+                .setDuration(ANIMATION_DURATION);
     }
 
     @OnClick(R.id.dismiss_button)

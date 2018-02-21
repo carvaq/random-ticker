@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/klaxon_background"
-    android:padding="@dimen/activityPadding"
+    android:id="@+id/root"
     tools:context="com.cvv.fanstaticapps.randomticker.activities.KlaxonActivity">
 
     <com.richpath.RichPathView
