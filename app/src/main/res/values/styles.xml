@@ -19,6 +19,7 @@
     </style>
 
     <style name="AppTheme.Interval.SeekBar">
+        <item name="android:minWidth">@dimen/minSeekbarWidth</item>
         <item name="android:maxHeight">@dimen/progressbarMaxHeight</item>
         <item name="android:progressDrawable">@drawable/seekbar_progress</item>
         <item name="android:thumb">@drawable/seekbar_thumb</item>

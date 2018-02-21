@@ -2,4 +2,5 @@
 <resources>
     <dimen name="activityPadding">64dp</dimen>
     <dimen name="dismissButtonMinSize">128dp</dimen>
+    <dimen name="minSeekbarWidth">300dp</dimen>
 </resources>

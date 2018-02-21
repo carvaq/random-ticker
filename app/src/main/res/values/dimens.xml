@@ -8,4 +8,5 @@
     <dimen name="progressbarMaxHeight">8dp</dimen>
     <dimen name="thumbHeight">18dp</dimen>
     <dimen name="progressCornerRadius">20dp</dimen>
+    <dimen name="minSeekbarWidth">200dp</dimen>
 </resources>
