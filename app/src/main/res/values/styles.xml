@@ -19,10 +19,15 @@
     </style>
 
     <style name="AppTheme.Interval.SeekBar">
+        <item name="android:maxHeight">@dimen/progressbar_max_height</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
         <item name="android:layout_marginTop">@dimen/widgetMargin</item>
     </style>
 
     <style name="AppTheme.Interval.Unit">
+        <item name="android:paddingStart">@dimen/activityPadding</item>
+        <item name="android:paddingEnd">@dimen/activityPadding</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
         <item name="android:gravity">end</item>
@@ -40,9 +45,9 @@
         <item name="android:layout_marginBottom">@dimen/titleMargin</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

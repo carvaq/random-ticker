@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         style="@style/AppTheme.Interval.Description"
-        android:text="@string/minimum_time"/>
+        android:text="@string/minimum_time" />
 
     <TextView
         android:id="@+id/min_value"
         style="@style/AppTheme.Interval.TimeDisplay"
-        tools:text="10m10s"/>
+        tools:text="10m10s" />
 
     <SeekBar
         android:id="@+id/min_min"
-        style="@style/AppTheme.Interval.SeekBar"/>
+        style="@style/AppTheme.Interval.SeekBar" />
 
     <TextView
         style="@style/AppTheme.Interval.Unit"
-        android:text="@string/minutes"/>
+        android:text="@string/minutes" />
 
     <SeekBar
         android:id="@+id/min_sec"
-        style="@style/AppTheme.Interval.SeekBar"/>
+        style="@style/AppTheme.Interval.SeekBar" />
 
     <TextView
         style="@style/AppTheme.Interval.Unit"
-        android:text="@string/seconds"/>
+        android:text="@string/seconds" />
 
 </LinearLayout>
