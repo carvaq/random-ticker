@@ -5,6 +5,7 @@
     <dimen name="titleMargin">8dp</dimen>
     <dimen name="widgetMargin">24dp</dimen>
     <dimen name="dismissButtonMinSize">80dp</dimen>
-    <dimen name="progressbar_max_height">8dp</dimen>
-    <dimen name="thumb_height">18dp</dimen>
+    <dimen name="progressbarMaxHeight">8dp</dimen>
+    <dimen name="thumbHeight">18dp</dimen>
+    <dimen name="progressCornerRadius">20dp</dimen>
 </resources>

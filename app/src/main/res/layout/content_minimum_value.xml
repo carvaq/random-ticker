@@ -16,7 +16,8 @@
 
     <SeekBar
         android:id="@+id/min_min"
-        style="@style/AppTheme.Interval.SeekBar" />
+        style="@style/AppTheme.Interval.SeekBar"
+        tools:progress="12" />
 
     <TextView
         style="@style/AppTheme.Interval.Unit"
