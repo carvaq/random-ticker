@@ -20,6 +20,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -36,14 +37,14 @@ public class ExistingTimerFlowTest {
                         .getApplicationContext());
         PrefUserSettings prefUserSettings = new PrefUserSettings(sharedPreferences);
         prefUserSettings.setCurrentlyTickerRunning(true);
-        prefUserSettings.setIntervalFinished(System.currentTimeMillis() + 1000);
+        prefUserSettings.setIntervalFinished(System.currentTimeMillis() + 10000);
         activityTestRule.launchActivity(null);
     }
 
     @Test
-    public void testTimerCreationFlow() throws Exception {
+    public void testRunningTimerFlow() throws Exception {
         onView(withId(R.id.pulsator)).check(matches(isDisplayed()));
-        onView(withId(R.id.waiting_icon)).check(matches(isDisplayed()));
+        onView(withId(R.id.waiting_icon)).check(matches(not(isDisplayed())));
     }
 
 }
