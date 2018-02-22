@@ -12,13 +12,12 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.RotateAnimation;
 
 import com.cvv.fanstaticapps.randomticker.R;
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper;
-import com.richpath.RichPath;
-import com.richpath.RichPathView;
-import com.richpathanimator.RichPathAnimator;
 
 import javax.inject.Inject;
 
@@ -39,8 +38,10 @@ public class KlaxonActivity extends BaseActivity {
     @Extra
     boolean timeElapsed;
 
-    @BindView(R.id.alarm_bell_icon)
-    RichPathView alarmBell;
+    @BindView(R.id.waiting_icon)
+    View waitingIcon;
+    @BindView(R.id.timer_hand)
+    View timerHand;
     @BindView(R.id.root)
     View root;
     @BindView(R.id.dismiss_button)
@@ -52,7 +53,7 @@ public class KlaxonActivity extends BaseActivity {
     TimerHelper timerHelper;
 
     private Ringtone playingAlarmSound;
-    private RichPathAnimator bellAnimator;
+    private Animation waitingIconAnimation;
     //timestamp when the timer should ring
     private long intervalFinished;
     private CountDownTimer countDownTimer;
@@ -119,8 +120,8 @@ public class KlaxonActivity extends BaseActivity {
     }
 
     private void hideBellAndMoveCancelButton() {
-        bellAnimator.cancel();
-        alarmBell.animate()
+        waitingIconAnimation.cancel();
+        waitingIcon.animate()
                 .alpha(0)
                 .scaleX(0)
                 .scaleY(0)
@@ -129,7 +130,7 @@ public class KlaxonActivity extends BaseActivity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        alarmBell.setVisibility(View.GONE);
+                        waitingIcon.setVisibility(View.GONE);
                     }
                 }).start();
 
@@ -157,8 +158,8 @@ public class KlaxonActivity extends BaseActivity {
         if (playingAlarmSound != null) {
             playingAlarmSound.stop();
         }
-        if (bellAnimator != null) {
-            bellAnimator.cancel();
+        if (waitingIconAnimation != null) {
+            waitingIconAnimation.cancel();
         }
         if (countDownTimer != null) {
             countDownTimer.cancel();
@@ -166,21 +167,12 @@ public class KlaxonActivity extends BaseActivity {
     }
 
     private void startBellAnimation() {
-        RichPath top = alarmBell.findRichPathByName("top");
-        RichPath bottom = alarmBell.findRichPathByName("bottom");
-
-        bellAnimator = RichPathAnimator.animate(top)
-                .interpolator(new DecelerateInterpolator())
-                .rotation(0, 20, -20, 10, -10, 5, -5, 2, -2, 0)
-                .duration(4000)
-                .andAnimate(bottom)
-                .interpolator(new DecelerateInterpolator())
-                .rotation(0, 10, -10, 5, -5, 2, -2, 0)
-                .startDelay(50)
-                .duration(4000)
-                .repeatMode(RichPathAnimator.RESTART)
-                .repeatCount(RichPathAnimator.INFINITE)
-                .start();
+        waitingIconAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.55f);
+        waitingIconAnimation.setRepeatCount(Animation.INFINITE);
+        waitingIconAnimation.setInterpolator(new CycleInterpolator(1));
+        waitingIconAnimation.setDuration(4000);
+        timerHand.startAnimation(waitingIconAnimation);
     }
 
 

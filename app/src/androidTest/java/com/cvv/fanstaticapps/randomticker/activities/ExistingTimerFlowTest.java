@@ -43,7 +43,7 @@ public class ExistingTimerFlowTest {
     @Test
     public void testTimerCreationFlow() throws Exception {
         onView(withId(R.id.pulsator)).check(matches(isDisplayed()));
-        onView(withId(R.id.alarm_bell_icon)).check(matches(isDisplayed()));
+        onView(withId(R.id.waiting_icon)).check(matches(isDisplayed()));
     }
 
 }

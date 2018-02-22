@@ -71,7 +71,7 @@ public class TimerFlowTest {
         onView(withId(R.id.start)).perform(click());
 
         onView(withId(R.id.pulsator)).check(matches(isDisplayed()));
-        onView(withId(R.id.alarm_bell_icon)).check(matches(isDisplayed()));
+        onView(withId(R.id.waiting_icon)).check(matches(isDisplayed()));
     }
 
     private Matcher<? super View> withProgress(final int expectedProgress) {
