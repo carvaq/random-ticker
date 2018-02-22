@@ -44,10 +44,10 @@ public class TimerFlowTest {
     @Test
     public void testTimerCreationFlow() throws Exception {
 
-        onView(withId(R.id.min_min)).perform(setProgress(1));
+        onView(withId(R.id.min_min)).perform(setProgress(0));
         onView(withId(R.id.min_sec)).perform(setProgress(2));
 
-        onView(withId(R.id.max_min)).perform(setProgress(3));
+        onView(withId(R.id.max_min)).perform(setProgress(1));
         onView(withId(R.id.max_sec)).perform(setProgress(4));
 
 
@@ -61,17 +61,18 @@ public class TimerFlowTest {
         onView(withText(R.string.minimum_time)).check(matches(isDisplayed()));
         onView(withText(R.string.maximum_time)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.min_min)).check(matches(withProgress(1)));
+        onView(withId(R.id.min_min)).check(matches(withProgress(0)));
         onView(withId(R.id.min_sec)).check(matches(withProgress(2)));
-        onView(withId(R.id.max_min)).check(matches(withProgress(3)));
+        onView(withId(R.id.max_min)).check(matches(withProgress(1)));
         onView(withId(R.id.max_sec)).check(matches(withProgress(4)));
 
         device.setOrientationNatural();
 
+        Thread.sleep(100);
+
         onView(withId(R.id.start)).perform(click());
 
         onView(withId(R.id.pulsator)).check(matches(isDisplayed()));
-        onView(withId(R.id.waiting_icon)).check(matches(isDisplayed()));
     }
 
     private Matcher<? super View> withProgress(final int expectedProgress) {
