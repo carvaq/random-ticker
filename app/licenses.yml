@@ -28,6 +28,30 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:cardview-v7:+
+  name: Android Support CardView v7
+  copyrightHolder: Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:design:+
+  name: Android Design Support Library
+  copyrightHolder: Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:recyclerview-v7:+
+  name: Android Support RecyclerView v7
+  copyrightHolder: Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
+- artifact: com.android.support:transition:+
+  name: Android Transition Support Library
+  copyrightHolder: Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://developer.android.com/tools/extras/support-library.html
 - artifact: com.android.support:support-annotations:+
   name: Android Support Library Annotations
   copyrightHolder: Android Open Source Project
@@ -106,14 +130,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://github.com/stephanenicolas/toothpick.git
-- artifact: com.github.tarek360.RichPath:animator:+
-  name: animator
-  copyrightHolder: Tarek360
-  license: The Apache Software License, Version 2.0
-- artifact: com.github.tarek360.RichPath:richpath:+
-  name: richpath
-  copyrightHolder: Tarek360
-  license: The Apache Software License, Version 2.0
 - artifact: com.jakewharton:butterknife-annotations:+
   name: Butterknife Annotations
   copyrightHolder: Jake Wharton
