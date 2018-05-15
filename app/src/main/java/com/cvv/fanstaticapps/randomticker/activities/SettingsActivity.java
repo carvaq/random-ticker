@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
@@ -93,11 +94,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_settings);
         setupActionBar();
         if (savedInstanceState == null) {
             getFragmentManager()
                     .beginTransaction()
-                    .replace(android.R.id.content, new NotificationPreferenceFragment())
+		            .replace(R.id.content, new NotificationPreferenceFragment())
                     .commit();
         }
     }
@@ -106,9 +108,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
+	    Toolbar toolbar = findViewById(R.id.toolbar);
+	    setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            // Show the Up button in the action bar.
+	        // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
