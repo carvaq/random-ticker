@@ -1,87 +1,85 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.cookpad.android.licensetools'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 apply from: 'signing_config.gradle'
 
 def getGitVersionName = { ->
-    String tag = ("git describe --abbrev=0 --tags").execute().text.trim()
-    if (tag.contains('/') && tag.contains('.')) {
-        return tag.substring(tag.indexOf('/') + 1, tag.length())
-    } else {
-        throw new Exception("tag has no slashes or a period [${tag}]")
-    }
+	String tag = ("git describe --abbrev=0 --tags").execute().text.trim()
+	if (tag.contains('/') && tag.contains('.')) {
+		return tag.substring(tag.indexOf('/') + 1, tag.length())
+	} else {
+		throw new Exception("tag has no slashes or a period [${tag}]")
+	}
 }
 
 def parseVersionCode = {
-    String versionName = gitVersionName
-    def versionCodeParts = versionName.tokenize('.')
-    int decimals = Integer.parseInt(versionCodeParts.get(1))
-    String formattedVersionCode = String.format("%s%02d00", versionCodeParts.get(0), decimals)
-    def versionCode = Integer.parseInt(formattedVersionCode)
-    println "Version name: ${versionName}  Version code: ${versionCode}"
-    return versionCode
+	String versionName = gitVersionName
+	def versionCodeParts = versionName.tokenize('.')
+	int decimals = Integer.parseInt(versionCodeParts.get(1))
+	String formattedVersionCode = String.format("%s%02d00", versionCodeParts.get(0), decimals)
+	def versionCode = Integer.parseInt(formattedVersionCode)
+	println "Version name: ${versionName}  Version code: ${versionCode}"
+	return versionCode
 }
 
 ext {
-    gitVersionName = getGitVersionName()
-    gitVersionCode = parseVersionCode(gitVersionName)
+	gitVersionName = getGitVersionName()
+	gitVersionCode = parseVersionCode(gitVersionName)
+}
+
+kapt {
+	generateStubs = false
 }
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
-    defaultConfig {
-        applicationId "com.cvv.fanstaticapps.randomticker"
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode gitVersionCode
-        versionName gitVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [toothpick_registry_package_name: 'com.cvv.fanstaticapps.randomticker']
-            }
-        }
+	compileSdkVersion 'android-P'
+	buildToolsVersion '28.0.0 rc2'
+	defaultConfig {
+		applicationId "com.cvv.fanstaticapps.randomticker"
+		minSdkVersion 21
+		targetSdkVersion 27
+		versionCode gitVersionCode
+		versionName gitVersionName
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+	}
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+			signingConfig signingConfigs.release
+		}
+	}
 
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
+	testOptions {
+		unitTests {
+			includeAndroidResources = true
+		}
+	}
 }
 
+def daggerVersion = '2.11'
+
 dependencies {
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'pl.bclogic:pulsator4droid:1.0.3'
-    implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.1'
-    implementation 'com.github.stephanenicolas.toothpick:smoothie:1.1.1'
-    implementation 'com.github.kobakei.grenade:library:1.1.0'
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-
-    compileOnly 'org.xelevra.libs:prefdata-annotations:2.2'
-
-    annotationProcessor 'org.xelevra.libs:prefdata-processor:2.2'
-    annotationProcessor 'com.github.kobakei.grenade:processor:1.1.0'
-    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.0.8'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-    testImplementation 'org.mockito:mockito-core:2.13.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:3.6.1'
-
-    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+	implementation 'com.google.android.material:material:1.0.0-alpha1'
+	implementation 'androidx.cardview:cardview:1.0.0-alpha1'
+	implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+	implementation 'pl.bclogic:pulsator4droid:1.0.3'
+	implementation 'com.github.kobakei.grenade:library:1.1.0'
+	implementation 'androidx.legacy:legacy-support-v4:1.0.0-alpha1'
+	implementation 'org.xelevra.libs:prefdata-annotations:2.2'
+	implementation "com.google.dagger:dagger:$daggerVersion"
+	implementation "com.google.dagger:dagger-android:$daggerVersion"
+	implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+	kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+	kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+	kapt 'com.github.kobakei.grenade:processor:1.1.0'
+	testImplementation 'org.mockito:mockito-core:2.13.0'
+	testImplementation 'junit:junit:4.12'
+	testImplementation 'org.robolectric:robolectric:3.6.1'
+	androidTestImplementation 'androidx.test.uiautomator:uiautomator-v18:2.2.0-alpha1'
+	androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
 }

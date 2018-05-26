@@ -11,21 +11,21 @@
         style="@style/AppTheme.Interval.Description"/>
 
     <TextView
-        android:id="@+id/max_value"
-        style="@style/AppTheme.Interval.TimeDisplay"
-        tools:text="10m10s"/>
+	    android:id="@+id/maxValue"
+	    style="@style/AppTheme.Interval.TimeDisplay"
+	    tools:text="10m10s"/>
 
     <SeekBar
-        android:id="@+id/max_min"
-        style="@style/AppTheme.Interval.SeekBar"/>
+	    android:id="@+id/maxMin"
+	    style="@style/AppTheme.Interval.SeekBar"/>
 
     <TextView
         style="@style/AppTheme.Interval.Unit"
         android:text="@string/minutes"/>
 
     <SeekBar
-        android:id="@+id/max_sec"
-        style="@style/AppTheme.Interval.SeekBar"/>
+	    android:id="@+id/maxSec"
+	    style="@style/AppTheme.Interval.SeekBar"/>
 
     <TextView
         style="@style/AppTheme.Interval.Unit"

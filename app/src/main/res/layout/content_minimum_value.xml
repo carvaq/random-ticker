@@ -10,22 +10,22 @@
         android:text="@string/minimum_time" />
 
     <TextView
-        android:id="@+id/min_value"
-        style="@style/AppTheme.Interval.TimeDisplay"
-        tools:text="10m10s" />
+	    android:id="@+id/minValue"
+	    style="@style/AppTheme.Interval.TimeDisplay"
+	    tools:text="10m10s" />
 
     <SeekBar
-        android:id="@+id/min_min"
-        style="@style/AppTheme.Interval.SeekBar"
-        tools:progress="12" />
+	    android:id="@+id/minMin"
+	    style="@style/AppTheme.Interval.SeekBar"
+	    tools:progress="12" />
 
     <TextView
         style="@style/AppTheme.Interval.Unit"
         android:text="@string/minutes" />
 
     <SeekBar
-        android:id="@+id/min_sec"
-        style="@style/AppTheme.Interval.SeekBar" />
+	    android:id="@+id/minSec"
+	    style="@style/AppTheme.Interval.SeekBar" />
 
     <TextView
         style="@style/AppTheme.Interval.Unit"
