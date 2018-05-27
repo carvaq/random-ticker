@@ -78,9 +78,11 @@ dependencies {
 	kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 	kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 	kapt 'com.github.kobakei.grenade:processor:1.1.0'
+
 	testImplementation 'org.mockito:mockito-core:2.13.0'
 	testImplementation 'junit:junit:4.12'
 	testImplementation 'org.robolectric:robolectric:3.6.1'
+	testImplementation "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
 
 	androidTestImplementation 'androidx.test.uiautomator:uiautomator-v18:2.2.0-alpha1'
 	androidTestImplementation 'androidx.test:rules:1.1.0-alpha3'
