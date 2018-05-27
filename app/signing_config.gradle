@@ -1,18 +1,12 @@
-def props = new Properties()
-if (file("${project.gradle.gradleUserHomeDir}/gradle.properties").exists()) {
-	file("${project.gradle.gradleUserHomeDir}/gradle.properties").withInputStream { props.load(it) }
-} else {
-	file("../dummy_signing_config_values.properties").withInputStream { props.load(it) }
-}
-
-
 android {
 	signingConfigs {
 		release {
-			keyAlias fanstatic_keyalias
-			keyPassword fanstatic_keypassword
-			storeFile file(fanstatic_file)
-			storePassword fanstatic_storepassword
+			if (project.hasProperty("fanstatic_keyalias")) {
+				keyAlias fanstatic_keyalias
+				keyPassword fanstatic_keypassword
+				storeFile file(fanstatic_file)
+				storePassword fanstatic_storepassword
+			}
 		}
 	}
 }	
