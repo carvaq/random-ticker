@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.cookpad.android.licensetools'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-apply from: 'signing_config.gradle'
+apply from: 'release_config.gradle'
 
 def getGitVersionName = { ->
 	String tag = ("git describe --abbrev=0 --tags").execute().text.trim()

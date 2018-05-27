@@ -2,6 +2,7 @@ android {
 	signingConfigs {
 		release {
 			if (project.hasProperty("fanstatic_keyalias")) {
+				println "Adding release config for production"
 				keyAlias fanstatic_keyalias
 				keyPassword fanstatic_keypassword
 				storeFile file(fanstatic_file)
@@ -9,4 +10,12 @@ android {
 			}
 		}
 	}
-}	
+}
+
+play {
+	if(file("play_store_secret.json").exists()){
+		println "Found play store upload credentials"
+		jsonFile = file('play_store_secret.json')
+		track = 'alpha'
+	}
+}
