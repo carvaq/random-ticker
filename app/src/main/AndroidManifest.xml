@@ -21,12 +21,12 @@
             android:name=".activities.KlaxonActivity"
             android:launchMode="singleTask"/>
 
-        <receiver android:name=".OnAlarmReceive"/>
+	    <receiver android:name=".OnAlarmReceiver"/>
 
         <activity android:name=".activities.CancelActivity"/>
         <activity
-            android:name=".LicenseActivity"
-            android:parentActivityName=".activities.MainActivity">
+	        android:name=".activities.LicenseActivity"
+	        android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cvv.fanstaticapps.randomticker.activities.MainActivity"/>
