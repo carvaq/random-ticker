@@ -4,6 +4,8 @@ apply plugin: 'com.cookpad.android.licensetools'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
 
 apply from: 'release_config.gradle'
 
@@ -73,6 +75,8 @@ dependencies {
 	implementation "com.google.dagger:dagger:$daggerVersion"
 	implementation "com.google.dagger:dagger-android:$daggerVersion"
 	implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+	implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
+	implementation 'com.google.firebase:firebase-crash:16.0.0'
 
 	kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 	kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
