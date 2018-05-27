@@ -15,7 +15,7 @@ import com.cvv.fanstaticapps.randomticker.activities.MainActivity
 import javax.inject.Inject
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 20/09/2017
  * Project: RandomTicker
  */

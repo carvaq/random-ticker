@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 05/02/2018
  * Project: RandomTicker
  */

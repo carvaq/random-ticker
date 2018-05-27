@@ -10,7 +10,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 05/02/2018
  * Project: RandomTicker
  */

@@ -8,7 +8,7 @@ import java.lang.Math.log
 import java.util.*
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 04/02/2018
  * Project: RandomTicker
  */

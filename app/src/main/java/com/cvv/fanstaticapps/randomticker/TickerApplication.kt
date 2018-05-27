@@ -6,7 +6,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 20/09/2017
  * Project: RandomTicker
  */

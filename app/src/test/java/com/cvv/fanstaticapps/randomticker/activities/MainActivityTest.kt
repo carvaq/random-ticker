@@ -13,7 +13,7 @@ import org.robolectric.shadows.ShadowApplication
 import java.util.*
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 05/02/2018
  * Project: RandomTicker
  */

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.android.AndroidInjection
 
 /**
- * Created by Carla
+ * Created by carvaq
  * Date: 20/09/2017
  * Project: RandomTicker
  */
