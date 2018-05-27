@@ -54,6 +54,6 @@ class TimeSeekBarChangeListenerTest {
     private fun setSeekBarValues(minutes: Int, seconds: Int) {
         whenever(seekBarMinutes.progress).thenReturn(minutes)
         whenever(seekBarSeconds.progress).thenReturn(seconds)
-        timeSeekBarChangeListener!!.onProgressChanged(null, 0, true)
+        timeSeekBarChangeListener!!.onProgressChanged(seekBarMinutes, 0, true)
     }
 }

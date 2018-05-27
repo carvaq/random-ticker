@@ -9,12 +9,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.preference.PreferenceManager
+import android.support.annotation.Nullable
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
 import android.view.animation.RotateAnimation
-import androidx.annotation.Nullable
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper.Companion.ONE_SECOND_IN_MILLIS

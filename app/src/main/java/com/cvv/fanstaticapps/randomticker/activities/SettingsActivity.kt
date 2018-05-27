@@ -4,9 +4,9 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.preference.*
+import android.support.v4.app.NavUtils
 import android.text.TextUtils
 import android.view.MenuItem
-import androidx.core.app.NavUtils
 import com.cvv.fanstaticapps.randomticker.R
 import kotlinx.android.synthetic.main.app_bar.*
 

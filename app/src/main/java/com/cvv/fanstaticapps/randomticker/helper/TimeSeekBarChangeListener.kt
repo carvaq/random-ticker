@@ -1,8 +1,8 @@
 package com.cvv.fanstaticapps.randomticker.helper
 
+import android.support.annotation.VisibleForTesting
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.annotation.VisibleForTesting
 import java.lang.Math.exp
 import java.lang.Math.log
 import java.util.*
@@ -35,8 +35,8 @@ class TimeSeekBarChangeListener(private val displayTextView: TextView,
 
     companion object {
 
-        private val MIN_VALUE = 1
-        private val MAX_VALUE = 59
+        private const val MIN_VALUE = 1
+        private const val MAX_VALUE = 59
         private val LOG_MIN_VALUE = log(MIN_VALUE.toDouble())
         private val LOG_MAX_VALUE = log(MAX_VALUE.toDouble())
         private val FACTOR = (LOG_MAX_VALUE - LOG_MIN_VALUE) / (MAX_VALUE - MIN_VALUE)

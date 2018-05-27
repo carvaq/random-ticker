@@ -4,9 +4,9 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
 import android.text.format.DateUtils
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.cvv.fanstaticapps.randomticker.OnAlarmReceiver
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.activities.CancelActivity

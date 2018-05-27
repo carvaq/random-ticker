@@ -1,8 +1,8 @@
 package com.cvv.fanstaticapps.randomticker.activities
 
 import android.app.Activity
+import android.support.annotation.IdRes
 import android.view.View
-import androidx.annotation.IdRes
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric

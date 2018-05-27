@@ -1,11 +1,11 @@
 package com.cvv.fanstaticapps.randomticker
 
+import android.support.test.espresso.UiController
+import android.support.test.espresso.ViewAction
+import android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom
+import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.view.View
 import android.widget.SeekBar
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 

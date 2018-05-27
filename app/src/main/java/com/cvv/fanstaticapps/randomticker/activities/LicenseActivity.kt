@@ -1,8 +1,8 @@
 package com.cvv.fanstaticapps.randomticker.activities
 
 import android.os.Bundle
+import android.support.annotation.Nullable
 import android.view.View
-import androidx.annotation.Nullable
 import com.cvv.fanstaticapps.randomticker.R
 import kotlinx.android.synthetic.main.activity_license.*
 

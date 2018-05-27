@@ -1,10 +1,9 @@
 package com.cvv.fanstaticapps.randomticker.activities
 
 import android.os.Bundle
+import android.support.annotation.StringRes
+import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
-import dagger.android.AndroidInjection
 
 /**
  * Created by carvaq
