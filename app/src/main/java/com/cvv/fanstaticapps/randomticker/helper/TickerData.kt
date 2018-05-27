@@ -2,10 +2,11 @@ package com.cvv.fanstaticapps.randomticker.helper
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 
 class TickerData(context: Context) {
-    private val PREFS_FILENAME = "com.cvv.fanstaticapps.randomticker_preferences"
-    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
+    private val prefs: SharedPreferences = PreferenceManager
+            .getDefaultSharedPreferences(context)
 
     private val MININUM_MINUTES: String = "minimumMinutes"
     private val MININUM_SECONS: String = "minimumSeconds"
