@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="RandomTicker:app [assembleRelease]" type="GradleRunConfiguration" factoryName="Gradle" singleton="true">
+  <configuration default="false" name="Licenses" type="GradleRunConfiguration" factoryName="Gradle" singleton="true">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
@@ -10,7 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="assembleRelease" />
+          <option value="checkLicenses" />
+          <option value="generateLicensePage" />
         </list>
       </option>
       <option name="vmOptions" value="" />
