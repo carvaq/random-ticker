@@ -43,10 +43,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.licenses) {
-            startActivity(Intent(this, LicenseActivity::class.java))
-            return true
-        } else if (item.itemId == R.id.settings) {
+        if (item.itemId == R.id.settings) {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
         return super.onOptionsItemSelected(item)

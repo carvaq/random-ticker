@@ -5,6 +5,7 @@ import com.cvv.fanstaticapps.randomticker.activities.KlaxonActivity
 import com.cvv.fanstaticapps.randomticker.activities.LicenseActivity
 import com.cvv.fanstaticapps.randomticker.activities.MainActivity
 import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
 
 /**

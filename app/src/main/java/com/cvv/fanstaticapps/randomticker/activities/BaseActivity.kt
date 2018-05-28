@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import dagger.android.AndroidInjection
 
 /**
  * Created by carvaq

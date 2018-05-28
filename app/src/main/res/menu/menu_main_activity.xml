@@ -6,8 +6,4 @@
         android:icon="@drawable/ic_settings"
         android:title="@string/title_activity_settings"
         app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/licenses"
-        android:title="@string/license"
-        app:showAsAction="never"/>
 </menu>
