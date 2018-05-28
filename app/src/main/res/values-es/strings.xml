@@ -13,5 +13,6 @@
     <string name="pref_ringtone_silent">Silencioso</string>
 	<string name="from">Desde</string>
 	<string name="random_timer_introduction">Define el período en el que quieres que suene tu alarma aleatoriamente.</string>
+	<string name="show_elapsed_time">Mostrar el tiempo transcurrido</string>
 
 </resources>

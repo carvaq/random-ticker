@@ -13,5 +13,6 @@
     <string name="pref_title_ringtone">Tono de chamada</string>
     <string name="pref_ringtone_silent">Silencioso</string>
 	<string name="random_timer_introduction">Define o período no que queres que soe a túa alarma aleatoriamente.</string>
+	<string name="show_elapsed_time">Mostrar o tiempo transcurrido</string>
 
 </resources>

@@ -23,9 +23,8 @@ import javax.inject.Inject
 class TimerHelper @Inject constructor() {
 
     fun createNotificationAndAlarm(context: Context, tickerData: TickerData) {
-        val interval = tickerData.interval
         val intervalFinished = tickerData.intervalFinished
-        showNotification(context, interval, intervalFinished)
+        showNotification(context, tickerData)
 
         val timerRefreshRunnable = object : Runnable {
             override fun run() {
@@ -33,7 +32,7 @@ class TimerHelper @Inject constructor() {
                     HANDLER.removeCallbacks(this)
                     return
                 }
-                showNotification(context, interval, intervalFinished)
+                showNotification(context, tickerData)
                 HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS)
             }
         }
@@ -42,8 +41,8 @@ class TimerHelper @Inject constructor() {
         setAlarm(context, intervalFinished)
     }
 
-    private fun showNotification(context: Context, interval: Long, intervalFinished: Long) {
-        val notification = buildNotification(context, interval, intervalFinished)
+    private fun showNotification(context: Context, tickerData: TickerData) {
+        val notification = buildNotification(context, tickerData)
 
         val notificationManager = NotificationManagerCompat.from(context)
         createNotificationChannel(context)
@@ -51,7 +50,9 @@ class TimerHelper @Inject constructor() {
     }
 
 
-    private fun buildNotification(context: Context, interval: Long, intervalFinished: Long): Notification {
+    private fun buildNotification(context: Context, tickerData: TickerData): Notification {
+        val interval = tickerData.interval
+        val intervalFinished = tickerData.intervalFinished
         val alarmPendingIntent = PendingIntent.getActivity(context, 0, KlaxonActivityNavigator(false).build(context), 0)
         val cancelPendingIntent = PendingIntent.getActivity(context, 0, Intent(context, CancelActivity::class.java), 0)
         val cancelAction = NotificationCompat.Action(R.drawable.ic_action_stop_timer,
@@ -72,7 +73,7 @@ class TimerHelper @Inject constructor() {
         return builder.build()
     }
 
-    private fun getFormattedElapsedMilliseconds(elapsedMilliseconds: Long): String {
+    fun getFormattedElapsedMilliseconds(elapsedMilliseconds: Long): String {
         return DateUtils.formatElapsedTime(elapsedMilliseconds / ONE_SECOND_IN_MILLIS)
     }
 

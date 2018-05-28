@@ -12,6 +12,7 @@ import android.preference.PreferenceManager
 import android.support.annotation.Nullable
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
 import android.view.animation.RotateAnimation
@@ -22,6 +23,7 @@ import com.cvv.fanstaticapps.randomticker.prefs
 import io.github.kobakei.grenade.annotation.Extra
 import io.github.kobakei.grenade.annotation.Navigator
 import kotlinx.android.synthetic.main.activity_klaxon.*
+import java.lang.Math.abs
 import javax.inject.Inject
 
 @Navigator
@@ -44,6 +46,7 @@ class KlaxonActivity : BaseActivity() {
     //timestamp when the timer should ring
     private var intervalFinished: Long = 0
     private var countDownTimer: CountDownTimer? = null
+    private var showElapsedTime: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,7 @@ class KlaxonActivity : BaseActivity() {
             timerFinished()
         } else {
             startCountDownTimer()
+            elapsedTime.setOnClickListener({ showElapsedTime = true })
         }
     }
 
@@ -84,7 +88,12 @@ class KlaxonActivity : BaseActivity() {
     private fun startCountDownTimer() {
         countDownTimer = object : CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
             override fun onTick(millisUntilFinished: Long) {
-                //nothing to do
+                if (showElapsedTime) {
+                    val millisSinceStarted = abs(intervalFinished - System.currentTimeMillis() - prefs.interval)
+                    val elapsedMillis = timerHelper
+                            .getFormattedElapsedMilliseconds(millisSinceStarted)
+                    elapsedTime.text = elapsedMillis
+                }
             }
 
             override fun onFinish() {
@@ -107,6 +116,7 @@ class KlaxonActivity : BaseActivity() {
 
     private fun hideBellAndMoveCancelButton() {
         waitingIconAnimation?.cancel()
+        elapsedTime.visibility = GONE
         waitingIcon.animate()
                 .alpha(0f)
                 .scaleX(0f)

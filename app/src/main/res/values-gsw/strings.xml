@@ -13,5 +13,6 @@
     <string name="pref_title_ringtone">Alarmton</string>
     <string name="pref_ringtone_silent">Lieslig</string>
 	<string name="random_timer_introduction">Definier en Zeitraum, idem en Alarm zuefällig lute wird.</string>
+	<string name="show_elapsed_time">Zeig verstricheni Zyt</string>
 
 </resources>
