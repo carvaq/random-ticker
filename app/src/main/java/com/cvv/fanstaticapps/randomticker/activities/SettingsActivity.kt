@@ -40,7 +40,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
      */
     private fun setupActionBar() {
         setSupportActionBar(toolbar)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onMenuItemSelected(featureId: Int, item: MenuItem): Boolean {
@@ -69,7 +69,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     class NotificationPreferenceFragment : PreferenceFragment() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_notification)
+            addPreferencesFromResource(R.xml.pref_general)
             setHasOptionsMenu(true)
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
