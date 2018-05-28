@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.helper.IntegerUtil.Companion.getIntegerFromCharSequence
@@ -58,6 +59,12 @@ class MainActivity : BaseActivity() {
         prepareValueSelectionView(maxMin, prefs.maxMin, MaxValueTextWatcher(maxMin, 240))
         prepareValueSelectionView(maxSec, prefs.maxSec, MaxValueTextWatcher(maxSec, 59))
 
+        maxSec.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> createTimer()
+            }
+            true
+        }
         start.setOnClickListener({ createTimer() })
     }
 
