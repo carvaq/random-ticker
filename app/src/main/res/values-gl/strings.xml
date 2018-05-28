@@ -12,6 +12,6 @@
     <string name="title_activity_settings">Axustes</string>
     <string name="pref_title_ringtone">Tono de chamada</string>
     <string name="pref_ringtone_silent">Silencioso</string>
-	<string name="random_timer_introduction">" Define intervalo"</string>
+	<string name="random_timer_introduction">Define o período no que queres que soe a túa alarma aleatoriamente.</string>
 
 </resources>

@@ -10,12 +10,15 @@
       </option>
       <option name="taskNames">
         <list>
+          <option value="clean" />
+          <option value="cleanBuildCache" />
           <option value="assembleRelease" />
           <option value="publishApkRelease" />
         </list>
       </option>
       <option name="vmOptions" value="" />
     </ExternalSystemSettings>
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <method />
   </configuration>
 </component>
