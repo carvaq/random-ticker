@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
 import com.cvv.fanstaticapps.randomticker.R
-import com.cvv.fanstaticapps.randomticker.helper.TimeSeekBarChangeListener
+import com.cvv.fanstaticapps.randomticker.helper.MaxValueTextWatcher
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNull
 import org.junit.Test
@@ -65,7 +65,7 @@ class MainActivityTest : RobolectricBaseTest<MainActivity>(MainActivity::class.j
     }
 
     private fun formatExpectedValue(minutes: Int, seconds: Int): String {
-        return String.format(Locale.getDefault(), TimeSeekBarChangeListener.TIME_FORMAT, minutes, seconds)
+        return String.format(Locale.getDefault(), MaxValueTextWatcher.TIME_FORMAT, minutes, seconds)
     }
 
 }

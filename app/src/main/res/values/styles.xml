@@ -1,54 +1,54 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
 
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginTop">@dimen/sectionMargin</item>
-    </style>
+	<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_marginTop">@dimen/sectionMargin</item>
+	</style>
 
-    <style name="AppTheme.Interval">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
+	<style name="AppTheme.Interval">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+	</style>
 
-    <style name="AppTheme.Interval.SeekBar">
-        <item name="android:minWidth">@dimen/minSeekbarWidth</item>
-        <item name="android:maxHeight">@dimen/progressbarMaxHeight</item>
-        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
-        <item name="android:thumb">@drawable/seekbar_thumb</item>
-        <item name="android:layout_marginTop">@dimen/widgetMargin</item>
-    </style>
+	<style name="AppTheme.Interval.EditTextContainer">
+		<item name="android:paddingStart">@dimen/editTextPadding</item>
+		<item name="android:paddingEnd">@dimen/editTextPadding</item>
+		<item name="android:gravity">center_horizontal</item>
+	</style>
 
-    <style name="AppTheme.Interval.Unit">
-        <item name="android:paddingStart">@dimen/activityPadding</item>
-        <item name="android:paddingEnd">@dimen/activityPadding</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
-        <item name="android:gravity">end</item>
-    </style>
+	<style name="AppTheme.Interval.EditText">
+		<item name="android:fontFamily">monospace</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
+		<item name="android:digits">0123456789"</item>
+		<item name="android:selectAllOnFocus">true</item>
+		<item name="android:minWidth">100dp</item>
+		<item name="android:inputType">number</item>
+		<item name="android:imeOptions">actionNext</item>
+	</style>
 
-    <style name="AppTheme.Interval.TimeDisplay">
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:fontFamily">monospace</item>
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
-    </style>
+	<style name="AppTheme.Interval.Label">
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:layout_marginStart">@dimen/activityPadding</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium</item>
+	</style>
 
+	<style name="AppTheme.Interval.Description">
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+	</style>
 
-    <style name="AppTheme.Interval.Description">
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
-        <item name="android:layout_marginBottom">@dimen/titleMargin</item>
-    </style>
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

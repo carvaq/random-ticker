@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="maximum_time">Intervalo de tempo máximo</string>
-    <string name="minimum_time">Intervalo de tempo minimo posible</string>
+	<string name="from">Desde</string>
+	<string name="to">Ata</string>
     <string name="start_button">Comenzar</string>
     <string name="error_min_is_bigger_than_max">Non! O valor máximo debe ser maior que o mínimo</string>
     <string name="notification_title">%s en marcha! </string>
@@ -12,5 +12,6 @@
     <string name="title_activity_settings">Axustes</string>
     <string name="pref_title_ringtone">Tono de chamada</string>
     <string name="pref_ringtone_silent">Silencioso</string>
+	<string name="random_timer_introduction">" Define intervalo"</string>
 
 </resources>

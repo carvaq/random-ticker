@@ -3,4 +3,6 @@
     <string name="license" translatable="false">Open Source Licenses</string>
     <string name="pref_ringtone" translatable="false">pref_ringtone</string>
     <string name="pref_license" translatable="false">pref_license</string>
+	<string name="default_minutes_maximum">0</string>
+	<string name="default_seconds">0</string>
 </resources>

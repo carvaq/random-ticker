@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/activity_main">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:baselineAligned="false">
+	<TextView
+		style="@style/AppTheme.Interval.Description"
+		android:text="@string/random_timer_introduction"/>
 
-        <include
-            layout="@layout/content_minimum_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/sectionMargin"
-            android:layout_weight="1"/>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="@dimen/contentPadding"
+		android:baselineAligned="false">
 
-        <include
-            layout="@layout/content_maximum_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/sectionMargin"
-            android:layout_weight="1"/>
+		<include
+			layout="@layout/content_minimum_value"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"/>
 
-    </LinearLayout>
+		<include
+			layout="@layout/content_maximum_value"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"/>
+	</LinearLayout>
 
-    <Button
-        android:id="@+id/start"
-        style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
-        android:layout_gravity="end"
-        android:text="@string/start_button"/>
+	<Button
+		android:id="@+id/start"
+		style="@style/AppTheme.Button"
+		android:layout_marginTop="@dimen/contentPadding"
+		android:layout_width="wrap_content"
+		android:layout_gravity="end"
+		android:text="@string/start_button"/>
 </merge>

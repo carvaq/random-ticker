@@ -49,13 +49,13 @@ class TimerFlowTest {
 
         val device = UiDevice.getInstance(getInstrumentation())
 
-        onView(withText(R.string.minimum_time)).check(matches(isDisplayed()))
-        onView(withText(R.string.maximum_time)).check(matches(isDisplayed()))
+        onView(withText(R.string.to)).check(matches(isDisplayed()))
+        onView(withText(R.string.from)).check(matches(isDisplayed()))
 
         device.setOrientationRight()
 
-        onView(withText(R.string.minimum_time)).check(matches(isDisplayed()))
-        onView(withText(R.string.maximum_time)).check(matches(isDisplayed()))
+        onView(withText(R.string.to)).check(matches(isDisplayed()))
+        onView(withText(R.string.from)).check(matches(isDisplayed()))
 
         onView(withId(R.id.minMin)).check(matches(withProgress(0)))
         onView(withId(R.id.minSec)).check(matches(withProgress(2)))

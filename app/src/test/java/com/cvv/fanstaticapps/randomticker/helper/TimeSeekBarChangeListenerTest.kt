@@ -32,11 +32,11 @@ class TimeSeekBarChangeListenerTest {
     @Mock
     private val displayTextView: TextView = mock()
 
-    private var timeSeekBarChangeListener: TimeSeekBarChangeListener? = null
+    private var timeSeekBarChangeListener: MaxValueTextWatcher? = null
 
     @Before
     fun setUp() {
-        timeSeekBarChangeListener = TimeSeekBarChangeListener(displayTextView, seekBarMinutes, seekBarSeconds)
+        timeSeekBarChangeListener = MaxValueTextWatcher(displayTextView, seekBarMinutes, seekBarSeconds)
     }
 
     @Test

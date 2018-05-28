@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SeekBar
+import android.widget.TextView
 import com.cvv.fanstaticapps.randomticker.R
-import com.cvv.fanstaticapps.randomticker.helper.TimeSeekBarChangeListener
+import com.cvv.fanstaticapps.randomticker.helper.IntegerUtil.Companion.getIntegerFromCharSequence
+import com.cvv.fanstaticapps.randomticker.helper.MaxValueTextWatcher
+import com.cvv.fanstaticapps.randomticker.helper.MinValueVerification
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
 import com.cvv.fanstaticapps.randomticker.prefs
 import kotlinx.android.synthetic.main.app_bar.*
@@ -22,8 +24,6 @@ class MainActivity : BaseActivity() {
     lateinit var timerHelper: TimerHelper
 
     private val randomGenerator = Random(System.currentTimeMillis())
-    private var minValuesSeekBarListener: TimeSeekBarChangeListener? = null
-    private var maxValuesSeekBarListener: TimeSeekBarChangeListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,27 +53,21 @@ class MainActivity : BaseActivity() {
     private fun prepareView() {
         setSupportActionBar(toolbar)
 
-
-        minValuesSeekBarListener = TimeSeekBarChangeListener(minValue, minMin, minSec)
-        maxValuesSeekBarListener = TimeSeekBarChangeListener(maxValue, maxMin, maxSec)
-
-        prepareValueSelectionView(minMin, prefs.minMin, minValuesSeekBarListener!!)
-        prepareValueSelectionView(minSec, prefs.minSec, minValuesSeekBarListener!!)
-        prepareValueSelectionView(maxMin, prefs.maxMin, maxValuesSeekBarListener!!)
-        prepareValueSelectionView(maxSec, prefs.maxSec, maxValuesSeekBarListener!!)
+        prepareValueSelectionView(minMin, prefs.minMin, MaxValueTextWatcher(minMin, 240))
+        prepareValueSelectionView(minSec, prefs.minSec, MaxValueTextWatcher(minSec, 59))
+        prepareValueSelectionView(maxMin, prefs.maxMin, MaxValueTextWatcher(maxMin, 240))
+        prepareValueSelectionView(maxSec, prefs.maxSec, MaxValueTextWatcher(maxSec, 59))
 
         start.setOnClickListener({ createTimer() })
     }
 
-    private fun prepareValueSelectionView(seekBar: SeekBar, startValue: Int,
-                                          seekBarChangeListener: TimeSeekBarChangeListener) {
-        seekBar.setOnSeekBarChangeListener(seekBarChangeListener)
-        seekBar.max = 59
-
-        //This is for the configuration change case
-        if (seekBar.progress == 0) {
-            seekBar.progress = startValue
+    private fun prepareValueSelectionView(view: TextView, startValue: Int,
+                                          listener: MaxValueTextWatcher) {
+        if (view.text.isNullOrBlank()) {
+            view.text = startValue.toString()
         }
+        view.addTextChangedListener(listener)
+        view.onFocusChangeListener = MinValueVerification()
     }
 
     private fun startAlarmActivity() {
@@ -82,8 +76,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun createTimer() {
-        val min = getTotalValueInMillis(minValuesSeekBarListener!!)
-        val max = getTotalValueInMillis(maxValuesSeekBarListener!!)
+        val min = getTotalValueInMillis(minMin, minSec)
+        val max = getTotalValueInMillis(maxMin, maxSec)
         if (max > min) {
             val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
             val intervalFinished = System.currentTimeMillis() + interval
@@ -95,15 +89,15 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun getTotalValueInMillis(seekBarChangeListener: TimeSeekBarChangeListener): Int {
-        return (60 * seekBarChangeListener.minutes + seekBarChangeListener.seconds) * 1000
+    private fun getTotalValueInMillis(minutes: TextView, seconds: TextView): Int {
+        return (60 * getIntegerFromCharSequence(minutes.text) + getIntegerFromCharSequence(seconds.text)) * 1000
     }
 
     private fun saveToPreferences(interval: Long, intervalFinished: Long) {
-        prefs.maxMin = maxMin!!.progress
-        prefs.minMin = minMin!!.progress
-        prefs.maxSec = maxSec!!.progress
-        prefs.minSec = minSec!!.progress
+        prefs.maxMin = getIntegerFromCharSequence(maxMin.text)
+        prefs.minMin = getIntegerFromCharSequence(minMin.text)
+        prefs.maxSec = getIntegerFromCharSequence(maxSec.text)
+        prefs.minSec = getIntegerFromCharSequence(minSec.text)
         prefs.currentlyTickerRunning = true
         prefs.interval = interval
         prefs.intervalFinished = intervalFinished
