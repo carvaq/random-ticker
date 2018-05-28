@@ -16,7 +16,18 @@
   license: The MIT License (MIT)
   licenseUrl: https://raw.githubusercontent.com/booncol/Pulsator4Droid/master/LICENSE
   url: https://github.com/booncol/Pulsator4Droid
-
+- artifact: com.android.support.constraint:constraint-layout:+
+  name: Android ConstraintLayout
+  copyrightHolder: Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://tools.android.com
+- artifact: com.android.support.constraint:constraint-layout-solver:+
+  name: Android ConstraintLayout Solver
+  copyrightHolder: Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://tools.android.com
 - artifact: com.android.support:support-core-utils:+
   name: Android Support Library core utils
   copyrightHolder: Android Open Source Project

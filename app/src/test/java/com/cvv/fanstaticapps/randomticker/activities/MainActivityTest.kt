@@ -2,15 +2,12 @@ package com.cvv.fanstaticapps.randomticker.activities
 
 import android.content.Intent
 import android.view.View
-import android.widget.SeekBar
 import android.widget.TextView
 import com.cvv.fanstaticapps.randomticker.R
-import com.cvv.fanstaticapps.randomticker.helper.MaxValueTextWatcher
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNull
 import org.junit.Test
 import org.robolectric.shadows.ShadowApplication
-import java.util.*
 
 /**
  * Created by carvaq
@@ -20,8 +17,8 @@ import java.util.*
 class MainActivityTest : RobolectricBaseTest<MainActivity>(MainActivity::class.java) {
 
     @Test
-    fun testTimer_NotCreatedWithMinBiggerThanMax() {
-        setSeekBarValues(11, 4, 0, 0)
+    fun `max values are smaller than min values`() {
+        setValues(11, 4, 0, 0)
 
         clickStartButton()
 
@@ -30,8 +27,14 @@ class MainActivityTest : RobolectricBaseTest<MainActivity>(MainActivity::class.j
     }
 
     @Test
-    fun testTimer_CreatedWithMinSmallerThanMax() {
-        setSeekBarValues(2, 3, 10, 59)
+    fun `max values are bigger than min values and don't overflow`() {
+        setValues(2, 3, 480, 450)
+
+        val maxMinTextView = getView<TextView>(R.id.maxMin)
+        val maxSecTextView = getView<TextView>(R.id.maxSec)
+
+        assertEquals("240", maxMinTextView.text.toString())
+        assertEquals("59", maxSecTextView.text.toString())
 
         clickStartButton()
 
@@ -45,27 +48,16 @@ class MainActivityTest : RobolectricBaseTest<MainActivity>(MainActivity::class.j
         getView<View>(R.id.start).performClick()
     }
 
-    private fun setSeekBarValues(minMinutes: Int, minSeconds: Int, maxMinutes: Int, maxSeconds: Int) {
-        val minMinSeekBar = getView<SeekBar>(R.id.minMin)
-        val minSecSeekBar = getView<SeekBar>(R.id.minSec)
-        val maxMinSeekBar = getView<SeekBar>(R.id.maxMin)
-        val maxSecSeekBar = getView<SeekBar>(R.id.maxSec)
-        maxMinSeekBar.progress = maxMinutes
-        maxSecSeekBar.progress = maxSeconds
-        minMinSeekBar.progress = minMinutes
-        minSecSeekBar.progress = minSeconds
+    private fun setValues(minMinutes: Int, minSeconds: Int, maxMinutes: Int, maxSeconds: Int) {
+        val minMinTextView = getView<TextView>(R.id.minMin)
+        val minSecTextView = getView<TextView>(R.id.minSec)
+        val maxMinTextView = getView<TextView>(R.id.maxMin)
+        val maxSecTextView = getView<TextView>(R.id.maxSec)
+        minMinTextView.text = minMinutes.toString()
+        minSecTextView.text = minSeconds.toString()
+        maxMinTextView.text = maxMinutes.toString()
+        maxSecTextView.text = maxSeconds.toString()
 
-        val minDisplayText = getView<TextView>(R.id.minValue)
-        val maxDisplayText = getView<TextView>(R.id.maxValue)
-        val expectedMinValue = formatExpectedValue(minMinutes, minSeconds)
-        val expectedMaxValue = formatExpectedValue(maxMinutes, maxSeconds)
-
-        assertEquals(expectedMinValue, minDisplayText.text.toString())
-        assertEquals(expectedMaxValue, maxDisplayText.text.toString())
-    }
-
-    private fun formatExpectedValue(minutes: Int, seconds: Int): String {
-        return String.format(Locale.getDefault(), MaxValueTextWatcher.TIME_FORMAT, minutes, seconds)
     }
 
 }
