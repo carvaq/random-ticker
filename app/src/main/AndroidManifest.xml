@@ -26,10 +26,10 @@
         <activity android:name=".activities.CancelActivity"/>
         <activity
 	        android:name=".activities.LicenseActivity"
-	        android:parentActivityName=".activities.MainActivity">
+	        android:parentActivityName=".activities.SettingsActivity">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.cvv.fanstaticapps.randomticker.activities.MainActivity"/>
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value="com.cvv.fanstaticapps.randomticker.activities.SettingsActivity"/>
         </activity>
         <activity
             android:name=".activities.SettingsActivity"

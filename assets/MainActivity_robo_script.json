@@ -1,0 +1,1214 @@
+[
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588345856,
+	"actionCode": -1,
+	"delayTime": 60000,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588350210,
+	"replacementText": "0",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minMin",
+		"contentDescription": "",
+		"text": "0"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "VIEW_TEXT_CHANGED",
+	"timestamp": 1527588353941,
+	"replacementText": "1",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minMin",
+		"contentDescription": "",
+		"text": "0"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588358867,
+	"actionCode": -1,
+	"delayTime": 60000,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_TEXT_CHANGED",
+	"timestamp": 1527588366734,
+	"replacementText": "10",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minMin",
+		"contentDescription": "",
+		"text": "1"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_EDITOR_ACTION",
+	"timestamp": 1527588370844,
+	"replacementText": "10",
+	"actionCode": 5,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minMin",
+		"contentDescription": "",
+		"text": "10"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "VIEW_TEXT_CHANGED",
+	"timestamp": 1527588377178,
+	"replacementText": "70",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minSec",
+		"contentDescription": "",
+		"text": "0"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 2,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_EDITOR_ACTION",
+	"timestamp": 1527588385077,
+	"replacementText": "59",
+	"actionCode": 5,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minSec",
+		"contentDescription": "",
+		"text": "59"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 2,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_EDITOR_ACTION",
+	"timestamp": 1527588393625,
+	"replacementText": "5",
+	"actionCode": 5,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/maxMin",
+		"contentDescription": "",
+		"text": "5"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_EDITOR_ACTION",
+	"timestamp": 1527588395781,
+	"replacementText": "0",
+	"actionCode": 6,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/maxSec",
+		"contentDescription": "",
+		"text": "0"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 2,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_BACK",
+	"timestamp": 1527588400189,
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588403157,
+	"replacementText": "10",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minMin",
+		"contentDescription": "",
+		"text": "10"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588404578,
+	"actionCode": -1,
+	"delayTime": 50,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_TEXT_CHANGED",
+	"timestamp": 1527588406226,
+	"replacementText": "1",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/minMin",
+		"contentDescription": "",
+		"text": "10"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588409779,
+	"replacementText": "5",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/maxMin",
+		"contentDescription": "",
+		"text": "5"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588411037,
+	"actionCode": -1,
+	"delayTime": 50,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_TEXT_CHANGED",
+	"timestamp": 1527588413747,
+	"replacementText": "2",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/maxMin",
+		"contentDescription": "",
+		"text": "5"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_BACK",
+	"timestamp": 1527588418538,
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588422668,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.view.menu.ActionMenuItemView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/settings",
+		"contentDescription": "Settings",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.ActionMenuView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.Toolbar",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/toolbar",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588424004,
+	"actionCode": -1,
+	"delayTime": 3521505,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "LIST_ITEM_CLICKED",
+	"timestamp": 1527588427246,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": 1,
+		"groupViewChildPosition": -1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.ListView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list_container",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588428700,
+	"actionCode": -1,
+	"delayTime": 3595788,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588435001,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatImageButton",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "Navigate up",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.Toolbar",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/toolbar",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.AppBarLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588435987,
+	"actionCode": -1,
+	"delayTime": 3593398,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588439189,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.view.menu.ActionMenuItemView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/settings",
+		"contentDescription": "Settings",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.ActionMenuView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.Toolbar",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/toolbar",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588440483,
+	"actionCode": -1,
+	"delayTime": 3595701,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "LIST_ITEM_CLICKED",
+	"timestamp": 1527588443341,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": 0,
+		"groupViewChildPosition": -1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.ListView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list_container",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588444801,
+	"actionCode": -1,
+	"delayTime": 3596038,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "LIST_ITEM_CLICKED",
+	"timestamp": 1527588455979,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": 0,
+		"groupViewChildPosition": -1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.ListView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list_container",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588457464,
+	"actionCode": -1,
+	"delayTime": 3596557,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "LIST_ITEM_CLICKED",
+	"timestamp": 1527588464343,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": 0,
+		"groupViewChildPosition": -1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.ListView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "android:id/list_container",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588465763,
+	"actionCode": -1,
+	"delayTime": 3596433,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588474086,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatImageButton",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "Navigate up",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.Toolbar",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/toolbar",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.AppBarLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588475157,
+	"actionCode": -1,
+	"delayTime": 3596448,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_TEXT_CHANGED",
+	"timestamp": 1527588479293,
+	"replacementText": "1",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.design.widget.TextInputEditText",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/maxMin",
+		"contentDescription": "",
+		"text": "5"
+	  },
+	  {
+		"className": "android.widget.FrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.design.widget.TextInputLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/textInputLayout2",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "PRESSED_BACK",
+	"timestamp": 1527588483102,
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588484631,
+	"replacementText": "Start",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatButton",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 3,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/start",
+		"contentDescription": "",
+		"text": "Start"
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v4.widget.NestedScrollView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588485860,
+	"actionCode": -1,
+	"delayTime": 3597957,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588491769,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatImageView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 4,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/dismissButton",
+		"contentDescription": "Cancel",
+		"text": ""
+	  },
+	  {
+		"className": "pl.bclogic.pulsator4droid.library.PulsatorLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 2,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/pulsator",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/root",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588492803,
+	"actionCode": -1,
+	"delayTime": 3595440,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588495229,
+	"replacementText": "Start",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatButton",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 3,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/start",
+		"contentDescription": "",
+		"text": "Start"
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v4.widget.NestedScrollView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588496444,
+	"actionCode": -1,
+	"delayTime": 3596474,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588498195,
+	"replacementText": "Show elapsed time",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatTextView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/elapsedTime",
+		"contentDescription": "",
+		"text": "Show elapsed time"
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/root",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v7.widget.ContentFrameLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "android:id/content",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588499481,
+	"actionCode": -1,
+	"delayTime": 1000,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588502059,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatImageView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 4,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/dismissButton",
+		"contentDescription": "Cancel",
+		"text": ""
+	  },
+	  {
+		"className": "pl.bclogic.pulsator4droid.library.PulsatorLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 2,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/pulsator",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/root",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588503112,
+	"actionCode": -1,
+	"delayTime": 3593556,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588505055,
+	"replacementText": "Start",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatButton",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 3,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/start",
+		"contentDescription": "",
+		"text": "Start"
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.support.v4.widget.NestedScrollView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 1,
+		"resourceId": "",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588506248,
+	"actionCode": -1,
+	"delayTime": 3597078,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  },
+  {
+	"eventType": "VIEW_CLICKED",
+	"timestamp": 1527588516315,
+	"replacementText": "",
+	"actionCode": -1,
+	"delayTime": 0,
+	"canScrollTo": false,
+	"elementDescriptors": [
+	  {
+		"className": "android.support.v7.widget.AppCompatImageView",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 4,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/dismissButton",
+		"contentDescription": "Cancel",
+		"text": ""
+	  },
+	  {
+		"className": "pl.bclogic.pulsator4droid.library.PulsatorLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 2,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/pulsator",
+		"contentDescription": "",
+		"text": ""
+	  },
+	  {
+		"className": "android.widget.LinearLayout",
+		"recyclerViewChildPosition": -1,
+		"adapterViewChildPosition": -1,
+		"groupViewChildPosition": 0,
+		"resourceId": "com.cvv.fanstaticapps.randomticker:id/root",
+		"contentDescription": "",
+		"text": ""
+	  }
+	]
+  },
+  {
+	"eventType": "DELAYED_MESSAGE_POSTED",
+	"timestamp": 1527588517403,
+	"actionCode": -1,
+	"delayTime": 3597277,
+	"canScrollTo": false,
+	"elementDescriptors": []
+  }
+]
