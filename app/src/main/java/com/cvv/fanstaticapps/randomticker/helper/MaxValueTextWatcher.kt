@@ -10,7 +10,7 @@ import android.widget.EditText
  * Project: RandomTicker
  */
 
-class MaxValueTextWatcher(private val editText: EditText, val maxValue: Int) : TextWatcher {
+class MaxValueTextWatcher(private val editText: EditText, private val maxValue: Int) : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
     }
 
@@ -18,8 +18,9 @@ class MaxValueTextWatcher(private val editText: EditText, val maxValue: Int) : T
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (!s.isNullOrEmpty()) {
-            val interval = Integer.parseInt(s.toString())
+        val text = editText.text
+        if (!text.isNullOrEmpty()) {
+            val interval = text.toString().toInt()
             if (interval >= maxValue) {
                 editText.removeTextChangedListener(this)
                 editText.setText(maxValue.toString())

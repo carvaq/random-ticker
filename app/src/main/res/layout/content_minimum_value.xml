@@ -7,9 +7,9 @@
 	android:layout_height="wrap_content">
 
 	<android.support.constraint.ConstraintLayout
-		android:padding="@dimen/contentPadding"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:padding="@dimen/contentPadding">
 
 		<TextView
 			android:id="@+id/textView"
@@ -36,6 +36,7 @@
 				android:id="@+id/minMin"
 				style="@style/AppTheme.Interval.EditText"
 				android:hint="@string/minutes"
+				android:maxLength="3"
 				tools:text="399"/>
 		</android.support.design.widget.TextInputLayout>
 
@@ -58,6 +59,7 @@
 				android:id="@+id/minSec"
 				style="@style/AppTheme.Interval.EditText"
 				android:hint="@string/seconds"
+				android:maxLength="2"
 				tools:text="1"/>
 		</android.support.design.widget.TextInputLayout>
 
