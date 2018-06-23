@@ -12,55 +12,55 @@
 		android:padding="@dimen/contentPadding">
 
 		<TextView
-			android:id="@+id/textView"
-			style="@style/AppTheme.Interval.Label"
-			android:text="@string/from"/>
+				android:id="@+id/textView"
+				style="@style/AppTheme.Label"
+				android:text="@string/from"/>
 
 		<android.support.design.widget.TextInputLayout
-			android:id="@+id/textInputLayout2"
-			style="@style/AppTheme.Interval.EditTextContainer"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:layout_marginBottom="8dp"
-			android:layout_marginEnd="8dp"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
-			app:layout_constraintHorizontal_bias="0.5"
-			app:layout_constraintHorizontal_chainStyle="spread"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/textView">
+				android:id="@+id/textInputLayout2"
+				style="@style/AppTheme.EditTextContainer"
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				android:layout_marginBottom="8dp"
+				android:layout_marginEnd="8dp"
+				android:layout_marginStart="8dp"
+				android:layout_marginTop="8dp"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintHorizontal_chainStyle="spread"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/textView">
 
 			<android.support.design.widget.TextInputEditText
-				android:id="@+id/minMin"
-				style="@style/AppTheme.Interval.EditText"
-				android:hint="@string/minutes"
-				android:maxLength="3"
-				tools:text="399"/>
+					android:id="@+id/minMin"
+					style="@style/AppTheme.EditText"
+					android:hint="@string/minutes"
+					android:maxLength="3"
+					tools:text="399"/>
 		</android.support.design.widget.TextInputLayout>
 
 		<android.support.design.widget.TextInputLayout
-			android:id="@+id/textInputLayout"
-			style="@style/AppTheme.Interval.EditTextContainer"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="8dp"
-			android:layout_marginEnd="8dp"
-			android:layout_marginTop="8dp"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.5"
-			app:layout_constraintHorizontal_chainStyle="spread"
-			app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
-			app:layout_constraintTop_toBottomOf="@+id/textView">
+				android:id="@+id/textInputLayout"
+				style="@style/AppTheme.EditTextContainer"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:layout_marginEnd="8dp"
+				android:layout_marginTop="8dp"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintHorizontal_chainStyle="spread"
+				app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+				app:layout_constraintTop_toBottomOf="@+id/textView">
 
 			<android.support.design.widget.TextInputEditText
-				android:id="@+id/minSec"
-				style="@style/AppTheme.Interval.EditText"
-				android:hint="@string/seconds"
-				android:maxLength="2"
-				tools:text="1"/>
+					android:id="@+id/minSec"
+					style="@style/AppTheme.EditText"
+					android:hint="@string/seconds"
+					android:maxLength="2"
+					tools:text="1"/>
 		</android.support.design.widget.TextInputLayout>
 
 	</android.support.constraint.ConstraintLayout>

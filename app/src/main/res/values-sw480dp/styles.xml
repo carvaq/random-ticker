@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="AppTheme.EditText" parent="AppTheme.EditText.Base">
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display4</item>
+	</style>
+
+	<style name="AppTheme.Label" parent="AppTheme.Label.Base">
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+	</style>
+
+	<style name="AppTheme.Description" parent="AppTheme.Description.Base">
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+	</style>
+
+	<style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint">
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
+	</style>
+
+</resources>

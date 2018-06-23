@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 tools:context="com.cvv.fanstaticapps.randomticker.activities.MainActivity">
+<android.support.design.widget.CoordinatorLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context="com.cvv.fanstaticapps.randomticker.activities.MainActivity">
 
-    <include layout="@layout/app_bar"/>
+	<include layout="@layout/app_bar"/>
 
 	<android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+			style="@style/AppTheme.RootContainer"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="@dimen/activityPadding">
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingEnd="@dimen/activityPaddingHorizontal"
+				android:paddingStart="@dimen/activityPaddingHorizontal"
+				android:paddingTop="@dimen/activityPaddingVertical"
+				android:paddingBottom="@dimen/activityPaddingVertical">
 
-            <include layout="@layout/content_main" />
-        </LinearLayout>
+			<include layout="@layout/content_main"/>
+		</LinearLayout>
 
 	</android.support.v4.widget.NestedScrollView>
 

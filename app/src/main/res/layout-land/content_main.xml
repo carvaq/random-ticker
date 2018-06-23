@@ -5,8 +5,8 @@
 	tools:showIn="@layout/activity_main">
 
 	<TextView
-		style="@style/AppTheme.Interval.Description"
-		android:text="@string/random_timer_introduction"/>
+			style="@style/AppTheme.Description"
+			android:text="@string/random_timer_introduction"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"
