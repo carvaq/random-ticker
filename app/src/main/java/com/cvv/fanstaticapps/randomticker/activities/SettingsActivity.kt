@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.*
 import android.support.v4.app.NavUtils
+import android.util.Log
 import android.view.MenuItem
+import com.crashlytics.android.Crashlytics
 import com.cvv.fanstaticapps.randomticker.R
 import kotlinx.android.synthetic.main.app_bar.*
 
@@ -105,12 +107,17 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             } else {
                 val ringtone = RingtoneManager.getRingtone(
                         preference.context, Uri.parse(stringValue))
-
                 when (ringtone) {
                     null -> preference.summary = null
                     else -> {
-                        val name = ringtone.getTitle(preference.context)
-                        preference.summary = name
+                        try {
+                            val name = ringtone.getTitle(preference.context)
+                            preference.summary = name
+                        } catch (e: Exception) {
+                            Crashlytics.logException(e)
+                            Log.e("Settings", "Could not load title for ringtone", e)
+                            preference.summary = null
+                        }
                     }
                 }
             }
