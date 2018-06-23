@@ -2,39 +2,52 @@ package com.cvv.fanstaticapps.randomticker.helper
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.RingtoneManager
 import android.preference.PreferenceManager
 
 class TickerData(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(context)
 
-    private val MININUM_MINUTES: String = "minimumMinutes"
-    private val MININUM_SECONS: String = "minimumSeconds"
-    private val MAXIMUM_MINUTES: String = "maximumMinutes"
-    private val MAXIMUM_SECONDS: String = "maximumSeconds"
-    private val GENERATED_INTERVAL: String = "generatedInterval"
-    private val GENERATED_INTERVAL_END_TIME: String = "generatedIntervalEndTime"
-    private val IS_TICKER_CURRENTLY_RUNNING: String = "tickerRunning"
+    private val minimumMinutesPref: String = "minimumMinutes"
+    private val minimumSecondsPref: String = "minimumSeconds"
+    private val maximumMinutesPref: String = "maximumMinutes"
+    private val maximumSecondsPref: String = "maximumSeconds"
+    private val generatedIntervalPref: String = "generatedInterval"
+    private val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
+    private val tickerRunningPref: String = "tickerRunning"
+    /**
+     * These preferences are changed by the user in the @see SettingsActivity.
+     * The preference keys (@see constants.xml) are also present in the xml, therefor the same should be used.
+     */
+    private val showNotificationPref: String = "pref_show_notification"
+    private val ringtonePref: String = "pref_ringtone"
 
     var minMin: Int
-        get() = prefs.getInt(MININUM_MINUTES, 0)
-        set(value) = prefs.edit().putInt(MININUM_MINUTES, value).apply()
+        get() = prefs.getInt(minimumMinutesPref, 0)
+        set(value) = prefs.edit().putInt(minimumMinutesPref, value).apply()
     var minSec: Int
-        get() = prefs.getInt(MININUM_SECONS, 0)
-        set(value) = prefs.edit().putInt(MININUM_SECONS, value).apply()
+        get() = prefs.getInt(minimumSecondsPref, 0)
+        set(value) = prefs.edit().putInt(minimumSecondsPref, value).apply()
     var maxMin
-        get() = prefs.getInt(MAXIMUM_MINUTES, 5)
-        set(value) = prefs.edit().putInt(MAXIMUM_MINUTES, value).apply()
+        get() = prefs.getInt(maximumMinutesPref, 5)
+        set(value) = prefs.edit().putInt(maximumMinutesPref, value).apply()
     var maxSec: Int
-        get() = prefs.getInt(MAXIMUM_SECONDS, 0)
-        set(value) = prefs.edit().putInt(MAXIMUM_SECONDS, value).apply()
+        get() = prefs.getInt(maximumSecondsPref, 0)
+        set(value) = prefs.edit().putInt(maximumSecondsPref, value).apply()
     var interval: Long
-        get() = prefs.getLong(GENERATED_INTERVAL, 0)
-        set(value) = prefs.edit().putLong(GENERATED_INTERVAL, value).apply()
+        get() = prefs.getLong(generatedIntervalPref, 0)
+        set(value) = prefs.edit().putLong(generatedIntervalPref, value).apply()
     var intervalFinished: Long
-        get() = prefs.getLong(GENERATED_INTERVAL_END_TIME, 0)
-        set(value) = prefs.edit().putLong(GENERATED_INTERVAL_END_TIME, value).apply()
+        get() = prefs.getLong(generatedIntervalEndTimePref, 0)
+        set(value) = prefs.edit().putLong(generatedIntervalEndTimePref, value).apply()
     var currentlyTickerRunning: Boolean
-        get() = prefs.getBoolean(IS_TICKER_CURRENTLY_RUNNING, false)
-        set(value) = prefs.edit().putBoolean(IS_TICKER_CURRENTLY_RUNNING, value).apply()
+        get() = prefs.getBoolean(tickerRunningPref, false)
+        set(value) = prefs.edit().putBoolean(tickerRunningPref, value).apply()
+    var showNotification: Boolean
+        get() = prefs.getBoolean(showNotificationPref, false)
+        set(value) = prefs.edit().putBoolean(showNotificationPref, value).apply()
+    var alarmRingtone: String
+        get() = prefs.getString(ringtonePref, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())
+        set(value) = prefs.edit().putString(ringtonePref, value).apply()
 }

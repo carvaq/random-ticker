@@ -8,7 +8,6 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.preference.PreferenceManager
 import android.support.annotation.Nullable
 import android.util.Log
 import android.view.View
@@ -160,17 +159,12 @@ class KlaxonActivity : BaseActivity() {
     private fun playRingtone() {
         if (playingAlarmSound == null) {
             try {
-                val preferenceRingtone = PreferenceManager
-                        .getDefaultSharedPreferences(this)
-                        .getString(getString(R.string.pref_ringtone),
-                                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())
-                val uri = Uri.parse(preferenceRingtone)
+                val uri = Uri.parse(prefs.alarmRingtone)
                 playingAlarmSound = RingtoneManager.getRingtone(applicationContext, uri)
                 playingAlarmSound!!.play()
             } catch (e: Exception) {
                 Log.e(TAG, "Error while trying to play alarm sound", e)
             }
-
         } else {
             toast(R.string.bell_ringing)
         }

@@ -24,19 +24,22 @@ class TimerHelper @Inject constructor() {
 
     fun createNotificationAndAlarm(context: Context, tickerData: TickerData) {
         val intervalFinished = tickerData.intervalFinished
-        showNotification(context, tickerData)
 
-        val timerRefreshRunnable = object : Runnable {
-            override fun run() {
-                if (intervalFinished <= System.currentTimeMillis() || !tickerData.currentlyTickerRunning) {
-                    HANDLER.removeCallbacks(this)
-                    return
+        if (tickerData.showNotification) {
+            showNotification(context, tickerData)
+
+            val timerRefreshRunnable = object : Runnable {
+                override fun run() {
+                    if (intervalFinished <= System.currentTimeMillis() || !tickerData.currentlyTickerRunning) {
+                        HANDLER.removeCallbacks(this)
+                        return
+                    }
+                    showNotification(context, tickerData)
+                    HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS)
                 }
-                showNotification(context, tickerData)
-                HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS)
             }
+            HANDLER.postDelayed(timerRefreshRunnable, ONE_SECOND_IN_MILLIS)
         }
-        HANDLER.postDelayed(timerRefreshRunnable, ONE_SECOND_IN_MILLIS)
 
         setAlarm(context, intervalFinished)
     }
