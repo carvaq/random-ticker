@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.*
 import android.support.v4.app.NavUtils
-import android.text.TextUtils
 import android.view.MenuItem
 import com.cvv.fanstaticapps.randomticker.R
 import kotlinx.android.synthetic.main.app_bar.*
@@ -74,6 +73,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             setHasOptionsMenu(true)
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_ringtone)))
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_show_notification)))
             findPreference(getString(R.string.pref_license)).setOnPreferenceClickListener {
                 startActivity(Intent(activity, LicenseActivity::class.java))
                 true
@@ -92,22 +92,28 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             val stringValue = value.toString()
 
             if (preference is RingtonePreference) {
-                if (TextUtils.isEmpty(stringValue)) {
-                    preference.setSummary(R.string.pref_ringtone_silent)
-                } else {
-                    val ringtone = RingtoneManager.getRingtone(
-                            preference.getContext(), Uri.parse(stringValue))
+                bindRingtonePreference(stringValue, preference)
+            } else if (preference is CheckBoxPreference) {
+                preference.isChecked = stringValue.toBoolean()
+            }
+            true
+        }
 
-                    when (ringtone) {
-                        null -> preference.setSummary(null)
-                        else -> {
-                            val name = ringtone.getTitle(preference.getContext())
-                            preference.setSummary(name)
-                        }
+        private fun bindRingtonePreference(stringValue: String, preference: Preference) {
+            if (stringValue.isEmpty()) {
+                preference.setSummary(R.string.pref_ringtone_silent)
+            } else {
+                val ringtone = RingtoneManager.getRingtone(
+                        preference.context, Uri.parse(stringValue))
+
+                when (ringtone) {
+                    null -> preference.summary = null
+                    else -> {
+                        val name = ringtone.getTitle(preference.context)
+                        preference.summary = name
                     }
                 }
             }
-            true
         }
 
         /**
@@ -123,12 +129,15 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             // Set the listener to watch for value changes.
             preference.onPreferenceChangeListener = bindPreferenceSummaryToValueListener
 
-            // Trigger the listener immediately with the preference's
-            // current value.
-            bindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                    PreferenceManager
-                            .getDefaultSharedPreferences(preference.context)
-                            .getString(preference.key, ""))
+            bindPreferenceSummaryToValueListener.onPreferenceChange(preference, getPreferenceValue(preference))
+        }
+
+        private fun getPreferenceValue(preference: Preference): Any {
+            val preferenceManager = PreferenceManager.getDefaultSharedPreferences(preference.context)
+            return when (preference) {
+                is CheckBoxPreference -> preferenceManager.getBoolean(preference.key, false)
+                else -> preferenceManager.getString(preference.key, "")
+            }
         }
     }
 }

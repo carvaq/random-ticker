@@ -14,5 +14,7 @@
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 	<string name="show_elapsed_time">Show elapsed time</string>
+	<string name="show_notification_summary">Show a notification of the time remaining and already elapsed.</string>
+	<string name="show_notification">Enable timer notification</string>
 
 </resources>

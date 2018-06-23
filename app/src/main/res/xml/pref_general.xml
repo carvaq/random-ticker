@@ -1,13 +1,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<RingtonePreference
-		android:defaultValue="content://settings/system/notification_sound"
-		android:key="@string/pref_ringtone"
-		android:ringtoneType="alarm"
-		android:title="@string/pref_title_ringtone"/>
+			android:defaultValue="content://settings/system/notification_sound"
+			android:key="@string/pref_ringtone"
+			android:ringtoneType="alarm"
+			android:title="@string/pref_title_ringtone"/>
 
 	<Preference
-		android:key="@string/pref_license"
-		android:title="@string/license"/>
+			android:key="@string/pref_license"
+			android:title="@string/license"/>
+
+	<CheckBoxPreference
+			android:summary="@string/show_notification_summary"
+			android:key="@string/pref_show_notification"
+			android:title="@string/show_notification"
+			android:defaultValue="false"/>
 
 </PreferenceScreen>
