@@ -6,4 +6,4 @@ pipelines:
         caches:
           - gradle
         script:
-          - ./build.sh
+          - pipeline/build.sh
