@@ -26,8 +26,9 @@ class MaxValueTextWatcherTest {
     @Mock
     private val editText: EditText = mock()
 
+    private val maxValueInEdit = "13"
+
     private lateinit var maxValueTextWatcher: MaxValueTextWatcher
-    private var MAX_VALUE_IN_EDITTEXT = "13"
 
     @Before
     fun setUp() {
@@ -41,10 +42,10 @@ class MaxValueTextWatcherTest {
         mockTextChanged(null)
         verify(editText, never()).text = any()
         mockTextChanged("13")
-        verify(editText).setText(MAX_VALUE_IN_EDITTEXT)
+        verify(editText).setText(maxValueInEdit)
         mockTextChanged("14")
         //The second time is because it was called once already in this test
-        verify(editText, times(2)).setText(MAX_VALUE_IN_EDITTEXT)
+        verify(editText, times(2)).setText(maxValueInEdit)
     }
 
     private fun mockTextChanged(text: String?) {
