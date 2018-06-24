@@ -10,11 +10,12 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "tickerData")
 data class TickerData(@PrimaryKey(autoGenerate = true) var id: Long?,
+                      @ColumnInfo(name = "bookmarkPosition") var bookmarkPosition: Int,
                       @ColumnInfo(name = "minimumMinutes") var minimumMinutes: Int,
                       @ColumnInfo(name = "minimumSeconds") var minimumSeconds: Int,
                       @ColumnInfo(name = "maximumMinutes") var maximumMinutes: Int,
                       @ColumnInfo(name = "maximumSeconds") var maximumSeconds: Int) {
-    constructor() : this(null, 0, 0, 5, 0)
+    constructor(position: Int) : this(null, position, 0, 0, 5, 0)
 }
 
 

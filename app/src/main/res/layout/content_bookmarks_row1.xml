@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:layout_height="wrap_content">
+
+	<TextView
+			android:text="@string/bookmark_1"
+			android:id="@+id/bookmark1"
+			style="@style/AppTheme.Bookmark"/>
+
+	<TextView
+			android:text="@string/bookmark_2"
+			android:id="@+id/bookmark2"
+			style="@style/AppTheme.Bookmark"/>
+
+	<TextView
+			android:text="@string/bookmark_3"
+			style="@style/AppTheme.Bookmark"
+			android:id="@+id/bookmark3"/>
+
+	<TextView
+			android:text="@string/bookmark_4"
+			android:id="@+id/bookmark4"
+			style="@style/AppTheme.Bookmark"/>
+
+</LinearLayout>
