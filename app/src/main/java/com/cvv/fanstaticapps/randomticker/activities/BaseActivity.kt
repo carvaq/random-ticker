@@ -13,6 +13,7 @@ import dagger.android.AndroidInjection
  */
 
 abstract class BaseActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -21,4 +22,5 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun toast(@StringRes resId: Int) {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
     }
+
 }

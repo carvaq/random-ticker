@@ -1,18 +1,14 @@
-package com.cvv.fanstaticapps.randomticker.helper
+package com.cvv.fanstaticapps.randomticker.data
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.RingtoneManager
 import android.preference.PreferenceManager
 
-class TickerData(context: Context) {
+class UserPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager
             .getDefaultSharedPreferences(context)
 
-    private val minimumMinutesPref: String = "minimumMinutes"
-    private val minimumSecondsPref: String = "minimumSeconds"
-    private val maximumMinutesPref: String = "maximumMinutes"
-    private val maximumSecondsPref: String = "maximumSeconds"
     private val generatedIntervalPref: String = "generatedInterval"
     private val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
     private val tickerRunningPref: String = "tickerRunning"
@@ -23,18 +19,6 @@ class TickerData(context: Context) {
     private val showNotificationPref: String = "pref_show_notification"
     private val ringtonePref: String = "pref_ringtone"
 
-    var minMin: Int
-        get() = prefs.getInt(minimumMinutesPref, 0)
-        set(value) = prefs.edit().putInt(minimumMinutesPref, value).apply()
-    var minSec: Int
-        get() = prefs.getInt(minimumSecondsPref, 0)
-        set(value) = prefs.edit().putInt(minimumSecondsPref, value).apply()
-    var maxMin
-        get() = prefs.getInt(maximumMinutesPref, 5)
-        set(value) = prefs.edit().putInt(maximumMinutesPref, value).apply()
-    var maxSec: Int
-        get() = prefs.getInt(maximumSecondsPref, 0)
-        set(value) = prefs.edit().putInt(maximumSecondsPref, value).apply()
     var interval: Long
         get() = prefs.getLong(generatedIntervalPref, 0)
         set(value) = prefs.edit().putLong(generatedIntervalPref, value).apply()

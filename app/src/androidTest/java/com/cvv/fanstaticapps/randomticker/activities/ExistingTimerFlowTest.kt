@@ -11,7 +11,7 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import com.cvv.fanstaticapps.randomticker.R
-import com.cvv.fanstaticapps.randomticker.helper.TickerData
+import com.cvv.fanstaticapps.randomticker.data.Preferences
 import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +28,7 @@ class ExistingTimerFlowTest {
 
     @Before
     fun setUp() {
-        val prefUserSettings = TickerData(InstrumentationRegistry.getInstrumentation().targetContext)
+        val prefUserSettings = Preferences(InstrumentationRegistry.getInstrumentation().targetContext)
         prefUserSettings.currentlyTickerRunning = true
         prefUserSettings.intervalFinished = System.currentTimeMillis() + 10000
         activityTestRule.launchActivity(null)

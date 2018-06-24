@@ -2,6 +2,7 @@ package com.cvv.fanstaticapps.randomticker.helper
 
 import android.text.Editable
 import android.widget.EditText
+import com.cvv.fanstaticapps.randomticker.view.MaxValueTextWatcher
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Before
 import org.junit.Rule

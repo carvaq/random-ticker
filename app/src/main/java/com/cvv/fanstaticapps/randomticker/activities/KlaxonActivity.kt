@@ -18,7 +18,7 @@ import android.view.animation.RotateAnimation
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper.Companion.ONE_SECOND_IN_MILLIS
-import com.cvv.fanstaticapps.randomticker.prefs
+import com.cvv.fanstaticapps.randomticker.PREFS
 import io.github.kobakei.grenade.annotation.Extra
 import io.github.kobakei.grenade.annotation.Navigator
 import kotlinx.android.synthetic.main.activity_klaxon.*
@@ -52,14 +52,14 @@ class KlaxonActivity : BaseActivity() {
         setContentView(R.layout.activity_klaxon)
         KlaxonActivityNavigator.inject(this, intent)
 
-        intervalFinished = prefs.intervalFinished
+        intervalFinished = PREFS.intervalFinished
     }
 
     override fun onPostCreate(@Nullable savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         dismissButton.setOnClickListener({
             cancelEverything()
-            timerHelper.cancelNotificationAndGoBack(this, prefs)
+            timerHelper.cancelNotificationAndGoBack(this, PREFS)
         })
 
         if (timeElapsed) {
@@ -88,7 +88,7 @@ class KlaxonActivity : BaseActivity() {
         countDownTimer = object : CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
             override fun onTick(millisUntilFinished: Long) {
                 if (showElapsedTime) {
-                    val millisSinceStarted = abs(intervalFinished - System.currentTimeMillis() - prefs.interval)
+                    val millisSinceStarted = abs(intervalFinished - System.currentTimeMillis() - PREFS.interval)
                     val elapsedMillis = timerHelper
                             .getFormattedElapsedMilliseconds(millisSinceStarted)
                     elapsedTime.text = elapsedMillis
@@ -97,7 +97,7 @@ class KlaxonActivity : BaseActivity() {
 
             override fun onFinish() {
                 timerFinished()
-                prefs.currentlyTickerRunning = false
+                PREFS.currentlyTickerRunning = false
                 countDownTimer = null
             }
         }
@@ -106,7 +106,7 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun timerFinished() {
-        timerHelper.cancelNotification(this, prefs)
+        timerHelper.cancelNotification(this, PREFS)
         playRingtone()
         if (!pulsator.isStarted) {
             hideBellAndMoveCancelButton()
@@ -159,7 +159,7 @@ class KlaxonActivity : BaseActivity() {
     private fun playRingtone() {
         if (playingAlarmSound == null) {
             try {
-                val uri = Uri.parse(prefs.alarmRingtone)
+                val uri = Uri.parse(PREFS.alarmRingtone)
                 playingAlarmSound = RingtoneManager.getRingtone(applicationContext, uri)
                 playingAlarmSound!!.play()
             } catch (e: Exception) {

@@ -1,6 +1,6 @@
 package com.cvv.fanstaticapps.randomticker
 
-import com.cvv.fanstaticapps.randomticker.helper.TickerData
+import com.cvv.fanstaticapps.randomticker.data.UserPreferences
 import com.cvv.fanstaticapps.randomticker.injection.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -11,7 +11,7 @@ import dagger.android.DaggerApplication
  * Project: RandomTicker
  */
 
-val prefs: TickerData by lazy {
+val PREFS: UserPreferences by lazy {
     TickerApplication.prefs!!
 }
 
@@ -21,14 +21,14 @@ class TickerApplication : DaggerApplication() {
     }
 
     companion object {
-        var prefs: TickerData? = null
+        var prefs: UserPreferences? = null
     }
 
     lateinit var androidInjector: AndroidInjector<out DaggerApplication>
 
 
     override fun onCreate() {
-        prefs = TickerData(this)
+        prefs = UserPreferences(this)
         androidInjector = DaggerAppComponent
                 .builder()
                 .application(this)

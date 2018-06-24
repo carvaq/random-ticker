@@ -2,16 +2,22 @@ package com.cvv.fanstaticapps.randomticker.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.R
+import com.cvv.fanstaticapps.randomticker.data.TickerData
+import com.cvv.fanstaticapps.randomticker.data.TickerDatabase
 import com.cvv.fanstaticapps.randomticker.helper.IntegerUtil.Companion.getIntegerFromCharSequence
-import com.cvv.fanstaticapps.randomticker.helper.MaxValueTextWatcher
-import com.cvv.fanstaticapps.randomticker.helper.MinValueVerification
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
-import com.cvv.fanstaticapps.randomticker.prefs
+import com.cvv.fanstaticapps.randomticker.view.MaxValueTextWatcher
+import com.cvv.fanstaticapps.randomticker.view.MinValueVerification
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.app_bar.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_maximum_value.*
@@ -23,18 +29,38 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var timerHelper: TimerHelper
+    private lateinit var database: TickerDatabase
+
+    private lateinit var currentTicker: TickerData
+    private lateinit var databaseTickerList: List<TickerData>
 
     private val randomGenerator = Random(System.currentTimeMillis())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (prefs.currentlyTickerRunning) {
+        if (PREFS.currentlyTickerRunning) {
             // if the timer is running we should move the KlaxonActivity
             startAlarmActivity()
         } else {
             setContentView(R.layout.activity_main)
-            prepareView()
+            loadDataFromDb()
         }
+    }
+
+    private fun loadDataFromDb() {
+        database = TickerDatabase.getInstance(this)!!
+        database.tickerDataDao().getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ it ->
+                    databaseTickerList = it
+                    currentTicker = if (it.isNotEmpty()) databaseTickerList[0] else TickerData()
+                    prepareView()
+                }, {
+                    currentTicker = TickerData()
+                    prepareView()
+                })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,14 +76,18 @@ class MainActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroy() {
+        TickerDatabase.destroyInstance()
+        super.onDestroy()
+    }
 
     private fun prepareView() {
         setSupportActionBar(toolbar)
 
-        prepareValueSelectionView(minMin, prefs.minMin, MaxValueTextWatcher(minMin, 240))
-        prepareValueSelectionView(minSec, prefs.minSec, MaxValueTextWatcher(minSec, 59))
-        prepareValueSelectionView(maxMin, prefs.maxMin, MaxValueTextWatcher(maxMin, 240))
-        prepareValueSelectionView(maxSec, prefs.maxSec, MaxValueTextWatcher(maxSec, 59))
+        prepareValueSelectionView(minMin, currentTicker.minimumMinutes, MaxValueTextWatcher(minMin, 240))
+        prepareValueSelectionView(minSec, currentTicker.minimumSeconds, MaxValueTextWatcher(minSec, 59))
+        prepareValueSelectionView(maxMin, currentTicker.maximumMinutes, MaxValueTextWatcher(maxMin, 240))
+        prepareValueSelectionView(maxSec, currentTicker.maximumSeconds, MaxValueTextWatcher(maxSec, 59))
 
         maxSec.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
@@ -89,7 +119,7 @@ class MainActivity : BaseActivity() {
             val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
             val intervalFinished = System.currentTimeMillis() + interval
             saveToPreferences(interval, intervalFinished)
-            timerHelper.createNotificationAndAlarm(this, prefs)
+            timerHelper.createNotificationAndAlarm(this, PREFS)
             startAlarmActivity()
         } else {
             toast(R.string.error_min_is_bigger_than_max)
@@ -101,12 +131,15 @@ class MainActivity : BaseActivity() {
     }
 
     private fun saveToPreferences(interval: Long, intervalFinished: Long) {
-        prefs.maxMin = getIntegerFromCharSequence(maxMin.text)
-        prefs.minMin = getIntegerFromCharSequence(minMin.text)
-        prefs.maxSec = getIntegerFromCharSequence(maxSec.text)
-        prefs.minSec = getIntegerFromCharSequence(minSec.text)
-        prefs.currentlyTickerRunning = true
-        prefs.interval = interval
-        prefs.intervalFinished = intervalFinished
+        currentTicker.maximumMinutes = getIntegerFromCharSequence(maxMin.text)
+        currentTicker.minimumMinutes = getIntegerFromCharSequence(minMin.text)
+        currentTicker.maximumSeconds = getIntegerFromCharSequence(maxSec.text)
+        currentTicker.minimumSeconds = getIntegerFromCharSequence(minSec.text)
+        Single.fromCallable({ database.tickerDataDao().insert(currentTicker) })
+                .subscribeOn(Schedulers.io())
+                .subscribe { _ -> Log.d("DB", "Inserted interval changes") }
+        PREFS.currentlyTickerRunning = true
+        PREFS.interval = interval
+        PREFS.intervalFinished = intervalFinished
     }
 }

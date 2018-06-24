@@ -21,7 +21,7 @@
             android:name=".activities.KlaxonActivity"
             android:launchMode="singleTask"/>
 
-	    <receiver android:name=".OnAlarmReceiver"/>
+		<receiver android:name=".receiver.OnAlarmReceiver"/>
 
         <activity android:name=".activities.CancelActivity"/>
         <activity

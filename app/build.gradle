@@ -82,7 +82,11 @@ dependencies {
 	implementation 'com.google.firebase:firebase-crash:16.0.1'
 	implementation 'com.google.firebase:firebase-core:16.0.1'
 	implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+	implementation "android.arch.persistence.room:runtime:$roomVersion"
+	implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+	implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
+	kapt "android.arch.persistence.room:compiler:$roomVersion"
 	kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 	kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 	kapt 'com.github.kobakei.grenade:processor:1.1.0'

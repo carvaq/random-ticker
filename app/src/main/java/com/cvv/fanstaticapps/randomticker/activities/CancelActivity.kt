@@ -1,10 +1,8 @@
 package com.cvv.fanstaticapps.randomticker.activities
 
 import android.os.Bundle
-
+import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
-import com.cvv.fanstaticapps.randomticker.prefs
-
 import javax.inject.Inject
 
 class CancelActivity : BaseActivity() {
@@ -13,6 +11,6 @@ class CancelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timerHelper.cancelNotificationAndGoBack(this, prefs)
+        timerHelper.cancelNotificationAndGoBack(this, PREFS)
     }
 }

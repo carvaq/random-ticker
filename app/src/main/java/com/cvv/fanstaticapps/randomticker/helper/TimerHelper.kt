@@ -7,11 +7,12 @@ import android.os.Handler
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.text.format.DateUtils
-import com.cvv.fanstaticapps.randomticker.OnAlarmReceiver
+import com.cvv.fanstaticapps.randomticker.receiver.OnAlarmReceiver
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.activities.CancelActivity
 import com.cvv.fanstaticapps.randomticker.activities.KlaxonActivityNavigator
 import com.cvv.fanstaticapps.randomticker.activities.MainActivity
+import com.cvv.fanstaticapps.randomticker.data.UserPreferences
 import javax.inject.Inject
 
 /**
@@ -22,19 +23,19 @@ import javax.inject.Inject
 
 class TimerHelper @Inject constructor() {
 
-    fun createNotificationAndAlarm(context: Context, tickerData: TickerData) {
-        val intervalFinished = tickerData.intervalFinished
+    fun createNotificationAndAlarm(context: Context, preferences: UserPreferences) {
+        val intervalFinished = preferences.intervalFinished
 
-        if (tickerData.showNotification) {
-            showNotification(context, tickerData)
+        if (preferences.showNotification) {
+            showNotification(context, preferences)
 
             val timerRefreshRunnable = object : Runnable {
                 override fun run() {
-                    if (intervalFinished <= System.currentTimeMillis() || !tickerData.currentlyTickerRunning) {
+                    if (intervalFinished <= System.currentTimeMillis() || !preferences.currentlyTickerRunning) {
                         HANDLER.removeCallbacks(this)
                         return
                     }
-                    showNotification(context, tickerData)
+                    showNotification(context, preferences)
                     HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS)
                 }
             }
@@ -44,8 +45,8 @@ class TimerHelper @Inject constructor() {
         setAlarm(context, intervalFinished)
     }
 
-    private fun showNotification(context: Context, tickerData: TickerData) {
-        val notification = buildNotification(context, tickerData)
+    private fun showNotification(context: Context, preferences: UserPreferences) {
+        val notification = buildNotification(context, preferences)
 
         val notificationManager = NotificationManagerCompat.from(context)
         createNotificationChannel(context)
@@ -53,9 +54,9 @@ class TimerHelper @Inject constructor() {
     }
 
 
-    private fun buildNotification(context: Context, tickerData: TickerData): Notification {
-        val interval = tickerData.interval
-        val intervalFinished = tickerData.intervalFinished
+    private fun buildNotification(context: Context, preferences: UserPreferences): Notification {
+        val interval = preferences.interval
+        val intervalFinished = preferences.intervalFinished
         val alarmPendingIntent = PendingIntent.getActivity(context, 0, KlaxonActivityNavigator(false).build(context), 0)
         val cancelPendingIntent = PendingIntent.getActivity(context, 0, Intent(context, CancelActivity::class.java), 0)
         val cancelAction = NotificationCompat.Action(R.drawable.ic_action_stop_timer,
@@ -92,7 +93,7 @@ class TimerHelper @Inject constructor() {
         return PendingIntent.getBroadcast(context, REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    fun cancelNotificationAndGoBack(activity: Activity, preferences: TickerData) {
+    fun cancelNotificationAndGoBack(activity: Activity, preferences: UserPreferences) {
         cancelNotification(activity, preferences)
 
         val startIntent = Intent(activity, MainActivity::class.java)
@@ -102,7 +103,7 @@ class TimerHelper @Inject constructor() {
         activity.finish()
     }
 
-    fun cancelNotification(activity: Activity, preferences: TickerData) {
+    fun cancelNotification(activity: Activity, preferences: UserPreferences) {
         preferences.currentlyTickerRunning = false
 
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager

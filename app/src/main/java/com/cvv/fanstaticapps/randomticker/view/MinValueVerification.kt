@@ -1,4 +1,4 @@
-package com.cvv.fanstaticapps.randomticker.helper
+package com.cvv.fanstaticapps.randomticker.view
 
 import android.view.View
 import android.widget.EditText
