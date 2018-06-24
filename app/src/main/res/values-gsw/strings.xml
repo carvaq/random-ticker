@@ -12,7 +12,9 @@
     <string name="title_activity_settings">Istellige</string>
     <string name="pref_title_ringtone">Alarmton</string>
     <string name="pref_ringtone_silent">Lieslig</string>
-	<string name="random_timer_introduction">Definier en Zeitraum, idem en Alarm zuefällig lute wird.</string>
+	<string name="random_timer_introduction">Definier en Zeitraum, idem en Alarm zuefällig lüte wird.</string>
 	<string name="show_elapsed_time">Zeig verstricheni Zyt</string>
+	<string name="show_notification_summary">Benachrichtigunge azeige vo de verblibeni und scho abglofeni zit</string>
+	<string name="show_notification">"Benachrichtigunge azeige "</string>
 
 </resources>

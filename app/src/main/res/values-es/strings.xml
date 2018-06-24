@@ -14,5 +14,7 @@
 	<string name="from">Desde</string>
 	<string name="random_timer_introduction">Define el período en el que quieres que suene tu alarma aleatoriamente.</string>
 	<string name="show_elapsed_time">Mostrar el tiempo transcurrido</string>
+	<string name="show_notification_summary">Mostrar una notificación del tiempo restante y ya transcurrido.</string>
+	<string name="show_notification">Mostrar notificaciones</string>
 
 </resources>

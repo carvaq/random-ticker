@@ -14,5 +14,7 @@
     <string name="pref_ringtone_silent">Leise</string>
 	<string name="random_timer_introduction">Definier den Zeitraum, in dem ein Alarm zufällig läuten wird.</string>
 	<string name="show_elapsed_time">Zeige verstrichene Zeit</string>
+	<string name="show_notification_summary">Zeige eine Benachrichtigung über die verbleibende und bereits abgelaufene Zeit.</string>
+	<string name="show_notification">Zeige Benachrichtigungen</string>
 
 </resources>
