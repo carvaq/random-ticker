@@ -6,4 +6,4 @@ echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> "${ANDROID_HOME}/licenses/and
 echo "84831b9409646a918e30573bab4c9c91346d8abd" > "${ANDROID_HOME}/licenses/android-sdk-preview-license"
 mv google-services-for-ci.json app/google-services.json
 
-./gradlew assembleCi testCiUnitTest
+./gradlew assembleDebug testDebugUnitTest
