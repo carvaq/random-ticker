@@ -1,4 +1,5 @@
-image: uber/android-build-environment:latest
+image: runmymind/docker-android-sdk
+#image: uber/android-build-environment:latest
 
 pipelines:
   default:
