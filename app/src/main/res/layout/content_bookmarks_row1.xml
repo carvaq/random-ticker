@@ -8,6 +8,7 @@
 	<TextView
 			android:text="@string/bookmark_1"
 			android:id="@+id/bookmark1"
+			android:layout_marginStart="0dp"
 			style="@style/AppTheme.Bookmark"/>
 
 	<TextView

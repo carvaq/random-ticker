@@ -10,7 +10,8 @@
 
 	<LinearLayout
 			android:orientation="horizontal"
-			style="@style/AppTheme.BookmarksContainer">
+			style="@style/AppTheme.BookmarksContainer"
+			android:baselineAligned="false">
 
 		<include
 				android:layout_height="wrap_content"
