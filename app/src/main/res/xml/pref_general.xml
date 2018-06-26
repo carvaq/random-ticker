@@ -6,14 +6,17 @@
 			android:ringtoneType="alarm"
 			android:title="@string/pref_title_ringtone"/>
 
-	<Preference
-			android:key="@string/pref_license"
-			android:title="@string/license"/>
-
 	<CheckBoxPreference
 			android:summary="@string/show_notification_summary"
 			android:key="@string/pref_show_notification"
 			android:title="@string/show_notification"
 			android:defaultValue="false"/>
 
+	<PreferenceCategory android:title="@string/license">
+		s
+		<Preference
+				android:key="@string/pref_license"
+				android:title="@string/license"/>
+
+	</PreferenceCategory>
 </PreferenceScreen>

@@ -10,7 +10,9 @@ import android.util.Log
 import android.view.MenuItem
 import com.crashlytics.android.Crashlytics
 import com.cvv.fanstaticapps.randomticker.R
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.android.synthetic.main.app_bar.*
+
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
@@ -77,7 +79,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_ringtone)))
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_show_notification)))
             findPreference(getString(R.string.pref_license)).setOnPreferenceClickListener {
-                startActivity(Intent(activity, LicenseActivity::class.java))
+                startActivity(Intent(activity, OssLicensesMenuActivity::class.java))
                 true
             }
         }

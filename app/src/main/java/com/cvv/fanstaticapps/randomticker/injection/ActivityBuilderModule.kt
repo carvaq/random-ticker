@@ -2,7 +2,6 @@ package com.cvv.fanstaticapps.randomticker.injection
 
 import com.cvv.fanstaticapps.randomticker.activities.CancelActivity
 import com.cvv.fanstaticapps.randomticker.activities.KlaxonActivity
-import com.cvv.fanstaticapps.randomticker.activities.LicenseActivity
 import com.cvv.fanstaticapps.randomticker.activities.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -26,6 +25,4 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindCancelActivity(): CancelActivity
 
-    @ContributesAndroidInjector
-    abstract fun bindLicenseActivity(): LicenseActivity
 }
