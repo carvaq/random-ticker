@@ -4,6 +4,7 @@ import com.cvv.fanstaticapps.randomticker.data.UserPreferences
 import com.cvv.fanstaticapps.randomticker.injection.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
+import kotlin.text.Typography.dagger
 
 /**
  * Created by carvaq
