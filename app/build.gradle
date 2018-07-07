@@ -37,15 +37,21 @@ kapt {
 }
 
 android {
-	compileSdkVersion 27
-	buildToolsVersion '27.0.3'
+	compileSdkVersion Versions.compileVersion
+	buildToolsVersion Versions.buildToolsVersion
 	defaultConfig {
 		applicationId "com.cvv.fanstaticapps.randomticker"
-		minSdkVersion 21
-		targetSdkVersion 27
+		minSdkVersion Versions.minSdkVersion
+		targetSdkVersion Versions.targeSdkVersion
 		versionCode gitVersionCode
 		versionName gitVersionName
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+		kapt {
+			arguments {
+				arg("room.schemaLocation", "$projectDir/schemas".toString())
+			}
+		}
 	}
 	buildTypes {
 		release {
@@ -67,36 +73,37 @@ android {
 }
 
 dependencies {
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-	implementation "com.android.support:design:${androidSupportVersion}"
-	implementation "com.android.support:cardview-v7:${androidSupportVersion}"
-	implementation "com.android.support:support-v4:${androidSupportVersion}"
-	implementation 'com.android.support:appcompat-v7:27.1.1'
-	implementation 'pl.bclogic:pulsator4droid:1.0.3'
-	implementation 'com.github.kobakei.grenade:library:1.1.0'
-	implementation "com.google.dagger:dagger:$daggerVersion"
-	implementation "com.google.dagger:dagger-android:$daggerVersion"
-	implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-	implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
-	implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-	implementation "android.arch.persistence.room:runtime:$roomVersion"
-	implementation "android.arch.persistence.room:rxjava2:$roomVersion"
-	implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-	implementation 'com.google.android.gms:play-services-oss-licenses:15.0.1'
 
-	kapt "android.arch.persistence.room:compiler:$roomVersion"
-	kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-	kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
-	kapt 'com.github.kobakei.grenade:processor:1.1.0'
+	implementation Kotlin.stdlib
+	implementation AndroidLibs.material
+	implementation AndroidLibs.cardview
+	implementation AndroidLibs.appcompat
+	implementation Libs.pulsator
+	implementation Libs.grenade
+	implementation Libs.dagger
+	implementation Libs.dagger_android
+	implementation Libs.dagger_android_support
+	implementation Firebase.crashlytics
+	implementation AndroidLibs.constraint_layout
+	implementation AndroidLibs.room_runtime
+	implementation AndroidLibs.room_rxjava2
+	implementation Libs.rxAndroid
+	implementation Gms.oss
 
-	testImplementation 'org.mockito:mockito-core:2.19.0'
-	testImplementation 'junit:junit:4.12'
-	testImplementation 'org.robolectric:robolectric:3.8'
-	testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.6.0'
+	kapt AndroidLibs.room_compiler
+	kapt Libs.dagger_compiler
+	kapt Libs.dagger_android_processor
+	kapt Libs.grenade_processor
 
-	androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
-	androidTestImplementation 'com.android.support.test:rules:1.0.2'
-	androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+	testImplementation TestLibs.mockito_core
+	testImplementation TestLibs.junit
+	testImplementation TestLibs.robolectric
+	testImplementation TestLibs.mockito_kotlin
+
+	androidTestImplementation AndroidLibs.uiautomator
+	androidTestImplementation AndroidLibs.rules
+	androidTestImplementation AndroidLibs.espresso_core
+
 }
 
 

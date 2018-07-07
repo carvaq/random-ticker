@@ -7,8 +7,8 @@ package com.cvv.fanstaticapps.randomticker.helper
  */
 class IntegerUtil {
     companion object {
-        fun getIntegerFromCharSequence(s: CharSequence): Int {
-            return if (s.isBlank()) {
+        fun getIntegerFromCharSequence(s: CharSequence?): Int {
+            return if (s.isNullOrBlank()) {
                 0
             } else {
                 s.toString().toInt()

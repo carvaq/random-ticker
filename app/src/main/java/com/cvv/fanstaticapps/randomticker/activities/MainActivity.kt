@@ -100,7 +100,7 @@ class MainActivity : BaseActivity() {
         bookmark1.isActivated = true
         val bookmarks = listOf<View>(bookmark1, bookmark2, bookmark3, bookmark4, bookmark5, bookmark6, bookmark7, bookmark8)
         val clickListener = View.OnClickListener {
-            bookmarks.forEachIndexed({ index, view ->
+            bookmarks.forEachIndexed { index, view ->
                 if (view.id == it.id) {
                     view.isActivated = true
                     currentTicker = getTickerData(index)
@@ -108,7 +108,7 @@ class MainActivity : BaseActivity() {
                 } else {
                     view.isActivated = false
                 }
-            })
+            }
         }
         for (bookmark in bookmarks) {
             bookmark.setOnClickListener(clickListener)

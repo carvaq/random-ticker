@@ -1,8 +1,8 @@
 package com.cvv.fanstaticapps.randomticker.data
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Created by carla on 6/24/18
@@ -10,12 +10,13 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "tickerData")
 data class TickerData(@PrimaryKey(autoGenerate = true) var id: Long?,
+                      @ColumnInfo(name = "name") var bookmarkName: String,
                       @ColumnInfo(name = "bookmarkPosition") var bookmarkPosition: Int,
                       @ColumnInfo(name = "minimumMinutes") var minimumMinutes: Int,
                       @ColumnInfo(name = "minimumSeconds") var minimumSeconds: Int,
                       @ColumnInfo(name = "maximumMinutes") var maximumMinutes: Int,
                       @ColumnInfo(name = "maximumSeconds") var maximumSeconds: Int) {
-    constructor(position: Int) : this(null, position, 0, 0, 5, 0)
+    constructor(position: Int) : this(null, "Random $position", position, 0, 0, 5, 0)
 }
 
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<androidx.cardview.widget.CardView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
-	<android.support.constraint.ConstraintLayout
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:padding="@dimen/contentPadding">
@@ -16,7 +16,7 @@
 				style="@style/AppTheme.Label"
 				android:text="@string/from"/>
 
-		<android.support.design.widget.TextInputLayout
+		<com.google.android.material.textfield.TextInputLayout
 				android:id="@+id/textInputLayout2"
 				style="@style/AppTheme.EditTextContainer"
 				android:layout_width="0dp"
@@ -32,15 +32,15 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/textView">
 
-			<android.support.design.widget.TextInputEditText
+			<com.google.android.material.textfield.TextInputEditText
 					android:id="@+id/minMin"
 					style="@style/AppTheme.EditText"
 					android:hint="@string/minutes"
 					android:maxLength="3"
 					tools:text="399"/>
-		</android.support.design.widget.TextInputLayout>
+		</com.google.android.material.textfield.TextInputLayout>
 
-		<android.support.design.widget.TextInputLayout
+		<com.google.android.material.textfield.TextInputLayout
 				android:id="@+id/textInputLayout"
 				style="@style/AppTheme.EditTextContainer"
 				android:layout_width="0dp"
@@ -55,13 +55,13 @@
 				app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
 				app:layout_constraintTop_toBottomOf="@+id/textView">
 
-			<android.support.design.widget.TextInputEditText
+			<com.google.android.material.textfield.TextInputEditText
 					android:id="@+id/minSec"
 					style="@style/AppTheme.EditText"
 					android:hint="@string/seconds"
 					android:maxLength="2"
 					tools:text="1"/>
-		</android.support.design.widget.TextInputLayout>
+		</com.google.android.material.textfield.TextInputLayout>
 
-	</android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

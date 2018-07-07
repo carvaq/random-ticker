@@ -5,7 +5,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.preference.*
-import android.support.v4.app.NavUtils
+import androidx.core.app.NavUtils
 import android.util.Log
 import android.view.MenuItem
 import com.crashlytics.android.Crashlytics
