@@ -3,7 +3,7 @@
 	<RingtonePreference
 			android:defaultValue="content://settings/system/notification_sound"
 			android:key="@string/pref_ringtone"
-			android:ringtoneType="alarm"
+			android:ringtoneType="all"
 			android:title="@string/pref_title_ringtone"/>
 
 	<CheckBoxPreference
@@ -13,7 +13,7 @@
 			android:defaultValue="false"/>
 
 	<PreferenceCategory android:title="@string/license">
-		s
+
 		<Preference
 				android:key="@string/pref_license"
 				android:title="@string/license"/>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_height="wrap_content"
+		android:padding="@dimen/contentPadding"
+		android:layout_width="match_parent">
+
+	<EditText
+			android:inputType="textCapWords"
+			android:lines="1"
+			android:maxLines="1"
+			android:maxLength="20"
+			android:id="@+id/edBookmarkName"
+			android:layout_width="match_parent"
+			android:hint="@string/app_name"
+			android:layout_height="match_parent"/>
+</FrameLayout>

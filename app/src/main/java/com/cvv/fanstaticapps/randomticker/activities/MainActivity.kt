@@ -1,43 +1,37 @@
 package com.cvv.fanstaticapps.randomticker.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TextView
 import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.R
-import com.cvv.fanstaticapps.randomticker.data.TickerData
 import com.cvv.fanstaticapps.randomticker.data.TickerDatabase
-import com.cvv.fanstaticapps.randomticker.helper.IntegerUtil.Companion.getIntegerFromCharSequence
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
+import com.cvv.fanstaticapps.randomticker.mvp.MainPresenter
+import com.cvv.fanstaticapps.randomticker.mvp.MainView
 import com.cvv.fanstaticapps.randomticker.view.MaxValueTextWatcher
 import com.cvv.fanstaticapps.randomticker.view.MinValueVerification
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.app_bar.*
-import kotlinx.android.synthetic.main.content_bookmarks_row1.*
-import kotlinx.android.synthetic.main.content_bookmarks_row2.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_maximum_value.*
 import kotlinx.android.synthetic.main.content_minimum_value.*
-import java.util.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), MainView {
 
     @Inject
     lateinit var timerHelper: TimerHelper
-    private lateinit var database: TickerDatabase
 
-    private lateinit var currentTicker: TickerData
-    private lateinit var databaseTickerList: List<TickerData>
-
-    private val randomGenerator = Random(System.currentTimeMillis())
+    private lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,25 +41,11 @@ class MainActivity : BaseActivity() {
         } else {
             setContentView(R.layout.activity_main)
             setSupportActionBar(toolbar)
-            loadDataFromDb()
+            val database = TickerDatabase.getInstance(this)!!
+
+            presenter = MainPresenter(database, this)
+            presenter.loadDataFromDatabase()
         }
-    }
-
-    private fun loadDataFromDb() {
-        database = TickerDatabase.getInstance(this)!!
-        database.tickerDataDao().getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ it ->
-                    databaseTickerList = it
-                    currentTicker = getTickerData(0)
-                    prepareView()
-                }, {
-                    databaseTickerList = listOf()
-                    currentTicker = TickerData(0)
-                    prepareView()
-                })
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -86,58 +66,103 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
     }
 
-    private fun prepareView() {
-        applyTickerData(false)
+    override fun initializeBookmarks(bookmarkNames: List<String>, selectedBookmark: Int) {
+        val bookmarksWithAddOption = bookmarkNames.plus(getString(R.string.create_bookmark))
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, bookmarksWithAddOption)
+        bookmarks.adapter = aa
+        bookmarks.setSelection(selectedBookmark)
+        bookmarks.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                presenter.selectBookmark(position)
+            }
 
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+        bookmarks.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, view, position, _ ->
+            if (position < bookmarkNames.size) {
+                showEditDialog(view, position)
+            }
+            true
+        }
+    }
+
+    override fun initializeListeners() {
         maxSec.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> createTimer()
             }
             true
         }
-        start.setOnClickListener({ createTimer() })
+        start.setOnClickListener { createTimer() }
+    }
 
-        bookmark1.isActivated = true
-        val bookmarks = listOf<View>(bookmark1, bookmark2, bookmark3, bookmark4, bookmark5, bookmark6, bookmark7, bookmark8)
-        val clickListener = View.OnClickListener {
-            bookmarks.forEachIndexed { index, view ->
-                if (view.id == it.id) {
-                    view.isActivated = true
-                    currentTicker = getTickerData(index)
-                    applyTickerData(true)
-                } else {
-                    view.isActivated = false
+    override fun applyTickerData(minimumMinutes: Int, minimumSeconds: Int, maximumMinutes: Int, maximumSeconds: Int, forceDefaultValue: Boolean) {
+        prepareValueSelectionView(minMin, minimumMinutes, 240, forceDefaultValue)
+        prepareValueSelectionView(minSec, minimumSeconds, 59, forceDefaultValue)
+        prepareValueSelectionView(maxMin, maximumMinutes, 240, forceDefaultValue)
+        prepareValueSelectionView(maxSec, maximumSeconds, 59, forceDefaultValue)
+    }
+
+    private fun showEditDialog(view: View?, position: Int) {
+        val editTextView = layoutInflater.inflate(R.layout.dialog_edit_text, null)
+        val editText = editTextView.findViewById<EditText>(R.id.edBookmarkName)
+        editText.setText((view as TextView).text)
+        val listener = DialogInterface.OnClickListener { _, which ->
+            val bookmarkName = editText.text.toString()
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> presenter.saveBookmark(bookmarkName, position)
+                DialogInterface.BUTTON_NEGATIVE -> presenter.deleteBookmark(position)
+            }
+        }
+        AlertDialog.Builder(this)
+                .setTitle(R.string.edit_bookmark)
+                .setView(editTextView)
+                .setPositiveButton(R.string.save, listener)
+                .setNegativeButton(R.string.delete, listener)
+                .show()
+    }
+
+    override fun showCreateNewBookmarkDialog() {
+        val view = layoutInflater.inflate(R.layout.dialog_edit_text, null)
+        val editText = view.findViewById<EditText>(R.id.edBookmarkName)
+        val listener = DialogInterface.OnClickListener { _, which ->
+            val bookmarkName = editText.text.toString()
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> presenter.createBookmark(bookmarkName)
+                DialogInterface.BUTTON_NEGATIVE -> {
+                    bookmarks.setSelection(0)
                 }
             }
         }
-        for (bookmark in bookmarks) {
-            bookmark.setOnClickListener(clickListener)
-        }
+        AlertDialog.Builder(this)
+                .setTitle(R.string.create_bookmark)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, listener)
+                .setNegativeButton(android.R.string.cancel, listener)
+                .show()
     }
 
-    private fun applyTickerData(forceNewValue: Boolean) {
-        prepareValueSelectionView(minMin, currentTicker.minimumMinutes, MaxValueTextWatcher(minMin, 240), forceNewValue)
-        prepareValueSelectionView(minSec, currentTicker.minimumSeconds, MaxValueTextWatcher(minSec, 59), forceNewValue)
-        prepareValueSelectionView(maxMin, currentTicker.maximumMinutes, MaxValueTextWatcher(maxMin, 240), forceNewValue)
-        prepareValueSelectionView(maxSec, currentTicker.maximumSeconds, MaxValueTextWatcher(maxSec, 59), forceNewValue)
-    }
-
-    private fun getTickerData(currentSelectedIndex: Int): TickerData {
-        databaseTickerList.forEach({
-            if (it.bookmarkPosition == currentSelectedIndex) {
-                return it
-            }
-        })
-        return TickerData(currentSelectedIndex)
-    }
-
-    private fun prepareValueSelectionView(view: TextView, startValue: Int, listener: MaxValueTextWatcher, forceNewValue: Boolean) {
-        if (view.text.isNullOrBlank() || forceNewValue) {
-            view.text = startValue.toString()
+    private fun prepareValueSelectionView(view: EditText, startValue: Int, maxValue: Int, forceDefaultValue: Boolean) {
+        if (view.text.isNullOrBlank() || forceDefaultValue) {
+            view.setText(startValue.toString())
         }
 
-        view.addTextChangedListener(listener)
+        view.addTextChangedListener(MaxValueTextWatcher(view, maxValue))
         view.onFocusChangeListener = MinValueVerification()
+    }
+
+    private fun createTimer() {
+        presenter.createTimer(minMin.getTextAsInt(), minSec.getTextAsInt(), maxMin.getTextAsInt(), maxSec.getTextAsInt())
+    }
+
+    override fun showMinimumMustBeBiggerThanMaximum() {
+        toast(R.string.error_min_is_bigger_than_max)
+    }
+
+    override fun createAlarm() {
+        timerHelper.createNotificationAndAlarm(this, PREFS)
+        startAlarmActivity()
     }
 
     private fun startAlarmActivity() {
@@ -145,38 +170,5 @@ class MainActivity : BaseActivity() {
         finish()
     }
 
-    private fun createTimer() {
-        val min = getTotalValueInMillis(minMin, minSec)
-        val max = getTotalValueInMillis(maxMin, maxSec)
-        if (max > min) {
-            val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
-            val intervalFinished = System.currentTimeMillis() + interval
-            saveToPreferences(interval, intervalFinished)
-            timerHelper.createNotificationAndAlarm(this, PREFS)
-            startAlarmActivity()
-        } else {
-            toast(R.string.error_min_is_bigger_than_max)
-        }
-    }
-
-    private fun getTotalValueInMillis(minutes: TextView, seconds: TextView): Int {
-        return (60 * getIntegerFromCharSequence(minutes.text) + getIntegerFromCharSequence(seconds.text)) * 1000
-    }
-
-    private fun saveToPreferences(interval: Long, intervalFinished: Long) {
-        currentTicker.maximumMinutes = getIntegerFromCharSequence(maxMin.text)
-        currentTicker.minimumMinutes = getIntegerFromCharSequence(minMin.text)
-        currentTicker.maximumSeconds = getIntegerFromCharSequence(maxSec.text)
-        currentTicker.minimumSeconds = getIntegerFromCharSequence(minSec.text)
-        insertCurrentTickerData()
-        PREFS.currentlyTickerRunning = true
-        PREFS.interval = interval
-        PREFS.intervalFinished = intervalFinished
-    }
-
-    private fun insertCurrentTickerData() {
-        Single.fromCallable({ database.tickerDataDao().insert(currentTicker) })
-                .subscribeOn(Schedulers.io())
-                .subscribe { _ -> Log.d("DB", "Inserted interval changes") }
-    }
+    private inline fun EditText.getTextAsInt(): Int = if (this.text.isNullOrBlank()) 0 else this.text.toString().toInt()
 }

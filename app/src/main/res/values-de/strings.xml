@@ -16,5 +16,6 @@
 	<string name="show_elapsed_time">Zeige verstrichene Zeit</string>
 	<string name="show_notification_summary">Zeige eine Benachrichtigung über die verbleibende und bereits abgelaufene Zeit.</string>
 	<string name="show_notification">Zeige Benachrichtigungen</string>
+	<string name="create_bookmark">Add new profile</string>
 
 </resources>

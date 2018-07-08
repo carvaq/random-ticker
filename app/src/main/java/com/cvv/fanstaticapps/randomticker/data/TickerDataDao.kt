@@ -22,4 +22,7 @@ interface TickerDataDao {
     @Query("SELECT * from tickerData WHERE id = :id LIMIT 1")
     fun getById(id: Long): Maybe<TickerData>
 
+    @Query("DELETE from tickerData WHERE id = :id")
+    fun delete(id: Long?)
+
 }
