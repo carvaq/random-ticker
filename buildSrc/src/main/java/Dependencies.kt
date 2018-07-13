@@ -24,12 +24,11 @@ object Gms {
 
 object AndroidLibs {
     val supportLibVersion = "1.0.0-beta01"
-    val roomVersion = "2.0.0-beta01"
-
     val material = "com.google.android.material:material:$supportLibVersion"
     val cardview = "androidx.cardview:cardview:$supportLibVersion"
     val appcompat = "androidx.appcompat:appcompat:$supportLibVersion"
 
+    val roomVersion = "2.0.0-beta01"
     val room_runtime = "androidx.room:room-runtime:$roomVersion"
     val room_rxjava2 = "androidx.room:room-rxjava2:$roomVersion"
     val room_compiler = "androidx.room:room-compiler:$roomVersion"

@@ -12,6 +12,7 @@ class UserPreferences(context: Context) {
     private val generatedIntervalPref: String = "generatedInterval"
     private val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
     private val tickerRunningPref: String = "tickerRunning"
+    private val currentSelectedPositionPref: String = "currentSelectedPosition"
     /**
      * These preferences are changed by the user in the @see SettingsActivity.
      * The preference keys (@see constants.xml) are also present in the xml, therefor the same should be used.
@@ -34,4 +35,7 @@ class UserPreferences(context: Context) {
     var alarmRingtone: String
         get() = prefs.getString(ringtonePref, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())
         set(value) = prefs.edit().putString(ringtonePref, value).apply()
+    var currentSelectedPosition: Int
+        get() = prefs.getInt(currentSelectedPositionPref, 0)
+        set(value) = prefs.edit().putInt(currentSelectedPositionPref, value).apply()
 }

@@ -6,18 +6,19 @@ import com.cvv.fanstaticapps.randomticker.data.TickerData
 import com.cvv.fanstaticapps.randomticker.data.TickerDatabase
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 class MainPresenter(private val database: TickerDatabase, private val view: MainView) {
+
     private lateinit var currentTicker: TickerData
     private lateinit var bookmarks: List<TickerData>
-    private lateinit var bookmarkNames: List<String>
 
     private val randomGenerator = Random(System.currentTimeMillis())
 
-    fun loadDataFromDatabase(currentIndex: Int = 0) {
-        database.tickerDataDao().getAll()
+    fun loadDataFromDatabase(currentIndex: Int): Disposable {
+        return database.tickerDataDao().getAll()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ it ->
@@ -32,35 +33,13 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
 
     private fun applyBookmarks(currentIndex: Int) {
         currentTicker = getTickerData(currentIndex)
-        bookmarkNames = fetchBookmarkNames()
         prepareInitialView(currentIndex)
     }
 
     fun selectBookmark(index: Int) {
-        when {
-            index < bookmarks.size -> {
-                currentTicker = getTickerData(index)
-                currentTicker.run {
-                    view.applyTickerData(minimumMinutes, minimumSeconds, maximumMinutes, maximumSeconds, true)
-                }
-            }
-            else -> {
-                view.showCreateNewBookmarkDialog()
-            }
-        }
-    }
-
-    fun deleteBookmark(position: Int): Boolean {
-        return when {
-            position < bookmarks.size -> {
-                val tickerToBeDeleted = getTickerData(position)
-                Single.fromCallable { database.tickerDataDao().delete(tickerToBeDeleted.id) }
-                        .subscribeOn(Schedulers.computation())
-                        .subscribe { _ -> Log.d("DB", "Bookmark deletion finished successfully") }
-
-                true
-            }
-            else -> false
+        currentTicker = getTickerData(index)
+        currentTicker.run {
+            view.applyTickerData(minimumMinutes, minimumSeconds, maximumMinutes, maximumSeconds, true, index)
         }
     }
 
@@ -77,36 +56,20 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
         }
     }
 
-    fun createBookmark(bookmarkName: String) {
-        val newTickerBookmark = TickerData(bookmarkName)
-        Single.fromCallable { database.tickerDataDao().insert(newTickerBookmark) }
-                .subscribeOn(Schedulers.computation())
-                .subscribe { _ ->
-                    Log.d("DB", "Inserted interval changes")
-                    loadDataFromDatabase(bookmarks.size)
-                }
-    }
-
-
     private fun prepareInitialView(selectedBookmark: Int) {
         view.initializeListeners()
-        view.initializeBookmarks(bookmarkNames, selectedBookmark)
+        view.initializeBookmarks(selectedBookmark)
         currentTicker.run {
-            view.applyTickerData(minimumMinutes, minimumSeconds, maximumMinutes, maximumSeconds, false)
+            view.applyTickerData(minimumMinutes, minimumSeconds, maximumMinutes, maximumSeconds, false, selectedBookmark)
         }
     }
 
-    private fun fetchBookmarkNames(): List<String> {
-        val bookmarkNames = mutableListOf<String>()
-        bookmarks.mapTo(bookmarkNames) { it.bookmarkName }
-        return bookmarkNames
-    }
-
     private fun getTickerData(currentSelectedIndex: Int): TickerData {
-        return if (currentSelectedIndex < bookmarks.size) {
-            bookmarks[currentSelectedIndex]
+        val data = bookmarks.firstOrNull() { it.bookmarkPosition == currentSelectedIndex }
+        return if (data != null) {
+            data
         } else {
-            val dummy = TickerData("Random Ticker")
+            val dummy = TickerData(currentSelectedIndex)
             bookmarks = bookmarks.plus(dummy)
             dummy
         }
@@ -122,10 +85,11 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
         currentTicker.minimumMinutes = minMin
         currentTicker.maximumSeconds = maxSec
         currentTicker.minimumSeconds = minSec
-        insertCurrentTickerData()
         PREFS.currentlyTickerRunning = true
         PREFS.interval = interval
         PREFS.intervalFinished = intervalFinished
+        PREFS.currentSelectedPosition = currentTicker.bookmarkPosition
+        insertCurrentTickerData()
     }
 
     private fun insertCurrentTickerData() {
@@ -134,13 +98,5 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
                 .subscribe { _ -> Log.d("DB", "Inserted interval changes") }
     }
 
-    fun saveBookmark(newName: String, position: Int) {
-        if (newName.isBlank()) {
-            deleteBookmark(position)
-        } else {
-            val editedBookmark = getTickerData(position)
-            editedBookmark.bookmarkName = newName
-        }
-    }
 
 }

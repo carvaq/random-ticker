@@ -10,13 +10,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "tickerData")
 data class TickerData(@PrimaryKey(autoGenerate = true) var id: Long?,
-                      @ColumnInfo(name = "bookmarkName") var bookmarkName: String,
                       @ColumnInfo(name = "bookmarkPosition") var bookmarkPosition: Int,
                       @ColumnInfo(name = "minimumMinutes") var minimumMinutes: Int,
                       @ColumnInfo(name = "minimumSeconds") var minimumSeconds: Int,
                       @ColumnInfo(name = "maximumMinutes") var maximumMinutes: Int,
                       @ColumnInfo(name = "maximumSeconds") var maximumSeconds: Int) {
-    constructor(name: String) : this(null, name, 0, 0, 0, 5, 0)
+    constructor(position: Int) : this(null, position, 0, 0, 5, 0)
 }
 
 

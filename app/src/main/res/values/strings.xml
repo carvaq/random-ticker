@@ -16,9 +16,5 @@
 	<string name="show_elapsed_time">Show elapsed time</string>
 	<string name="show_notification_summary">Show a notification of the time remaining and already elapsed.</string>
 	<string name="show_notification">Enable timer notification</string>
-	<string name="create_bookmark">Add new bookmark</string>
-	<string name="edit_bookmark">Edit bookmark</string>
-	<string name="save">Save</string>
-	<string name="delete">Delete</string>
 
 </resources>

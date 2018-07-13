@@ -8,9 +8,23 @@
 			style="@style/AppTheme.Description"
 			android:text="@string/random_timer_introduction"/>
 
-	<Spinner
-			android:id="@+id/bookmarks"
-			style="@style/AppTheme.BookmarksContainer"/>
+	<LinearLayout
+			android:orientation="horizontal"
+			style="@style/AppTheme.BookmarksContainer"
+			android:baselineAligned="false">
+
+		<include
+				android:layout_height="wrap_content"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				layout="@layout/content_bookmarks_row1"/>
+
+		<include
+				android:layout_height="wrap_content"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				layout="@layout/content_bookmarks_row2"/>
+	</LinearLayout>
 
 	<LinearLayout
 			android:layout_width="match_parent"

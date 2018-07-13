@@ -1,17 +1,12 @@
 package com.cvv.fanstaticapps.randomticker.activities
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.TextView
 import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.data.TickerDatabase
@@ -21,6 +16,8 @@ import com.cvv.fanstaticapps.randomticker.mvp.MainView
 import com.cvv.fanstaticapps.randomticker.view.MaxValueTextWatcher
 import com.cvv.fanstaticapps.randomticker.view.MinValueVerification
 import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.android.synthetic.main.content_bookmarks_row1.*
+import kotlinx.android.synthetic.main.content_bookmarks_row2.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_maximum_value.*
 import kotlinx.android.synthetic.main.content_minimum_value.*
@@ -32,6 +29,8 @@ class MainActivity : BaseActivity(), MainView {
     lateinit var timerHelper: TimerHelper
 
     private lateinit var presenter: MainPresenter
+    private lateinit var bookmarkViews: List<View>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +39,12 @@ class MainActivity : BaseActivity(), MainView {
             startAlarmActivity()
         } else {
             setContentView(R.layout.activity_main)
+            bookmarkViews = listOf<View>(bookmark1, bookmark2, bookmark3, bookmark4, bookmark5, bookmark6, bookmark7, bookmark8)
             setSupportActionBar(toolbar)
             val database = TickerDatabase.getInstance(this)!!
 
             presenter = MainPresenter(database, this)
-            presenter.loadDataFromDatabase()
+            addDisposable(presenter.loadDataFromDatabase(PREFS.currentSelectedPosition))
         }
     }
 
@@ -66,24 +66,19 @@ class MainActivity : BaseActivity(), MainView {
         super.onDestroy()
     }
 
-    override fun initializeBookmarks(bookmarkNames: List<String>, selectedBookmark: Int) {
-        val bookmarksWithAddOption = bookmarkNames.plus(getString(R.string.create_bookmark))
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, bookmarksWithAddOption)
-        bookmarks.adapter = aa
-        bookmarks.setSelection(selectedBookmark)
-        bookmarks.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                presenter.selectBookmark(position)
+    override fun initializeBookmarks(initialSelectedBookmark: Int) {
+        bookmark1.isActivated = true
+        val clickListener = View.OnClickListener {
+            var selectedPosition = 0
+            bookmarkViews.forEachIndexed { index, view ->
+                if (view.id == it.id) {
+                    selectedPosition = index
+                }
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
+            presenter.selectBookmark(selectedPosition)
         }
-        bookmarks.onItemLongClickListener = AdapterView.OnItemLongClickListener { _, view, position, _ ->
-            if (position < bookmarkNames.size) {
-                showEditDialog(view, position)
-            }
-            true
+        for (bookmark in bookmarkViews) {
+            bookmark.setOnClickListener(clickListener)
         }
     }
 
@@ -97,51 +92,14 @@ class MainActivity : BaseActivity(), MainView {
         start.setOnClickListener { createTimer() }
     }
 
-    override fun applyTickerData(minimumMinutes: Int, minimumSeconds: Int, maximumMinutes: Int, maximumSeconds: Int, forceDefaultValue: Boolean) {
+    override fun applyTickerData(minimumMinutes: Int, minimumSeconds: Int, maximumMinutes: Int, maximumSeconds: Int, forceDefaultValue: Boolean, selectedPosition: Int) {
+        bookmarkViews.forEachIndexed { index, view -> view.isActivated = index == selectedPosition }
         prepareValueSelectionView(minMin, minimumMinutes, 240, forceDefaultValue)
         prepareValueSelectionView(minSec, minimumSeconds, 59, forceDefaultValue)
         prepareValueSelectionView(maxMin, maximumMinutes, 240, forceDefaultValue)
         prepareValueSelectionView(maxSec, maximumSeconds, 59, forceDefaultValue)
     }
 
-    private fun showEditDialog(view: View?, position: Int) {
-        val editTextView = layoutInflater.inflate(R.layout.dialog_edit_text, null)
-        val editText = editTextView.findViewById<EditText>(R.id.edBookmarkName)
-        editText.setText((view as TextView).text)
-        val listener = DialogInterface.OnClickListener { _, which ->
-            val bookmarkName = editText.text.toString()
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> presenter.saveBookmark(bookmarkName, position)
-                DialogInterface.BUTTON_NEGATIVE -> presenter.deleteBookmark(position)
-            }
-        }
-        AlertDialog.Builder(this)
-                .setTitle(R.string.edit_bookmark)
-                .setView(editTextView)
-                .setPositiveButton(R.string.save, listener)
-                .setNegativeButton(R.string.delete, listener)
-                .show()
-    }
-
-    override fun showCreateNewBookmarkDialog() {
-        val view = layoutInflater.inflate(R.layout.dialog_edit_text, null)
-        val editText = view.findViewById<EditText>(R.id.edBookmarkName)
-        val listener = DialogInterface.OnClickListener { _, which ->
-            val bookmarkName = editText.text.toString()
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> presenter.createBookmark(bookmarkName)
-                DialogInterface.BUTTON_NEGATIVE -> {
-                    bookmarks.setSelection(0)
-                }
-            }
-        }
-        AlertDialog.Builder(this)
-                .setTitle(R.string.create_bookmark)
-                .setView(view)
-                .setPositiveButton(android.R.string.ok, listener)
-                .setNegativeButton(android.R.string.cancel, listener)
-                .show()
-    }
 
     private fun prepareValueSelectionView(view: EditText, startValue: Int, maxValue: Int, forceDefaultValue: Boolean) {
         if (view.text.isNullOrBlank() || forceDefaultValue) {

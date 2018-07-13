@@ -16,6 +16,5 @@
 	<string name="show_elapsed_time">Mostrar el tiempo transcurrido</string>
 	<string name="show_notification_summary">Mostrar una notificación del tiempo restante y ya transcurrido.</string>
 	<string name="show_notification">Mostrar notificaciones</string>
-	<string name="create_bookmark">Add new profile</string>
 
 </resources>

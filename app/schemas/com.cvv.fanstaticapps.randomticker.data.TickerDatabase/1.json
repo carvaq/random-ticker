@@ -2,23 +2,17 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bae6d54c791991c2e8fce41ff2d6b5eb",
+    "identityHash": "43425df0482cbf65b2dcd797f0c54e76",
     "entities": [
       {
         "tableName": "tickerData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `bookmarkName` TEXT NOT NULL, `bookmarkPosition` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `bookmarkPosition` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": false
-          },
-          {
-            "fieldPath": "bookmarkName",
-            "columnName": "bookmarkName",
-            "affinity": "TEXT",
-            "notNull": true
           },
           {
             "fieldPath": "bookmarkPosition",
@@ -63,7 +57,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bae6d54c791991c2e8fce41ff2d6b5eb\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"43425df0482cbf65b2dcd797f0c54e76\")"
     ]
   }
 }

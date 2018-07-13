@@ -16,6 +16,7 @@ val PREFS: UserPreferences by lazy {
 }
 
 class TickerApplication : DaggerApplication() {
+
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return androidInjector
     }
