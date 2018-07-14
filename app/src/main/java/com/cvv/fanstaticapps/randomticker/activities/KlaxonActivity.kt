@@ -2,14 +2,18 @@ package com.cvv.fanstaticapps.randomticker.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Context
 import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.PowerManager
 import android.view.View
 import android.view.View.GONE
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
 import android.view.animation.RotateAnimation
@@ -47,15 +51,38 @@ class KlaxonActivity : BaseActivity() {
     private var countDownTimer: CountDownTimer? = null
     private var showElapsedTime: Boolean = false
 
+    private var wake: PowerManager.WakeLock? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        wake = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK
+                or PowerManager.ACQUIRE_CAUSES_WAKEUP, "App:wakeuptag")
+        wake?.acquire(10 * 60 * 1000L /*10 minutes*/)
 
         setContentView(R.layout.activity_klaxon)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+        }
         KlaxonActivityNavigator.inject(this, intent)
 
         intervalFinished = PREFS.intervalFinished
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (wake != null && wake!!.isHeld) {
+            wake!!.release()
+        }
+    }
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         dismissButton.setOnClickListener {
