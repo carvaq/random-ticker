@@ -5,13 +5,13 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.preference.*
-import androidx.core.app.NavUtils
-import android.util.Log
 import android.view.MenuItem
+import androidx.core.app.NavUtils
 import com.crashlytics.android.Crashlytics
 import com.cvv.fanstaticapps.randomticker.R
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.android.synthetic.main.app_bar.*
+import timber.log.Timber
 
 
 /**
@@ -117,7 +117,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                             preference.summary = name
                         } catch (e: Exception) {
                             Crashlytics.logException(e)
-                            Log.e("Settings", "Could not load title for ringtone", e)
+                            Timber.e(e, "Could not load title for ringtone")
                             preference.summary = null
                         }
                     }

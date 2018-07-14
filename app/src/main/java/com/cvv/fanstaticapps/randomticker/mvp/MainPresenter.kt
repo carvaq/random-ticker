@@ -1,6 +1,5 @@
 package com.cvv.fanstaticapps.randomticker.mvp
 
-import android.util.Log
 import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.data.TickerData
 import com.cvv.fanstaticapps.randomticker.data.TickerDatabase
@@ -8,6 +7,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.util.*
 
 class MainPresenter(private val database: TickerDatabase, private val view: MainView) {
@@ -95,7 +95,7 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
     private fun insertCurrentTickerData() {
         Single.fromCallable { database.tickerDataDao().insert(currentTicker) }
                 .subscribeOn(Schedulers.computation())
-                .subscribe { _ -> Log.d("DB", "Inserted interval changes") }
+                .subscribe { _ -> Timber.d("Inserted interval changes") }
     }
 
 

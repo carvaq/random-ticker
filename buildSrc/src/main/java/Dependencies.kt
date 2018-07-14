@@ -55,6 +55,10 @@ object Libs {
     val grenadeVersion = "1.1.0"
     val grenade = "com.github.kobakei.grenade:library:$grenadeVersion"
     val grenade_processor = "com.github.kobakei.grenade:processor:$grenadeVersion"
+
+    val timberVersion = "4.7.1"
+    val timber = "com.jakewharton.timber:timber:$timberVersion"
+
 }
 
 object TestLibs {

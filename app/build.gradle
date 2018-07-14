@@ -21,13 +21,14 @@ def parseVersionCode = {
 	String versionName = gitVersionName
 	def versionCodeParts = versionName.tokenize('.')
 	int decimals = Integer.parseInt(versionCodeParts.get(1))
-	String formattedVersionCode = String.format("%s%02d00", versionCodeParts.get(0), decimals)
+	String formattedVersionCode = String.format("%s%02d%02d", versionCodeParts.get(0), decimals, runner)
 	def versionCode = Integer.parseInt(formattedVersionCode)
 	println "Version name: ${versionName}  Version code: ${versionCode}"
 	return versionCode
 }
 
 ext {
+	runner = 1
 	gitVersionName = getGitVersionName()
 	gitVersionCode = parseVersionCode(gitVersionName)
 }
@@ -89,6 +90,8 @@ dependencies {
 	implementation AndroidLibs.room_rxjava2
 	implementation Libs.rxAndroid
 	implementation Gms.oss
+	implementation Libs.timber
+
 
 	kapt AndroidLibs.room_compiler
 	kapt Libs.dagger_compiler

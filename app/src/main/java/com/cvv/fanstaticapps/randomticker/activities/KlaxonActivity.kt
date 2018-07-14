@@ -8,22 +8,22 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
 import android.view.animation.RotateAnimation
-import androidx.annotation.Nullable
+import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper.Companion.ONE_SECOND_IN_MILLIS
-import com.cvv.fanstaticapps.randomticker.PREFS
 import io.github.kobakei.grenade.annotation.Extra
 import io.github.kobakei.grenade.annotation.Navigator
 import kotlinx.android.synthetic.main.activity_klaxon.*
+import timber.log.Timber
 import java.lang.Math.abs
 import javax.inject.Inject
+
 
 @Navigator
 class KlaxonActivity : BaseActivity() {
@@ -49,6 +49,7 @@ class KlaxonActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_klaxon)
         KlaxonActivityNavigator.inject(this, intent)
 
@@ -163,7 +164,7 @@ class KlaxonActivity : BaseActivity() {
                 playingAlarmSound = RingtoneManager.getRingtone(applicationContext, uri)
                 playingAlarmSound!!.play()
             } catch (e: Exception) {
-                Log.e(TAG, "Error while trying to play alarm sound", e)
+                Timber.e(e, "Error while trying to play alarm sound")
             }
         } else {
             toast(R.string.bell_ringing)

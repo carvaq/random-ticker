@@ -4,6 +4,9 @@ import com.cvv.fanstaticapps.randomticker.data.UserPreferences
 import com.cvv.fanstaticapps.randomticker.injection.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+
 
 /**
  * Created by carvaq
@@ -34,6 +37,10 @@ class TickerApplication : DaggerApplication() {
                 .builder()
                 .application(this)
                 .build()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
 
         super.onCreate()
     }
