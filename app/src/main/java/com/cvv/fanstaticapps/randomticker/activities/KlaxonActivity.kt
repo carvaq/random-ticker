@@ -7,10 +7,7 @@ import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.PowerManager
+import android.os.*
 import android.view.View
 import android.view.View.GONE
 import android.view.WindowManager
@@ -34,7 +31,6 @@ class KlaxonActivity : BaseActivity() {
 
     companion object {
         private const val ANIMATION_DURATION = 750
-        private const val TAG = "KlaxonActivity"
     }
 
     @JvmField
@@ -50,11 +46,13 @@ class KlaxonActivity : BaseActivity() {
     private var intervalFinished: Long = 0
     private var countDownTimer: CountDownTimer? = null
     private var showElapsedTime: Boolean = false
+    private var vibrator: Vibrator? = null
 
     private var wake: PowerManager.WakeLock? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wake = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK
                 or PowerManager.ACQUIRE_CAUSES_WAKEUP, "App:wakeuptag")
@@ -83,6 +81,7 @@ class KlaxonActivity : BaseActivity() {
             wake!!.release()
         }
     }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         dismissButton.setOnClickListener {
@@ -136,6 +135,7 @@ class KlaxonActivity : BaseActivity() {
     private fun timerFinished() {
         timerHelper.cancelNotification(this, PREFS)
         playRingtone()
+        vibrate()
         if (!pulsator.isStarted) {
             hideBellAndMoveCancelButton()
         }
@@ -172,6 +172,7 @@ class KlaxonActivity : BaseActivity() {
         playingAlarmSound?.stop()
         waitingIconAnimation?.cancel()
         countDownTimer?.cancel()
+        vibrator?.cancel()
     }
 
     private fun startBellAnimation() {
@@ -195,6 +196,17 @@ class KlaxonActivity : BaseActivity() {
             }
         } else {
             toast(R.string.bell_ringing)
+        }
+    }
+
+    private fun vibrate() {
+        if (vibrator == null && PREFS.vibrator) {
+            vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= 26) {
+                vibrator?.vibrate(VibrationEffect.createOneShot(230, VibrationEffect.DEFAULT_AMPLITUDE)
+            } else {
+                vibrator?.vibrate(230);
+            }
         }
     }
 

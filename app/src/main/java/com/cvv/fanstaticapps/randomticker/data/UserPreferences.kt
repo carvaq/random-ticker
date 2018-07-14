@@ -19,6 +19,7 @@ class UserPreferences(context: Context) {
      */
     private val showNotificationPref: String = "pref_show_notification"
     private val ringtonePref: String = "pref_ringtone"
+    private val vibratorPref: String = "pref_vibration"
 
     var interval: Long
         get() = prefs.getLong(generatedIntervalPref, 0)
@@ -38,4 +39,7 @@ class UserPreferences(context: Context) {
     var currentSelectedPosition: Int
         get() = prefs.getInt(currentSelectedPositionPref, 0)
         set(value) = prefs.edit().putInt(currentSelectedPositionPref, value).apply()
+    var vibrator: Boolean
+        get() = prefs.getBoolean(vibratorPref, false)
+        set(value) = prefs.edit().putBoolean(vibratorPref, value).apply()
 }

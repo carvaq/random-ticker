@@ -4,6 +4,7 @@
 	<string name="pref_ringtone" translatable="false">pref_ringtone</string>
 	<string name="pref_license" translatable="false">pref_license</string>
 	<string name="pref_show_notification" translatable="false">pref_show_notification</string>
+	<string name="pref_vibration_key" translatable="false">pref_vibration</string>
 	<string name="bookmark_1" translatable="false">1</string>
 	<string name="bookmark_2" translatable="false">2</string>
 	<string name="bookmark_3" translatable="false">3</string>

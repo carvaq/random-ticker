@@ -7,6 +7,11 @@
 			android:title="@string/pref_title_ringtone"/>
 
 	<CheckBoxPreference
+			android:key="@string/pref_vibration_key"
+			android:title="@string/pref_vibration_title"
+			android:defaultValue="false"/>
+
+	<CheckBoxPreference
 			android:summary="@string/show_notification_summary"
 			android:key="@string/pref_show_notification"
 			android:title="@string/show_notification"
