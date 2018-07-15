@@ -34,9 +34,14 @@
 			android:id="@+id/elapsedTime"
 			android:layout_gravity="center"
 			android:layout_width="wrap_content"
+			android:textAllCaps="true"
+			android:background="?attr/selectableItemBackground"
+			android:padding="8dp"
+			android:textStyle="bold"
 			android:layout_height="wrap_content"
 			android:text="@string/show_elapsed_time"
-			android:textColor="@android:color/primary_text_light"/>
+			android:textSize="@dimen/elepsedTimeTextSize"
+			android:textColor="#616161"/>
 
 	<pl.bclogic.pulsator4droid.library.PulsatorLayout
 			android:id="@+id/pulsator"

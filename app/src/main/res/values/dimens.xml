@@ -9,4 +9,6 @@
 	<dimen name="contentPadding">16dp</dimen>
 	<dimen name="editTextPadding">16dp</dimen>
 	<dimen name="editTextMinWidth">100dp</dimen>
+	<dimen name="elepsedTimeTextSizeZoomed">50sp</dimen>
+	<dimen name="elepsedTimeTextSize">14sp</dimen>
 </resources>

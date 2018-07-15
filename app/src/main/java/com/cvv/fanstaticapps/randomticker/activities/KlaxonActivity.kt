@@ -24,6 +24,7 @@ import com.cvv.fanstaticapps.randomticker.helper.WakeLocker
 import com.cvv.fanstaticapps.randomticker.mvp.KlaxonPresenter
 import com.cvv.fanstaticapps.randomticker.mvp.KlaxonPresenter.ViewState
 import com.cvv.fanstaticapps.randomticker.mvp.KlaxonView
+import com.cvv.fanstaticapps.randomticker.view.AnimatorEndListener
 import io.github.kobakei.grenade.annotation.Extra
 import io.github.kobakei.grenade.annotation.Navigator
 import kotlinx.android.synthetic.main.activity_klaxon.*
@@ -105,12 +106,12 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     override fun render(viewState: ViewState) {
         when (viewState) {
             is ViewState.TimerStarted -> {
-                startBellAnimation()
+                startWaitingIconAnimation()
                 elapsedTime.setOnClickListener { presenter.showElapsedTime = true }
 
             }
             is ViewState.ElapseTimeUpdate -> {
-                elapsedTime.text = viewState.elapsedTime
+                showElapsedTime(viewState.elapsedTime)
             }
             is ViewState.TimerFinished -> {
                 timerHelper.cancelNotification(this, PREFS)
@@ -118,7 +119,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 playRingtone()
                 vibrate()
                 if (!pulsator.isStarted) {
-                    hideWaitingIcon()
+                    startHideWaitingIconAnimation()
                     startPulsatorAnimation()
                 }
             }
@@ -138,7 +139,8 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         vibrator?.cancel()
     }
 
-    private fun showElapsedTime(elapsedTimeInMillis: String) {
+    private fun showElapsedTime(elapsedTimeInMillis: String?) {
+        elapsedTimeInMillis.isNullOrBlank() ?: return
         elapsedTime.text = elapsedTimeInMillis
         if (elapsedTimeNeedsAnimation) {
             elapsedTimeNeedsAnimation = false
@@ -147,30 +149,27 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
             val animator = ValueAnimator.ofFloat(startSize, endSize)
             animator.duration = 1200
-
-
-            animator.addUpdateListener { valueAnimator ->
-                val animatedValue = valueAnimator.animatedValue as Float
-                elapsedTime.setTextSize(animatedValue)
+            animator.addUpdateListener {
+                val animatedValue = it.animatedValue as Float
+                elapsedTime.textSize = animatedValue
             }
-
+            animator.addListener(object : AnimatorEndListener() {
+                override fun onAnimationEnd(p0: Animator?) {
+                    startWaitingIconAnimation()
+                }
+            })
             animator.start()
         }
     }
 
-    private fun hideWaitingIcon() {
+    private fun startWaitingIconAnimation() {
         waitingIconAnimation?.cancel()
-        waitingIcon.animate()
-                .alpha(0f)
-                .scaleX(0f)
-                .scaleY(0f)
-                .setDuration(animationDuration.toLong())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        waitingIcon!!.visibility = View.GONE
-                    }
-                }).start()
+        waitingIconAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.55f)
+        waitingIconAnimation!!.repeatCount = Animation.INFINITE
+        waitingIconAnimation!!.interpolator = CycleInterpolator(1f)
+        waitingIconAnimation!!.duration = 4000
+        timerHand.startAnimation(waitingIconAnimation)
     }
 
     private fun startPulsatorAnimation() {
@@ -186,13 +185,19 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 }).duration = animationDuration.toLong()
     }
 
-    private fun startBellAnimation() {
-        waitingIconAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF,
-                0.5f, Animation.RELATIVE_TO_SELF, 0.55f)
-        waitingIconAnimation!!.repeatCount = Animation.INFINITE
-        waitingIconAnimation!!.interpolator = CycleInterpolator(1f)
-        waitingIconAnimation!!.duration = 4000
-        timerHand.startAnimation(waitingIconAnimation)
+    private fun startHideWaitingIconAnimation() {
+        waitingIconAnimation?.cancel()
+        waitingIcon.animate()
+                .alpha(0f)
+                .scaleX(0f)
+                .scaleY(0f)
+                .setDuration(animationDuration.toLong())
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
+                        waitingIcon!!.visibility = View.GONE
+                    }
+                }).start()
     }
 
     private fun playRingtone() {
