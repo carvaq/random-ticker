@@ -6,13 +6,12 @@ import android.content.Intent
 import android.os.Handler
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import android.text.format.DateUtils
-import com.cvv.fanstaticapps.randomticker.receiver.OnAlarmReceiver
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.activities.CancelActivity
 import com.cvv.fanstaticapps.randomticker.activities.KlaxonActivityNavigator
 import com.cvv.fanstaticapps.randomticker.activities.MainActivity
 import com.cvv.fanstaticapps.randomticker.data.UserPreferences
+import com.cvv.fanstaticapps.randomticker.receiver.OnAlarmReceiver
 import javax.inject.Inject
 
 /**
@@ -75,10 +74,6 @@ class TimerHelper @Inject constructor() {
                 .setSmallIcon(R.drawable.ic_stat_timer)
 
         return builder.build()
-    }
-
-    fun getFormattedElapsedMilliseconds(elapsedMilliseconds: Long): String {
-        return DateUtils.formatElapsedTime(elapsedMilliseconds / ONE_SECOND_IN_MILLIS)
     }
 
     private fun setAlarm(context: Context, intervalFinished: Long) {

@@ -2,14 +2,17 @@ package com.cvv.fanstaticapps.randomticker.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
-import android.view.View.GONE
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.CycleInterpolator
@@ -17,21 +20,21 @@ import android.view.animation.RotateAnimation
 import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.helper.TimerHelper
-import com.cvv.fanstaticapps.randomticker.helper.TimerHelper.Companion.ONE_SECOND_IN_MILLIS
+import com.cvv.fanstaticapps.randomticker.helper.WakeLocker
+import com.cvv.fanstaticapps.randomticker.mvp.KlaxonPresenter
+import com.cvv.fanstaticapps.randomticker.mvp.KlaxonPresenter.ViewState
+import com.cvv.fanstaticapps.randomticker.mvp.KlaxonView
 import io.github.kobakei.grenade.annotation.Extra
 import io.github.kobakei.grenade.annotation.Navigator
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
-import java.lang.Math.abs
 import javax.inject.Inject
 
 
 @Navigator
-class KlaxonActivity : BaseActivity() {
+class KlaxonActivity : BaseActivity(), KlaxonView {
 
-    companion object {
-        private const val ANIMATION_DURATION = 750
-    }
+    private val animationDuration = 750
 
     @JvmField
     @Extra
@@ -42,24 +45,26 @@ class KlaxonActivity : BaseActivity() {
 
     private var playingAlarmSound: Ringtone? = null
     private var waitingIconAnimation: Animation? = null
-    //timestamp when the timer should ring
-    private var intervalFinished: Long = 0
-    private var countDownTimer: CountDownTimer? = null
-    private var showElapsedTime: Boolean = false
     private var vibrator: Vibrator? = null
 
-    private var wake: PowerManager.WakeLock? = null
+    private lateinit var presenter: KlaxonPresenter;
+    private var elapsedTimeNeedsAnimation: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        wake = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK
-                or PowerManager.ACQUIRE_CAUSES_WAKEUP, "App:wakeuptag")
-        wake?.acquire(10 * 60 * 1000L /*10 minutes*/)
+        WakeLocker.acquireLock(this)
 
         setContentView(R.layout.activity_klaxon)
 
+        enableShowWhenLocked()
+
+        presenter = KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed)
+
+        KlaxonActivityNavigator.inject(this, intent)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun enableShowWhenLocked() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
@@ -70,92 +75,105 @@ class KlaxonActivity : BaseActivity() {
                     or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
         }
-        KlaxonActivityNavigator.inject(this, intent)
-
-        intervalFinished = PREFS.intervalFinished
     }
 
     override fun onPause() {
         super.onPause()
-        if (wake != null && wake!!.isHeld) {
-            wake!!.release()
-        }
+        WakeLocker.release()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         dismissButton.setOnClickListener {
-            cancelEverything()
-            timerHelper.cancelNotificationAndGoBack(this, PREFS)
+            presenter.cancelTimer()
         }
 
-        if (timeElapsed) {
-            timerFinished()
-        } else {
-            startCountDownTimer()
-            elapsedTime.setOnClickListener({ showElapsedTime = true })
-        }
+        presenter.init()
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         KlaxonActivityNavigator.inject(this, intent)
-        if (timeElapsed && countDownTimer != null) {
-            countDownTimer!!.cancel()
-            timerFinished()
-        }
+        presenter.update(timeElapsed)
     }
 
     override fun onStop() {
         super.onStop()
-        cancelEverything()
+        presenter.onStop()
     }
 
-    private fun startCountDownTimer() {
-        countDownTimer = object : CountDownTimer(intervalFinished - System.currentTimeMillis(), ONE_SECOND_IN_MILLIS) {
-            override fun onTick(millisUntilFinished: Long) {
-                if (showElapsedTime) {
-                    val millisSinceStarted = abs(intervalFinished - System.currentTimeMillis() - PREFS.interval)
-                    val elapsedMillis = timerHelper
-                            .getFormattedElapsedMilliseconds(millisSinceStarted)
-                    elapsedTime.text = elapsedMillis
+    override fun render(viewState: ViewState) {
+        when (viewState) {
+            is ViewState.TimerStarted -> {
+                startBellAnimation()
+                elapsedTime.setOnClickListener { presenter.showElapsedTime = true }
+
+            }
+            is ViewState.ElapseTimeUpdate -> {
+                elapsedTime.text = viewState.elapsedTime
+            }
+            is ViewState.TimerFinished -> {
+                timerHelper.cancelNotification(this, PREFS)
+                showElapsedTime(viewState.elapsedTime)
+                playRingtone()
+                vibrate()
+                if (!pulsator.isStarted) {
+                    hideWaitingIcon()
+                    startPulsatorAnimation()
                 }
             }
-
-            override fun onFinish() {
-                timerFinished()
-                PREFS.currentlyTickerRunning = false
-                countDownTimer = null
+            is ViewState.TimerCanceled -> {
+                cancelEverything()
+                timerHelper.cancelNotificationAndGoBack(this, PREFS)
+            }
+            is ViewState.TimerStopped -> {
+                cancelEverything()
             }
         }
-        countDownTimer!!.start()
-        startBellAnimation()
     }
 
-    private fun timerFinished() {
-        timerHelper.cancelNotification(this, PREFS)
-        playRingtone()
-        vibrate()
-        if (!pulsator.isStarted) {
-            hideBellAndMoveCancelButton()
+    private fun cancelEverything() {
+        playingAlarmSound?.stop()
+        waitingIconAnimation?.cancel()
+        vibrator?.cancel()
+    }
+
+    private fun showElapsedTime(elapsedTimeInMillis: String) {
+        elapsedTime.text = elapsedTimeInMillis
+        if (elapsedTimeNeedsAnimation) {
+            elapsedTimeNeedsAnimation = false
+            val startSize = resources.getDimensionPixelSize(R.dimen.elepsedTimeTextSize).toFloat()
+            val endSize = resources.getDimensionPixelSize(R.dimen.elepsedTimeTextSizeZoomed).toFloat()
+
+            val animator = ValueAnimator.ofFloat(startSize, endSize)
+            animator.duration = 1200
+
+
+            animator.addUpdateListener { valueAnimator ->
+                val animatedValue = valueAnimator.animatedValue as Float
+                elapsedTime.setTextSize(animatedValue)
+            }
+
+            animator.start()
         }
     }
 
-    private fun hideBellAndMoveCancelButton() {
+    private fun hideWaitingIcon() {
         waitingIconAnimation?.cancel()
-        elapsedTime.visibility = GONE
         waitingIcon.animate()
                 .alpha(0f)
                 .scaleX(0f)
                 .scaleY(0f)
-                .setDuration(ANIMATION_DURATION.toLong())
+                .setDuration(animationDuration.toLong())
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
                         waitingIcon!!.visibility = View.GONE
                     }
                 }).start()
+    }
 
+    private fun startPulsatorAnimation() {
         pulsator.animate()
                 .scaleX(1.5f)
                 .setStartDelay(100)
@@ -165,14 +183,7 @@ class KlaxonActivity : BaseActivity() {
                         super.onAnimationEnd(animation)
                         pulsator.start()
                     }
-                }).duration = ANIMATION_DURATION.toLong()
-    }
-
-    private fun cancelEverything() {
-        playingAlarmSound?.stop()
-        waitingIconAnimation?.cancel()
-        countDownTimer?.cancel()
-        vibrator?.cancel()
+                }).duration = animationDuration.toLong()
     }
 
     private fun startBellAnimation() {
@@ -183,7 +194,6 @@ class KlaxonActivity : BaseActivity() {
         waitingIconAnimation!!.duration = 4000
         timerHand.startAnimation(waitingIconAnimation)
     }
-
 
     private fun playRingtone() {
         if (playingAlarmSound == null) {
@@ -199,11 +209,12 @@ class KlaxonActivity : BaseActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun vibrate() {
         if (vibrator == null && PREFS.vibrator) {
             vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             if (Build.VERSION.SDK_INT >= 26) {
-                vibrator?.vibrate(VibrationEffect.createOneShot(230, VibrationEffect.DEFAULT_AMPLITUDE)
+                vibrator?.vibrate(VibrationEffect.createOneShot(230, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
                 vibrator?.vibrate(230);
             }
