@@ -26,7 +26,7 @@ def parseVersionCode = {
 }
 
 ext {
-	runner = 2
+	runner = 4
 	gitVersionName = getGitVersionName()
 	gitVersionCode = parseVersionCode(gitVersionName)
 }

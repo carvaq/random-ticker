@@ -55,21 +55,10 @@ class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished
             override fun onFinish() {
                 timerFinished()
                 PREFS.currentlyTickerRunning = false
-                startTimerForElapsedTimer()
+                countDownTimer = null
             }
         }
         countDownTimer!!.start()
-    }
-
-    private fun startTimerForElapsedTimer() {
-        countDownTimer = object : CountDownTimer(5 * 60 * 1000, TimerHelper.ONE_SECOND_IN_MILLIS) {
-            override fun onTick(p0: Long) {
-                view.render(ViewState.ElapseTimeUpdate(getElapsedTime()))
-            }
-
-            override fun onFinish() {
-            }
-        }.start()
     }
 
     private fun getElapsedTime(): String {
