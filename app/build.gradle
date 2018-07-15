@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'io.fabric'
 
 
-apply from: 'release_config.gradle'
+apply from: "$rootDir/release_config.gradle"
 
 def getGitVersionName = { ->
 	String tag = ("git describe --abbrev=0 --tags").execute().text.trim()
@@ -45,19 +45,18 @@ android {
 
 		buildConfigField "boolean", "SHOW_SETTINGS", "true"
 	}
-
-	buildTypes {
-		release {
-			minifyEnabled true
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			signingConfig signingConfigs.release
-		}
-	}
-
 }
 
 dependencies{
 	implementation project(':base')
+}
+
+play {
+	if(file("play_store_secret.json").exists()){
+		println "Found play store upload credentials"
+		jsonFile = file('play_store_secret.json')
+		track = 'internal'
+	}
 }
 
 apply plugin: 'com.google.gms.google-services'

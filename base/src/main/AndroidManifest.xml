@@ -19,6 +19,11 @@
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+
+			<meta-data
+					android:name="default-url"
+					android:value="https://randomticker-84c18.firebaseapp.com/index"/>
+
 			<intent-filter android:autoVerify="true">
 				<action android:name="android.intent.action.VIEW"/>
 
@@ -28,11 +33,11 @@
 				<data
 						android:scheme="https"
 						android:host="randomticker-84c18.firebaseapp.com"/>
-			</intent-filter>
 
-			<meta-data
-					android:name="default-url"
-					android:value="https://randomticker-84c18.firebaseapp.com/index"/>
+				<data
+						android:scheme="http"
+						android:host="randomticker-84c18.firebaseapp.com"/>
+			</intent-filter>
 		</activity>
 		<activity
 				android:name=".activities.KlaxonActivity"

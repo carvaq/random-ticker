@@ -10,12 +10,12 @@ android {
 			}
 		}
 	}
-}
 
-play {
-	if(file("play_store_secret.json").exists()){
-		println "Found play store upload credentials"
-		jsonFile = file('play_store_secret.json')
-		track = 'internal'
+	buildTypes {
+		release {
+			debuggable false
+			minifyEnabled true
+			signingConfig signingConfigs.release
+		}
 	}
 }
