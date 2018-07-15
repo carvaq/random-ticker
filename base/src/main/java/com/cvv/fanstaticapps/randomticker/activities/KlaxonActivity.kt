@@ -140,7 +140,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     private fun showElapsedTime(elapsedTimeInMillis: String?) {
-        elapsedTimeInMillis.isNullOrBlank() ?: return
+        if (elapsedTimeInMillis != null) return
         elapsedTime.text = elapsedTimeInMillis
         if (elapsedTimeNeedsAnimation) {
             elapsedTimeNeedsAnimation = false
