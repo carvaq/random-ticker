@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'com.github.triplet.play'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'io.fabric'
+
 
 apply from: 'release_config.gradle'
 
@@ -33,10 +31,6 @@ ext {
 	gitVersionCode = parseVersionCode(gitVersionName)
 }
 
-kapt {
-	generateStubs = false
-}
-
 android {
 	compileSdkVersion Versions.compileVersion
 	buildToolsVersion Versions.buildToolsVersion
@@ -46,14 +40,11 @@ android {
 		targetSdkVersion Versions.targeSdkVersion
 		versionCode gitVersionCode
 		versionName gitVersionName
+
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-		kapt {
-			arguments {
-				arg("room.schemaLocation", "$projectDir/schemas".toString())
-			}
-		}
 	}
+
 	buildTypes {
 		release {
 			minifyEnabled true
@@ -62,52 +53,10 @@ android {
 		}
 	}
 
-	testOptions {
-		unitTests {
-			includeAndroidResources = true
-		}
-	}
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_8
-		targetCompatibility JavaVersion.VERSION_1_8
-	}
 }
 
-dependencies {
-
-	implementation Kotlin.stdlib
-	implementation AndroidLibs.material
-	implementation AndroidLibs.cardview
-	implementation AndroidLibs.appcompat
-	implementation Libs.pulsator
-	implementation Libs.grenade
-	implementation Libs.dagger
-	implementation Libs.dagger_android
-	implementation Libs.dagger_android_support
-	implementation Firebase.crashlytics
-	implementation AndroidLibs.constraint_layout
-	implementation AndroidLibs.room_runtime
-	implementation AndroidLibs.room_rxjava2
-	implementation Libs.rxAndroid
-	implementation Gms.oss
-	implementation Libs.timber
-
-
-	kapt AndroidLibs.room_compiler
-	kapt Libs.dagger_compiler
-	kapt Libs.dagger_android_processor
-	kapt Libs.grenade_processor
-
-	testImplementation TestLibs.mockito_core
-	testImplementation TestLibs.junit
-	testImplementation TestLibs.robolectric
-	testImplementation TestLibs.mockito_kotlin
-
-	androidTestImplementation AndroidLibs.uiautomator
-	androidTestImplementation AndroidLibs.rules
-	androidTestImplementation AndroidLibs.espresso_core
-
+dependencies{
+	implementation project(':base_feature')
 }
-
 
 apply plugin: 'com.google.gms.google-services'
