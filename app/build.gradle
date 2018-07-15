@@ -26,7 +26,7 @@ def parseVersionCode = {
 }
 
 ext {
-	runner = 1
+	runner = 2
 	gitVersionName = getGitVersionName()
 	gitVersionCode = parseVersionCode(gitVersionName)
 }
@@ -43,6 +43,7 @@ android {
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+		buildConfigField "boolean", "SHOW_SETTINGS", "true"
 	}
 
 	buildTypes {
@@ -56,7 +57,7 @@ android {
 }
 
 dependencies{
-	implementation project(':base_feature')
+	implementation project(':base')
 }
 
 apply plugin: 'com.google.gms.google-services'

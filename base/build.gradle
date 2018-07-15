@@ -18,6 +18,8 @@ android {
 			}
 			generateStubs = false
 		}
+
+		buildConfigField "boolean", "SHOW_SETTINGS", "false"
 	}
 	buildTypes {
 		release {

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import com.cvv.fanstaticapps.randomticker.BuildConfig
 import com.cvv.fanstaticapps.randomticker.PREFS
 import com.cvv.fanstaticapps.randomticker.R
 import com.cvv.fanstaticapps.randomticker.data.TickerDatabase
@@ -50,7 +51,9 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.menu_main_activity, menu)
+        if (BuildConfig.SHOW_SETTINGS) {
+            menuInflater.inflate(R.menu.menu_main_activity, menu)
+        }
         return true
     }
 
