@@ -19,7 +19,7 @@ android {
 			generateStubs = false
 		}
 
-		buildConfigField "boolean", "SHOW_SETTINGS", "false"
+		resValue "bool", "show_settings_menu", "false"
 	}
 	buildTypes {
 		release {
