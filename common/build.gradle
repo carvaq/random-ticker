@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+	compileSdkVersion 28
+
+
+
+	defaultConfig {
+		minSdkVersion Versions.minSdkVersion
+		targetSdkVersion Versions.targeSdkVersion
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+}
+
+dependencies {
+	implementation Kotlin.stdlib
+	implementation Libs.dagger
+	implementation Libs.dagger_android
+	implementation Libs.dagger_android_support
+	implementation Libs.rxAndroid
+	implementation Firebase.crashlytics
+	implementation Gms.oss
+	implementation Libs.timber
+}

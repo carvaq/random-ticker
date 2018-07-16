@@ -3,11 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RandomTicker.iml" filepath="$PROJECT_DIR$/RandomTicker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
       <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/instantapp/instantapp.iml" filepath="$PROJECT_DIR$/instantapp/instantapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/random-ticker.iml" filepath="$PROJECT_DIR$/random-ticker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/random-ticker-app/random-ticker-app.iml" filepath="$PROJECT_DIR$/random-ticker-app/random-ticker-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/random-ticker-base/random-ticker-base.iml" filepath="$PROJECT_DIR$/random-ticker-base/random-ticker-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/random-ticker-instantapp/random-ticker-instantapp.iml" filepath="$PROJECT_DIR$/random-ticker-instantapp/random-ticker-instantapp.iml" />
     </modules>
   </component>
 </project>

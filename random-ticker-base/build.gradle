@@ -1,0 +1,75 @@
+apply plugin: 'com.android.feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+	compileSdkVersion Versions.compileVersion
+	buildToolsVersion Versions.buildToolsVersion
+	defaultConfig {
+		baseFeature true
+		minSdkVersion Versions.minSdkVersion
+		targetSdkVersion Versions.targeSdkVersion
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+		kapt {
+			arguments {
+				arg("room.schemaLocation", "$projectDir/schemas".toString())
+			}
+			generateStubs = false
+		}
+
+		resValue "bool", "show_settings_menu", "false"
+	}
+	buildTypes {
+		release {
+			minifyEnabled true
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+	testOptions {
+		unitTests {
+			includeAndroidResources = true
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+}
+
+dependencies {
+	application project(':random-ticker-app')
+
+	implementation Kotlin.stdlib
+	implementation AndroidLibs.material
+	implementation AndroidLibs.cardview
+	implementation AndroidLibs.appcompat
+	implementation Libs.pulsator
+	implementation Libs.dagger
+	implementation Libs.dagger_android
+	implementation Libs.dagger_android_support
+	implementation Firebase.crashlytics
+	implementation AndroidLibs.constraint_layout
+	implementation AndroidLibs.room_runtime
+	implementation AndroidLibs.room_rxjava2
+	implementation Libs.rxAndroid
+	implementation Libs.timber
+
+
+	kapt AndroidLibs.room_compiler
+	kapt Libs.dagger_compiler
+	kapt Libs.dagger_android_processor
+
+	testImplementation TestLibs.mockito_core
+	testImplementation TestLibs.junit
+	testImplementation TestLibs.robolectric
+	testImplementation TestLibs.mockito_kotlin
+
+	androidTestImplementation AndroidLibs.uiautomator
+	androidTestImplementation AndroidLibs.rules
+	androidTestImplementation AndroidLibs.espresso_core
+
+	implementation project(':common')
+}

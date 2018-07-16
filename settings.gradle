@@ -1,1 +1,1 @@
-include ':base', ':app', ':instantapp'
+include ':random-ticker-base', ':random-ticker-app', ':random-ticker-instantapp', ':common'

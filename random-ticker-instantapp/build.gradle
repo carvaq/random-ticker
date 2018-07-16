@@ -1,0 +1,7 @@
+apply plugin: 'com.android.instantapp'
+
+apply from: "$rootDir/release_config.gradle"
+
+dependencies {
+	implementation project(':random-ticker-base')
+}

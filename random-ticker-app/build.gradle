@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'io.fabric'
+
+
+apply from: "$rootDir/release_config.gradle"
+
+def getGitVersionName = { ->
+	String tag = ("git describe --abbrev=0 --tags").execute().text.trim()
+	if (tag.contains('/') && tag.contains('.')) {
+		return tag.substring(tag.indexOf('/') + 1, tag.length())
+	} else {
+		throw new Exception("tag has no slashes or a period [${tag}]")
+	}
+}
+
+def parseVersionCode = {
+	String versionName = gitVersionName
+	def versionCodeParts = versionName.tokenize('.')
+	int decimals = Integer.parseInt(versionCodeParts.get(1))
+	String formattedVersionCode = String.format("%s%02d%02d", versionCodeParts.get(0), decimals, runner)
+	def versionCode = Integer.parseInt(formattedVersionCode)
+	println "Version name: ${versionName}  Version code: ${versionCode}"
+	return versionCode
+}
+
+ext {
+	runner = 5
+	gitVersionName = getGitVersionName()
+	gitVersionCode = parseVersionCode(gitVersionName)
+}
+
+android {
+	compileSdkVersion Versions.compileVersion
+	buildToolsVersion Versions.buildToolsVersion
+	defaultConfig {
+		applicationId "com.cvv.fanstaticapps.randomticker"
+		minSdkVersion Versions.minSdkVersion
+		targetSdkVersion Versions.targeSdkVersion
+		versionCode gitVersionCode
+		versionName gitVersionName
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+		resValue "bool", "show_settings_menu", "true"
+	}
+}
+
+dependencies {
+	implementation project(':random-ticker-base')
+}
+
+play {
+	if (file("play_store_secret.json").exists()) {
+		println "Found play store upload credentials"
+		jsonFile = file('play_store_secret.json')
+		track = 'internal'
+	}
+}
+
+apply plugin: 'com.google.gms.google-services'
