@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="16dp"
+		tools:background="#77237594"
+		tools:showIn="@layout/dialog_condition">
+
+	<com.google.android.material.textfield.TextInputLayout
+			style="@style/AppTheme.InputLayout"
+			app:layout_constraintBottom_toTopOf="@+id/to"
+			app:layout_constraintEnd_toStartOf="@+id/to"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
+
+		<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/minMin"
+				style="@style/AppTheme.NumberEditText.Big"
+				android:hint="@string/hint_minutes"/>
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/textInputLayout"
+			style="@style/AppTheme.InputLayout"
+			app:layout_constraintBottom_toTopOf="@+id/to"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/to"
+			app:layout_constraintTop_toTopOf="parent">
+
+		<androidx.appcompat.widget.AppCompatEditText
+				android:id="@+id/minSec"
+				style="@style/AppTheme.NumberEditText.Big"
+				android:hint="@string/hint_seconds"/>
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<TextView
+			android:id="@+id/to"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/to"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"/>
+
+	<com.google.android.material.textfield.TextInputLayout
+			style="@style/AppTheme.InputLayout"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@+id/to"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/to">
+
+		<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/maxMin"
+				style="@style/AppTheme.NumberEditText.Big"
+				android:hint="@string/hint_minutes"
+				tools:text="232"/>
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<com.google.android.material.textfield.TextInputLayout
+			style="@style/AppTheme.InputLayout"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/to"
+			app:layout_constraintTop_toBottomOf="@+id/to">
+
+		<androidx.appcompat.widget.AppCompatEditText
+				android:id="@+id/maxSec"
+				style="@style/AppTheme.NumberEditText.Big"
+				android:hint="@string/hint_seconds"/>
+	</com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+	

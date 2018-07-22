@@ -1,1 +1,5 @@
-include ':random-ticker-base', ':random-ticker-app', ':random-ticker-instantapp', ':common'
+include ':random-ticker-base'
+include ':random-ticker-app'
+include ':random-ticker-instantapp'
+include ':common'
+include ':sequential-timer-app'

@@ -1,0 +1,26 @@
+apply from: "$rootDir/versioning.gradle"
+
+ext {
+	runner = 0
+	gitVersionName = getGitVersionName("sequential-timer")
+	gitVersionCode = parseVersionCode(gitVersionName)
+}
+
+apply from: "$rootDir/base-app.gradle"
+
+android {
+	defaultConfig {
+		applicationId "com.fanstaticapps.sequentialtimer"
+	}
+}
+
+dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation Kotlin.stdlib
+	implementation AndroidLibs.appcompat
+	implementation AndroidLibs.material
+	implementation AndroidLibs.constraint_layout
+
+	testImplementation TestLibs.junit
+	androidTestImplementation AndroidLibs.espresso_core
+}

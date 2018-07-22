@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/random-ticker-app" />
             <option value="$PROJECT_DIR$/random-ticker-base" />
             <option value="$PROJECT_DIR$/random-ticker-instantapp" />
+            <option value="$PROJECT_DIR$/sequential-timer-app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

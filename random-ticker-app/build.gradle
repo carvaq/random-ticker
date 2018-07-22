@@ -26,5 +26,3 @@ play {
 		track = 'internal'
 	}
 }
-
-apply plugin: 'com.google.gms.google-services'

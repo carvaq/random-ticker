@@ -1,0 +1,165 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+MERGED from [com.google.android.material:material:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/material-1.0.0-beta01.aar/e6b089cbc68623163fe805037c59c42a/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.0-beta01.aar/cdb13ac02dabd50e6fe10af10c2934d7/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.2] /home/carla/.gradle/caches/transforms-1/files-1.1/constraintlayout-1.1.2.aar/901465093cebee0f08226d315e8fea5f/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.fragment:fragment:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/fragment-1.0.0-beta01.aar/29af5c6d9f3b81366f97e46ec3b407e5/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/vectordrawable-animated-1.0.0-beta01.aar/fdd6bb8ece4ce302cc38451b73d134c2/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/recyclerview-1.0.0-beta01.aar/263888a469a3022257bf6dc880fe4245/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/legacy-support-core-ui-1.0.0-beta01.aar/b160ad971cda49efa4151e45083848ca/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/legacy-support-core-utils-1.0.0-beta01.aar/16ebbe942d1d8c2c649c6250bb2ee980/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/vectordrawable-1.0.0-beta01.aar/c4b34082009d5f723e3bcf0e42e98b5e/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/transition-1.0.0-beta01.aar/7230a67b255b538d30e130eb69305588/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/loader-1.0.0-beta01.aar/94c24c7c3400f3cf7adc351439b3959f/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/viewpager-1.0.0-beta01.aar/0ca0a769d2260115401f74b24a8121d5/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-1.0.0-beta01.aar/5e354038c68ee16fb8b12363984feb77/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/drawerlayout-1.0.0-beta01.aar/9a03d1e25b44a603d1e8557c9b4c6fea/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-1.0.0-beta01.aar/9a1e72db95c8c6886995c6a99a8a88b6/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/customview-1.0.0-beta01.aar/a4fe17b7977b86404734e369ee6522ae/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-1.0.0-beta01.aar/133ff7cfa4841e1fa6686ee84f0ebca0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-1.0.0-beta01.aar/48ca5e5039bd3ce56fed5e59641e5092/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-1.0.0-beta01.aar/f9f7fc26808e29753dc7f0c152d875a2/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/cursoradapter-1.0.0-beta01.aar/664214778930d9f37a440b2e272c0564/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/cardview-1.0.0-beta01.aar/7117ca2906d0c8de04d5f0787a5cf4ed/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/versionedparcelable-1.0.0-beta01.aar/2aea427e12c1a60e8c40dabc1e74a01c/AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.documentfile:documentfile:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/documentfile-1.0.0-beta01.aar/07b705e3b739c59f57cef09e92aed9f4/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-1.0.0-beta01.aar/73624d57aea0f93ea4fea14198c80b93/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/print-1.0.0-beta01.aar/e1e925f6b14ea2a3c10d007144e915af/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/interpolator-1.0.0-beta01.aar/66662a4cb6c13aeeac0e5c5fc2d5f8d9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-runtime-2.0.0-beta01.aar/631abab6d66b1c61a69d485ab8fc6618/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-viewmodel-2.0.0-beta01.aar/66b463bf56166a6be68c66e33ae7659f/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-livedata-core-2.0.0-beta01.aar/9b4ef0bc27a141cdaaded1eb5bde3e9d/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-runtime-2.0.0-beta01.aar/98f184747ce1255cbd65ce24f6c9f92b/AndroidManifest.xml:17:1-22:12
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+	package
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:3:11-54
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:1-21:12
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:5:2-19:16
+MERGED from [com.google.android.material:material:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/material-1.0.0-beta01.aar/e6b089cbc68623163fe805037c59c42a/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/material-1.0.0-beta01.aar/e6b089cbc68623163fe805037c59c42a/AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.2] /home/carla/.gradle/caches/transforms-1/files-1.1/constraintlayout-1.1.2.aar/901465093cebee0f08226d315e8fea5f/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.2] /home/carla/.gradle/caches/transforms-1/files-1.1/constraintlayout-1.1.2.aar/901465093cebee0f08226d315e8fea5f/AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-1.0.0-beta01.aar/f9f7fc26808e29753dc7f0c152d875a2/AndroidManifest.xml:22:5-89
+MERGED from [androidx.core:core:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-1.0.0-beta01.aar/f9f7fc26808e29753dc7f0c152d875a2/AndroidManifest.xml:22:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/versionedparcelable-1.0.0-beta01.aar/2aea427e12c1a60e8c40dabc1e74a01c/AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/versionedparcelable-1.0.0-beta01.aar/2aea427e12c1a60e8c40dabc1e74a01c/AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-1.0.0-beta01.aar/f9f7fc26808e29753dc7f0c152d875a2/AndroidManifest.xml:22:18-86
+	android:supportsRtl
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:10:3-29
+	android:label
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:8:3-35
+	android:roundIcon
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:9:3-48
+	android:icon
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:7:3-37
+	android:allowBackup
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:6:3-29
+	android:theme
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:11:3-34
+activity#com.fanstaticapps.sequentialtimer.MainActivity
+ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:12:3-18:14
+	android:name
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:12:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:13:4-17:20
+action#android.intent.action.MAIN
+ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:14:5-56
+	android:name
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:14:13-54
+category#android.intent.category.LAUNCHER
+ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:16:5-64
+	android:name
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml:16:15-62
+uses-sdk
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+MERGED from [com.google.android.material:material:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/material-1.0.0-beta01.aar/e6b089cbc68623163fe805037c59c42a/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/material-1.0.0-beta01.aar/e6b089cbc68623163fe805037c59c42a/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.0-beta01.aar/cdb13ac02dabd50e6fe10af10c2934d7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.0-beta01.aar/cdb13ac02dabd50e6fe10af10c2934d7/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.2] /home/carla/.gradle/caches/transforms-1/files-1.1/constraintlayout-1.1.2.aar/901465093cebee0f08226d315e8fea5f/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.2] /home/carla/.gradle/caches/transforms-1/files-1.1/constraintlayout-1.1.2.aar/901465093cebee0f08226d315e8fea5f/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.fragment:fragment:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/fragment-1.0.0-beta01.aar/29af5c6d9f3b81366f97e46ec3b407e5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/fragment-1.0.0-beta01.aar/29af5c6d9f3b81366f97e46ec3b407e5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/vectordrawable-animated-1.0.0-beta01.aar/fdd6bb8ece4ce302cc38451b73d134c2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/vectordrawable-animated-1.0.0-beta01.aar/fdd6bb8ece4ce302cc38451b73d134c2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/recyclerview-1.0.0-beta01.aar/263888a469a3022257bf6dc880fe4245/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/recyclerview-1.0.0-beta01.aar/263888a469a3022257bf6dc880fe4245/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/legacy-support-core-ui-1.0.0-beta01.aar/b160ad971cda49efa4151e45083848ca/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/legacy-support-core-ui-1.0.0-beta01.aar/b160ad971cda49efa4151e45083848ca/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/legacy-support-core-utils-1.0.0-beta01.aar/16ebbe942d1d8c2c649c6250bb2ee980/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/legacy-support-core-utils-1.0.0-beta01.aar/16ebbe942d1d8c2c649c6250bb2ee980/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/vectordrawable-1.0.0-beta01.aar/c4b34082009d5f723e3bcf0e42e98b5e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/vectordrawable-1.0.0-beta01.aar/c4b34082009d5f723e3bcf0e42e98b5e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/transition-1.0.0-beta01.aar/7230a67b255b538d30e130eb69305588/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/transition-1.0.0-beta01.aar/7230a67b255b538d30e130eb69305588/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/loader-1.0.0-beta01.aar/94c24c7c3400f3cf7adc351439b3959f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/loader-1.0.0-beta01.aar/94c24c7c3400f3cf7adc351439b3959f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/viewpager-1.0.0-beta01.aar/0ca0a769d2260115401f74b24a8121d5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/viewpager-1.0.0-beta01.aar/0ca0a769d2260115401f74b24a8121d5/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-1.0.0-beta01.aar/5e354038c68ee16fb8b12363984feb77/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/coordinatorlayout-1.0.0-beta01.aar/5e354038c68ee16fb8b12363984feb77/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/drawerlayout-1.0.0-beta01.aar/9a03d1e25b44a603d1e8557c9b4c6fea/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/drawerlayout-1.0.0-beta01.aar/9a03d1e25b44a603d1e8557c9b4c6fea/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-1.0.0-beta01.aar/9a1e72db95c8c6886995c6a99a8a88b6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/slidingpanelayout-1.0.0-beta01.aar/9a1e72db95c8c6886995c6a99a8a88b6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/customview-1.0.0-beta01.aar/a4fe17b7977b86404734e369ee6522ae/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/customview-1.0.0-beta01.aar/a4fe17b7977b86404734e369ee6522ae/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-1.0.0-beta01.aar/133ff7cfa4841e1fa6686ee84f0ebca0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/swiperefreshlayout-1.0.0-beta01.aar/133ff7cfa4841e1fa6686ee84f0ebca0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-1.0.0-beta01.aar/48ca5e5039bd3ce56fed5e59641e5092/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/asynclayoutinflater-1.0.0-beta01.aar/48ca5e5039bd3ce56fed5e59641e5092/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-1.0.0-beta01.aar/f9f7fc26808e29753dc7f0c152d875a2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-1.0.0-beta01.aar/f9f7fc26808e29753dc7f0c152d875a2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/cursoradapter-1.0.0-beta01.aar/664214778930d9f37a440b2e272c0564/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/cursoradapter-1.0.0-beta01.aar/664214778930d9f37a440b2e272c0564/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/cardview-1.0.0-beta01.aar/7117ca2906d0c8de04d5f0787a5cf4ed/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/cardview-1.0.0-beta01.aar/7117ca2906d0c8de04d5f0787a5cf4ed/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/versionedparcelable-1.0.0-beta01.aar/2aea427e12c1a60e8c40dabc1e74a01c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/versionedparcelable-1.0.0-beta01.aar/2aea427e12c1a60e8c40dabc1e74a01c/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/documentfile-1.0.0-beta01.aar/07b705e3b739c59f57cef09e92aed9f4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/documentfile-1.0.0-beta01.aar/07b705e3b739c59f57cef09e92aed9f4/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-1.0.0-beta01.aar/73624d57aea0f93ea4fea14198c80b93/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/localbroadcastmanager-1.0.0-beta01.aar/73624d57aea0f93ea4fea14198c80b93/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/print-1.0.0-beta01.aar/e1e925f6b14ea2a3c10d007144e915af/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/print-1.0.0-beta01.aar/e1e925f6b14ea2a3c10d007144e915af/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/interpolator-1.0.0-beta01.aar/66662a4cb6c13aeeac0e5c5fc2d5f8d9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/interpolator-1.0.0-beta01.aar/66662a4cb6c13aeeac0e5c5fc2d5f8d9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-runtime-2.0.0-beta01.aar/631abab6d66b1c61a69d485ab8fc6618/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-runtime-2.0.0-beta01.aar/631abab6d66b1c61a69d485ab8fc6618/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-viewmodel-2.0.0-beta01.aar/66b463bf56166a6be68c66e33ae7659f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-viewmodel-2.0.0-beta01.aar/66b463bf56166a6be68c66e33ae7659f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-livedata-core-2.0.0-beta01.aar/9b4ef0bc27a141cdaaded1eb5bde3e9d/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/lifecycle-livedata-core-2.0.0-beta01.aar/9b4ef0bc27a141cdaaded1eb5bde3e9d/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-runtime-2.0.0-beta01.aar/98f184747ce1255cbd65ce24f6c9f92b/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0-beta01] /home/carla/.gradle/caches/transforms-1/files-1.1/core-runtime-2.0.0-beta01.aar/98f184747ce1255cbd65ce24f6c9f92b/AndroidManifest.xml:20:5-44
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		ADDED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml
+		INJECTED from /home/carla/Android/Projects/SequentialTimer/app/src/main/AndroidManifest.xml

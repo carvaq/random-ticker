@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/random-ticker-app/random-ticker-app.iml" filepath="$PROJECT_DIR$/random-ticker-app/random-ticker-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/random-ticker-base/random-ticker-base.iml" filepath="$PROJECT_DIR$/random-ticker-base/random-ticker-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/random-ticker-instantapp/random-ticker-instantapp.iml" filepath="$PROJECT_DIR$/random-ticker-instantapp/random-ticker-instantapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sequential-timer-app/sequential-timer-app.iml" filepath="$PROJECT_DIR$/sequential-timer-app/sequential-timer-app.iml" />
     </modules>
   </component>
 </project>
