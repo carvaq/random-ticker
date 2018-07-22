@@ -26,7 +26,6 @@ dependencies {
 	implementation AndroidLibs.appcompat
 	implementation AndroidLibs.constraint_layout
 	implementation AndroidLibs.material
-	implementation AndroidLibs.preference
 	implementation Kotlin.stdlib
 	implementation Libs.dagger
 	implementation Libs.dagger_android
