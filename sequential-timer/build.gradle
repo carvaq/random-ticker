@@ -19,7 +19,6 @@ dependencies {
 	implementation AndroidLibs.appcompat
 	implementation AndroidLibs.material
 	implementation AndroidLibs.constraint_layout
-
 	testImplementation TestLibs.junit
 	androidTestImplementation AndroidLibs.espresso_core
 }
