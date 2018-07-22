@@ -1,0 +1,31 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'io.fabric'
+
+
+apply from: "$rootDir/release_config.gradle"
+
+android {
+	compileSdkVersion Versions.compileVersion
+	buildToolsVersion Versions.buildToolsVersion
+	defaultConfig {
+		minSdkVersion Versions.minSdkVersion
+		targetSdkVersion Versions.targeSdkVersion
+
+		versionCode gitVersionCode
+		versionName gitVersionName
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+	}
+}
+
+play {
+	if (file("play_store_secret.json").exists()) {
+		println "Found play store upload credentials"
+		jsonFile = file('play_store_secret.json')
+		track = 'internal'
+	}
+}
+
+apply plugin: 'com.google.gms.google-services'
