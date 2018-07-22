@@ -1,5 +1,6 @@
 ext.getGitVersionName = { appName ->
-	String tag = ("git describe --abbrev=0 --tags").execute().text.trim()
+	String tag = ("git describe --abbrev=0 --tags --match ${appName}/[0-9].[0-9]").execute().text.trim()
+	println "tagName: $tag contains: ${tag.startsWith("$appName/")} and ${tag.contains('.')}"
 	if (tag.contains("$appName/") && tag.contains('.')) {
 		def versionName = tag.substring(tag.indexOf('/') + 1, tag.length())
 		println "Tag version name $versionName"

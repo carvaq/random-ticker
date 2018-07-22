@@ -4,21 +4,18 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-	compileSdkVersion 28
-
-
+	compileSdkVersion Versions.compileVersion
 
 	defaultConfig {
 		minSdkVersion Versions.minSdkVersion
 		targetSdkVersion Versions.targeSdkVersion
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
 	}
 
 	buildTypes {
 		release {
-			minifyEnabled false
+			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
@@ -26,6 +23,10 @@ android {
 }
 
 dependencies {
+	implementation AndroidLibs.appcompat
+	implementation AndroidLibs.constraint_layout
+	implementation AndroidLibs.material
+	implementation AndroidLibs.preference
 	implementation Kotlin.stdlib
 	implementation Libs.dagger
 	implementation Libs.dagger_android

@@ -15,7 +15,6 @@ android {
 }
 
 dependencies {
-	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation Kotlin.stdlib
 	implementation AndroidLibs.appcompat
 	implementation AndroidLibs.material
@@ -24,3 +23,4 @@ dependencies {
 	testImplementation TestLibs.junit
 	androidTestImplementation AndroidLibs.espresso_core
 }
+apply plugin: 'com.google.gms.google-services'

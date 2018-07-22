@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="com.fanstaticapps.randomticke">
+		  package="com.fanstaticapps.randomticker.app">
 
 	<application
 			android:allowBackup="true"

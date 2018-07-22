@@ -18,11 +18,4 @@ android {
 dependencies {
 	implementation project(':random-ticker-base')
 }
-
-play {
-	if (file("play_store_secret.json").exists()) {
-		println "Found play store upload credentials"
-		jsonFile = file('play_store_secret.json')
-		track = 'internal'
-	}
-}
+apply plugin: 'com.google.gms.google-services'

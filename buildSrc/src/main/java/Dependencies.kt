@@ -27,6 +27,7 @@ object AndroidLibs {
     val material = "com.google.android.material:material:$supportLibVersion"
     val cardview = "androidx.cardview:cardview:$supportLibVersion"
     val appcompat = "androidx.appcompat:appcompat:$supportLibVersion"
+    val preference = "androidx.preference:preference:$supportLibVersion"
 
     val roomVersion = "2.0.0-beta01"
     val room_runtime = "androidx.room:room-runtime:$roomVersion"
