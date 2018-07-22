@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">Sequential Timer</string>
 	<string name="timer_intro">Create a timer with this configuration:</string>
@@ -19,5 +20,4 @@
 	<string name="condition_summary_exact_interval">Stop after the interval
 		<b>%1$s:%2$s</b></string>
 	<string name="condition_summary_number_of_times">After <b>%1$s</b> times</string>
-
 </resources>
