@@ -23,7 +23,7 @@ android {
 }
 
 play {
-	if (file("play_store_secret.json").exists()) {
+	if (file("$rootDir/play_store_secret.json").exists()) {
 		println "Found play store upload credentials"
 		jsonFile = file("$rootDir/play_store_secret.json")
 		track = 'internal'
