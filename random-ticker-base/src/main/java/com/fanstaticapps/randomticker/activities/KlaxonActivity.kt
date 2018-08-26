@@ -15,9 +15,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.view.animation.CycleInterpolator
-import android.view.animation.RotateAnimation
 import com.fanstaticapps.common.activities.KlaxonBaseActivity
 import com.fanstaticapps.common.helper.WakeLocker
 import com.fanstaticapps.common.view.AnimatorEndListener
@@ -35,7 +32,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     private val animationDuration = 750
 
     private var mediaPlayer: MediaPlayer? = null
-    private var waitingIconAnimation: Animation? = null
     private var vibrator: Vibrator? = null
 
     private lateinit var presenter: KlaxonPresenter;
@@ -126,7 +122,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         mediaPlayer?.stop()
         mediaPlayer?.release()
         mediaPlayer = null
-        waitingIconAnimation?.cancel()
+        waitingIcon.cancelAnimation()
         vibrator?.cancel()
     }
 
@@ -154,13 +150,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     }
 
     private fun startWaitingIconAnimation() {
-        waitingIconAnimation?.cancel()
-        waitingIconAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF,
-                0.5f, Animation.RELATIVE_TO_SELF, 0.55f)
-        waitingIconAnimation!!.repeatCount = Animation.INFINITE
-        waitingIconAnimation!!.interpolator = CycleInterpolator(1f)
-        waitingIconAnimation!!.duration = 4000
-        timerHand.startAnimation(waitingIconAnimation)
+        waitingIcon.playAnimation()
     }
 
     private fun startPulsatorAnimation() {
@@ -177,7 +167,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     }
 
     private fun startHideWaitingIconAnimation() {
-        waitingIconAnimation?.cancel()
+        waitingIcon.cancelAnimation()
         waitingIcon.animate()
                 .alpha(0f)
                 .scaleX(0f)

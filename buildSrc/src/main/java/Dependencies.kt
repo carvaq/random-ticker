@@ -61,6 +61,9 @@ object Libs {
     val timberVersion = "4.7.1"
     val timber = "com.jakewharton.timber:timber:$timberVersion"
 
+    val lottieVersion = "2.6.0-beta19"
+    val lottie = "com.airbnb.android:lottie:$lottieVersion"
+
 }
 
 object TestLibs {
