@@ -4,6 +4,7 @@
 			  xmlns:tools="http://schemas.android.com/tools"
 			  android:id="@+id/root"
 			  android:keepScreenOn="true"
+			  android:animateLayoutChanges="true"
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent"
 			  android:background="@drawable/klaxon_background"
@@ -19,7 +20,7 @@
 			android:layout_weight="2"
 			android:paddingTop="@dimen/sectionMargin"
 			android:paddingBottom="@dimen/sectionMargin"
-			app:lottie_rawRes="@raw/soda_loader"
+			app:lottie_rawRes="@raw/hourglass"
 			app:lottie_loop="true"
 			app:lottie_autoPlay="true"/>
 
@@ -31,10 +32,11 @@
 			android:background="?attr/selectableItemBackground"
 			android:padding="8dp"
 			android:textStyle="bold"
+			android:fontFamily="monospace"
 			android:layout_height="wrap_content"
 			android:text="@string/show_elapsed_time"
 			android:textSize="@dimen/elepsedTimeTextSize"
-			android:textColor="@color/dismissColor"/>
+			android:textColor="@color/contrastTextColor"/>
 
 	<pl.bclogic.pulsator4droid.library.PulsatorLayout
 			android:id="@+id/pulsator"
@@ -46,7 +48,7 @@
 			android:layout_marginStart="16dp"
 			android:layout_weight="1"
 			android:gravity="center"
-			app:pulse_color="@color/dismissColor"
+			app:pulse_color="@android:color/white"
 			app:pulse_count="4"
 			app:pulse_duration="4000"
 			app:pulse_interpolator="Linear"
@@ -60,13 +62,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_centerInParent="true"
-				android:background="@drawable/ic_cancel_filler"
 				android:contentDescription="@android:string/cancel"
 				android:elevation="4dp"
 				android:minHeight="@dimen/dismissButtonMinSize"
 				android:minWidth="@dimen/dismissButtonMinSize"
 				android:src="@drawable/ic_cancel"
-				android:tint="@color/dismissColor"/>
+				android:tint="@color/contrastTextColor"/>
 	</pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
 </LinearLayout>
