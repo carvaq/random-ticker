@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.common.activities.KlaxonBaseActivity
 import com.fanstaticapps.randomticker.PREFS
-import com.fanstaticapps.randomticker.activities.KlaxonActivity
+import com.fanstaticapps.randomticker.ui.KlaxonActivity
 
 
 class OnAlarmReceiver : BroadcastReceiver() {

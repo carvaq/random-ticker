@@ -54,6 +54,9 @@ dependencies {
 	implementation AndroidLibs.constraint_layout
 	implementation AndroidLibs.room_runtime
 	implementation AndroidLibs.room_rxjava2
+	implementation AndroidLibs.livedata
+	implementation AndroidLibs.viewmodel
+	implementation AndroidLibs.extensions
 	implementation Libs.rxAndroid
 	implementation Libs.timber
 	implementation Libs.lottie

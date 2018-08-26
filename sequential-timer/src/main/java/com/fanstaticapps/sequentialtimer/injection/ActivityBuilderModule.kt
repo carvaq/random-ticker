@@ -4,6 +4,7 @@ import com.fanstaticapps.common.activities.CancelActivity
 import com.fanstaticapps.common.activities.SettingsActivity
 import com.fanstaticapps.randomticker.activities.KlaxonActivity
 import com.fanstaticapps.randomticker.activities.MainActivity
+import com.fanstaticapps.sequentialtimer.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -15,7 +16,7 @@ import dagger.android.ContributesAndroidInjector
  */
 
 @Module
-abstract class ActivityBuilderModule {
+abstract class zActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindMainActivity(): MainActivity

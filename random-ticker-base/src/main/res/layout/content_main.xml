@@ -9,16 +9,10 @@
 			android:text="@string/random_timer_introduction"/>
 
 	<LinearLayout
-			android:orientation="vertical"
 			style="@style/AppTheme.BookmarksContainer">
 
-		<include layout="@layout/content_bookmarks_row1"/>
+		<include layout="@layout/content_bookmarks"/>
 
-		<include
-				layout="@layout/content_bookmarks_row2"
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:layout_marginTop="16dp"/>
 	</LinearLayout>
 
 	<include layout="@layout/content_minimum_value"/>

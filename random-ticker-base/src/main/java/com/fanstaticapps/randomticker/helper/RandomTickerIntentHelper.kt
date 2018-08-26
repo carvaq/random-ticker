@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.common.activities.KlaxonBaseActivity
 import com.fanstaticapps.common.helper.IntentHelper
-import com.fanstaticapps.randomticker.activities.KlaxonActivity
-import com.fanstaticapps.randomticker.activities.MainActivity
+import com.fanstaticapps.randomticker.ui.KlaxonActivity
+import com.fanstaticapps.randomticker.ui.MainActivity
 import com.fanstaticapps.randomticker.receiver.OnAlarmReceiver
 import javax.inject.Inject
 

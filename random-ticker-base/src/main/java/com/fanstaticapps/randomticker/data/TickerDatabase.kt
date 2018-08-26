@@ -6,20 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [(TickerData::class)], version = 1)
+@Database(entities = [(Bookmark::class)], version = 1)
 abstract class TickerDatabase : RoomDatabase() {
 
-    abstract fun tickerDataDao(): TickerDataDao
+    abstract fun tickerDataDao(): BookmarkDao
 
     companion object {
         private var INSTANCE: TickerDatabase? = null
-
 
         fun getInstance(context: Context): TickerDatabase? {
             if (INSTANCE == null) {
                 synchronized(TickerDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            TickerDatabase::class.java, "ticker.db")
+                            TickerDatabase::class.java, "tickerV2.db")
                             .build()
                 }
             }

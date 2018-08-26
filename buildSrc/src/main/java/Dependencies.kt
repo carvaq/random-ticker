@@ -30,10 +30,13 @@ object AndroidLibs {
     val preference = "androidx.preference:preference:$supportLibVersion"
     val recyclerview = "androidx.recyclerview:recyclerview:$supportLibVersion"
 
-    val roomVersion = "2.0.0-beta01"
-    val room_runtime = "androidx.room:room-runtime:$roomVersion"
-    val room_rxjava2 = "androidx.room:room-rxjava2:$roomVersion"
-    val room_compiler = "androidx.room:room-compiler:$roomVersion"
+    val lifecycleVersion = "2.0.0-beta01"
+    val room_runtime = "androidx.room:room-runtime:$lifecycleVersion"
+    val room_rxjava2 = "androidx.room:room-rxjava2:$lifecycleVersion"
+    val room_compiler = "androidx.room:room-compiler:$lifecycleVersion"
+    val livedata= "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
+    val viewmodel= "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
+    val extensions= "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
     val constraintLayoutVersion = "2.0.0-alpha1"
     val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"

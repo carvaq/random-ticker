@@ -11,7 +11,7 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
 
-		<activity android:name="com.fanstaticapps.randomticker.activities.MainActivity">
+		<activity android:name="com.fanstaticapps.randomticker.ui.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
@@ -38,7 +38,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-				android:name="com.fanstaticapps.randomticker.activities.KlaxonActivity"
+				android:name="com.fanstaticapps.randomticker.ui.KlaxonActivity"
 				android:showOnLockScreen="true"
 				android:turnScreenOn="true"
 				android:launchMode="singleTask"/>
@@ -49,10 +49,10 @@
 		<activity
 				android:name="com.fanstaticapps.common.activities.SettingsActivity"
 				android:label="@string/title_activity_settings"
-				android:parentActivityName="com.fanstaticapps.randomticker.activities.MainActivity">
+				android:parentActivityName="com.fanstaticapps.randomticker.ui.MainActivity">
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
-					android:value="com.fanstaticapps.randomticker.activities.MainActivity"/>
+					android:value="com.fanstaticapps.randomticker.ui.MainActivity"/>
 		</activity>
 
 

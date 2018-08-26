@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.activities
+package com.fanstaticapps.randomticker.ui
 
 import android.animation.*
 import android.content.Context
@@ -35,7 +35,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     private var mediaPlayer: MediaPlayer? = null
     private var vibrator: Vibrator? = null
 
-    private lateinit var presenter: KlaxonPresenter;
+    private lateinit var presenter: KlaxonPresenter
     private var elapsedTimeNeedsAnimation: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
