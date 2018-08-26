@@ -9,5 +9,6 @@
 	<string name="seconds">seconds</string>
 	<string name="button_select_profile">Select\nprofile</string>
 	<string name="button_delete">Delete</string>
-	<string name="add_bookmark">Add item</string>
+	<string name="add_bookmark">Add bookmark</string>
+	<string name="bookmark_hint">Add item</string>
 </resources>
