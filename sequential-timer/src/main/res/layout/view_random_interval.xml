@@ -7,7 +7,7 @@
 		android:layout_height="wrap_content"
 		android:padding="16dp"
 		tools:background="#77237594"
-		tools:showIn="@layout/dialog_condition">
+		tools:showIn="@layout/view_buttons">
 
 	<com.google.android.material.textfield.TextInputLayout
 			style="@style/AppTheme.InputLayout"
@@ -17,7 +17,7 @@
 			app:layout_constraintTop_toTopOf="parent">
 
 		<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/minMin"
+				android:id="@+id/etMinMin"
 				style="@style/AppTheme.NumberEditText.Big"
 				android:hint="@string/hint_minutes"/>
 	</com.google.android.material.textfield.TextInputLayout>
@@ -31,7 +31,7 @@
 			app:layout_constraintTop_toTopOf="parent">
 
 		<androidx.appcompat.widget.AppCompatEditText
-				android:id="@+id/minSec"
+				android:id="@+id/etMinSec"
 				style="@style/AppTheme.NumberEditText.Big"
 				android:hint="@string/hint_seconds"/>
 	</com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +54,7 @@
 			app:layout_constraintTop_toBottomOf="@+id/to">
 
 		<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/maxMin"
+				android:id="@+id/etMaxMin"
 				style="@style/AppTheme.NumberEditText.Big"
 				android:hint="@string/hint_minutes"
 				tools:text="232"/>
@@ -68,7 +68,7 @@
 			app:layout_constraintTop_toBottomOf="@+id/to">
 
 		<androidx.appcompat.widget.AppCompatEditText
-				android:id="@+id/maxSec"
+				android:id="@+id/etMaxSec"
 				style="@style/AppTheme.NumberEditText.Big"
 				android:hint="@string/hint_seconds"/>
 	</com.google.android.material.textfield.TextInputLayout>

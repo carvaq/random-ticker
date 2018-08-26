@@ -5,22 +5,25 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
-		android:padding="16dp"
-		tools:showIn="@layout/dialog_condition">
+		tools:showIn="@layout/view_buttons">
 
 	<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/label_minimum_count"/>
+			android:text="@string/label_exact_after"/>
 
 	<EditText
-			android:id="@+id/count"
-			style="@style/AppTheme.NumberEditText.Inline"/>
+			android:id="@+id/etMinutes"
+			style="@style/AppTheme.NumberEditText.Inline"
+			android:hint="@string/hint_minutes"/>
 
 	<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
-			android:text="@string/label_number_of_times"/>
+			android:text=":"/>
 
+	<EditText
+			android:id="@+id/etSeconds"
+			style="@style/AppTheme.NumberEditText.Inline"
+			android:hint="@string/hint_seconds"/>
 </LinearLayout>

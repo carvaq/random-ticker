@@ -4,14 +4,19 @@ import com.fanstaticapps.sequentialtimer.PossibleCondition.*
 
 class MainPresenter(private val view: MainView) {
 
-    private val conditions = mutableListOf<Condition>()
+    private val conditionBuilder = mutableListOf<Condition>()
+
 
     fun addCondition() {
-        view.showConditionDialog(RANDOM_INTERVAL, EXACT_INTERVAL, NUMBER_OF_TIMES)
+        view.showConditionDialog(listOf(RANDOM_INTERVAL, EXACT_INTERVAL, NUMBER_OF_TIMES))
     }
 
-    fun selectedCondition(condition: Condition) {
-        conditions.add(condition)
+    fun selectedCondition(index: Int) {
 
+        view.showConditionDialog()
+    }
+
+    fun createCondition(condition: Condition) {
+        conditionBuilder.add(condition)
     }
 }

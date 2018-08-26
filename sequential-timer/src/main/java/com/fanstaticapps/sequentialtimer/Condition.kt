@@ -1,12 +1,15 @@
 package com.fanstaticapps.sequentialtimer
 
-sealed class Condition(val conditionOperator: Operator) {
-    data class ExactInterval(val operator: Operator, val minutes: Int, val seconds: Int)
-        : Condition(operator)
+sealed class Condition {
+    data class ExactInterval(val minutes: Int, val seconds: Int)
+        : Condition()
 
-    data class NumberOfTimes(val operator: Operator, val count: Int) : Condition(operator)
-    data class RandomInterval(val operator: Operator, val minMinutes: Int, val minSeconds: Int,
-                              val maxMinutes: Int, val maxSeconds: Int) : Condition(operator)
+    data class NumberOfTimes(val count: Int) : Condition()
+    data class RandomInterval(val minMinutes: Int, val minSeconds: Int,
+                              val maxMinutes: Int, val maxSeconds: Int) : Condition()
+
+    object Or : Condition()
+    object And : Condition()
 }
 
 enum class Operator {

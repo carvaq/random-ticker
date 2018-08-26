@@ -1,5 +1,5 @@
 package com.fanstaticapps.sequentialtimer
 
 interface MainView {
-    fun showConditionDialog(vararg conditions: PossibleCondition)
+    fun showConditionDialog(conditions: List<PossibleCondition>)
 }

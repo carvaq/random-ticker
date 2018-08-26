@@ -19,6 +19,14 @@ dependencies {
 	implementation AndroidLibs.appcompat
 	implementation AndroidLibs.material
 	implementation AndroidLibs.constraint_layout
+	implementation AndroidLibs.recyclerview
+	implementation Libs.dagger
+	implementation Libs.dagger_android
+	implementation project(':common')
+
+	kapt Libs.dagger_compiler
+	kapt Libs.dagger_android_processor
+
 	testImplementation TestLibs.junit
 	androidTestImplementation AndroidLibs.espresso_core
 }
