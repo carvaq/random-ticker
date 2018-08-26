@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-        android:src="@drawable/background_tile"
-        android:gravity="clip_horizontal"
-        android:tileMode="repeat"/>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item>
+		<shape android:shape="rectangle">
+			<gradient
+					android:angle="270"
+					android:startColor="@color/colorPrimaryDark"
+					android:endColor="@android:color/white"/>
+		</shape>
+	</item>
+</layer-list>
