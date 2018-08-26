@@ -1,15 +1,16 @@
 package com.fanstaticapps.randomticker.mvp
 
 import android.os.CountDownTimer
-import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.common.TimerHelper
 import com.fanstaticapps.common.helper.getFormattedElapsedMilliseconds
+import com.fanstaticapps.randomticker.PREFS
 import java.lang.Math.abs
 
 /**
  * @intervalFinished timestamp when the timer should ring
  */
 class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished: Long, private val timeElapsed: Boolean) {
+
     private var countDownTimer: CountDownTimer? = null
     var showElapsedTime: Boolean = false
 
@@ -18,7 +19,7 @@ class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished
             timerFinished()
         } else {
             startCountDownTimer()
-            view.render(ViewState.TimerStarted())
+            view.render(ViewState.TimerStarted)
         }
     }
 
@@ -30,12 +31,12 @@ class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished
 
     fun cancelTimer() {
         countDownTimer?.cancel()
-        view.render(ViewState.TimerCanceled())
+        view.render(ViewState.TimerCanceled)
     }
 
     fun onStop() {
         countDownTimer?.cancel()
-        view.render(ViewState.TimerStopped())
+        view.render(ViewState.TimerStopped)
 
     }
 
@@ -69,8 +70,8 @@ class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished
     sealed class ViewState {
         data class ElapseTimeUpdate(val elapsedTime: String?) : ViewState()
         data class TimerFinished(val elapsedTime: String) : ViewState()
-        class TimerStarted() : ViewState()
-        class TimerCanceled() : ViewState()
-        class TimerStopped() : ViewState()
+        object TimerStarted : ViewState()
+        object TimerCanceled : ViewState()
+        object TimerStopped : ViewState()
     }
 }

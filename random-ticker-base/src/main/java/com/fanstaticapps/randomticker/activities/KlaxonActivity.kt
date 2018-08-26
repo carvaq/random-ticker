@@ -5,8 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.media.Ringtone
-import android.media.RingtoneManager
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -33,7 +34,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
 
     private val animationDuration = 750
 
-    private var playingAlarmSound: Ringtone? = null
+    private var mediaPlayer: MediaPlayer? = null
     private var waitingIconAnimation: Animation? = null
     private var vibrator: Vibrator? = null
 
@@ -65,13 +66,14 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        WakeLocker.release()
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        presenter.update(timeElapsed)
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        Timber.d("Resumed")
         dismissButton.setOnClickListener {
             presenter.cancelTimer()
         }
@@ -79,9 +81,9 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         presenter.init()
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        presenter.update(timeElapsed)
+    override fun onPause() {
+        super.onPause()
+        WakeLocker.release()
     }
 
     override fun onStop() {
@@ -90,6 +92,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     }
 
     override fun render(viewState: ViewState) {
+        Timber.d("Rendering  ${viewState.javaClass.simpleName}")
         when (viewState) {
             is ViewState.TimerStarted -> {
                 startWaitingIconAnimation()
@@ -120,7 +123,9 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     }
 
     private fun cancelEverything() {
-        playingAlarmSound?.stop()
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
         waitingIconAnimation?.cancel()
         vibrator?.cancel()
     }
@@ -187,11 +192,18 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
     }
 
     private fun playRingtone() {
-        if (playingAlarmSound == null) {
+        if (mediaPlayer == null) {
             try {
                 val uri = Uri.parse(PREFS.alarmRingtone)
-                playingAlarmSound = RingtoneManager.getRingtone(applicationContext, uri)
-                playingAlarmSound!!.play()
+                mediaPlayer = MediaPlayer().apply {
+                    setDataSource(applicationContext, uri)
+                    setAudioAttributes(AudioAttributes.Builder()
+                            .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
+                            .setLegacyStreamType(AudioManager.STREAM_ALARM).build())
+                    isLooping = true
+                    setOnPreparedListener { mediaPlayer?.start() }
+                    prepareAsync()
+                }
             } catch (e: Exception) {
                 Timber.e(e, "Error while trying to play alarm sound")
             }
