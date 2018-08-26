@@ -1,10 +1,11 @@
 package com.fanstaticapps.randomticker.ui
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -15,7 +16,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
 import com.fanstaticapps.common.activities.KlaxonBaseActivity
 import com.fanstaticapps.common.helper.WakeLocker
 import com.fanstaticapps.common.view.AnimatorEndListener
@@ -70,7 +70,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
 
     override fun onResume() {
         super.onResume()
-        Timber.d("Resumed")
         dismissButton.setOnClickListener {
             presenter.cancelTimer()
         }
@@ -141,14 +140,8 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
                 elapsedTime.textSize = animatedValue
             }
 
-            val textColorAnimator = getTextColorAnimator(Color.WHITE)
-            textColorAnimator.addUpdateListener {
-                val animatedValue = it.animatedValue as Int
-                elapsedTime.setTextColor(animatedValue)
-            }
-
             val animatorSet = AnimatorSet()
-            animatorSet.playTogether(textColorAnimator, textSizeAnimator)
+            animatorSet.playTogether(textSizeAnimator)
             animatorSet.duration = 1200
             animatorSet.addListener(object : AnimatorEndListener() {
                 override fun onAnimationEnd(p0: Animator?) {
@@ -157,11 +150,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
             })
             animatorSet.start()
         }
-    }
-
-    private fun getTextColorAnimator(endColor: Int): ValueAnimator {
-        val startColor = ContextCompat.getColor(this, R.color.contrastTextColor)
-        return ValueAnimator.ofObject(ArgbEvaluator(), startColor, endColor)
     }
 
     private fun startWaitingIconAnimation() {
@@ -179,12 +167,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
                         pulsator.start()
                     }
                 }).duration = animationDuration.toLong()
-        val animator = getTextColorAnimator(ContextCompat.getColor(this, R.color.colorPrimary))
-        animator.addUpdateListener {
-            val animatedValue = it.animatedValue as Int
-            dismissButton.imageTintList = ColorStateList.valueOf(animatedValue)
-        }
-        animator.start()
     }
 
     private fun startHideWaitingIconAnimation() {
