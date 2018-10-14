@@ -93,7 +93,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
             is ViewState.TimerStarted -> {
                 startWaitingIconAnimation()
                 elapsedTime.setOnClickListener { presenter.showElapsedTime = true }
-
             }
             is ViewState.ElapseTimeUpdate -> {
                 showElapsedTime(viewState.elapsedTime)
@@ -107,6 +106,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
                 playRingtone()
                 vibrate()
+                elapsedTime.isEnabled = false
             }
             is ViewState.TimerCanceled -> {
                 cancelEverything()
@@ -204,7 +204,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         }
     }
 
-    @Suppress("DEPRECATION")
     private fun vibrate() {
         if (PREFS.vibrator) {
             val vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
