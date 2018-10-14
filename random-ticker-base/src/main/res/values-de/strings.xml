@@ -8,7 +8,7 @@
     <string name="minutes">Minuten</string>
     <string name="seconds">Sekunden</string>
 	<string name="random_timer_introduction">Definier den Zeitraum, in dem ein Alarm zufällig läuten wird.</string>
-	<string name="button_select_profile">Profil\\nwählen</string>
+	<string name="button_select_profile">Profil\nwählen</string>
 	<string name="button_delete">Löschen</string>
 	<string name="add_bookmark">Lesezeichen hinzufügen</string>
 

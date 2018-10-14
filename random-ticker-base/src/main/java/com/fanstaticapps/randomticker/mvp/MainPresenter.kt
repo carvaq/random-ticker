@@ -104,7 +104,7 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
                 }
                 .subscribe({ _ ->
                     Timber.d("Inserted interval changes")
-                }, { throwable -> })
+                }, { throwable -> Timber.e(throwable, "Ooops")})
     }
 
 }

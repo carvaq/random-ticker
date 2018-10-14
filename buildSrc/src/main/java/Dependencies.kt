@@ -1,9 +1,9 @@
 object Versions {
-    val kotlin = "1.2.61"
+    val kotlin = "1.2.71"
     val minSdkVersion = 21
     val targeSdkVersion = 28
     val compileVersion = 28
-    val buildToolsVersion = "28.0.2"
+    val buildToolsVersion = "28.0.3"
 }
 
 object ArchitectureComponents {
@@ -23,7 +23,7 @@ object Gms {
 }
 
 object AndroidLibs {
-    val supportLibVersion = "1.0.0-rc01"
+    val supportLibVersion = "1.0.0"
     val material = "com.google.android.material:material:$supportLibVersion"
     val cardview = "androidx.cardview:cardview:$supportLibVersion"
     val appcompat = "androidx.appcompat:appcompat:$supportLibVersion"

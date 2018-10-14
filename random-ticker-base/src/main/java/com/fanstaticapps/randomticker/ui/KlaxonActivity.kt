@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -16,6 +15,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import com.fanstaticapps.common.activities.KlaxonBaseActivity
 import com.fanstaticapps.common.helper.WakeLocker
 import com.fanstaticapps.common.view.AnimatorEndListener
@@ -107,7 +107,6 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
                 playRingtone()
                 vibrate()
-
             }
             is ViewState.TimerCanceled -> {
                 cancelEverything()
@@ -207,12 +206,12 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
 
     @Suppress("DEPRECATION")
     private fun vibrate() {
-        if (vibrator == null && PREFS.vibrator) {
-            vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (PREFS.vibrator) {
+            val vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
             if (Build.VERSION.SDK_INT >= 26) {
                 vibrator?.vibrate(VibrationEffect.createOneShot(230, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
-                vibrator?.vibrate(230);
+                vibrator?.vibrate(230)
             }
         }
     }
