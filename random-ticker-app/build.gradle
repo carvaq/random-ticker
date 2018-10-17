@@ -1,7 +1,7 @@
 apply from: "$rootDir/versioning.gradle"
 
 ext {
-	runner = 3
+	runner = 4
 	gitVersionName = getGitVersionName("random-ticker")
 	gitVersionCode = parseVersionCode(gitVersionName)
 }

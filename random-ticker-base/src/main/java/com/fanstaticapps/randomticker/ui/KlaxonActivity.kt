@@ -206,11 +206,12 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
 
     private fun vibrate() {
         if (PREFS.vibrator) {
-            val vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
+            vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
+            val vibratePattern = longArrayOf(0, 100, 800, 600, 800, 800, 800, 1000)
             if (Build.VERSION.SDK_INT >= 26) {
-                vibrator?.vibrate(VibrationEffect.createOneShot(230, VibrationEffect.DEFAULT_AMPLITUDE))
+                vibrator?.vibrate(VibrationEffect.createWaveform(vibratePattern, 0))
             } else {
-                vibrator?.vibrate(230)
+                vibrator?.vibrate(vibratePattern, 0)
             }
         }
     }
