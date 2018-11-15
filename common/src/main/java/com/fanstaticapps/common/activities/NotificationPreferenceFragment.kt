@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.crashlytics.android.Crashlytics
 import com.fanstaticapps.common.R
 import com.fanstaticapps.common.UserPreferences
+import com.fanstaticapps.common.helper.setDarkTheme
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import timber.log.Timber
 import xyz.aprildown.ultimatemusicpicker.MusicPickerListener
@@ -24,7 +25,7 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
 
     override fun onMusicPick(uri: Uri, title: String) {
         activity?.let {
-            findPreference(getString(R.string.pref_ringtone))
+            findPreference(getString(R.string.pref_ringtone_key))
             userPreferences.alarmRingtone = uri.toString()
         }
     }
@@ -37,21 +38,32 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
         addPreferencesFromResource(R.xml.pref_general)
         setHasOptionsMenu(true)
 
-        bindRingtonePreference(findPreference(getString(R.string.pref_ringtone)))
+        bindRingtonePreference(findPreference(getString(R.string.pref_ringtone_key)))
 
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_show_notification)))
-        findPreference(getString(R.string.pref_license)).setOnPreferenceClickListener {
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_show_notification_key)))
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vibration_key)))
+        findPreference(getString(R.string.pref_license_key)).setOnPreferenceClickListener {
             startActivity(Intent(activity, OssLicensesMenuActivity::class.java))
             true
         }
+        val darkThemePreference = findPreference(getString(R.string.pref_dark_theme_key))
+        (darkThemePreference as CheckBoxPreference).isChecked = getPreferenceValue(darkThemePreference).toString().toBoolean()
+        darkThemePreference.setOnPreferenceChangeListener { preference, newValue ->
+            (preference as CheckBoxPreference).isChecked = newValue.toString().toBoolean()
+            setDarkTheme(userPreferences)
+            activity?.recreate()
+            true
+        }
+
     }
 
-    private val bindPreferenceSummaryToValueListener = Preference.OnPreferenceChangeListener { preference, value ->
-        val stringValue = value.toString()
+    private val checkboxPreferenceListener = Preference.OnPreferenceChangeListener { preference, value ->
         if (preference is CheckBoxPreference) {
-            preference.isChecked = stringValue.toBoolean()
+            preference.isChecked = value.toString().toBoolean()
+            true
+        } else {
+            false
         }
-        true
     }
 
     private fun bindRingtonePreference(preference: Preference) {
@@ -63,7 +75,6 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
                     .notification()
                     .alarm()
                     .music()
-
                     // Show a picker dialog
                     .goWithDialog(childFragmentManager)
 
@@ -92,9 +103,9 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
 
     private fun bindPreferenceSummaryToValue(preference: Preference) {
         // Set the listener to watch for value changes.
-        preference.onPreferenceChangeListener = bindPreferenceSummaryToValueListener
+        preference.onPreferenceChangeListener = checkboxPreferenceListener
 
-        bindPreferenceSummaryToValueListener.onPreferenceChange(preference, getPreferenceValue(preference))
+        checkboxPreferenceListener.onPreferenceChange(preference, getPreferenceValue(preference))
     }
 
     private fun getPreferenceValue(preference: Preference): Any {

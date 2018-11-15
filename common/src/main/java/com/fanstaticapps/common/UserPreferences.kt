@@ -20,6 +20,7 @@ class UserPreferences(context: Context) {
     private val showNotificationPref: String = "pref_show_notification"
     private val ringtonePref: String = "pref_ringtone"
     private val vibratorPref: String = "pref_vibration"
+    private val darkThemePref: String = "pref_dark_theme"
 
     var interval: Long
         get() = prefs.getLong(generatedIntervalPref, 0)
@@ -46,4 +47,7 @@ class UserPreferences(context: Context) {
     var vibrator: Boolean
         get() = prefs.getBoolean(vibratorPref, false)
         set(value) = prefs.edit().putBoolean(vibratorPref, value).apply()
+    var darkTheme: Boolean
+        get() = prefs.getBoolean(darkThemePref, false)
+        set(value) = prefs.edit().putBoolean(darkThemePref, value).apply()
 }

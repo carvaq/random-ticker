@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
@@ -21,9 +23,17 @@ import kotlinx.android.synthetic.main.dialog_bookmark.*
 import timber.log.Timber
 
 class BookmarkDialog : BottomSheetDialogFragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (PREFS.darkTheme) {
+            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Dark)
+        } else {
+            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Light)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
         return inflater.inflate(R.layout.dialog_bookmark, container, false)
     }
 

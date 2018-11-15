@@ -36,7 +36,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/show_elapsed_time"
 			android:textSize="@dimen/elepsedTimeTextSize"
-			android:textColor="@color/contrastTextColor"/>
+			android:textColor="@color/secondaryColor"/>
 
 	<pl.bclogic.pulsator4droid.library.PulsatorLayout
 			android:id="@+id/pulsator"
@@ -48,7 +48,7 @@
 			android:layout_marginStart="16dp"
 			android:layout_weight="1"
 			android:gravity="center"
-			app:pulse_color="@android:color/white"
+			app:pulse_color="@color/secondaryColor"
 			app:pulse_count="4"
 			app:pulse_duration="4000"
 			app:pulse_interpolator="Linear"

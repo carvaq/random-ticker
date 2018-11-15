@@ -1,7 +1,7 @@
 package com.fanstaticapps.randomticker
 
 import com.fanstaticapps.common.UserPreferences
-import com.fanstaticapps.randomticker.injection.AppModule
+import com.fanstaticapps.common.helper.setDarkTheme
 import com.fanstaticapps.randomticker.injection.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -43,6 +43,7 @@ class TickerApplication : DaggerApplication() {
             Timber.plant(DebugTree())
         }
 
+        setDarkTheme(PREFS)
         super.onCreate()
     }
 }
