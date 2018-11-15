@@ -34,7 +34,11 @@ class UserPreferences(context: Context) {
         get() = prefs.getBoolean(showNotificationPref, false)
         set(value) = prefs.edit().putBoolean(showNotificationPref, value).apply()
     var alarmRingtone: String
-        get() = prefs.getString(ringtonePref, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString())
+        get() {
+            val defaultFallback = "content://settings/system/notification_sound"
+            return prefs.getString(ringtonePref, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)?.toString())
+                    ?: defaultFallback
+        }
         set(value) = prefs.edit().putString(ringtonePref, value).apply()
     var currentSelectedId: Long
         get() = prefs.getLong(currentSelectedIdPref, 0)

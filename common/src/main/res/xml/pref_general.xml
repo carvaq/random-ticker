@@ -1,27 +1,25 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<RingtonePreference
-			android:defaultValue="content://settings/system/notification_sound"
+	<androidx.preference.Preference
 			android:key="@string/pref_ringtone"
-			android:ringtoneType="all"
 			android:title="@string/pref_title_ringtone"/>
 
-	<CheckBoxPreference
+	<androidx.preference.CheckBoxPreference
 			android:key="@string/pref_vibration_key"
 			android:title="@string/pref_vibration_title"
 			android:defaultValue="false"/>
 
-	<CheckBoxPreference
+	<androidx.preference.CheckBoxPreference
 			android:summary="@string/show_notification_summary"
 			android:key="@string/pref_show_notification"
 			android:title="@string/show_notification"
 			android:defaultValue="false"/>
 
-	<PreferenceCategory android:title="@string/license">
+	<androidx.preference.PreferenceCategory android:title="@string/license">
 
-		<Preference
+		<androidx.preference.Preference
 				android:key="@string/pref_license"
 				android:title="@string/license"/>
 
-	</PreferenceCategory>
-</PreferenceScreen>
+	</androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>
