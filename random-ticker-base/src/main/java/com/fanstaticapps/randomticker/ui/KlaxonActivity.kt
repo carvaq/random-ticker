@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -120,6 +119,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
 
     private fun cancelEverything() {
         mediaPlayer?.stop()
+        mediaPlayer?.reset()
         mediaPlayer?.release()
         mediaPlayer = null
         waitingIcon.cancelAnimation()
@@ -187,14 +187,15 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         if (mediaPlayer == null) {
             try {
                 val uri = Uri.parse(PREFS.alarmRingtone)
+
                 mediaPlayer = MediaPlayer().apply {
                     setDataSource(applicationContext, uri)
                     setAudioAttributes(AudioAttributes.Builder()
-                            .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
-                            .setLegacyStreamType(AudioManager.STREAM_ALARM).build())
+                            .setUsage(AudioAttributes.USAGE_ALARM)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
                     isLooping = true
-                    setOnPreparedListener { mediaPlayer?.start() }
-                    prepareAsync()
+                    prepare()
+                    start()
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Error while trying to play alarm sound")

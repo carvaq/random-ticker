@@ -1,7 +1,6 @@
 package com.fanstaticapps.common.activities
 
 import android.content.Intent
-import android.media.AudioManager
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
@@ -60,8 +59,6 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
             val defaultUri = Uri.parse(UserPreferences(it.context).alarmRingtone)
             UltimateMusicPicker()
                     .defaultUri(defaultUri)
-                    // Music preview stream type(AudioManager.STREAM_MUSIC is used by default)
-                    .streamType(AudioManager.STREAM_ALARM)
                     .ringtone()
                     .notification()
                     .alarm()
