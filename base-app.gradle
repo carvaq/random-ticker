@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'io.fabric'
 apply plugin: 'com.github.triplet.play'
 
@@ -11,9 +11,10 @@ apply from: "$rootDir/release_config.gradle"
 android {
 	compileSdkVersion Versions.compileVersion
 	buildToolsVersion Versions.buildToolsVersion
+
 	defaultConfig {
 		minSdkVersion Versions.minSdkVersion
-		targetSdkVersion Versions.targeSdkVersion
+		targetSdkVersion Versions.targetSdkVersion
 
 		versionCode gitVersionCode
 		versionName gitVersionName

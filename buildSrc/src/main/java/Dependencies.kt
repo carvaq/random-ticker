@@ -1,86 +1,82 @@
 object Versions {
-    const val kotlin = "1.2.71"
-    private const val minSdkVersion = 21
-    private const val targeSdkVersion = 28
-    private const val compileVersion = 28
-    private const val buildToolsVersion = "28.0.3"
-}
-
-object ArchitectureComponents {
-    private const val version = "1.1.1"
-    val room = "android.arch.persistence.room:runtime:$version"
-    val rx = "android.arch.persistence.room:rxjava2:$version"
+    const val kotlin = "1.3.50"
+    const val minSdkVersion = 21
+    const val targetSdkVersion = 29
+    const val compileVersion = 29
+    const val buildToolsVersion = "29.0.2"
+    const val fabric = "1.28.0"
+    const val androidGradle = "3.5.2"
+    const val triplet = "1.2.2"
 }
 
 object Kotlin {
-    val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
+    const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
 }
 
 object Gms {
-    val services_plugin_version = "4.0.1"
-    val oss_plugin_version = "0.9.2"
-    val oss = "com.google.android.gms:play-services-oss-licenses:15.0.1"
+    const val services_plugin_version = "4.3.3"
+    const val oss_plugin_version = "0.10.0"
+    const val oss = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 }
 
 object AndroidLibs {
-    private const val supportLibVersion = "1.0.0"
-    val material = "com.google.android.material:material:$supportLibVersion"
-    val cardview = "androidx.cardview:cardview:$supportLibVersion"
-    val appcompat = "androidx.appcompat:appcompat:$supportLibVersion"
-    val preference = "androidx.preference:preference:$supportLibVersion"
-    val recyclerview = "androidx.recyclerview:recyclerview:$supportLibVersion"
+    const val material = "com.google.android.material:material:1.0.0"
+    const val cardview = "androidx.cardview:cardview:1.0.0"
+    const val appcompat = "androidx.appcompat:appcompat:1.1.0"
+    const val preference = "androidx.preference:preference:1.1.0"
+    const val recyclerview = "androidx.recyclerview:recyclerview:1.0.0"
 
-    private const val lifecycleVersion = "2.0.0-beta01"
-    val room_runtime = "androidx.room:room-runtime:$lifecycleVersion"
-    val room_rxjava2 = "androidx.room:room-rxjava2:$lifecycleVersion"
-    val room_compiler = "androidx.room:room-compiler:$lifecycleVersion"
-    val livedata = "androidx.lifecycle:lifecycle-livedata:$lifecycleVersion"
-    val viewmodel = "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
-    val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    private const val roomVersion = "2.2.1"
+    const val room_runtime = "androidx.room:room-runtime:$roomVersion"
+    const val room_rxjava2 = "androidx.room:room-rxjava2:$roomVersion"
+    const val room_compiler = "androidx.room:room-compiler:$roomVersion"
+    const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:2.1.0"
+    const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    const val extensions = "androidx.lifecycle:lifecycle-extensions:2.1.0"
 
-    private const val constraintLayoutVersion = "2.0.0-alpha1"
-    val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    private const val constraintLayoutVersion = "1.1.3"
+    const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
-    val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0-alpha3"
-    val rules = "androidx.test:rules:1.1.0-alpha3"
-    val espresso_core = "androidx.test.espresso:espresso-core:3.1.0-alpha3"
+    const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"
+    const val rules = "androidx.test:rules:1.2.0"
+    const val espresso_core = "androidx.test.espresso:espresso-core:3.2.0"
 }
 
 object Libs {
-    private const val daggerVersion = "2.16"
-    val dagger = "com.google.dagger:dagger:$daggerVersion"
-    val dagger_android = "com.google.dagger:dagger-android:$daggerVersion"
-    val dagger_android_support = "com.google.dagger:dagger-android-support:$daggerVersion"
-    val dagger_compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-    val dagger_android_processor = "com.google.dagger:dagger-android-processor:$daggerVersion"
+    private const val daggerVersion = "2.25.2"
+    const val dagger = "com.google.dagger:dagger:$daggerVersion"
+    const val dagger_android = "com.google.dagger:dagger-android:$daggerVersion"
+    const val dagger_android_support = "com.google.dagger:dagger-android-support:$daggerVersion"
+    const val dagger_compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+    const val dagger_android_processor = "com.google.dagger:dagger-android-processor:$daggerVersion"
 
-    val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.0.2"
-    val pulsator = "pl.bclogic:pulsator4droid:1.0.3"
+    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
+    const val pulsator = "pl.bclogic:pulsator4droid:1.0.3"
 
     private const val grenadeVersion = "1.1.0"
-    val grenade = "com.github.kobakei.grenade:library:$grenadeVersion"
-    val grenade_processor = "com.github.kobakei.grenade:processor:$grenadeVersion"
+    const val grenade = "com.github.kobakei.grenade:library:$grenadeVersion"
+    const val grenade_processor = "com.github.kobakei.grenade:processor:$grenadeVersion"
 
     private const val timberVersion = "4.7.1"
-    val timber = "com.jakewharton.timber:timber:$timberVersion"
+    const val timber = "com.jakewharton.timber:timber:$timberVersion"
 
-    private const val lottieVersion = "2.6.0-beta19"
-    val lottie = "com.airbnb.android:lottie:$lottieVersion"
+    private const val lottieVersion = "3.2.0"
+    const val lottie = "com.airbnb.android:lottie:$lottieVersion"
 
-    private const val ultimateVersion = "2.0.2"
-    val ultimatePicker = "com.github.DeweyReed:UltimateMusicPicker:$ultimateVersion"
+    private const val ultimateVersion = "2.0.6"
+    const val ultimatePicker = "com.github.DeweyReed:UltimateMusicPicker:$ultimateVersion"
 
-    val exoPlayer = "com.google.android.exoplayer:exoplayer-core:2.9.1"
+    const val exoPlayer = "com.google.android.exoplayer:exoplayer-core:2.9.1"
 
 }
 
 object TestLibs {
-    val mockito_core = "org.mockito:mockito-core:2.19.0"
-    val junit = "junit:junit:4.12"
-    val robolectric = "org.robolectric:robolectric:3.8"
-    val mockito_kotlin = "com.nhaarman:mockito-kotlin-kt1.1:1.6.0"
+    const val mockito_core = "org.mockito:mockito-core:3.1.0"
+    const val junit = "junit:junit:4.12"
+    const val robolectric = "org.robolectric:robolectric:4.3.1"
+    const val mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 }
 
 object Firebase {
-    val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.4"
+    const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.0"
 }

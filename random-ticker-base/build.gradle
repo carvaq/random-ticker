@@ -1,26 +1,32 @@
 apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
 	compileSdkVersion Versions.compileVersion
 	buildToolsVersion Versions.buildToolsVersion
+
 	defaultConfig {
 		baseFeature true
 		minSdkVersion Versions.minSdkVersion
-		targetSdkVersion Versions.targeSdkVersion
-		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+		targetSdkVersion Versions.targetSdkVersion
 
 		kapt {
 			arguments {
-				arg("room.schemaLocation", "$projectDir/schemas".toString())
+				arg("room.schemaLocation":"$projectDir/schemas".toString())
+				arg("room.incremental":"true")
+				arg("room.expandProjection":"true")
 			}
 			generateStubs = false
 		}
 
+
 		resValue "bool", "show_settings_menu", "false"
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
+
 	buildTypes {
 		release {
 			minifyEnabled true
@@ -41,6 +47,7 @@ android {
 
 dependencies {
 	application project(':random-ticker-app')
+	implementation project(':common')
 
 	implementation Kotlin.stdlib
 	implementation AndroidLibs.material
@@ -73,6 +80,4 @@ dependencies {
 	androidTestImplementation AndroidLibs.uiautomator
 	androidTestImplementation AndroidLibs.rules
 	androidTestImplementation AndroidLibs.espresso_core
-
-	implementation project(':common')
 }

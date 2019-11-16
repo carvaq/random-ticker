@@ -7,16 +7,22 @@ buildscript {
 		maven { url 'https://maven.fabric.io/public' }
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:3.2.1'
+		classpath "com.android.tools.build:gradle:${Versions.androidGradle}"
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-		classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
-		classpath 'io.fabric.tools:gradle:1.25.4'
+		classpath "com.github.triplet.gradle:play-publisher:${Versions.triplet}"
+		classpath "io.fabric.tools:gradle:${Versions.fabric}"
 		classpath "com.google.gms:google-services:${Gms.services_plugin_version}"
-		classpath "com.google.gms:oss-licenses:${Gms.oss_plugin_version}"
+		classpath "com.google.android.gms:oss-licenses-plugin:${Gms.oss_plugin_version}"
 	}
 }
 
 allprojects {
+	buildscript {
+		repositories {
+			google()
+			jcenter()
+		}
+	}
 	repositories {
 		google()
 		jcenter()
