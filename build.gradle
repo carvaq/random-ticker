@@ -23,10 +23,20 @@ allprojects {
 			jcenter()
 		}
 	}
+
 	repositories {
 		google()
 		jcenter()
 		maven { url "https://jitpack.io" }
+	}
+
+	afterEvaluate {
+		extensions.findByName('kapt')?.arguments {
+			arg("dagger.formatGeneratedSource", "disabled")
+			arg("room.schemaLocation": "$projectDir/schemas".toString())
+			arg("room.incremental": "true")
+			arg("room.expandProjection": "true")
+		}
 	}
 }
 

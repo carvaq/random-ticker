@@ -5,7 +5,7 @@ object Versions {
     const val compileVersion = 29
     const val buildToolsVersion = "29.0.2"
     const val fabric = "1.28.0"
-    const val androidGradle = "3.5.2"
+    const val androidGradle = "3.6.0-beta04"
     const val triplet = "1.2.2"
 }
 
@@ -66,7 +66,6 @@ object Libs {
     private const val ultimateVersion = "2.0.6"
     const val ultimatePicker = "com.github.DeweyReed:UltimateMusicPicker:$ultimateVersion"
 
-    const val exoPlayer = "com.google.android.exoplayer:exoplayer-core:2.9.1"
 
 }
 

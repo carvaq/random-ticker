@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:dist="http://schemas.android.com/apk/distribution"
+		xmlns:tools="http://schemas.android.com/tools"
+		package="com.fanstaticapps.randomticker">
+
+	<dist:module dist:instant="true" />
+
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+	<application
+			android:name="com.fanstaticapps.randomticker.TickerApplication"
+			android:allowBackup="true"
+			android:icon="@mipmap/ic_launcher"
+			android:label="Random Ticker"
+			android:roundIcon="@mipmap/ic_launcher_round"
+			android:supportsRtl="true"
+			android:theme="@style/AppTheme"
+			tools:replace="android:label">
+
+		<activity android:name="com.fanstaticapps.randomticker.ui.ticker.MainActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+
+			<meta-data
+					android:name="default-url"
+					android:value="https://randomticker-84c18.firebaseapp.com/index" />
+
+			<intent-filter android:autoVerify="true">
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data
+						android:host="randomticker-84c18.firebaseapp.com"
+						android:scheme="https" />
+
+				<data
+						android:host="randomticker-84c18.firebaseapp.com"
+						android:scheme="http" />
+			</intent-filter>
+		</activity>
+		<activity
+				android:name="com.fanstaticapps.randomticker.ui.ticker.KlaxonActivity"
+				android:launchMode="singleTask"
+				android:showOnLockScreen="true"
+				android:turnScreenOn="true" />
+		<activity
+				android:name=".ui.preferences.SettingsActivity"
+				android:label="@string/title_activity_settings"
+				android:parentActivityName="com.fanstaticapps.randomticker.ui.ticker.MainActivity">
+			<meta-data
+					android:name="android.support.PARENT_ACTIVITY"
+					android:value="com.fanstaticapps.randomticker.ui.ticker.MainActivity" />
+		</activity>
+
+
+		<!-- Google Activities, need to be here because of styling -->
+		<activity
+				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+				android:theme="@style/AppTheme.LicenseActivity">
+			<meta-data
+					android:name="android.support.PARENT_ACTIVITY"
+					android:value="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+		</activity>
+		<activity
+				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+				android:parentActivityName=".ui.preferences.SettingsActivity"
+				android:theme="@style/AppTheme.LicenseActivity">
+			<meta-data
+					android:name="android.support.PARENT_ACTIVITY"
+					android:value=".ui.preferences.SettingsActivity" />
+		</activity>
+
+		<activity android:name="com.fanstaticapps.randomticker.ui.ticker.CancelActivity" />
+
+		<receiver android:name="com.fanstaticapps.randomticker.receiver.OnAlarmReceiver" />
+
+	</application>
+
+</manifest>

@@ -1,4 +1,2 @@
-include ':random-ticker-base'
-include ':random-ticker-app'
-include ':random-ticker-instantapp'
-include ':common'
+include ':app'
+include ':installed_feature'

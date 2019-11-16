@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
+apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+
+apply from: "$rootDir/release_config.gradle"
+apply from: "$rootDir/versioning.gradle"
+
+ext {
+	runner = 0
+	gitVersionName = getGitVersionName("random-ticker")
+	gitVersionCode = parseVersionCode(gitVersionName)
+}
+
+android {
+	compileSdkVersion Versions.compileVersion
+	buildToolsVersion Versions.buildToolsVersion
+
+	defaultConfig {
+		minSdkVersion Versions.minSdkVersion
+		targetSdkVersion Versions.targetSdkVersion
+
+		applicationId "com.cvv.fanstaticapps.randomticker"
+
+		versionCode gitVersionCode
+		versionName gitVersionName
+
+		dynamicFeatures = [":installed_feature"]
+
+		resValue "bool", "show_settings_menu", "false"
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled true
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+	testOptions {
+		unitTests {
+			includeAndroidResources = true
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+}
+
+dependencies {
+	implementation Kotlin.stdlib
+	implementation AndroidLibs.material
+	implementation AndroidLibs.cardview
+	implementation AndroidLibs.appcompat
+	implementation AndroidLibs.constraint_layout
+	implementation AndroidLibs.room_runtime
+	implementation AndroidLibs.room_rxjava2
+	implementation AndroidLibs.livedata
+	implementation AndroidLibs.viewmodel
+	implementation AndroidLibs.extensions
+	implementation AndroidLibs.preference
+	implementation Firebase.crashlytics
+	implementation Libs.rxAndroid
+	implementation Libs.timber
+	implementation Libs.lottie
+	implementation Libs.pulsator
+	implementation Libs.dagger
+	implementation Libs.dagger_android
+	implementation Libs.dagger_android_support
+	implementation Libs.ultimatePicker
+	implementation Gms.oss
+
+	kapt AndroidLibs.room_compiler
+	kapt Libs.dagger_compiler
+	kapt Libs.dagger_android_processor
+
+	testImplementation TestLibs.mockito_core
+	testImplementation TestLibs.junit
+	testImplementation TestLibs.robolectric
+	testImplementation TestLibs.mockito_kotlin
+
+	androidTestImplementation AndroidLibs.uiautomator
+	androidTestImplementation AndroidLibs.rules
+	androidTestImplementation AndroidLibs.espresso_core
+}
+
+
+play {
+	if (file("$rootDir/play_store_secret.json").exists()) {
+		println "Found play store upload credentials"
+		jsonFile = file("$rootDir/play_store_secret.json")
+		track = 'internal'
+	}
+}
+
+kapt { generateStubs = false }
+apply plugin: 'com.google.gms.google-services'

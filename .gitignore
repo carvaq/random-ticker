@@ -8,5 +8,5 @@
 /captures
 .externalNativeBuild
 /.idea/caches
-google-services.json
+random-ticker-app/google-services.json
 play_store_secret.json

@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Projects.timer-series.iml" filepath="$PROJECT_DIR$/Projects.timer-series.iml" group="timer-series" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="timer-series/app" />
       <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/random-ticker-app/random-ticker-app.iml" filepath="$PROJECT_DIR$/random-ticker-app/random-ticker-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/random-ticker-base/random-ticker-base.iml" filepath="$PROJECT_DIR$/random-ticker-base/random-ticker-base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/random-ticker-instantapp/random-ticker-instantapp.iml" filepath="$PROJECT_DIR$/random-ticker-instantapp/random-ticker-instantapp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sequential-timer/sequential-timer.iml" filepath="$PROJECT_DIR$/sequential-timer/sequential-timer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/installed_feature/installed_feature.iml" filepath="$PROJECT_DIR$/installed_feature/installed_feature.iml" group="timer-series/installed_feature" />
       <module fileurl="file://$PROJECT_DIR$/timer-series.iml" filepath="$PROJECT_DIR$/timer-series.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buildSrc/timer-series.buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/timer-series.buildSrc.iml" group="buildSrc" />
     </modules>
   </component>
 </project>

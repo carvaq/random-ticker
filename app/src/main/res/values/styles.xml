@@ -1,0 +1,102 @@
+<resources>
+
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
+
+	<style name="AppTheme.LicenseActivity" parent="Theme.AppCompat.DayNight.DarkActionBar">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+	</style>
+
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+	<style name="AppTheme.Dialog"/>
+
+	<style name="AppTheme.Dialog.Dark" parent="Theme.Design.BottomSheetDialog"/>
+
+	<style name="AppTheme.Dialog.Light" parent="Theme.Design.Light.BottomSheetDialog"/>
+
+	<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:minHeight">56dp</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_marginTop">@dimen/sectionMargin</item>
+	</style>
+
+	<style name="AppTheme.EditTextContainer">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:paddingStart">@dimen/editTextPadding</item>
+		<item name="android:paddingEnd">@dimen/editTextPadding</item>
+		<item name="android:gravity">center_horizontal</item>
+		<item name="hintTextAppearance">@style/AppTheme.HintTextAppearance</item>
+	</style>
+
+	<style name="AppTheme.Base"/>
+
+	<style name="AppTheme.Base.EditText">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:fontFamily">monospace</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
+		<item name="android:digits">0123456789"</item>
+		<item name="android:selectAllOnFocus">true</item>
+		<item name="android:minWidth">@dimen/editTextMinWidth</item>
+		<item name="android:inputType">number</item>
+		<item name="android:imeOptions">actionNext</item>
+	</style>
+
+	<style name="AppTheme.Base.Label">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:layout_marginStart">@dimen/activityPaddingHorizontal</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Subhead</item>
+	</style>
+
+	<style name="AppTheme.Base.Description">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Tooltip</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+	</style>
+
+	<style name="AppTheme.Label" parent="AppTheme.Base.Label"/>
+
+	<style name="AppTheme.Description" parent="AppTheme.Base.Description"/>
+
+	<style name="AppTheme.EditText" parent="AppTheme.Base.EditText"/>
+
+	<style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint"/>
+
+	<style name="AppTheme.RootContainer">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+	</style>
+
+	<style name="AppTheme.Bookmark">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:elevation">5dp</item>
+		<item name="android:background">@drawable/bookmark_background</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginStart">8dp</item>
+		<item name="android:padding">4dp</item>
+		<item name="android:gravity">center</item>
+	</style>
+
+	<style name="AppTheme.BookmarksContainer">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+	</style>
+
+</resources>
