@@ -1,9 +1,9 @@
 package com.fanstaticapps.randomticker.injection
 
+import com.fanstaticapps.randomticker.ui.CancelActivity
+import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
+import com.fanstaticapps.randomticker.ui.main.MainActivity
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
-import com.fanstaticapps.randomticker.ui.ticker.CancelActivity
-import com.fanstaticapps.randomticker.ui.ticker.KlaxonActivity
-import com.fanstaticapps.randomticker.ui.ticker.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -9,7 +9,7 @@
 			  android:layout_height="match_parent"
 			  android:background="@drawable/klaxon_background"
 			  android:orientation="vertical"
-		tools:context="com.fanstaticapps.randomticker.ui.ticker.KlaxonActivity">
+		tools:context="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity">
 
 
 	<com.airbnb.lottie.LottieAnimationView

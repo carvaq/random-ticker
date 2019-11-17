@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.mvp
+package com.fanstaticapps.randomticker.ui.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

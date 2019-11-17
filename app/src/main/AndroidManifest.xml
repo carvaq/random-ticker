@@ -20,7 +20,7 @@
 			android:theme="@style/AppTheme"
 			tools:replace="android:label">
 
-		<activity android:name="com.fanstaticapps.randomticker.ui.ticker.MainActivity">
+		<activity android:name="com.fanstaticapps.randomticker.ui.main.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -47,17 +47,17 @@
 			</intent-filter>
 		</activity>
 		<activity
-				android:name="com.fanstaticapps.randomticker.ui.ticker.KlaxonActivity"
+				android:name="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity"
 				android:launchMode="singleTask"
 				android:showOnLockScreen="true"
 				android:turnScreenOn="true" />
 		<activity
 				android:name=".ui.preferences.SettingsActivity"
 				android:label="@string/title_activity_settings"
-				android:parentActivityName="com.fanstaticapps.randomticker.ui.ticker.MainActivity">
+				android:parentActivityName="com.fanstaticapps.randomticker.ui.main.MainActivity">
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
-					android:value="com.fanstaticapps.randomticker.ui.ticker.MainActivity" />
+					android:value="com.fanstaticapps.randomticker.ui.main.MainActivity" />
 		</activity>
 
 
@@ -79,7 +79,7 @@
 					android:value=".ui.preferences.SettingsActivity" />
 		</activity>
 
-		<activity android:name="com.fanstaticapps.randomticker.ui.ticker.CancelActivity" />
+		<activity android:name="com.fanstaticapps.randomticker.ui.CancelActivity" />
 
 		<receiver android:name="com.fanstaticapps.randomticker.receiver.OnAlarmReceiver" />
 

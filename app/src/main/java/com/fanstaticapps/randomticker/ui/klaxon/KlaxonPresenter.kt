@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.mvp
+package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.os.CountDownTimer
 import com.fanstaticapps.randomticker.PREFS

@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.ui.ticker
+package com.fanstaticapps.randomticker.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,9 +14,8 @@ import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.IntentHelper
-import com.fanstaticapps.randomticker.mvp.MainPresenter
-import com.fanstaticapps.randomticker.mvp.MainView
 import com.fanstaticapps.randomticker.ui.BaseActivity
+import com.fanstaticapps.randomticker.ui.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
 import com.fanstaticapps.randomticker.view.MaxValueTextWatcher
 import com.fanstaticapps.randomticker.view.MinValueVerification

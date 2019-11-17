@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.mvp
+package com.fanstaticapps.randomticker.ui.main
 
 import android.annotation.SuppressLint
 import com.fanstaticapps.randomticker.PREFS

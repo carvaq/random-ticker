@@ -3,8 +3,8 @@ package com.fanstaticapps.randomticker.helper
 import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.receiver.OnAlarmReceiver
-import com.fanstaticapps.randomticker.ui.ticker.KlaxonActivity
-import com.fanstaticapps.randomticker.ui.ticker.MainActivity
+import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
+import com.fanstaticapps.randomticker.ui.main.MainActivity
 import javax.inject.Inject
 
 class RandomTickerIntentHelper @Inject constructor() : IntentHelper {

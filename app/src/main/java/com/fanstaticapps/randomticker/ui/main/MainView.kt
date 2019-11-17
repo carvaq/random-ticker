@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.mvp
+package com.fanstaticapps.randomticker.ui.main
 
 interface MainView {
     fun initializeListeners()

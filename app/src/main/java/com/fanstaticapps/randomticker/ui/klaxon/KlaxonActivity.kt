@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.ui.ticker
+package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -18,11 +18,8 @@ import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TimerHelper
-import com.fanstaticapps.randomticker.helper.WakeLocker
-import com.fanstaticapps.randomticker.mvp.KlaxonPresenter
-import com.fanstaticapps.randomticker.mvp.KlaxonPresenter.ViewState
-import com.fanstaticapps.randomticker.mvp.KlaxonView
 import com.fanstaticapps.randomticker.ui.BaseActivity
+import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
 import com.fanstaticapps.randomticker.view.AnimatorEndListener
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
@@ -50,8 +47,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         readExtras(intent)
-
-        WakeLocker.acquireLock(this)
 
         setContentView(R.layout.activity_klaxon)
 
@@ -88,11 +83,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         }
 
         presenter.init()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        WakeLocker.release()
     }
 
     override fun onStop() {

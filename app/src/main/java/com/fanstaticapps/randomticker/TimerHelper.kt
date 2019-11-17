@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.getFormattedElapsedMilliseconds
-import com.fanstaticapps.randomticker.ui.ticker.CancelActivity
+import com.fanstaticapps.randomticker.ui.CancelActivity
 import javax.inject.Inject
 
 

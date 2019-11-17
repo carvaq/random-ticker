@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.ui.ticker
+package com.fanstaticapps.randomticker.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -15,7 +15,7 @@ import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
-import com.fanstaticapps.randomticker.mvp.BookmarksViewModel
+import com.fanstaticapps.randomticker.ui.model.BookmarksViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
