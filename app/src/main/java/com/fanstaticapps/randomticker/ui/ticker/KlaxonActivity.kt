@@ -17,34 +17,46 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.helper.WakeLocker
 import com.fanstaticapps.randomticker.mvp.KlaxonPresenter
 import com.fanstaticapps.randomticker.mvp.KlaxonPresenter.ViewState
 import com.fanstaticapps.randomticker.mvp.KlaxonView
+import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.view.AnimatorEndListener
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
+import javax.inject.Inject
 
 
-class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
+class KlaxonActivity : BaseActivity(), KlaxonView {
 
-    private val animationDuration = 750
+    companion object {
+        const val EXTRA_TIME_ELAPSED = "extra_time_elapsed"
+        private const val ANIMATION_DURATION = 750
+    }
+
+    @Inject
+    lateinit var timerHelper: TimerHelper
+
+    private val presenter by lazy { KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed) }
+
+    private var elapsedTimeNeedsAnimation: Boolean = true
+    private var timeElapsed: Boolean = false
 
     private var mediaPlayer: MediaPlayer? = null
     private var vibrator: Vibrator? = null
 
-    private lateinit var presenter: KlaxonPresenter
-    private var elapsedTimeNeedsAnimation: Boolean = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        readExtras(intent)
+
         WakeLocker.acquireLock(this)
 
         setContentView(R.layout.activity_klaxon)
 
         enableShowWhenLocked()
 
-        presenter = KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed)
     }
 
     @Suppress("DEPRECATION")
@@ -63,6 +75,9 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        if (intent != null) {
+            readExtras(intent)
+        }
         presenter.update(timeElapsed)
     }
 
@@ -116,6 +131,11 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         }
     }
 
+
+    private fun readExtras(intent: Intent) {
+        timeElapsed = intent.getBooleanExtra(EXTRA_TIME_ELAPSED, false)
+    }
+
     private fun cancelEverything() {
         mediaPlayer?.stop()
         mediaPlayer?.reset()
@@ -164,7 +184,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
                         super.onAnimationEnd(animation)
                         pulsator.start()
                     }
-                }).duration = animationDuration.toLong()
+                }).duration = ANIMATION_DURATION.toLong()
     }
 
     private fun startHideWaitingIconAnimation() {
@@ -173,7 +193,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
                 .alpha(0f)
                 .scaleX(0f)
                 .scaleY(0f)
-                .setDuration(animationDuration.toLong())
+                .setDuration(ANIMATION_DURATION.toLong())
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
@@ -204,6 +224,7 @@ class KlaxonActivity : KlaxonBaseActivity(), KlaxonView {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun vibrate() {
         if (PREFS.vibrator) {
             vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
