@@ -12,7 +12,6 @@ import javax.inject.Singleton
 @Component(modules = [
     ActivityBuilderModule::class,
     AndroidInjectionModule::class,
-    BindsModule::class,
     ProvidesModule::class,
     AppModule::class])
 interface AppComponent : AndroidInjector<TickerApplication> {

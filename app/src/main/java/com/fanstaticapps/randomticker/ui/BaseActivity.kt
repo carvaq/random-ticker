@@ -32,17 +32,15 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        getCompositeDisposable().dispose();
+        getCompositeDisposable().dispose()
         super.onDestroy()
     }
 
     private fun getCompositeDisposable(): CompositeDisposable {
-        if (compositeDisposable == null || compositeDisposable!!.isDisposed()) {
+        if (compositeDisposable == null || compositeDisposable!!.isDisposed) {
             compositeDisposable = CompositeDisposable()
         }
         return compositeDisposable!!
     }
-
-    private class DisposableManager
 
 }

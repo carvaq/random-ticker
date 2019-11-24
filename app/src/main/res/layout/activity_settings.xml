@@ -8,7 +8,7 @@
 
 	<fragment
 			android:id="@+id/notificationFragment"
-			android:name="com.fanstaticapps.common.activities.NotificationPreferenceFragment"
+			android:name="com.fanstaticapps.randomticker.ui.preferences.NotificationPreferenceFragment"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior" />

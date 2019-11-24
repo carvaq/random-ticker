@@ -8,16 +8,16 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TimerHelper
+import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
+import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
 import com.fanstaticapps.randomticker.view.AnimatorEndListener
@@ -34,6 +34,8 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     @Inject
+    lateinit var notificationManager: TickerNotificationManager
+    @Inject
     lateinit var timerHelper: TimerHelper
 
     private val presenter by lazy { KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed) }
@@ -49,23 +51,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         readExtras(intent)
 
         setContentView(R.layout.activity_klaxon)
-
-        enableShowWhenLocked()
-
-    }
-
-    @Suppress("DEPRECATION")
-    private fun enableShowWhenLocked() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            setShowWhenLocked(true)
-            setTurnScreenOn(true)
-        } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                    or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                    or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -78,6 +63,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
     override fun onResume() {
         super.onResume()
+        Timber.d("Alarm time elapsed?  $timeElapsed")
         dismissButton.setOnClickListener {
             presenter.cancelTimer()
         }
@@ -101,7 +87,8 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
             }
             is ViewState.TimerFinished -> {
-                timerHelper.cancelNotification(this, PREFS)
+                notificationManager.cancelRunningNotification(this)
+
                 if (!pulsator.isStarted) {
                     startHideWaitingIconAnimation()
                     startPulsatorAnimation()
@@ -113,7 +100,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
             }
             is ViewState.TimerCanceled -> {
                 cancelEverything()
-                timerHelper.cancelNotificationAndGoBack(this, PREFS)
+                timerHelper.cancelRunningNotificationAndGoBack(this)
             }
             is ViewState.TimerStopped -> {
                 cancelEverything()
@@ -161,6 +148,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     private fun startWaitingIconAnimation() {
+        waitingIcon.enableMergePathsForKitKatAndAbove(true)
         waitingIcon.playAnimation()
     }
 
@@ -193,9 +181,10 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     private fun playRingtone() {
-        if (mediaPlayer == null) {
+        val alarmRingtone = PREFS.alarmRingtone
+        if (mediaPlayer == null && alarmRingtone.isNotEmpty()) {
             try {
-                val uri = Uri.parse(PREFS.alarmRingtone)
+                val uri = Uri.parse(alarmRingtone)
 
                 mediaPlayer = MediaPlayer().apply {
                     setDataSource(applicationContext, uri)
@@ -214,12 +203,11 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         }
     }
 
-    @Suppress("DEPRECATION")
     private fun vibrate() {
         if (PREFS.vibrator) {
             vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
-            val vibratePattern = longArrayOf(0, 100, 800, 600, 800, 800, 800, 1000)
-            if (Build.VERSION.SDK_INT >= 26) {
+            val vibratePattern = TickerNotificationManager.VIBRATION_PATTERN
+            if (isAtLeastAndroid26()) {
                 vibrator?.vibrate(VibrationEffect.createWaveform(vibratePattern, 0))
             } else {
                 vibrator?.vibrate(vibratePattern, 0)

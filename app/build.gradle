@@ -28,10 +28,6 @@ android {
 		versionCode gitVersionCode
 		versionName gitVersionName
 
-		dynamicFeatures = [":installed_feature"]
-
-		resValue "bool", "show_settings_menu", "false"
-
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
 
@@ -76,6 +72,8 @@ dependencies {
 	implementation Libs.ultimatePicker
 	implementation Gms.oss
 
+	implementation 'androidx.appcompat:appcompat:1.1.0'
+	implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 	kapt AndroidLibs.room_compiler
 	kapt Libs.dagger_compiler
 	kapt Libs.dagger_android_processor

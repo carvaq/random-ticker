@@ -6,12 +6,14 @@
 
 	<dist:module dist:instant="true" />
 
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
 	<application
-			android:name="com.fanstaticapps.randomticker.TickerApplication"
+			android:name=".TickerApplication"
 			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher"
 			android:label="Random Ticker"
@@ -19,8 +21,12 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme"
 			tools:replace="android:label">
+		<service
+				android:name=".alarm.AlarmService"
+				android:enabled="true"
+				android:exported="true"></service>
 
-		<activity android:name="com.fanstaticapps.randomticker.ui.main.MainActivity">
+		<activity android:name=".ui.main.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -40,28 +46,24 @@
 				<data
 						android:host="randomticker-84c18.firebaseapp.com"
 						android:scheme="https" />
-
 				<data
 						android:host="randomticker-84c18.firebaseapp.com"
 						android:scheme="http" />
 			</intent-filter>
 		</activity>
 		<activity
-				android:name="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity"
+				android:name=".ui.klaxon.KlaxonActivity"
 				android:launchMode="singleTask"
 				android:showOnLockScreen="true"
 				android:turnScreenOn="true" />
 		<activity
 				android:name=".ui.preferences.SettingsActivity"
 				android:label="@string/title_activity_settings"
-				android:parentActivityName="com.fanstaticapps.randomticker.ui.main.MainActivity">
+				android:parentActivityName=".ui.main.MainActivity">
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
-					android:value="com.fanstaticapps.randomticker.ui.main.MainActivity" />
-		</activity>
-
-
-		<!-- Google Activities, need to be here because of styling -->
+					android:value=".ui.main.MainActivity" />
+		</activity> <!-- Google Activities, need to be here because of styling -->
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
 				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
@@ -78,11 +80,9 @@
 					android:name="android.support.PARENT_ACTIVITY"
 					android:value=".ui.preferences.SettingsActivity" />
 		</activity>
+		<activity android:name=".ui.CancelActivity" />
 
-		<activity android:name="com.fanstaticapps.randomticker.ui.CancelActivity" />
-
-		<receiver android:name="com.fanstaticapps.randomticker.receiver.OnAlarmReceiver" />
-
+		<receiver android:name=".alarm.OnAlarmReceiver" />
 	</application>
 
 </manifest>
