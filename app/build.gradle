@@ -10,7 +10,7 @@ apply from: "$rootDir/release_config.gradle"
 apply from: "$rootDir/versioning.gradle"
 
 ext {
-	runner = 0
+	runner = 1
 	gitVersionName = getGitVersionName("random-ticker")
 	gitVersionCode = parseVersionCode(gitVersionName)
 }
@@ -93,8 +93,9 @@ dependencies {
 play {
 	if (file("$rootDir/play_store_secret.json").exists()) {
 		println "Found play store upload credentials"
-		jsonFile = file("$rootDir/play_store_secret.json")
+		serviceAccountCredentials = file("$rootDir/play_store_secret.json")
 		track = 'internal'
+		defaultToAppBundles = true
 	}
 }
 

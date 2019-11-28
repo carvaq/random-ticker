@@ -6,7 +6,7 @@ object Versions {
     const val buildToolsVersion = "29.0.2"
     const val fabric = "1.28.0"
     const val androidGradle = "3.6.0-beta04"
-    const val triplet = "1.2.2"
+    const val triplet = "2.6.1"
 }
 
 object Kotlin {
