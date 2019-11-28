@@ -5,18 +5,12 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.View
-import androidx.core.content.ContextCompat
+import android.view.WindowManager
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TimerHelper
-import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
@@ -43,14 +37,12 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     private var elapsedTimeNeedsAnimation: Boolean = true
     private var timeElapsed: Boolean = false
 
-    private var mediaPlayer: MediaPlayer? = null
-    private var vibrator: Vibrator? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         readExtras(intent)
 
         setContentView(R.layout.activity_klaxon)
+        updateScreenStatus()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -59,6 +51,18 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
             readExtras(intent)
         }
         presenter.update(timeElapsed)
+        updateScreenStatus()
+    }
+
+    private fun updateScreenStatus() {
+        if (timeElapsed) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                    or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+
+        }
     }
 
     override fun onResume() {
@@ -87,20 +91,18 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
             }
             is ViewState.TimerFinished -> {
-                notificationManager.cancelRunningNotification(this)
+                notificationManager.cancelNotifications(this)
 
                 if (!pulsator.isStarted) {
                     startHideWaitingIconAnimation()
                     startPulsatorAnimation()
                 }
                 showElapsedTime(viewState.elapsedTime)
-                playRingtone()
-                vibrate()
                 elapsedTime.isEnabled = false
             }
             is ViewState.TimerCanceled -> {
                 cancelEverything()
-                timerHelper.cancelRunningNotificationAndGoBack(this)
+                timerHelper.cancelNotificationsAndGoBack(this)
             }
             is ViewState.TimerStopped -> {
                 cancelEverything()
@@ -114,12 +116,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     private fun cancelEverything() {
-        mediaPlayer?.stop()
-        mediaPlayer?.reset()
-        mediaPlayer?.release()
-        mediaPlayer = null
         waitingIcon.cancelAnimation()
-        vibrator?.cancel()
     }
 
     private fun showElapsedTime(elapsedTimeInMillis: String?) {
@@ -178,41 +175,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                         waitingIcon!!.visibility = View.GONE
                     }
                 }).start()
-    }
-
-    private fun playRingtone() {
-        val alarmRingtone = PREFS.alarmRingtone
-        if (mediaPlayer == null && alarmRingtone.isNotEmpty()) {
-            try {
-                val uri = Uri.parse(alarmRingtone)
-
-                mediaPlayer = MediaPlayer().apply {
-                    setDataSource(applicationContext, uri)
-                    setAudioAttributes(AudioAttributes.Builder()
-                            .setUsage(AudioAttributes.USAGE_ALARM)
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
-                    isLooping = true
-                    prepare()
-                    start()
-                }
-            } catch (e: Exception) {
-                Timber.e(e, "Error while trying to play alarm sound")
-            }
-        } else {
-            toast(R.string.bell_ringing)
-        }
-    }
-
-    private fun vibrate() {
-        if (PREFS.vibrator) {
-            vibrator = vibrator ?: ContextCompat.getSystemService(this, Vibrator::class.java)
-            val vibratePattern = TickerNotificationManager.VIBRATION_PATTERN
-            if (isAtLeastAndroid26()) {
-                vibrator?.vibrate(VibrationEffect.createWaveform(vibratePattern, 0))
-            } else {
-                vibrator?.vibrate(vibratePattern, 0)
-            }
-        }
     }
 
 }

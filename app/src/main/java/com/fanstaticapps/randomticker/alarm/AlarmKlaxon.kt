@@ -1,61 +1,82 @@
 package com.fanstaticapps.randomticker.alarm
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.media.AudioAttributes
-import android.os.Build
+import android.media.MediaPlayer
+import android.net.Uri
+import android.os.VibrationEffect
 import android.os.Vibrator
-import androidx.core.content.ContextCompat
-import com.airbnb.lottie.utils.Utils
+import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.extensions.getVibrator
+import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import timber.log.Timber
 
 internal object AlarmKlaxon {
 
-    private var isStarted = false
-    private var asyncRingtonePlayer: AsyncRingtonePlayer? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var vibrator: Vibrator? = null
 
     fun stop(context: Context) {
-        if (isStarted) {
-            Timber.v("AlarmKlaxon.stop()")
-            isStarted = false
-            getAsyncRingtonePlayer(context).stop()
-            (context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).cancel()
-        }
+        Timber.v("AlarmKlaxon.stop()")
+
+        stopMediaPlayer()
+
+        vibrator?.cancel()
+    }
+
+    private fun stopMediaPlayer() {
+        mediaPlayer?.stop()
+        mediaPlayer?.reset()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     fun start(context: Context) {
         // Make sure we are stopped before starting
-        stop(context)
         Timber.v("AlarmKlaxon.start()")
 
-        if (!AlarmInstance.NO_RINGTONE_URI.equals(instance.mRingtone)) {
-            val crescendoDuration = DataModel.getDataModel().getAlarmCrescendoDuration()
-            getAsyncRingtonePlayer(context).play(instance.mRingtone, crescendoDuration)
+        if (PREFS.alarmRingtone.isNotEmpty()) {
+            playAlarm(context)
         }
 
-        if (instance.mVibrate) {
-            val vibrator = getVibrator(context)
-            if (Utils.isLOrLater()) {
-                vibrateLOrLater(vibrator)
-            } else {
-                vibrator.vibrate(TickerNotificationManager.VIBRATION_PATTERN, 0)
-            }
+        if (PREFS.vibrator) {
+            vibrate(context)
         }
-
-        isStarted = true
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun vibrateLOrLater(vibrator: Vibrator) {
-        vibrator.vibrate(TickerNotificationManager.VIBRATION_PATTERN, 0, AudioAttributes.Builder()
+    private fun playAlarm(context: Context) {
+        try {
+            val uri = Uri.parse(PREFS.alarmRingtone)
+
+            mediaPlayer = MediaPlayer().apply {
+                setDataSource(context, uri)
+                setAudioAttributes(AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
+                isLooping = true
+                prepare()
+                start()
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error while trying to play alarm sound")
+        }
+    }
+
+
+    private fun vibrate(context: Context) {
+        val vibratePattern = TickerNotificationManager.VIBRATION_PATTERN
+        val audioAttributes = AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ALARM)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build())
+                .build()
+        vibrator = context.getVibrator()
+        if (isAtLeastAndroid26()) {
+            vibrator?.vibrate(VibrationEffect.createWaveform(vibratePattern, 0), audioAttributes)
+        } else {
+            vibrator?.vibrate(vibratePattern, 0, audioAttributes)
+        }
     }
 
-    private fun getVibrator(context: Context): Vibrator? {
-        return ContextCompat.getSystemService(context, Vibrator::class.java)
-    }
 
 }

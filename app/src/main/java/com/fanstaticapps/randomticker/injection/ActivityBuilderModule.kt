@@ -1,5 +1,6 @@
 package com.fanstaticapps.randomticker.injection
 
+import com.fanstaticapps.randomticker.alarm.AlarmService
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
@@ -25,6 +26,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindCancelActivity(): CancelActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindAlarmService(): AlarmService
 
 
     @ContributesAndroidInjector

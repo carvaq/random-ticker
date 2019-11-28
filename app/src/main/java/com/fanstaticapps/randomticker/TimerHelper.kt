@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Handler
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
+import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import timber.log.Timber
@@ -51,14 +52,16 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     private fun setAlarm(context: Context, intervalFinished: Long) {
         ContextCompat.getSystemService(context, AlarmManager::class.java)?.let { alarmManager ->
             val alarmIntent = intentHelper.getAlarmReceiveAsPendingIntent(context)
-            val showIntent = intentHelper.getContentPendingIntent(context, false)
+            val showIntent = intentHelper.getContentPendingIntent(context, TickerNotificationManager.RUNNING_NOTIFICATION_ID, false)
             AlarmManagerCompat.setAlarmClock(alarmManager, intervalFinished, showIntent, alarmIntent)
             Timber.d("Setting alarm to sound in ${intervalFinished / 1000}ms")
         }
     }
 
-    fun cancelRunningNotificationAndGoBack(activity: Activity) {
-        notificationManager.cancelRunningNotification(activity)
+    fun cancelNotificationsAndGoBack(activity: Activity) {
+        AlarmKlaxon.stop(activity)
+
+        notificationManager.cancelNotifications(activity)
 
         val startIntent = intentHelper.getMainActivity(activity)
         startIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

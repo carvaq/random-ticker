@@ -13,6 +13,6 @@ class CancelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timerHelper.cancelRunningNotificationAndGoBack(this, userPreferences)
+        timerHelper.cancelNotificationsAndGoBack(this)
     }
 }

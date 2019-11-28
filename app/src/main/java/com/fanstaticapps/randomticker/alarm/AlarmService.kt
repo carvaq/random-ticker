@@ -43,10 +43,9 @@ class AlarmService : Service() {
 
         AlarmAlertWakeLock.acquireCpuWakeLock(this)
 
-        notificationManager.showKlaxongNotification(applicationContext)
+        notificationManager.showKlaxonNotification(applicationContext)
 
         AlarmKlaxon.start(this)
-        sendBroadcast(Intent(ALARM_ALERT_ACTION))
     }
 
 }
