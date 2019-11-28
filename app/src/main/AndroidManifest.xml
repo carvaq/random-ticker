@@ -21,10 +21,6 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme"
 			tools:replace="android:label">
-		<service
-				android:name=".alarm.AlarmService"
-				android:enabled="true"
-				android:exported="true" />
 
 		<activity android:name=".ui.main.MainActivity">
 			<intent-filter>
@@ -82,7 +78,6 @@
 		</activity>
 		<activity android:name=".ui.CancelActivity" />
 
-		<receiver android:name=".alarm.OnAlarmReceiver" />
 	</application>
 
 </manifest>

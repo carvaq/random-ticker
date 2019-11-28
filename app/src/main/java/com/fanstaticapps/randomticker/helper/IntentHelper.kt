@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker.helper
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.alarm.AlarmService
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
@@ -22,11 +21,6 @@ class IntentHelper @Inject constructor() {
         val intent = Intent(context, KlaxonActivity::class.java)
         intent.putExtra(KlaxonActivity.EXTRA_TIME_ELAPSED, hasTimeElapsed)
         return intent
-    }
-
-    fun getAlarmReceiveAsPendingIntent(context: Context): PendingIntent {
-        val alarmIntent = Intent(context, AlarmService::class.java)
-        return PendingIntent.getService(context, BROADCAST_REQUEST_CODE, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     fun getContentPendingIntent(context: Context, requestCode: Int, hasTimeElapsed: Boolean): PendingIntent {

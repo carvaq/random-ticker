@@ -1,16 +1,17 @@
 package com.fanstaticapps.randomticker
 
 import android.app.Activity
-import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import androidx.core.app.AlarmManagerCompat
-import androidx.core.content.ContextCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
+import com.fanstaticapps.randomticker.alarm.ShowNotificationWorker
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
-import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -24,6 +25,7 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
         private val HANDLER = Handler()
+        const val WORK_TAG = "Ticker:notification"
     }
 
     fun createNotificationAndAlarm(context: Context) {
@@ -50,16 +52,14 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
 
     private fun setAlarm(context: Context, intervalFinished: Long) {
-        ContextCompat.getSystemService(context, AlarmManager::class.java)?.let { alarmManager ->
-            val alarmIntent = intentHelper.getAlarmReceiveAsPendingIntent(context)
-            val showIntent = intentHelper.getContentPendingIntent(context, TickerNotificationManager.RUNNING_NOTIFICATION_ID, false)
-            AlarmManagerCompat.setAlarmClock(alarmManager, intervalFinished, showIntent, alarmIntent)
-            Timber.d("Setting alarm to sound in ${intervalFinished / 1000}ms")
-        }
+        val request = OneTimeWorkRequest.Builder(ShowNotificationWorker::class.java)
+                .setInitialDelay(intervalFinished - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .build()
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, request)
     }
 
     fun cancelNotificationsAndGoBack(activity: Activity) {
-        AlarmKlaxon.stop(activity)
+        AlarmKlaxon.stop()
 
         notificationManager.cancelNotifications(activity)
 

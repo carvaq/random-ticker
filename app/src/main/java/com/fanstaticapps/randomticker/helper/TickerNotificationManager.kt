@@ -1,13 +1,16 @@
 package com.fanstaticapps.randomticker.helper
 
-import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import javax.inject.Inject
@@ -32,32 +35,37 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
     fun cancelNotifications(context: Context) {
         PREFS.currentlyTickerRunning = false
 
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(intentHelper.getAlarmReceiveAsPendingIntent(context))
-
         val notificationManager = context.getNotificationManager()
         notificationManager.cancel(RUNNING_NOTIFICATION_ID)
         notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)
     }
 
     private fun getKlaxonNotification(context: Context): Notification {
+        val uri = getRingtone()
+
         val contentIntent = intentHelper.getContentPendingIntent(context, FOREGROUND_NOTIFICATION_ID, true)
         val fullscreenIntent = intentHelper.getFullscreenPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
+
 
         val notificationBuilder =
                 NotificationCompat.Builder(context, FOREGROUND_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_stat_timer)
                         .setAutoCancel(true)
                         .setContentTitle("Random Ticker")
+                        .setDefaults(Notification.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .addAction(getCancelAction(context, FOREGROUND_NOTIFICATION_ID))
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
                         .setLocalOnly(true)
-                        .setWhen(0)
                         .setFullScreenIntent(fullscreenIntent, true)
                         .setContentIntent(contentIntent)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setSound(uri, AudioManager.STREAM_ALARM)
 
+
+        if (PREFS.vibrator) {
+            notificationBuilder.setVibrate(VIBRATION_PATTERN)
+        }
 
         return notificationBuilder.build()
     }
@@ -69,7 +77,20 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
             val name = context.getString(R.string.foreground_channel_name)
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(FOREGROUND_CHANNEL_ID, name, importance)
+            val uri = getRingtone()
+
+            val audioAttributes = AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setLegacyStreamType(AudioManager.STREAM_NOTIFICATION)
+                    .build()
+
+            channel.setSound(uri, audioAttributes)
+            channel.enableVibration(PREFS.vibrator)
             channel.setBypassDnd(true)
+            channel.vibrationPattern = VIBRATION_PATTERN
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            notificationManager.deleteNotificationChannel(FOREGROUND_CHANNEL_ID)
             notificationManager.createNotificationChannel(channel)
         }
 
@@ -78,6 +99,11 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         cancelNotifications(context)
 
         notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
+        AlarmKlaxon.start(context)
+    }
+
+    private fun getRingtone(): Uri? {
+        return Uri.parse(PREFS.alarmRingtone)
     }
 
     private fun getRunningNotification(context: Context): Notification {
