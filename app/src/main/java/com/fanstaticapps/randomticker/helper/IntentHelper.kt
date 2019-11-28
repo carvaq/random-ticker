@@ -38,8 +38,7 @@ class IntentHelper @Inject constructor() {
 
     fun getFullscreenPendingIntent(context: Context, requestCode: Int): PendingIntent {
         val intent = getKlaxonActivity(context, true).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }

@@ -19,7 +19,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
 
         if (isAtLeastAndroid26()) {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val name = context.getString(R.string.channel_name)
+            val name = context.getString(R.string.running_channel_name)
             val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(RUNNING_CHANNEL_ID, name, importance)
             notificationManager.createNotificationChannel(channel)
@@ -49,30 +49,25 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
                         .setSmallIcon(R.drawable.ic_stat_timer)
                         .setAutoCancel(true)
                         .setContentTitle("Random Ticker")
-                        .setDefaults(Notification.DEFAULT_LIGHTS)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .addAction(getCancelAction(context, FOREGROUND_NOTIFICATION_ID))
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
                         .setLocalOnly(true)
                         .setWhen(0)
                         .setFullScreenIntent(fullscreenIntent, true)
-                        .setOngoing(true)
                         .setContentIntent(contentIntent)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
 
-        val notification = notificationBuilder.build()
-        notification.flags = notification.flags or Notification.FLAG_INSISTENT
-
-        return notification
+        return notificationBuilder.build()
     }
 
     fun showKlaxonNotification(context: Context) {
         val notificationManager = context.getNotificationManager()
 
         if (isAtLeastAndroid26()) {
-            val name = context.getString(R.string.channel_name)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val name = context.getString(R.string.foreground_channel_name)
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(FOREGROUND_CHANNEL_ID, name, importance)
             channel.setBypassDnd(true)
             notificationManager.createNotificationChannel(channel)

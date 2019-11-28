@@ -12,7 +12,6 @@
 	<string name="button_delete">Löschen</string>
 	<string name="add_bookmark">Lesezeichen hinzufügen</string>
 	<string name="notification_title">%s Timer läuft</string>
-	<string name="channel_name">Alarm</string>
 	<string name="title_activity_settings">Einstellungen</string>
 	<string name="pref_title_ringtone">Alarmton</string>
 	<string name="pref_ringtone_silent">Leise</string>
@@ -20,5 +19,7 @@
 	<string name="show_notification_summary">Zeige eine Benachrichtigung über die verbleibende und bereits abgelaufene Zeit.</string>
 	<string name="show_notification">Zeige Benachrichtigungen</string>
 	<string name="pref_vibration_title">Vibration</string>
+	<string name="foreground_channel_name">Alarm</string>
+	<string name="running_channel_name">Timer</string>
 
 </resources>
