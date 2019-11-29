@@ -10,7 +10,7 @@ apply from: "$rootDir/release_config.gradle"
 apply from: "$rootDir/versioning.gradle"
 
 ext {
-	runner = 1
+	runner = 0
 	gitVersionName = getGitVersionName("random-ticker")
 	gitVersionCode = parseVersionCode(gitVersionName)
 }
@@ -61,7 +61,6 @@ dependencies {
 	implementation AndroidLibs.viewmodel
 	implementation AndroidLibs.extensions
 	implementation AndroidLibs.preference
-	implementation AndroidLibs.work
 	implementation Firebase.crashlytics
 	implementation Libs.rxAndroid
 	implementation Libs.timber

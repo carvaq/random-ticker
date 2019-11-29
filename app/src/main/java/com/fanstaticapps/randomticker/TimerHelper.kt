@@ -1,17 +1,16 @@
 package com.fanstaticapps.randomticker
 
 import android.app.Activity
+import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
+import androidx.core.app.AlarmManagerCompat
+import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
-import com.fanstaticapps.randomticker.alarm.ShowNotificationWorker
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
-import java.util.concurrent.TimeUnit
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -52,10 +51,11 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
 
     private fun setAlarm(context: Context, intervalFinished: Long) {
-        val request = OneTimeWorkRequest.Builder(ShowNotificationWorker::class.java)
-                .setInitialDelay(intervalFinished - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                .build()
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, request)
+        ContextCompat.getSystemService(context, AlarmManager::class.java)?.let { alarmManager ->
+            val alarmIntent = intentHelper.getAlarmReceiveAsPendingIntent(context)
+            AlarmManagerCompat.setAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+            Timber.d("Setting alarm to sound in ${(intervalFinished - System.currentTimeMillis()) / 1000}s")
+        }
     }
 
     fun cancelNotificationsAndGoBack(activity: Activity) {
