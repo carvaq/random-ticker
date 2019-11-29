@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.helper
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import com.fanstaticapps.randomticker.alarm.AlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
@@ -39,5 +40,9 @@ class IntentHelper @Inject constructor() {
 
     fun getCancelAction(context: Context, requestCode: Int): PendingIntent {
         return PendingIntent.getActivity(context, requestCode, Intent(context, CancelActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    fun getAlarmReceiveAsPendingIntent(context: Context): PendingIntent {
+        return PendingIntent.getBroadcast(context, 123, Intent(context, AlarmReceiver::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }

@@ -61,7 +61,6 @@ dependencies {
 	implementation AndroidLibs.viewmodel
 	implementation AndroidLibs.extensions
 	implementation AndroidLibs.preference
-	implementation AndroidLibs.work
 	implementation Firebase.crashlytics
 	implementation Libs.rxAndroid
 	implementation Libs.timber
