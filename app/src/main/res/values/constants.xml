@@ -7,4 +7,5 @@
 	<string name="pref_show_notification_key" translatable="false">pref_show_notification</string>
 	<string name="pref_vibration_key" translatable="false">pref_vibration</string>
 	<string name="pref_dark_theme_key" translatable="false">pref_dark_theme</string>
+	<string name="pref_open_notification_channel">pref_open_notification_channel</string>
 </resources>

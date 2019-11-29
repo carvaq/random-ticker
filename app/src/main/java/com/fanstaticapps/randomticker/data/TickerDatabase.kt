@@ -14,7 +14,7 @@ abstract class TickerDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: TickerDatabase? = null
 
-        fun getInstance(context: Context): TickerDatabase? {
+        fun getInstance(context: Context): TickerDatabase {
             if (INSTANCE == null) {
                 synchronized(TickerDatabase::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
@@ -22,7 +22,7 @@ abstract class TickerDatabase : RoomDatabase() {
                             .build()
                 }
             }
-            return INSTANCE
+            return INSTANCE!!
         }
 
         fun destroyInstance() {

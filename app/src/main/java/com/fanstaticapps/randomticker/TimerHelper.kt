@@ -11,6 +11,7 @@ import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -27,7 +28,35 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         const val WORK_TAG = "Ticker:notification"
     }
 
-    fun createNotificationAndAlarm(context: Context) {
+
+    private val randomGenerator = Random(System.currentTimeMillis())
+
+    fun createTimer(minMin: Int, minSec: Int, maxMin: Int, maxSec: Int): Boolean {
+        val min = getTotalValueInMillis(minMin, minSec)
+        val max = getTotalValueInMillis(maxMin, maxSec)
+        return if (max > min) {
+            val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
+            val intervalFinished = System.currentTimeMillis() + interval
+            saveToPreferences(interval, intervalFinished)
+            true
+        } else {
+            false
+        }
+    }
+
+
+    private fun getTotalValueInMillis(minutes: Int, seconds: Int): Int {
+        return (60 * minutes + seconds) * 1000
+    }
+
+    private fun saveToPreferences(interval: Long, intervalFinished: Long) {
+        PREFS.currentlyTickerRunning = true
+        PREFS.interval = interval
+        PREFS.intervalFinished = intervalFinished
+    }
+
+
+    fun createAlarm(context: Context) {
         val intervalFinished = PREFS.intervalFinished
 
         if (PREFS.showNotification) {

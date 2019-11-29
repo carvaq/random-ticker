@@ -2,6 +2,7 @@ package com.fanstaticapps.randomticker.ui.main
 
 import android.annotation.SuppressLint
 import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import io.reactivex.Single
@@ -9,20 +10,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.util.*
 
-class MainPresenter(private val database: TickerDatabase, private val view: MainView) {
+class MainPresenter(private val database: TickerDatabase, private val view: MainView, private val timerHelper: TimerHelper) {
 
     private lateinit var currentTicker: Bookmark
     private lateinit var bookmarks: List<Bookmark>
-
-    private val randomGenerator = Random(System.currentTimeMillis())
 
     fun loadDataFromDatabase(currentBookmarkId: Long): Disposable {
         return Single.fromCallable { database.tickerDataDao().getAll() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ it ->
+                .subscribe({
                     bookmarks = it
                     applyBookmarks(currentBookmarkId)
                 }, {
@@ -48,21 +46,6 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
         }
     }
 
-    fun createTimer(name: String, minMin: Int, minSec: Int, maxMin: Int, maxSec: Int) {
-        val min = getTotalValueInMillis(minMin, minSec)
-        val max = getTotalValueInMillis(maxMin, maxSec)
-        if (max > min) {
-            val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
-            val intervalFinished = System.currentTimeMillis() + interval
-            saveToPreferences(interval, intervalFinished)
-            insertCurrentTickerData(name, minMin, minSec, maxMin, maxSec)
-
-            view.createAlarm()
-        } else {
-            view.showMinimumMustBeBiggerThanMaximum()
-        }
-    }
-
     private fun getTickerData(currentBookmarkId: Long?): Bookmark {
         val data = bookmarks.firstOrNull { it.id == currentBookmarkId }
         return if (data != null) {
@@ -74,15 +57,16 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
         }
     }
 
+    fun createTimer(name: String, minMin: Int, minSec: Int, maxMin: Int, maxSec: Int) {
+        val timerCreated = timerHelper.createTimer(minMin, minSec, maxMin, maxSec)
+        if (timerCreated) {
+            insertCurrentTickerData(name, minMin, minSec, maxMin, maxSec)
 
-    private fun getTotalValueInMillis(minutes: Int, seconds: Int): Int {
-        return (60 * minutes + seconds) * 1000
-    }
+            view.createAlarm()
+        } else {
+            view.showMinimumMustBeBiggerThanMaximum()
+        }
 
-    private fun saveToPreferences(interval: Long, intervalFinished: Long) {
-        PREFS.currentlyTickerRunning = true
-        PREFS.interval = interval
-        PREFS.intervalFinished = intervalFinished
     }
 
     @SuppressLint("CheckResult")
@@ -104,7 +88,7 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
                 }
                 .subscribe({ _ ->
                     Timber.d("Inserted interval changes")
-                }, { throwable -> Timber.e(throwable, "Ooops")})
+                }, { throwable -> Timber.e(throwable, "Ooops") })
     }
 
 }

@@ -3,7 +3,11 @@ package com.fanstaticapps.randomticker.ui.preferences
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS
+import android.provider.Settings.EXTRA_APP_PACKAGE
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -11,6 +15,7 @@ import androidx.preference.PreferenceManager
 import com.crashlytics.android.Crashlytics
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.setDarkTheme
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import timber.log.Timber
@@ -46,6 +51,20 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
             startActivity(Intent(activity, OssLicensesMenuActivity::class.java))
             true
         }
+        val notificationChannelPreference = findPreference<Preference>(getString(R.string.pref_open_notification_channel))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannelPreference?.setOnPreferenceClickListener {
+                val intent = Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                        .putExtra(EXTRA_APP_PACKAGE, context?.packageName)
+                        .putExtra(Settings.EXTRA_CHANNEL_ID, TickerNotificationManager.FOREGROUND_CHANNEL_ID)
+                startActivity(intent)
+                true
+            }
+        } else {
+            notificationChannelPreference?.isVisible = false
+        }
+
+
         bindDarkThemePreference()
 
     }

@@ -133,8 +133,8 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
     }
 
     companion object {
-        private const val RUNNING_CHANNEL_ID = "RandomTickerChannel:01"
-        private const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:02"
+        const val RUNNING_CHANNEL_ID = "RandomTickerChannel:01"
+        const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:02"
         const val RUNNING_NOTIFICATION_ID = 2312
         const val FOREGROUND_NOTIFICATION_ID = 1243
         val VIBRATION_PATTERN = longArrayOf(0, 100, 800, 600, 800, 800, 800, 1000)

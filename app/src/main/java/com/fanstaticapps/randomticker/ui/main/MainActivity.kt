@@ -44,9 +44,9 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
             setContentView(R.layout.activity_main)
             val toolbar = findViewById<Toolbar>(R.id.toolbar)
             setSupportActionBar(toolbar)
-            val database = TickerDatabase.getInstance(this)!!
+            val database = TickerDatabase.getInstance(this)
 
-            presenter = MainPresenter(database, this)
+            presenter = MainPresenter(database, this, timerHelper)
             addDisposable(presenter.loadDataFromDatabase(PREFS.currentSelectedId))
         }
     }
@@ -117,7 +117,7 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
     }
 
     override fun createAlarm() {
-        timerHelper.createNotificationAndAlarm(this)
+        timerHelper.createAlarm(this)
         startAlarmActivity()
     }
 
