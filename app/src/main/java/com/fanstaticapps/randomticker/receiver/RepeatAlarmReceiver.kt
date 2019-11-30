@@ -5,25 +5,27 @@ import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.data.TickerDatabase
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.helper.TimerHelper
 import dagger.android.AndroidInjection
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class AlarmReceiver : BroadcastReceiver() {
+class RepeatAlarmReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var notificationManager: TickerNotificationManager
+    internal lateinit var timerHelper: TimerHelper
 
     override fun onReceive(context: Context, intent: Intent) {
         AndroidInjection.inject(this, context)
-
-        Timber.d("Alarm received")
         val database = TickerDatabase.getInstance(context)
+
         database.tickerDataDao().getById(PREFS.currentSelectedId)
                 .subscribeOn(Schedulers.computation())
-                .doOnSuccess { notificationManager.showKlaxonNotification(context, it) }
+                .doOnSuccess {
+                    Timber.d("Creating a new alarm!")
+                    timerHelper.newAlarmFromBookmark(context, it)
+                }
                 .subscribe()
     }
 }

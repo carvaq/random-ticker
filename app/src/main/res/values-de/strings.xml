@@ -24,5 +24,7 @@
     <string name="bookmark_hint">Hinzufügen</string>
     <string name="open_notification_channel_title">Öffne die Systemeinstellungen für Benachrichtungen</string>
     <string name="open_notification_channel_description">Falls du Problem mit den Alarm hast, kann es an den Einstellungen der Benachrichtungen der App liegen.</string>
+	<string name="action_repeat">Wiederholen</string>
+	<string name="action_stop">Stopp</string>
 
 </resources>

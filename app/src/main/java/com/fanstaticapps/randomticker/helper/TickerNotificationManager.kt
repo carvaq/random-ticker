@@ -55,7 +55,8 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
                         .setContentTitle(bookmark.name)
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .addAction(getCancelAction(context, FOREGROUND_NOTIFICATION_ID))
+                        .addAction(getStopAction(context))
+                        .addAction(getRepeatAction(context))
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
                         .setLocalOnly(true)
                         .setFullScreenIntent(fullscreenIntent, true)
@@ -111,7 +112,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         val interval = PREFS.interval
         val intervalFinished = PREFS.intervalFinished
         val alarmPendingIntent = intentHelper.getContentPendingIntent(context, RUNNING_NOTIFICATION_ID, false)
-        val cancelAction = getCancelAction(context, RUNNING_NOTIFICATION_ID)
+        val cancelAction = getCancelAction(context)
 
         val formattedInterval = getFormattedElapsedMilliseconds(interval)
         val builder = NotificationCompat.Builder(context, RUNNING_CHANNEL_ID)
@@ -128,9 +129,19 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         return builder.build()
     }
 
-    private fun getCancelAction(context: Context, requestCode: Int): NotificationCompat.Action {
-        val cancelPendingIntent = intentHelper.getCancelAction(context, requestCode)
+    private fun getCancelAction(context: Context): NotificationCompat.Action {
+        val cancelPendingIntent = intentHelper.getCancelActionPendingIntent(context, RUNNING_NOTIFICATION_ID)
         return NotificationCompat.Action(R.drawable.ic_action_stop_timer, context.getString(android.R.string.cancel), cancelPendingIntent)
+    }
+
+    private fun getStopAction(context: Context): NotificationCompat.Action {
+        val cancelPendingIntent = intentHelper.getCancelActionPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
+        return NotificationCompat.Action(R.drawable.ic_action_stop_timer, context.getString(R.string.action_stop), cancelPendingIntent)
+    }
+
+    private fun getRepeatAction(context: Context): NotificationCompat.Action {
+        val pendingIntent = intentHelper.getRepeatReceiverPendingIntent(context)
+        return NotificationCompat.Action(R.drawable.ic_action_repeat_timer, context.getString(R.string.action_repeat), pendingIntent)
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.injection
 
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
+import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
@@ -16,7 +17,7 @@ import dagger.android.ContributesAndroidInjector
  */
 
 @Module
-abstract class ActivityBuilderModule {
+abstract class ComponentsModule {
 
     @ContributesAndroidInjector
     abstract fun bindMainActivity(): MainActivity
@@ -32,4 +33,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindAlarmReceiver(): AlarmReceiver
+
+    @ContributesAndroidInjector
+    abstract fun bindRepeatAlarmReceiver(): RepeatAlarmReceiver
 }

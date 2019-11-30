@@ -8,6 +8,7 @@ import android.os.Handler
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.data.Bookmark
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -23,11 +24,16 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
         private val HANDLER = Handler()
-        const val WORK_TAG = "Ticker:notification"
     }
 
 
     private val randomGenerator = Random(System.currentTimeMillis())
+
+    fun newAlarmFromBookmark(context: Context, bookmark: Bookmark) {
+        notificationManager.cancelNotifications(context)
+        createTimer(bookmark.minimumMinutes, bookmark.minimumSeconds, bookmark.maximumMinutes, bookmark.maximumSeconds)
+        createAlarm(context)
+    }
 
     fun createTimer(minMin: Int, minSec: Int, maxMin: Int, maxSec: Int): Boolean {
         val min = getTotalValueInMillis(minMin, minSec)
