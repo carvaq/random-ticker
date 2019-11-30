@@ -1,8 +1,10 @@
-package com.fanstaticapps.randomticker.alarm
+package com.fanstaticapps.randomticker.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import dagger.android.AndroidInjection
 import timber.log.Timber
@@ -17,6 +19,9 @@ class AlarmReceiver : BroadcastReceiver() {
         AndroidInjection.inject(this, context)
 
         Timber.d("Alarm received")
-        notificationManager.showKlaxonNotification(context)
+        val database = TickerDatabase.getInstance(context)
+        database.tickerDataDao().getById(PREFS.currentSelectedId)
+                .doOnSuccess { notificationManager.showKlaxonNotification(context, it) }
+                .subscribe()
     }
 }

@@ -1,6 +1,6 @@
 package com.fanstaticapps.randomticker
 
-import com.fanstaticapps.randomticker.helper.setDarkTheme
+import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.injection.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication

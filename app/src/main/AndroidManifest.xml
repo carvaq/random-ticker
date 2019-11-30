@@ -23,7 +23,7 @@
 			tools:replace="android:label">
 
 		<receiver
-				android:name=".alarm.AlarmReceiver"
+			android:name=".receiver.AlarmReceiver"
 				android:enabled="true"
 				android:exported="true" />
 

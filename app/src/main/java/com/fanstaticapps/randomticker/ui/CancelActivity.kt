@@ -1,8 +1,8 @@
 package com.fanstaticapps.randomticker.ui
 
 import android.os.Bundle
-import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.helper.TimerHelper
 import javax.inject.Inject
 
 class CancelActivity : BaseActivity() {

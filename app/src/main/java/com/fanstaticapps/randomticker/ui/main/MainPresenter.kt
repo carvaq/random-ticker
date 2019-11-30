@@ -2,9 +2,9 @@ package com.fanstaticapps.randomticker.ui.main
 
 import android.annotation.SuppressLint
 import com.fanstaticapps.randomticker.PREFS
-import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.helper.TimerHelper
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

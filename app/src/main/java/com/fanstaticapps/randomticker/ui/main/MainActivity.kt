@@ -10,10 +10,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.IntentHelper
+import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity

@@ -3,7 +3,7 @@ package com.fanstaticapps.randomticker.helper
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.alarm.AlarmReceiver
+import com.fanstaticapps.randomticker.receiver.AlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity

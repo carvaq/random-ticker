@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.alarm
+package com.fanstaticapps.randomticker.helper
 
 import android.content.Context
 import android.media.AudioAttributes

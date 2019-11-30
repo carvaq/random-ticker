@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker
+package com.fanstaticapps.randomticker.helper
 
 import android.app.Activity
 import android.app.AlarmManager
@@ -7,9 +7,7 @@ import android.content.Intent
 import android.os.Handler
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
-import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
-import com.fanstaticapps.randomticker.helper.IntentHelper
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.PREFS
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject

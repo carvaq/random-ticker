@@ -10,8 +10,8 @@ import android.view.View
 import android.view.WindowManager
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.TimerHelper
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
 import com.fanstaticapps.randomticker.view.AnimatorEndListener

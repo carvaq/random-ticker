@@ -2,8 +2,8 @@ package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.os.CountDownTimer
 import com.fanstaticapps.randomticker.PREFS
-import com.fanstaticapps.randomticker.TimerHelper
-import com.fanstaticapps.randomticker.helper.getFormattedElapsedMilliseconds
+import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
+import com.fanstaticapps.randomticker.helper.TimerHelper
 import java.lang.Math.abs
 
 /**

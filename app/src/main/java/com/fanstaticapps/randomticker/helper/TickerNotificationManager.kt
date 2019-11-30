@@ -10,7 +10,8 @@ import android.net.Uri
 import androidx.core.app.NotificationCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.alarm.AlarmKlaxon
+import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import javax.inject.Inject
@@ -40,7 +41,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)
     }
 
-    private fun getKlaxonNotification(context: Context): Notification {
+    private fun getKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
         val uri = getRingtone()
 
         val contentIntent = intentHelper.getContentPendingIntent(context, FOREGROUND_NOTIFICATION_ID, true)
@@ -51,7 +52,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
                 NotificationCompat.Builder(context, FOREGROUND_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_stat_timer)
                         .setAutoCancel(true)
-                        .setContentTitle("Random Ticker")
+                        .setContentTitle(bookmark.name)
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .addAction(getCancelAction(context, FOREGROUND_NOTIFICATION_ID))
@@ -70,7 +71,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         return notificationBuilder.build()
     }
 
-    fun showKlaxonNotification(context: Context) {
+    fun showKlaxonNotification(context: Context, bookmark: Bookmark) {
         val notificationManager = context.getNotificationManager()
 
         if (isAtLeastAndroid26()) {
@@ -94,7 +95,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
             notificationManager.createNotificationChannel(channel)
         }
 
-        val notification = getKlaxonNotification(context)
+        val notification = getKlaxonNotification(context, bookmark)
 
         cancelNotifications(context)
 

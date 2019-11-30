@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.helper
+package com.fanstaticapps.randomticker.extensions
 
 import androidx.appcompat.app.AppCompatDelegate
 import com.fanstaticapps.randomticker.UserPreferences

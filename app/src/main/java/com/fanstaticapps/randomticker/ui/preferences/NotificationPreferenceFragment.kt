@@ -15,8 +15,8 @@ import androidx.preference.PreferenceManager
 import com.crashlytics.android.Crashlytics
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
-import com.fanstaticapps.randomticker.helper.setDarkTheme
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import timber.log.Timber
 import xyz.aprildown.ultimatemusicpicker.MusicPickerListener
