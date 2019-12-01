@@ -10,9 +10,6 @@
 		android:keepScreenOn="true"
 		app:applyMotionScene="true"
 		app:layoutDescription="@xml/activity_klaxon_scene"
-		app:motionDebug="SHOW_ALL"
-		app:motionProgress="0.5"
-		app:showPaths="true"
 		tools:context="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity">
 
 

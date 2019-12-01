@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.extensions.isAppInBackground
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import dagger.android.AndroidInjection
 import io.reactivex.schedulers.Schedulers
@@ -19,11 +20,14 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         AndroidInjection.inject(this, context)
 
-        Timber.d("Alarm received")
-        val database = TickerDatabase.getInstance(context)
-        database.tickerDataDao().getById(PREFS.currentSelectedId)
-                .subscribeOn(Schedulers.computation())
-                .doOnSuccess { notificationManager.showKlaxonNotification(context, it) }
-                .subscribe()
+        if (context.isAppInBackground()) {
+            Timber.d("Alarm received")
+            val database = TickerDatabase.getInstance(context)
+            database.tickerDataDao().getById(PREFS.currentSelectedId)
+                    .subscribeOn(Schedulers.computation())
+                    .doOnSuccess { notificationManager.showKlaxonNotification(context, it) }
+                    .subscribe()
+        }
     }
+
 }

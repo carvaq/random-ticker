@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowManager
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.helper.AlarmKlaxon
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
@@ -24,7 +25,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
     companion object {
         const val EXTRA_TIME_ELAPSED = "extra_time_elapsed"
-        private const val ANIMATION_DURATION = 750
     }
 
     @Inject
@@ -34,7 +34,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
     private val presenter by lazy { KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed) }
 
-    private var elapsedTimeNeedsAnimation: Boolean = true
     private var timeElapsed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +61,8 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                     or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                     or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
 
+        } else {
+            root.transitionToStart()
         }
     }
 
@@ -91,14 +92,20 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
             }
             is ViewState.TimerFinished -> {
+                AlarmKlaxon.start(this)
                 notificationManager.cancelNotifications(this)
 
-                if (!plDismiss.isStarted) {
-                    startHideWaitingIconAnimation()
-                    startPulsatorAnimation()
-                }
-                showElapsedTime(viewState.elapsedTime)
                 tvElapsedTime.isEnabled = false
+
+                showElapsedTime(viewState.elapsedTime)
+                laWaiting.cancelAnimation()
+
+                root.transitionToEnd()
+
+                if (!plDismiss.isStarted) {
+                    plDismiss.start()
+                }
+
             }
             is ViewState.TimerCanceled -> {
                 cancelEverything()
@@ -122,59 +129,11 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     private fun showElapsedTime(elapsedTimeInMillis: String?) {
         if (elapsedTimeInMillis == null) return
         tvElapsedTime.text = elapsedTimeInMillis
-        if (elapsedTimeNeedsAnimation) {
-            elapsedTimeNeedsAnimation = false
-            val startSize = resources.getDimensionPixelSize(R.dimen.elepsedTimeTextSize).toFloat()
-            val endSize = resources.getDimensionPixelSize(R.dimen.elepsedTimeTextSizeZoomed).toFloat()
-            val textSizeAnimator = ValueAnimator.ofFloat(startSize, endSize)
-            textSizeAnimator.addUpdateListener {
-                val animatedValue = it.animatedValue as Float
-                tvElapsedTime.textSize = animatedValue
-            }
-
-            val animatorSet = AnimatorSet()
-            animatorSet.playTogether(textSizeAnimator)
-            animatorSet.duration = 1200
-            animatorSet.addListener(object : AnimatorEndListener() {
-                override fun onAnimationEnd(p0: Animator?) {
-                    startWaitingIconAnimation()
-                }
-            })
-            animatorSet.start()
-        }
     }
 
     private fun startWaitingIconAnimation() {
         laWaiting.enableMergePathsForKitKatAndAbove(true)
         laWaiting.playAnimation()
-    }
-
-    private fun startPulsatorAnimation() {
-        plDismiss.animate()
-                .scaleX(1.5f)
-                .setStartDelay(100)
-                .scaleY(1.5f)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        plDismiss.start()
-                    }
-                }).duration = ANIMATION_DURATION.toLong()
-    }
-
-    private fun startHideWaitingIconAnimation() {
-        laWaiting.cancelAnimation()
-        laWaiting.animate()
-                .alpha(0f)
-                .scaleX(0f)
-                .scaleY(0f)
-                .setDuration(ANIMATION_DURATION.toLong())
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        laWaiting!!.visibility = View.GONE
-                    }
-                }).start()
     }
 
 }

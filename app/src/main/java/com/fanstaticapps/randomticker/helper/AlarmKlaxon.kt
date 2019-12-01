@@ -35,6 +35,9 @@ internal object AlarmKlaxon {
     }
 
     private fun playAlarm(context: Context) {
+        if (mediaPlayer?.isPlaying == true) {
+            return
+        }
         try {
             val uri = Uri.parse(PREFS.alarmRingtone)
 

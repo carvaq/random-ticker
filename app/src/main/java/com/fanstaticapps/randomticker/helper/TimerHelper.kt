@@ -9,6 +9,8 @@ import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.extensions.getAlarmManager
+import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -84,9 +86,9 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
 
     private fun setAlarm(context: Context, intervalFinished: Long) {
-        ContextCompat.getSystemService(context, AlarmManager::class.java)?.let { alarmManager ->
+        context.getAlarmManager()?.let {
             val alarmIntent = intentHelper.getAlarmReceiveAsPendingIntent(context)
-            AlarmManagerCompat.setAndAllowWhileIdle(alarmManager, AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+            AlarmManagerCompat.setAndAllowWhileIdle(it, AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
             Timber.d("Setting alarm to sound in ${(intervalFinished - System.currentTimeMillis()) / 1000}s")
         }
     }
@@ -101,6 +103,14 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         activity.startActivity(startIntent)
         activity.overridePendingTransition(0, 0)
         activity.finish()
+    }
+
+    fun cancelAlarm(context: Context) {
+        Timber.d("Cancel timer")
+        context.getAlarmManager()?.let {
+            val alarmIntent = intentHelper.getAlarmReceiveAsPendingIntent(context)
+            it.cancel(alarmIntent)
+        }
     }
 
 }
