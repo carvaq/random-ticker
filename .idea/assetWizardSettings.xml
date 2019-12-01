@@ -13,6 +13,33 @@
                       <PersistentState>
                         <option name="children">
                           <map>
+                            <entry key="actionbar">
+                              <value>
+                                <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="clipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="theme" value="HOLO_DARK" />
+                                      <entry key="themeColor" value="ffffff" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
                             <entry key="launcher">
                               <value>
                                 <PersistentState>
@@ -24,6 +51,30 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="foregroundClipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="343434" />
+                                                <entry key="scalingPercent" value="74" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="foregroundClipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="jar:file:/opt/android-studio-beta/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_access_alarms_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -45,10 +96,53 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="00c853" />
                                       <entry key="backgroundImage" value="$PROJECT_DIR$/assets/sequential-timer/ic_launcher_background.png" />
+                                      <entry key="foregroundAssetType" value="CLIP_ART" />
                                       <entry key="foregroundImage" value="$PROJECT_DIR$/assets/sequential-timer/ic_launcher_foreground.svg" />
-                                      <entry key="legacyIconShape" value="CIRCLE" />
-                                      <entry key="webIconShape" value="CIRCLE" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="launcherLegacy">
+                              <value>
+                                <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="clipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="notification">
+                              <value>
+                                <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="clipArt">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                 </PersistentState>
