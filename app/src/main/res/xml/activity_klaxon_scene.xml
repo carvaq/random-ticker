@@ -20,7 +20,7 @@
 				app:layout_constraintTop_toTopOf="parent">
 			<CustomAttribute
 					app:attributeName="textSize"
-					app:customDimension="@dimen/elepsedTimeTextSizeZoomed" />
+					app:customDimension="@dimen/elapsedTimeTextSizeZoomed" />
 		</Constraint>
 		<Constraint
 				android:id="@id/btnRepeat"
@@ -36,10 +36,5 @@
 			app:constraintSetEnd="@id/ringing"
 			app:constraintSetStart="@+id/waiting"
 			app:duration="500"
-			app:motionInterpolator="easeInOut">
-		<OnClick
-				app:clickAction="jumpToStart"
-				app:targetId="@id/btnRepeat" />
-	</Transition>
-
+			app:motionInterpolator="easeInOut" />
 </MotionScene>

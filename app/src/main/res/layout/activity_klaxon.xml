@@ -39,7 +39,7 @@
 			android:text="@string/show_elapsed_time"
 			android:textAllCaps="true"
 			android:textColor="@color/secondaryColor"
-			android:textSize="@dimen/elepsedTimeTextSize"
+			android:textSize="@dimen/elapsedTimeTextSize"
 			android:textStyle="bold"
 			app:layout_constraintBottom_toTopOf="@id/btnRepeat"
 			app:layout_constraintEnd_toEndOf="parent"

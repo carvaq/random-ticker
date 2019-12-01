@@ -11,6 +11,7 @@ import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
@@ -76,9 +77,14 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                     .doOnSuccess {
                         timerHelper.newAlarmFromBookmark(this, it)
                         AlarmKlaxon.stop()
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess {
                         finish()
-                        recreate()
-                    }.subscribe()
+                        startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left)
+                    }
+                    .subscribe()
         }
 
         presenter.init()
