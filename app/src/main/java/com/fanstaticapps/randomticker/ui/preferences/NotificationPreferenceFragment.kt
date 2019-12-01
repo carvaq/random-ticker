@@ -15,6 +15,8 @@ import androidx.preference.PreferenceManager
 import com.crashlytics.android.Crashlytics
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.extensions.getNotificationManager
+import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -51,8 +53,10 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
             startActivity(Intent(activity, OssLicensesMenuActivity::class.java))
             true
         }
+
         val notificationChannelPreference = findPreference<Preference>(getString(R.string.pref_open_notification_channel))
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (isAtLeastAndroid26()) {
+            val notificationChannel = context?.getNotificationManager()?.getNotificationChannel(TickerNotificationManager.FOREGROUND_CHANNEL_ID)
             notificationChannelPreference?.setOnPreferenceClickListener {
                 val intent = Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS)
                         .putExtra(EXTRA_APP_PACKAGE, context?.packageName)
@@ -60,6 +64,7 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
                 startActivity(intent)
                 true
             }
+            notificationChannelPreference?.isVisible = notificationChannel != null
         } else {
             notificationChannelPreference?.isVisible = false
         }

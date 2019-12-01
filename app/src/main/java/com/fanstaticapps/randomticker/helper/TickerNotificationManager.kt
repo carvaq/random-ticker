@@ -22,7 +22,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         val notification = getRunningNotification(context)
 
         if (isAtLeastAndroid26()) {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = context.getNotificationManager()
             val name = context.getString(R.string.running_channel_name)
             val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(RUNNING_CHANNEL_ID, name, importance)
@@ -72,7 +72,6 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
             val channel = NotificationChannel(FOREGROUND_CHANNEL_ID, name, importance)
             channel.setBypassDnd(true)
             channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            notificationManager.deleteNotificationChannel(FOREGROUND_CHANNEL_ID)
             notificationManager.createNotificationChannel(channel)
         }
 
