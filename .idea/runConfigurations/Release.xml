@@ -13,7 +13,7 @@
           <option value="clean" />
           <option value="cleanBuildCache" />
           <option value="assembleRelease" />
-          <option value="publishReleaseApk" />
+          <option value="publishBundle" />
         </list>
       </option>
       <option name="vmOptions" value="" />
