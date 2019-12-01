@@ -34,7 +34,7 @@ object AndroidLibs {
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
     const val extensions = "androidx.lifecycle:lifecycle-extensions:2.1.0"
 
-    private const val constraintLayoutVersion = "1.1.3"
+    private const val constraintLayoutVersion = "2.0.0-beta2"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"

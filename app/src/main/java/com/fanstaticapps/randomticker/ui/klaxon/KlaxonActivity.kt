@@ -68,7 +68,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     override fun onResume() {
         super.onResume()
         Timber.d("Alarm time elapsed?  $timeElapsed")
-        dismissButton.setOnClickListener {
+        btnDismiss.setOnClickListener {
             presenter.cancelTimer()
         }
 
@@ -85,7 +85,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         when (viewState) {
             is ViewState.TimerStarted -> {
                 startWaitingIconAnimation()
-                elapsedTime.setOnClickListener { presenter.showElapsedTime = true }
+                tvElapsedTime.setOnClickListener { presenter.showElapsedTime = true }
             }
             is ViewState.ElapseTimeUpdate -> {
                 showElapsedTime(viewState.elapsedTime)
@@ -93,12 +93,12 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
             is ViewState.TimerFinished -> {
                 notificationManager.cancelNotifications(this)
 
-                if (!pulsator.isStarted) {
+                if (!plDismiss.isStarted) {
                     startHideWaitingIconAnimation()
                     startPulsatorAnimation()
                 }
                 showElapsedTime(viewState.elapsedTime)
-                elapsedTime.isEnabled = false
+                tvElapsedTime.isEnabled = false
             }
             is ViewState.TimerCanceled -> {
                 cancelEverything()
@@ -116,12 +116,12 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     private fun cancelEverything() {
-        waitingIcon.cancelAnimation()
+        laWaiting.cancelAnimation()
     }
 
     private fun showElapsedTime(elapsedTimeInMillis: String?) {
         if (elapsedTimeInMillis == null) return
-        elapsedTime.text = elapsedTimeInMillis
+        tvElapsedTime.text = elapsedTimeInMillis
         if (elapsedTimeNeedsAnimation) {
             elapsedTimeNeedsAnimation = false
             val startSize = resources.getDimensionPixelSize(R.dimen.elepsedTimeTextSize).toFloat()
@@ -129,7 +129,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
             val textSizeAnimator = ValueAnimator.ofFloat(startSize, endSize)
             textSizeAnimator.addUpdateListener {
                 val animatedValue = it.animatedValue as Float
-                elapsedTime.textSize = animatedValue
+                tvElapsedTime.textSize = animatedValue
             }
 
             val animatorSet = AnimatorSet()
@@ -145,26 +145,26 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     }
 
     private fun startWaitingIconAnimation() {
-        waitingIcon.enableMergePathsForKitKatAndAbove(true)
-        waitingIcon.playAnimation()
+        laWaiting.enableMergePathsForKitKatAndAbove(true)
+        laWaiting.playAnimation()
     }
 
     private fun startPulsatorAnimation() {
-        pulsator.animate()
+        plDismiss.animate()
                 .scaleX(1.5f)
                 .setStartDelay(100)
                 .scaleY(1.5f)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
-                        pulsator.start()
+                        plDismiss.start()
                     }
                 }).duration = ANIMATION_DURATION.toLong()
     }
 
     private fun startHideWaitingIconAnimation() {
-        waitingIcon.cancelAnimation()
-        waitingIcon.animate()
+        laWaiting.cancelAnimation()
+        laWaiting.animate()
                 .alpha(0f)
                 .scaleX(0f)
                 .scaleY(0f)
@@ -172,7 +172,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         super.onAnimationEnd(animation)
-                        waitingIcon!!.visibility = View.GONE
+                        laWaiting!!.visibility = View.GONE
                     }
                 }).start()
     }
