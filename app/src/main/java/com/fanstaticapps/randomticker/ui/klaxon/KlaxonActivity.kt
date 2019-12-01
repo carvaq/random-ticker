@@ -76,7 +76,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                     .subscribeOn(Schedulers.computation())
                     .doOnSuccess {
                         timerHelper.newAlarmFromBookmark(this, it)
-                        AlarmKlaxon.stop()
+                        AlarmKlaxon.stop(this)
                     }
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess {

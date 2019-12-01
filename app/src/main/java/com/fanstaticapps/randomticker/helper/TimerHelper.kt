@@ -6,11 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import androidx.core.app.AlarmManagerCompat
-import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
-import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -94,7 +92,7 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     }
 
     fun cancelNotificationsAndGoBack(activity: Activity) {
-        AlarmKlaxon.stop()
+        AlarmKlaxon.stop(activity)
 
         notificationManager.cancelNotifications(activity)
 

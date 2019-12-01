@@ -42,18 +42,15 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
     }
 
     private fun getKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
-        val uri = getRingtone()
-
         val contentIntent = intentHelper.getContentPendingIntent(context, FOREGROUND_NOTIFICATION_ID, true)
         val fullscreenIntent = intentHelper.getFullscreenPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
-
 
         val notificationBuilder =
                 NotificationCompat.Builder(context, FOREGROUND_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_stat_timer)
                         .setAutoCancel(true)
                         .setContentTitle(bookmark.name)
-                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setDefaults(Notification.DEFAULT_LIGHTS)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .addAction(getStopAction(context))
                         .addAction(getRepeatAction(context))
@@ -62,12 +59,6 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
                         .setFullScreenIntent(fullscreenIntent, true)
                         .setContentIntent(contentIntent)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .setSound(uri, AudioManager.STREAM_ALARM)
-
-
-        if (PREFS.vibrator) {
-            notificationBuilder.setVibrate(VIBRATION_PATTERN)
-        }
 
         return notificationBuilder.build()
     }
@@ -79,18 +70,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
             val name = context.getString(R.string.foreground_channel_name)
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(FOREGROUND_CHANNEL_ID, name, importance)
-            val uri = getRingtone()
-
-            val audioAttributes = AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setLegacyStreamType(AudioManager.STREAM_NOTIFICATION)
-                    .build()
-
-            channel.setSound(uri, audioAttributes)
-            channel.enableVibration(PREFS.vibrator)
             channel.setBypassDnd(true)
-            channel.vibrationPattern = VIBRATION_PATTERN
             channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             notificationManager.deleteNotificationChannel(FOREGROUND_CHANNEL_ID)
             notificationManager.createNotificationChannel(channel)
@@ -102,10 +82,6 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
 
         notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
         AlarmKlaxon.start(context)
-    }
-
-    private fun getRingtone(): Uri? {
-        return Uri.parse(PREFS.alarmRingtone)
     }
 
     private fun getRunningNotification(context: Context): Notification {
