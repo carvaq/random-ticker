@@ -2,7 +2,7 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
-		android:id="@+id/root"
+		android:id="@+id/mlKlaxon"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:animateLayoutChanges="true"
@@ -34,6 +34,7 @@
 			android:layout_height="wrap_content"
 			android:background="?attr/selectableItemBackground"
 			android:fontFamily="monospace"
+			android:gravity="center"
 			android:padding="8dp"
 			android:text="@string/show_elapsed_time"
 			android:textAllCaps="true"
@@ -42,7 +43,9 @@
 			android:textStyle="bold"
 			app:layout_constraintBottom_toTopOf="@id/btnRepeat"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent" />
+			app:layout_constraintStart_toStartOf="parent"
+			tools:background="@color/colorAccent"
+			tools:textColor="#fff" />
 
 	<Button
 			android:id="@+id/btnRepeat"
@@ -50,6 +53,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/action_repeat"
+			android:textColor="@color/colorPrimaryDark"
 			android:textSize="24sp"
 			android:visibility="gone"
 			app:layout_constraintBottom_toTopOf="@id/plDismiss"

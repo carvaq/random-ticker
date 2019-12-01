@@ -1,21 +1,17 @@
 package com.fanstaticapps.randomticker.ui.klaxon
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.AlarmKlaxon
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
-import com.fanstaticapps.randomticker.view.AnimatorEndListener
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,6 +28,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
     @Inject
     lateinit var timerHelper: TimerHelper
 
+    private val database by lazy { TickerDatabase.getInstance(this) }
     private val presenter by lazy { KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed) }
 
     private var timeElapsed: Boolean = false
@@ -62,7 +59,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                     or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
 
         } else {
-            root.transitionToStart()
+            mlKlaxon.transitionToStart()
         }
     }
 
@@ -71,6 +68,17 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         Timber.d("Alarm time elapsed?  $timeElapsed")
         btnDismiss.setOnClickListener {
             presenter.cancelTimer()
+        }
+
+        btnRepeat.setOnClickListener {
+            database.tickerDataDao().getById(PREFS.currentSelectedId)
+                    .subscribeOn(Schedulers.computation())
+                    .doOnSuccess {
+                        timerHelper.newAlarmFromBookmark(this, it)
+                        AlarmKlaxon.stop()
+                        finish()
+                        recreate()
+                    }.subscribe()
         }
 
         presenter.init()
@@ -100,7 +108,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
                 laWaiting.cancelAnimation()
 
-                root.transitionToEnd()
+                mlKlaxon.transitionToEnd()
 
                 if (!plDismiss.isStarted) {
                     plDismiss.start()
@@ -108,11 +116,11 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
             }
             is ViewState.TimerCanceled -> {
-                cancelEverything()
+                laWaiting.cancelAnimation()
                 timerHelper.cancelNotificationsAndGoBack(this)
             }
             is ViewState.TimerStopped -> {
-                cancelEverything()
+                laWaiting.cancelAnimation()
             }
         }
     }
@@ -122,13 +130,8 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         timeElapsed = intent.getBooleanExtra(EXTRA_TIME_ELAPSED, false)
     }
 
-    private fun cancelEverything() {
-        laWaiting.cancelAnimation()
-    }
-
     private fun showElapsedTime(elapsedTimeInMillis: String?) {
-        if (elapsedTimeInMillis == null) return
-        tvElapsedTime.text = elapsedTimeInMillis
+        elapsedTimeInMillis?.let { tvElapsedTime.text = elapsedTimeInMillis }
     }
 
     private fun startWaitingIconAnimation() {
