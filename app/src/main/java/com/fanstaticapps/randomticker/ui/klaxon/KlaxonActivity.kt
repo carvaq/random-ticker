@@ -3,21 +3,22 @@ package com.fanstaticapps.randomticker.ui.klaxon
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
-import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.AlarmKlaxon
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class KlaxonActivity : BaseActivity(), KlaxonView {
 
     companion object {
@@ -26,11 +27,15 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
     @Inject
     lateinit var notificationManager: TickerNotificationManager
+
     @Inject
     lateinit var timerHelper: TimerHelper
 
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
     private val database by lazy { TickerDatabase.getInstance(this) }
-    private val presenter by lazy { KlaxonPresenter(this, PREFS.intervalFinished, timeElapsed) }
+    private val presenter by lazy { KlaxonPresenter(this, userPreferences.intervalFinished, timeElapsed) }
 
     private var timeElapsed: Boolean = false
 
@@ -72,7 +77,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         }
 
         btnRepeat.setOnClickListener {
-            database.tickerDataDao().getById(PREFS.currentSelectedId)
+            database.tickerDataDao().getById(userPreferences.currentSelectedId)
                     .subscribeOn(Schedulers.computation())
                     .doOnSuccess {
                         timerHelper.newAlarmFromBookmark(this, it)
@@ -106,7 +111,7 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 showElapsedTime(viewState.elapsedTime)
             }
             is ViewState.TimerFinished -> {
-                AlarmKlaxon.start(this)
+                AlarmKlaxon.start(this, userPreferences)
                 notificationManager.cancelNotifications(this)
 
                 tvElapsedTime.isEnabled = false

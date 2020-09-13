@@ -1,7 +1,7 @@
 package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.os.CountDownTimer
-import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import java.lang.Math.abs
@@ -9,10 +9,13 @@ import java.lang.Math.abs
 /**
  * @intervalFinished timestamp when the timer should ring
  */
-class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished: Long, private val timeElapsed: Boolean) {
+class KlaxonPresenter(private val view: KlaxonView,
+                      private val intervalFinished: Long,
+                      private val timeElapsed: Boolean) {
 
     private var countDownTimer: CountDownTimer? = null
     var showElapsedTime: Boolean = false
+    private lateinit var userPreferences: UserPreferences
 
     fun init() {
         if (timeElapsed) {
@@ -55,7 +58,7 @@ class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished
 
             override fun onFinish() {
                 timerFinished()
-                PREFS.currentlyTickerRunning = false
+                userPreferences.currentlyTickerRunning = false
                 countDownTimer = null
             }
         }
@@ -63,7 +66,7 @@ class KlaxonPresenter(private val view: KlaxonView, private val intervalFinished
     }
 
     private fun getElapsedTime(): String {
-        val millisSinceStarted = abs(intervalFinished - System.currentTimeMillis() - PREFS.interval)
+        val millisSinceStarted = abs(intervalFinished - System.currentTimeMillis() - userPreferences.interval)
         return getFormattedElapsedMilliseconds(millisSinceStarted)
     }
 

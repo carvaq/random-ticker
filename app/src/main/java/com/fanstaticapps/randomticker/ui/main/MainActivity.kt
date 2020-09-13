@@ -6,10 +6,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Lifecycle
-import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -19,35 +18,39 @@ import com.fanstaticapps.randomticker.ui.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
 import com.fanstaticapps.randomticker.view.MaxValueTextWatcher
 import com.fanstaticapps.randomticker.view.MinValueVerification
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_bookmarks.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.content_maximum_value.*
 import kotlinx.android.synthetic.main.content_minimum_value.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
 
     @Inject
     lateinit var timerHelper: TimerHelper
+
     @Inject
     lateinit var intentHelper: IntentHelper
+
+    @Inject
+    lateinit var userPreferences: UserPreferences
 
     private lateinit var presenter: MainPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (PREFS.currentlyTickerRunning) {
+        if (userPreferences.currentlyTickerRunning) {
             // if the timer is running we should move the KlaxonActivity
             startAlarmActivity()
         } else {
             setContentView(R.layout.activity_main)
-            val toolbar = findViewById<Toolbar>(R.id.toolbar)
-            setSupportActionBar(toolbar)
             val database = TickerDatabase.getInstance(this)
 
             presenter = MainPresenter(database, this, timerHelper)
-            addDisposable(presenter.loadDataFromDatabase(PREFS.currentSelectedId))
+            addDisposable(presenter.loadDataFromDatabase(userPreferences.currentSelectedId))
         }
     }
 

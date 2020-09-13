@@ -1,12 +1,10 @@
 object Versions {
-    const val kotlin = "1.3.50"
+    const val kotlin = "1.4.0"
     const val minSdkVersion = 21
     const val targetSdkVersion = 29
     const val compileVersion = 29
     const val buildToolsVersion = "29.0.2"
-    const val fabric = "1.28.0"
-    const val androidGradle = "3.6.0-beta04"
-    const val triplet = "2.6.1"
+    const val triplet = "3.0.0"
 }
 
 object Kotlin {
@@ -15,7 +13,7 @@ object Kotlin {
 
 object Gms {
     const val services_plugin_version = "4.3.3"
-    const val oss_plugin_version = "0.10.0"
+    const val oss_plugin_version = "0.10.2"
     const val oss = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 }
 
@@ -43,12 +41,9 @@ object AndroidLibs {
 }
 
 object Libs {
-    private const val daggerVersion = "2.25.2"
-    const val dagger = "com.google.dagger:dagger:$daggerVersion"
-    const val dagger_android = "com.google.dagger:dagger-android:$daggerVersion"
-    const val dagger_android_support = "com.google.dagger:dagger-android-support:$daggerVersion"
-    const val dagger_compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-    const val dagger_android_processor = "com.google.dagger:dagger-android-processor:$daggerVersion"
+    const val daggerVersion = "2.29-alpha"
+    const val dagger = "com.google.dagger:hilt-android:$daggerVersion"
+    const val dagger_compiler = "com.google.dagger:hilt-android-compiler:$daggerVersion"
 
     const val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
     const val pulsator = "pl.bclogic:pulsator4droid:1.0.3"

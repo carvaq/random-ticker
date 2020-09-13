@@ -11,21 +11,28 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.ui.model.BookmarksViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_bookmark.*
 import timber.log.Timber
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class BookmarkDialog : BottomSheetDialogFragment() {
+
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (PREFS.darkTheme) {
+        if (userPreferences.darkTheme) {
             setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Dark)
         } else {
             setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Light)
@@ -41,12 +48,12 @@ class BookmarkDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         rvBookmarks.layoutManager = LinearLayoutManager(activity)
 
-        val database = TickerDatabase.getInstance(activity!!)!!
+        val database = TickerDatabase.getInstance(activity!!)
         val dao = database.tickerDataDao()
         ViewModelProviders.of(this)
                 .get(BookmarksViewModel::class.java)
                 .getAllBookmarks(dao)
-                .observe(this, Observer { list ->
+                .observe(viewLifecycleOwner, Observer { list ->
                     val addItems = listOf(Bookmark("Random Ticker"))
                     val allItems = addItems.plus(list)
 

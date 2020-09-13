@@ -6,7 +6,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.VibrationEffect
 import android.os.Vibrator
-import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.extensions.getVibrator
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import timber.log.Timber
@@ -32,15 +32,15 @@ internal object AlarmKlaxon {
         mediaPlayer = null
     }
 
-    fun start(context: Context) {
+    fun start(context: Context, preferences: UserPreferences) {
         // Make sure we are stopped before starting
         Timber.v("AlarmKlaxon.start()")
 
-        if (PREFS.alarmRingtone.isNotEmpty()) {
-            playAlarm(context)
+        if (preferences.alarmRingtone.isNotEmpty()) {
+            playAlarm(context, preferences)
         }
 
-        if (PREFS.vibrator) {
+        if (preferences.vibrator) {
             vibrate(context)
         }
     }
@@ -57,12 +57,12 @@ internal object AlarmKlaxon {
         }
     }
 
-    private fun playAlarm(context: Context) {
+    private fun playAlarm(context: Context, preferences: UserPreferences) {
         if (mediaPlayer?.isPlaying == true) {
             return
         }
         try {
-            val uri = Uri.parse(PREFS.alarmRingtone)
+            val uri = Uri.parse(preferences.alarmRingtone)
 
             mediaPlayer = MediaPlayer().apply {
                 setDataSource(context, uri)

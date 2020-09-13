@@ -1,10 +1,8 @@
 package com.fanstaticapps.randomticker.ui
 
-import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import dagger.android.AndroidInjection
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -17,11 +15,6 @@ import io.reactivex.disposables.Disposable
 abstract class BaseActivity : AppCompatActivity() {
 
     private var compositeDisposable: CompositeDisposable? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-        super.onCreate(savedInstanceState)
-    }
 
     protected fun toast(@StringRes resId: Int) {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()

@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import androidx.core.app.AlarmManagerCompat
-import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import timber.log.Timber
@@ -20,7 +20,9 @@ import javax.inject.Inject
  * Project: RandomTicker
  */
 
-class TimerHelper @Inject constructor(private val notificationManager: TickerNotificationManager, private val intentHelper: IntentHelper) {
+class TimerHelper @Inject constructor(private val notificationManager: TickerNotificationManager,
+                                      private val intentHelper: IntentHelper,
+                                      private val userPreferences: UserPreferences) {
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
         private val HANDLER = Handler()
@@ -54,21 +56,21 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     }
 
     private fun saveToPreferences(interval: Long, intervalFinished: Long) {
-        PREFS.currentlyTickerRunning = true
-        PREFS.interval = interval
-        PREFS.intervalFinished = intervalFinished
+        userPreferences.currentlyTickerRunning = true
+        userPreferences.interval = interval
+        userPreferences.intervalFinished = intervalFinished
     }
 
 
     fun createAlarm(context: Context) {
-        val intervalFinished = PREFS.intervalFinished
+        val intervalFinished = userPreferences.intervalFinished
 
-        if (PREFS.showNotification) {
+        if (userPreferences.showNotification) {
             notificationManager.showRunningNotification(context)
 
             val timerRefreshRunnable = object : Runnable {
                 override fun run() {
-                    if (intervalFinished <= System.currentTimeMillis() || !PREFS.currentlyTickerRunning) {
+                    if (intervalFinished <= System.currentTimeMillis() || !userPreferences.currentlyTickerRunning) {
                         HANDLER.removeCallbacks(this)
                         return
                     }

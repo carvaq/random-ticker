@@ -12,6 +12,7 @@ class UserPreferences(context: Context) {
     private val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
     private val tickerRunningPref: String = "tickerRunning"
     private val currentSelectedIdPref: String = "currentSelectedId"
+
     /**
      * These preferences are changed by the user in the @see SettingsActivity.
      * The preference keys (@see constants.xml) are also present in the xml, therefor the same should be used.

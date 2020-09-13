@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker.ui.preferences
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS

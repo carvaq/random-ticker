@@ -4,16 +4,15 @@ buildscript {
 	repositories {
 		google()
 		jcenter()
-		maven { url 'https://maven.fabric.io/public' }
 		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
-		classpath "com.android.tools.build:gradle:${Versions.androidGradle}"
+		classpath "com.android.tools.build:gradle:4.0.1"
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 		classpath "com.github.triplet.gradle:play-publisher:${Versions.triplet}"
-		classpath "io.fabric.tools:gradle:${Versions.fabric}"
 		classpath "com.google.gms:google-services:${Gms.services_plugin_version}"
 		classpath "com.google.android.gms:oss-licenses-plugin:${Gms.oss_plugin_version}"
+		classpath "com.google.dagger:hilt-android-gradle-plugin:${Libs.daggerVersion}"
 	}
 }
 

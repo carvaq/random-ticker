@@ -4,19 +4,17 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.net.Uri
 import androidx.core.app.NotificationCompat
-import com.fanstaticapps.randomticker.PREFS
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import javax.inject.Inject
 
-class TickerNotificationManager @Inject constructor(private val intentHelper: IntentHelper) {
+class TickerNotificationManager @Inject constructor(private val intentHelper: IntentHelper,
+                                                    private val userPreferences: UserPreferences) {
 
     internal fun showRunningNotification(context: Context) {
         val notification = getRunningNotification(context)
@@ -34,7 +32,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
 
 
     fun cancelNotifications(context: Context) {
-        PREFS.currentlyTickerRunning = false
+        userPreferences.currentlyTickerRunning = false
 
         val notificationManager = context.getNotificationManager()
         notificationManager.cancel(RUNNING_NOTIFICATION_ID)
@@ -80,12 +78,12 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         cancelNotifications(context)
 
         notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
-        AlarmKlaxon.start(context)
+        AlarmKlaxon.start(context, userPreferences)
     }
 
     private fun getRunningNotification(context: Context): Notification {
-        val interval = PREFS.interval
-        val intervalFinished = PREFS.intervalFinished
+        val interval = userPreferences.interval
+        val intervalFinished = userPreferences.intervalFinished
         val alarmPendingIntent = intentHelper.getContentPendingIntent(context, RUNNING_NOTIFICATION_ID, false)
         val cancelAction = getCancelAction(context)
 

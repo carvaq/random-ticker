@@ -10,5 +10,5 @@
 /.idea/caches
 random-ticker-app/google-services.json
 play_store_secret.json
-google-services.json
+app/google-services.json
 */build

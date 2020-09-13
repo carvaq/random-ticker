@@ -4,7 +4,6 @@ import android.app.ActivityManager
 import android.app.AlarmManager
 import android.content.Context
 import android.os.Vibrator
-import androidx.core.app.AlarmManagerCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 

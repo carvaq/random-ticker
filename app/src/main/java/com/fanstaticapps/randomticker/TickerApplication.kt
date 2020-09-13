@@ -1,11 +1,11 @@
 package com.fanstaticapps.randomticker
 
+import android.app.Application
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
-import com.fanstaticapps.randomticker.injection.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import javax.inject.Inject
 
 
 /**
@@ -14,35 +14,19 @@ import timber.log.Timber.DebugTree
  * Project: RandomTicker
  */
 
-val PREFS: UserPreferences by lazy {
-    TickerApplication.prefs!!
-}
 
-class TickerApplication : DaggerApplication() {
+@HiltAndroidApp
+class TickerApplication : Application() {
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return androidInjector
-    }
-
-    companion object {
-        var prefs: UserPreferences? = null
-    }
-
-    lateinit var androidInjector: AndroidInjector<out DaggerApplication>
-
+    @Inject
+    lateinit var preferences: UserPreferences
 
     override fun onCreate() {
-        prefs = UserPreferences(this)
-        androidInjector = DaggerAppComponent
-                .builder()
-                .application(this)
-                .build()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
+        setDarkTheme(preferences)
 
-        setDarkTheme(PREFS)
         super.onCreate()
     }
 }

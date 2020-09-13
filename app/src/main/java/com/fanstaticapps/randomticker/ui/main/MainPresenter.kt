@@ -1,7 +1,6 @@
 package com.fanstaticapps.randomticker.ui.main
 
-import android.annotation.SuppressLint
-import com.fanstaticapps.randomticker.PREFS
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.TimerHelper
@@ -12,6 +11,7 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class MainPresenter(private val database: TickerDatabase, private val view: MainView, private val timerHelper: TimerHelper) {
+    private lateinit var userPrefernces: UserPreferences
 
     private lateinit var currentTicker: Bookmark
     private lateinit var bookmarks: List<Bookmark>
@@ -69,7 +69,6 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
 
     }
 
-    @SuppressLint("CheckResult")
     private fun insertCurrentTickerData(name: String, minMin: Int, minSec: Int, maxMin: Int, maxSec: Int) {
         currentTicker.name = name
         currentTicker.maximumMinutes = maxMin
@@ -84,7 +83,7 @@ class MainPresenter(private val database: TickerDatabase, private val view: Main
                     } else {
                         database.tickerDataDao().getAll().last().id!!
                     }
-                    PREFS.currentSelectedId = id
+                    userPrefernces.currentSelectedId = id
                 }
                 .subscribe({ _ ->
                     Timber.d("Inserted interval changes")

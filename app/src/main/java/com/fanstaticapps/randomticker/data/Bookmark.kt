@@ -16,7 +16,8 @@ data class Bookmark(@PrimaryKey(autoGenerate = true) var id: Long?,
                     @ColumnInfo(name = "minimumSeconds") var minimumSeconds: Int,
                     @ColumnInfo(name = "maximumMinutes") var maximumMinutes: Int,
                     @ColumnInfo(name = "maximumSeconds") var maximumSeconds: Int) {
-    @Ignore constructor(name: String) : this(null, name, 0, 0, 5, 0)
+    @Ignore
+    constructor(name: String) : this(null, name, 0, 0, 5, 0)
 }
 
 
