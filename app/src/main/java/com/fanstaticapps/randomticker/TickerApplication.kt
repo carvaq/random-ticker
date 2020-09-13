@@ -2,7 +2,6 @@ package com.fanstaticapps.randomticker
 
 import android.app.Application
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -20,17 +19,14 @@ import javax.inject.Inject
 class TickerApplication : Application() {
 
     @Inject
-    lateinit var preferences: TickerPreferences
-
-    @Inject
-    lateinit var notificationManager: TickerNotificationManager
+    lateinit var preferences: UserPreferences
 
     override fun onCreate() {
-        super.onCreate()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
         setDarkTheme(preferences)
+
+        super.onCreate()
     }
 }

@@ -4,21 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.NumberPicker
-import androidx.activity.viewModels
-import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.TickerPreferences
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.data.IntervalDefinition
+import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
-import com.fanstaticapps.randomticker.helper.livedata.nonNull
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
+import com.fanstaticapps.randomticker.ui.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
+import com.fanstaticapps.randomticker.view.MaxValueTextWatcher
+import com.fanstaticapps.randomticker.view.MinValueVerification
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_bookmarks.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -27,29 +26,31 @@ import kotlinx.android.synthetic.main.content_minimum_value.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
 
     @Inject
     lateinit var timerHelper: TimerHelper
 
     @Inject
-    lateinit var tickerPreferences: TickerPreferences
+    lateinit var intentHelper: IntentHelper
 
-    private val viewModel: MainViewModel by viewModels()
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
+    private lateinit var presenter: MainPresenter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (timerHelper.isCurrentlyTickerRunning()) {
+        if (userPreferences.currentlyTickerRunning) {
             // if the timer is running we should move the KlaxonActivity
             startAlarmActivity()
         } else {
             setContentView(R.layout.activity_main)
+            val database = TickerDatabase.getInstance(this)
 
-            setSupportActionBar(findViewById(R.id.toolbar))
-
-            initializeListeners()
-            initializeBookmarks()
-            initializeTimerCreationStatus()
+            presenter = MainPresenter(database, this, timerHelper)
+            addDisposable(presenter.loadDataFromDatabase(userPreferences.currentSelectedId))
         }
     }
 
@@ -60,86 +61,74 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.settings) {
+        if (item.itemId == R.id.settings) {
             startActivity(Intent(this, SettingsActivity::class.java))
-            true
-        } else {
-            super.onOptionsItemSelected(item)
         }
+        return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroy() {
+        TickerDatabase.destroyInstance()
+        super.onDestroy()
+    }
 
-    private fun initializeBookmarks() {
-        viewModel.currentBookmark
-                .nonNull()
-                .observe(this) {
-                    renderBookmark(it)
-                }
-        btnSelectBookmark.setOnClickListener {
+    override fun initializeBookmarks() {
+        btnSelectProfile.setOnClickListener {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 BookmarkDialog().show(supportFragmentManager, "BookmarkSelector")
             }
         }
     }
 
-    private fun initializeListeners() {
-        btnStartTicker.setOnClickListener { createTimer() }
-    }
-
-    private fun initializeTimerCreationStatus() {
-        viewModel.timerCreationStatus.observe(this) {
-            when (it) {
-                TimerCreationStatus.TIMER_STARTED -> {
-                    timerHelper.startTicker(this)
-                    startAlarmActivity()
-                }
-                TimerCreationStatus.INVALID_DATES -> {
-                    toast(R.string.error_min_is_bigger_than_max)
-                }
-                else -> {
-                }
+    override fun initializeListeners() {
+        maxSec.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> createTimer()
             }
+            true
         }
-        minHours.init(10, R.string.from, R.string.hours_label)
-        minMin.init(59, R.string.from, R.string.minutes_label)
-        minSec.init(59, R.string.from, R.string.seconds_label)
-        maxHours.init(10, R.string.to, R.string.hours_label)
-        maxMin.init(59, R.string.to, R.string.minutes_label)
-        maxSec.init(59, R.string.to, R.string.seconds_label)
+        start.setOnClickListener { createTimer() }
     }
 
+    override fun applyTickerData(minimumMinutes: Int, minimumSeconds: Int, maximumMinutes: Int, maximumSeconds: Int, forceDefaultValue: Boolean, name: String) {
+        etBookmarkName.setText(name)
+        prepareValueSelectionView(minMin, minimumMinutes, 240, forceDefaultValue)
+        prepareValueSelectionView(minSec, minimumSeconds, 59, forceDefaultValue)
+        prepareValueSelectionView(maxMin, maximumMinutes, 240, forceDefaultValue)
+        prepareValueSelectionView(maxSec, maximumSeconds, 59, forceDefaultValue)
+    }
 
-    private fun renderBookmark(bookmark: Bookmark) {
-        with(bookmark) {
-            etBookmarkName.setText(name)
-            minHours.value = minimumHours
-            minMin.value = minimumMinutes
-            minSec.value = minimumSeconds
-            maxHours.value = maximumHours
-            maxMin.value = maximumMinutes
-            maxSec.value = maximumSeconds
-            cbAutoRepeat.isChecked = bookmark.autoRepeat
+    override fun onBookmarkSelected(bookmark: Bookmark?) {
+        presenter.selectBookmark(bookmark)
+    }
+
+    private fun prepareValueSelectionView(view: EditText, startValue: Int, maxValue: Int, forceDefaultValue: Boolean) {
+        if (view.text.isNullOrBlank() || forceDefaultValue) {
+            view.setText(startValue.toString())
         }
+
+        view.addTextChangedListener(MaxValueTextWatcher(view, maxValue))
+        view.onFocusChangeListener = MinValueVerification()
     }
 
     private fun createTimer() {
-        viewModel.createTimer(etBookmarkName.name(),
-                IntervalDefinition(minHours.value, minMin.value, minSec.value),
-                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value),
-                cbAutoRepeat.isChecked
-        )
+        presenter.createTimer(etBookmarkName.name(), minMin.getTextAsInt(), minSec.getTextAsInt(), maxMin.getTextAsInt(), maxSec.getTextAsInt())
+    }
+
+    override fun showMinimumMustBeBiggerThanMaximum() {
+        toast(R.string.error_min_is_bigger_than_max)
+    }
+
+    override fun createAlarm() {
+        timerHelper.createAlarm(this)
+        startAlarmActivity()
     }
 
     private fun startAlarmActivity() {
-        startActivity(IntentHelper.getKlaxonActivity(this, false))
+        startActivity(intentHelper.getKlaxonActivity(this, false))
         finish()
     }
 
+    private fun EditText.getTextAsInt(): Int = if (this.text.isNullOrBlank()) 0 else this.text.toString().toInt()
     private fun EditText.name(): String = if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
-
-    private fun NumberPicker.init(max: Int, @StringRes fromToResId: Int, @StringRes type: Int) {
-        minValue = 0
-        maxValue = max
-        contentDescription = "${getString(fromToResId)} ${getString(type)}"
-    }
 }

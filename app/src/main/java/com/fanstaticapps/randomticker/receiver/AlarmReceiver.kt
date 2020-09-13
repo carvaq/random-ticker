@@ -3,35 +3,31 @@ package com.fanstaticapps.randomticker.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.TickerPreferences
-import com.fanstaticapps.randomticker.data.BookmarkRepository
+import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.extensions.isAppInBackground
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var notificationManager: TickerNotificationManager
 
     @Inject
-    lateinit var tickerPreferences: TickerPreferences
-
-    @Inject
-    lateinit var repository: BookmarkRepository
+    lateinit var userPreferences: UserPreferences
 
     override fun onReceive(context: Context, intent: Intent) {
-        Timber.d("Alarm received")
-        GlobalScope.launch(Dispatchers.IO) {
-            repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { bookmark ->
-                Timber.d("Showing notification for bookmark")
-                notificationManager.showKlaxonNotification(context, bookmark)
-            }
+
+        if (context.isAppInBackground()) {
+            Timber.d("Alarm received")
+            val database = TickerDatabase.getInstance(context)
+            database.tickerDataDao().getById(userPreferences.currentSelectedId)
+                    .subscribeOn(Schedulers.computation())
+                    .doOnSuccess { notificationManager.showKlaxonNotification(context, it) }
+                    .subscribe()
         }
     }
 
