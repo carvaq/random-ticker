@@ -13,6 +13,7 @@ buildscript {
 		classpath "com.google.gms:google-services:${Gms.services_plugin_version}"
 		classpath "com.google.android.gms:oss-licenses-plugin:${Gms.oss_plugin_version}"
 		classpath "com.google.dagger:hilt-android-gradle-plugin:${Libs.daggerVersion}"
+		classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
 	}
 }
 
