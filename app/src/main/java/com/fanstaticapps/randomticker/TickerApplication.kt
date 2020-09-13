@@ -22,11 +22,11 @@ class TickerApplication : Application() {
     lateinit var preferences: UserPreferences
 
     override fun onCreate() {
+        super.onCreate()
+
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
         setDarkTheme(preferences)
-
-        super.onCreate()
     }
 }

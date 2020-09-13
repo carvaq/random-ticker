@@ -11,7 +11,6 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.crashlytics.android.Crashlytics
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
@@ -19,6 +18,7 @@ import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 import xyz.aprildown.ultimatemusicpicker.MusicPickerListener
 import xyz.aprildown.ultimatemusicpicker.UltimateMusicPicker
@@ -121,7 +121,7 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
                         val name = ringtone.getTitle(preference.context)
                         preference.summary = name
                     } catch (e: Exception) {
-                        Crashlytics.logException(e)
+                        FirebaseCrashlytics.getInstance().recordException(e)
                         Timber.e(e, "Could not load title for ringtone")
                         preference.summary = null
                     }

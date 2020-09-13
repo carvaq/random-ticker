@@ -4,7 +4,7 @@ object Versions {
     const val targetSdkVersion = 29
     const val compileVersion = 29
     const val buildToolsVersion = "29.0.2"
-    const val triplet = "3.0.0"
+    const val triplet = "2.8.0"
 }
 
 object Kotlin {
@@ -72,5 +72,5 @@ object TestLibs {
 }
 
 object Firebase {
-    const val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.10.0"
+    const val crashlytics = "com.google.firebase:firebase-crashlytics:17.2.1"
 }
