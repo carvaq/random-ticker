@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.4.0"
+    const val kotlin = "1.4.10"
     const val minSdkVersion = 21
     const val targetSdkVersion = 29
     const val compileVersion = 29
@@ -22,7 +22,6 @@ object AndroidLibs {
     const val cardview = "androidx.cardview:cardview:1.0.0"
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
     const val preference = "androidx.preference:preference:1.1.0"
-    const val recyclerview = "androidx.recyclerview:recyclerview:1.0.0"
 
     private const val roomVersion = "2.2.1"
     const val room_runtime = "androidx.room:room-runtime:$roomVersion"
@@ -41,9 +40,9 @@ object AndroidLibs {
 }
 
 object Libs {
-    const val daggerVersion = "2.29-alpha"
-    const val dagger = "com.google.dagger:hilt-android:$daggerVersion"
-    const val dagger_compiler = "com.google.dagger:hilt-android-compiler:$daggerVersion"
+    const val hiltVersion = "2.29-alpha"
+    const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
+    const val hilt_compile = "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     const val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
     const val pulsator = "pl.bclogic:pulsator4droid:1.0.3"
