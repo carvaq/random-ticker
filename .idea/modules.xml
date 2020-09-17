@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/random-ticker.iml" filepath="$PROJECT_DIR$/.idea/modules/random-ticker.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/random-ticker.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/random-ticker.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/random-ticker.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/random-ticker.buildSrc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/timer-series.iml" filepath="$PROJECT_DIR$/timer-series.iml" group="timer-series" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/timer-series-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/timer-series-app.iml" group="timer-series/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/timer-series_buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/timer-series_buildSrc.iml" group="timer-series/timer-series_buildSrc" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/workspace-timer-series.iml" filepath="$PROJECT_DIR$/.idea/modules/workspace-timer-series.iml" group="timer-series" />
     </modules>
   </component>
 </project>

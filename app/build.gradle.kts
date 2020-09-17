@@ -36,7 +36,7 @@ android {
 
     signingConfigs {
         create("release") {
-            if (project.hasProperty("fanstaticKeyalias")) {
+            if (project.hasProperty("fanstaticKeyAlias")) {
                 println("Adding release config for production")
                 keyAlias = fanstaticKeyAlias
                 keyPassword = fanstaticKeyPassword
@@ -64,24 +64,30 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation(Kotlin.stdlib)
+
     implementation(AndroidLibs.material)
     implementation(AndroidLibs.cardview)
     implementation(AndroidLibs.appcompat)
     implementation(AndroidLibs.constraint_layout)
     implementation(AndroidLibs.room_runtime)
-    implementation(AndroidLibs.room_rxjava2)
+    implementation(AndroidLibs.room_ktx)
+
     implementation(AndroidLibs.livedata)
     implementation(AndroidLibs.viewmodel)
     implementation(AndroidLibs.extensions)
     implementation(AndroidLibs.preference)
+    implementation(AndroidLibs.activity)
+    implementation(AndroidLibs.coroutines)
 
     implementation(Firebase.crashlytics)
 
-    implementation(Libs.rxAndroid)
     implementation(Libs.hilt)
     implementation(Libs.timber)
     implementation(Libs.lottie)
