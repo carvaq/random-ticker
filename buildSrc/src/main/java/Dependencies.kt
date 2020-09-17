@@ -18,25 +18,31 @@ object Gms {
 }
 
 object AndroidLibs {
-    const val material = "com.google.android.material:material:1.0.0"
+    const val material = "com.google.android.material:material:1.2.1"
     const val cardview = "androidx.cardview:cardview:1.0.0"
-    const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-    const val preference = "androidx.preference:preference:1.1.0"
+    const val appcompat = "androidx.appcompat:appcompat:1.2.0"
+    const val preference = "androidx.preference:preference:1.1.1"
+    const val activity = "androidx.activity:activity-ktx:1.1.0"
 
-    private const val roomVersion = "2.2.1"
+    private const val roomVersion = "2.2.5"
     const val room_runtime = "androidx.room:room-runtime:$roomVersion"
-    const val room_rxjava2 = "androidx.room:room-rxjava2:$roomVersion"
+    const val room_ktx = "androidx.room:room-ktx:$roomVersion"
     const val room_compiler = "androidx.room:room-compiler:$roomVersion"
-    const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:2.1.0"
-    const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
-    const val extensions = "androidx.lifecycle:lifecycle-extensions:2.1.0"
 
-    private const val constraintLayoutVersion = "2.0.0-beta3"
+    private const val lifecycleVersion = "2.2.0"
+    const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    const val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+
+    private const val constraintLayoutVersion = "2.0.0"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"
-    const val rules = "androidx.test:rules:1.2.0"
-    const val espresso_core = "androidx.test.espresso:espresso-core:3.2.0"
+    const val rules = "androidx.test:rules:1.3.0"
+    const val espresso_core = "androidx.test.espresso:espresso-core:3.3.0"
+
 }
 
 object Libs {
@@ -44,12 +50,7 @@ object Libs {
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hilt_compile = "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
     const val pulsator = "pl.bclogic:pulsator4droid:1.0.3"
-
-    private const val grenadeVersion = "1.1.0"
-    const val grenade = "com.github.kobakei.grenade:library:$grenadeVersion"
-    const val grenade_processor = "com.github.kobakei.grenade:processor:$grenadeVersion"
 
     private const val timberVersion = "4.7.1"
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
