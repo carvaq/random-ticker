@@ -1,68 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-		xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		app:contentPadding="@dimen/contentPadding">
 
 	<androidx.constraintlayout.widget.ConstraintLayout
-			android:padding="@dimen/contentPadding"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
 		<TextView
 				android:id="@+id/textView"
 				style="@style/AppTheme.Label"
-				android:text="@string/to"/>
-
-		<com.google.android.material.textfield.TextInputLayout
-				android:id="@+id/textInputLayout2"
-				style="@style/AppTheme.EditTextContainer"
-				android:layout_width="0dp"
-				android:layout_height="0dp"
-				android:layout_marginBottom="8dp"
-				android:layout_marginEnd="8dp"
-				android:layout_marginStart="8dp"
-				android:layout_marginTop="8dp"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
-				app:layout_constraintHorizontal_bias="0.5"
-				app:layout_constraintHorizontal_chainStyle="spread"
+				android:text="@string/to"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/textView">
+				app:layout_constraintTop_toTopOf="parent" />
 
-			<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/maxMin"
-					style="@style/AppTheme.EditText"
-					android:maxLength="3"
-					android:hint="@string/minutes"
-					tools:text="3929"/>
-		</com.google.android.material.textfield.TextInputLayout>
-
-		<com.google.android.material.textfield.TextInputLayout
-				android:id="@+id/textInputLayout"
-				style="@style/AppTheme.EditTextContainer"
-				android:layout_width="0dp"
+		<NumberPicker
+				android:id="@+id/maxHours"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="8dp"
-				android:layout_marginEnd="8dp"
-				android:layout_marginTop="8dp"
-				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/maxMin"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/textView" />
+
+		<TextView
+				android:id="@+id/tvMinHours"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hours"
+				app:layout_constraintBottom_toBottomOf="@id/maxHours"
+				app:layout_constraintEnd_toEndOf="@id/maxHours"
+				app:layout_constraintHorizontal_bias="0.8"
+				app:layout_constraintStart_toStartOf="@id/maxHours"
+				app:layout_constraintTop_toTopOf="@id/maxHours" />
+
+		<NumberPicker
+				android:id="@+id/maxMin"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintEnd_toStartOf="@id/maxSec"
+				app:layout_constraintStart_toEndOf="@id/maxHours"
+				app:layout_constraintTop_toBottomOf="@id/textView" />
+
+		<TextView
+				android:id="@+id/tvMinMin"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/minutes"
+				app:layout_constraintBottom_toBottomOf="@id/maxMin"
+				app:layout_constraintEnd_toEndOf="@id/maxMin"
+				app:layout_constraintHorizontal_bias="0.8"
+				app:layout_constraintStart_toStartOf="@id/maxMin"
+				app:layout_constraintTop_toTopOf="@id/maxMin" />
+
+		<NumberPicker
+				android:id="@+id/maxSec"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
 				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintHorizontal_bias="0.5"
-				app:layout_constraintHorizontal_chainStyle="spread"
-				app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
-				app:layout_constraintTop_toBottomOf="@+id/textView">
+				app:layout_constraintStart_toEndOf="@+id/maxMin"
+				app:layout_constraintTop_toBottomOf="@id/textView" />
 
-			<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/maxSec"
-					android:imeOptions="actionDone"
-					style="@style/AppTheme.EditText"
-					android:maxLength="2"
-					android:hint="@string/seconds"
-					tools:text="1"/>
-		</com.google.android.material.textfield.TextInputLayout>
-
+		<TextView
+				android:id="@+id/tvMinSec"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/seconds"
+				app:layout_constraintBottom_toBottomOf="@id/maxSec"
+				app:layout_constraintEnd_toEndOf="@id/maxSec"
+				app:layout_constraintHorizontal_bias="0.8"
+				app:layout_constraintStart_toStartOf="@id/maxSec"
+				app:layout_constraintTop_toTopOf="@id/maxSec" />
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,9 +1,7 @@
 <resources>
 
 	<style name="AppTheme.Dialog" />
-
 	<style name="AppTheme.Dialog.Dark" parent="Theme.MaterialComponents.BottomSheetDialog" />
-
 	<style name="AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.BottomSheetDialog" />
 
 	<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
@@ -42,7 +40,6 @@
 		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textAllCaps">true</item>
-		<item name="android:layout_marginStart">@dimen/activityPaddingHorizontal</item>
 		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Subhead</item>
 	</style>
 
