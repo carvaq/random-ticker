@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "43425df0482cbf65b2dcd797f0c54e76",
+    "version": 2,
+    "identityHash": "8196927bd17fb775b5142e0dc31ce9ca",
     "entities": [
       {
-        "tableName": "tickerData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `bookmarkPosition` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL)",
+        "tableName": "bookmarks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `minimumHours` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumHours` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,8 +15,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "bookmarkPosition",
-            "columnName": "bookmarkPosition",
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minimumHours",
+            "columnName": "minimumHours",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -29,6 +35,12 @@
           {
             "fieldPath": "minimumSeconds",
             "columnName": "minimumSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maximumHours",
+            "columnName": "maximumHours",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -55,9 +67,10 @@
         "foreignKeys": []
       }
     ],
+    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"43425df0482cbf65b2dcd797f0c54e76\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8196927bd17fb775b5142e0dc31ce9ca')"
     ]
   }
 }

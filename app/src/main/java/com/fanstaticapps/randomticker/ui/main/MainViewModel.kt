@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
+import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,10 +27,10 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
         currentBookmarkId.value = bookmark.id
     }
 
-    fun createTimer(bookmarkName: String, minMin: Int, minSec: Int, maxMin: Int, maxSec: Int) {
-        val timerCreated = timerHelper.createTimer(minMin, minSec, maxMin, maxSec)
+    fun createTimer(bookmarkName: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
+        val timerCreated = timerHelper.createTimer(minimum, maximum)
         if (timerCreated) {
-            insertCurrentTickerData(bookmarkName, minMin, minSec, maxMin, maxSec)
+            insertCurrentTickerData(bookmarkName, minimum, maximum)
 
             timerCreationStatus.value = TimerCreationStatus.TIMER_STARTED
         } else {
@@ -38,12 +39,8 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
 
     }
 
-    private fun insertCurrentTickerData(name: String, minMin: Int, minSec: Int, maxMin: Int, maxSec: Int) {
-        val newBookmark = Bookmark(name = name,
-                maximumMinutes = maxMin,
-                minimumMinutes = minMin,
-                maximumSeconds = maxSec,
-                minimumSeconds = minSec)
+    private fun insertCurrentTickerData(name: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
+        val newBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum)
 
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.insertBookmark(newBookmark)

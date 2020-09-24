@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.nonNull
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
@@ -128,10 +129,8 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
 
     private fun createTimer() {
         viewModel.createTimer(etBookmarkName.name(),
-                minMin.value,
-                minSec.value,
-                maxMin.value,
-                maxSec.value
+                IntervalDefinition(minHours.value, minMin.value, minSec.value),
+                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value)
         )
     }
 
