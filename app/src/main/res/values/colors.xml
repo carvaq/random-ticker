@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<color name="primaryColor">#33691e</color>
-	<color name="primaryLightColor">#629749</color>
-	<color name="primaryDarkColor">#003d00</color>
-	<color name="secondaryColor">#6d4c41</color>
-	<color name="secondaryLightColor">#9c786c</color>
-	<color name="secondaryDarkColor">#40241a</color>
-	<color name="primaryTextColor">#FFFFFF</color>
-	<color name="secondaryTextColor">#FFFFFF</color>
+	<color name="primaryColor">#a5d6a7</color>
+	<color name="primaryLightColor">#d7ffd9</color>
+	<color name="primaryDarkColor">#75a478</color>
+	<color name="secondaryColor">#f57f17</color>
+	<color name="secondaryLightColor">#ffb04c</color>
+	<color name="secondaryDarkColor">#bc5100</color>
+	<color name="primaryTextColor">#000000</color>
+	<color name="secondaryTextColor">#000000</color>
 
-	<color name="background">#F9FBE7</color>
+	<color name="background">#ffffff</color>
 
-	<color name="cancelButtonColor">#40241a</color>
 </resources>
