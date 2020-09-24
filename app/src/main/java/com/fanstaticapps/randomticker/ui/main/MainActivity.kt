@@ -48,6 +48,8 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
         } else {
             setContentView(R.layout.activity_main)
 
+            setSupportActionBar(findViewById(R.id.toolbar))
+
             initializeListeners()
             initializeBookmarks()
             initializeTimerCreationStatus()

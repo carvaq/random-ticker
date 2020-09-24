@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:context="com.fanstaticapps.randomticker.ui.main.MainActivity">
 
-	<include layout="@layout/app_bar"/>
+	<include layout="@layout/app_bar" />
 
 	<androidx.core.widget.NestedScrollView
 			style="@style/AppTheme.RootContainer"
@@ -17,12 +16,12 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:paddingEnd="@dimen/activityPaddingHorizontal"
 				android:paddingStart="@dimen/activityPaddingHorizontal"
 				android:paddingTop="@dimen/activityPaddingVertical"
+				android:paddingEnd="@dimen/activityPaddingHorizontal"
 				android:paddingBottom="@dimen/activityPaddingVertical">
 
-			<include layout="@layout/content_main"/>
+			<include layout="@layout/content_main" />
 		</LinearLayout>
 
 	</androidx.core.widget.NestedScrollView>

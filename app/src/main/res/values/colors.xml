@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="colorPrimary">#9c27b0</color>
-	<color name="colorPrimaryDark">#7b1fa2</color>
-	<color name="colorAccent">#00c853</color>
-	<color name="contrastTextColor">#7b1fa2</color>
-	<color name="secondaryColor">#d1c4e9</color>
-	<color name="gradientEndColor">#d1c4e9</color>
+
+	<color name="primaryColor">#a5d6a7</color>
+	<color name="primaryLightColor">#d7ffd9</color>
+	<color name="primaryDarkColor">#75a478</color>
+	<color name="secondaryColor">#f57f17</color>
+	<color name="secondaryLightColor">#ffb04c</color>
+	<color name="secondaryDarkColor">#bc5100</color>
+	<color name="primaryTextColor">#000000</color>
+	<color name="secondaryTextColor">#000000</color>
+
+	<color name="background">#ffffff</color>
+
 </resources>

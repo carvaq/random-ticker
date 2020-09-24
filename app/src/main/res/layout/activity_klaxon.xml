@@ -44,7 +44,6 @@
 			app:layout_constraintBottom_toTopOf="@id/btnRepeat"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			tools:background="@color/colorAccent"
 			tools:textColor="#fff" />
 
 	<Button
@@ -53,7 +52,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/action_repeat"
-			android:textColor="@color/colorPrimaryDark"
+			android:textColor="@color/primaryDarkColor"
 			android:textSize="24sp"
 			android:visibility="gone"
 			app:layout_constraintBottom_toTopOf="@id/plDismiss"
@@ -92,7 +91,7 @@
 				android:minWidth="@dimen/dismissButtonMinSize"
 				android:minHeight="@dimen/dismissButtonMinSize"
 				android:src="@drawable/ic_cancel"
-				android:tint="@color/contrastTextColor" />
+				app:tint="@color/secondaryColor" />
 	</pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

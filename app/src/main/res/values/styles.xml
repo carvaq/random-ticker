@@ -1,26 +1,10 @@
 <resources>
 
-	<!-- Base application theme. -->
-	<style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
-	</style>
+	<style name="AppTheme.Dialog" />
 
-	<style name="AppTheme.LicenseActivity" parent="Theme.AppCompat.DayNight.DarkActionBar">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-	</style>
+	<style name="AppTheme.Dialog.Dark" parent="Theme.MaterialComponents.BottomSheetDialog" />
 
-	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-	<style name="AppTheme.Dialog"/>
-
-	<style name="AppTheme.Dialog.Dark" parent="Theme.Design.BottomSheetDialog"/>
-
-	<style name="AppTheme.Dialog.Light" parent="Theme.Design.Light.BottomSheetDialog"/>
+	<style name="AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.BottomSheetDialog" />
 
 	<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
 		<item name="android:layout_height">wrap_content</item>
@@ -38,7 +22,7 @@
 		<item name="hintTextAppearance">@style/AppTheme.HintTextAppearance</item>
 	</style>
 
-	<style name="AppTheme.Base"/>
+	<style name="AppTheme.Base" />
 
 	<style name="AppTheme.Base.EditText">
 		<item name="android:layout_height">wrap_content</item>
@@ -69,13 +53,13 @@
 		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
 	</style>
 
-	<style name="AppTheme.Label" parent="AppTheme.Base.Label"/>
+	<style name="AppTheme.Label" parent="AppTheme.Base.Label" />
 
-	<style name="AppTheme.Description" parent="AppTheme.Base.Description"/>
+	<style name="AppTheme.Description" parent="AppTheme.Base.Description" />
 
-	<style name="AppTheme.EditText" parent="AppTheme.Base.EditText"/>
+	<style name="AppTheme.EditText" parent="AppTheme.Base.EditText" />
 
-	<style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint"/>
+	<style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint" />
 
 	<style name="AppTheme.RootContainer">
 		<item name="android:layout_width">match_parent</item>
