@@ -3,39 +3,29 @@ package com.fanstaticapps.randomticker.ui.klaxon
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.viewModels
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.UserPreferences
-import com.fanstaticapps.randomticker.data.TickerDatabase
 import com.fanstaticapps.randomticker.helper.AlarmKlaxon
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import com.fanstaticapps.randomticker.ui.klaxon.KlaxonPresenter.ViewState
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class KlaxonActivity : BaseActivity(), KlaxonView {
+class KlaxonActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_TIME_ELAPSED = "extra_time_elapsed"
     }
 
     @Inject
-    lateinit var notificationManager: TickerNotificationManager
-
-    @Inject
     lateinit var timerHelper: TimerHelper
 
-    @Inject
-    lateinit var userPreferences: UserPreferences
 
-    private val database by lazy { TickerDatabase.getInstance(this) }
-    private val presenter by lazy { KlaxonPresenter(this, userPreferences.intervalFinished, timeElapsed) }
+    private val viewModel: KlaxonViewModel by viewModels()
+
 
     private var timeElapsed: Boolean = false
 
@@ -45,6 +35,10 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
 
         setContentView(R.layout.activity_klaxon)
         updateScreenStatus()
+
+        viewModel.getCurrentViewState().observe(this) {
+            render(it)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -52,7 +46,6 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         if (intent != null) {
             readExtras(intent)
         }
-        presenter.update(timeElapsed)
         updateScreenStatus()
     }
 
@@ -73,46 +66,39 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
         super.onResume()
         Timber.d("Alarm time elapsed?  $timeElapsed")
         btnDismiss.setOnClickListener {
-            presenter.cancelTimer()
+            viewModel.cancelTimer()
         }
 
         btnRepeat.setOnClickListener {
-            database.tickerDataDao().getById(userPreferences.currentSelectedId)
-                    .subscribeOn(Schedulers.computation())
-                    .doOnSuccess {
-                        timerHelper.newAlarmFromBookmark(this, it)
-                        AlarmKlaxon.stop(this)
-                    }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSuccess {
-                        finish()
-                        startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left)
-                    }
-                    .subscribe()
+            viewModel.currentBookmark.observe(this, {
+                timerHelper.newAlarmFromBookmark(this, it)
+                AlarmKlaxon.stop(this)
+
+                finish()
+                startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left)
+            })
         }
 
-        presenter.init()
     }
 
     override fun onStop() {
         super.onStop()
-        presenter.onStop()
+        viewModel.onStop()
     }
 
-    override fun render(viewState: ViewState) {
+    private fun render(viewState: KlaxonViewState) {
         Timber.d("Rendering  ${viewState.javaClass.simpleName}")
         when (viewState) {
-            is ViewState.TimerStarted -> {
+            is KlaxonViewState.TimerStarted -> {
                 startWaitingIconAnimation()
-                tvElapsedTime.setOnClickListener { presenter.showElapsedTime = true }
+                tvElapsedTime.setOnClickListener { viewModel.showElapsedTime = true }
             }
-            is ViewState.ElapseTimeUpdate -> {
+            is KlaxonViewState.ElapseTimeUpdate -> {
                 showElapsedTime(viewState.elapsedTime)
             }
-            is ViewState.TimerFinished -> {
-                AlarmKlaxon.start(this, userPreferences)
-                notificationManager.cancelNotifications(this)
+            is KlaxonViewState.TimerFinished -> {
+                timerHelper.startNotification(this)
 
                 tvElapsedTime.isEnabled = false
 
@@ -126,19 +112,18 @@ class KlaxonActivity : BaseActivity(), KlaxonView {
                 }
 
             }
-            is ViewState.TimerCanceled -> {
-                laWaiting.cancelAnimation()
+            is KlaxonViewState.TimerCanceled -> {
                 timerHelper.cancelNotificationsAndGoBack(this)
-            }
-            is ViewState.TimerStopped -> {
                 laWaiting.cancelAnimation()
             }
+            is KlaxonViewState.TimerStopped ->
+                laWaiting.cancelAnimation()
         }
     }
 
 
     private fun readExtras(intent: Intent) {
-        timeElapsed = intent.getBooleanExtra(EXTRA_TIME_ELAPSED, false)
+        viewModel.setTimeElapsed(intent.getBooleanExtra(EXTRA_TIME_ELAPSED, false))
     }
 
     private fun showElapsedTime(elapsedTimeInMillis: String?) {

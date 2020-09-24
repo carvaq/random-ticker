@@ -89,6 +89,7 @@ dependencies {
     implementation(Firebase.crashlytics)
 
     implementation(Libs.hilt)
+    implementation(Libs.hilt_viewmodel)
     implementation(Libs.timber)
     implementation(Libs.lottie)
     implementation(Libs.pulsator)
@@ -98,6 +99,7 @@ dependencies {
 
     kapt(AndroidLibs.room_compiler)
     kapt(Libs.hilt_compile)
+    kapt(Libs.hilt_viewmodel_compiler)
 
     testImplementation(TestLibs.mockito_core)
     testImplementation(TestLibs.junit)

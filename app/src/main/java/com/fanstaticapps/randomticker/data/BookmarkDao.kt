@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import io.reactivex.Maybe
 
 @Dao
 interface BookmarkDao {
@@ -19,11 +18,8 @@ interface BookmarkDao {
     @Insert(onConflict = REPLACE)
     fun insert(bookmark: Bookmark)
 
-    @Query("DELETE from bookmarks")
-    fun deleteAll()
-
     @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
-    fun getById(id: Long): Maybe<Bookmark>
+    fun getById(id: Long): LiveData<Bookmark>
 
     @Query("DELETE from bookmarks WHERE id = :id")
     fun delete(id: Long?)
