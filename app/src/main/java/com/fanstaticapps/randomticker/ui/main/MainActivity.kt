@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.NumberPicker
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
@@ -17,8 +17,6 @@ import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
-import com.fanstaticapps.randomticker.view.MaxValueTextWatcher
-import com.fanstaticapps.randomticker.view.MinValueVerification
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_bookmarks.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -86,12 +84,6 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
     }
 
     private fun initializeListeners() {
-        maxSec.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                createTimer()
-            }
-            true
-        }
         start.setOnClickListener { createTimer() }
     }
 
@@ -115,10 +107,12 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
     private fun renderBookmark(bookmark: Bookmark) {
         with(bookmark) {
             etBookmarkName.setText(name)
-            prepareValueSelectionView(minMin, minimumMinutes, 240, true)
-            prepareValueSelectionView(minSec, minimumSeconds, 59, true)
-            prepareValueSelectionView(maxMin, maximumMinutes, 240, true)
-            prepareValueSelectionView(maxSec, maximumSeconds, 59, true)
+            prepareValueSelectionView(minHours, maximumMinutes, 10)
+            prepareValueSelectionView(minMin, minimumMinutes, 59)
+            prepareValueSelectionView(minSec, minimumSeconds, 59)
+            prepareValueSelectionView(maxHours, maximumMinutes, 10)
+            prepareValueSelectionView(maxMin, maximumMinutes, 59)
+            prepareValueSelectionView(maxSec, maximumSeconds, 59)
         }
     }
 
@@ -126,21 +120,18 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
         viewModel.setCurrentBookmark(bookmark)
     }
 
-    private fun prepareValueSelectionView(view: EditText, startValue: Int, maxValue: Int, forceDefaultValue: Boolean) {
-        if (view.text.isNullOrBlank() || forceDefaultValue) {
-            view.setText(startValue.toString())
-        }
-
-        view.addTextChangedListener(MaxValueTextWatcher(view, maxValue))
-        view.onFocusChangeListener = MinValueVerification()
+    private fun prepareValueSelectionView(view: NumberPicker, startValue: Int, maxValue: Int) {
+        view.value = startValue
+        view.minValue = 0
+        view.maxValue = maxValue
     }
 
     private fun createTimer() {
         viewModel.createTimer(etBookmarkName.name(),
-                minMin.getTextAsInt(),
-                minSec.getTextAsInt(),
-                maxMin.getTextAsInt(),
-                maxSec.getTextAsInt()
+                minMin.value,
+                minSec.value,
+                maxMin.value,
+                maxSec.value
         )
     }
 
@@ -149,6 +140,5 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
         finish()
     }
 
-    private fun EditText.getTextAsInt(): Int = if (this.text.isNullOrBlank()) 0 else this.text.toString().toInt()
     private fun EditText.name(): String = if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
 }
