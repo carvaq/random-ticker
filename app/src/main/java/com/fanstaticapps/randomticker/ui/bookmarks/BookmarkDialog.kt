@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
@@ -21,7 +21,7 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     @Inject
     lateinit var userPreferences: UserPreferences
 
-    private lateinit var viewModel: BookmarksViewModel
+    private val viewModel: BookmarksViewModel by viewModels()
     private lateinit var adapter: BookmarkAdapter
 
 
@@ -42,8 +42,6 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-
-        viewModel = ViewModelProvider(this).get(BookmarksViewModel::class.java)
 
         viewModel.allBookmarks.observe(viewLifecycleOwner, { list ->
             val allItems = listOf(Bookmark("Random Ticker")).plus(list)
@@ -69,7 +67,7 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     }
 
     interface BookmarkSelector {
-        fun onBookmarkSelected(bookmark: Bookmark?)
+        fun onBookmarkSelected(bookmark: Bookmark)
     }
 }
 
