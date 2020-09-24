@@ -10,14 +10,20 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "bookmarks")
-data class Bookmark(@PrimaryKey(autoGenerate = true) var id: Long?,
-                    @ColumnInfo(name = "name") var name: String = "Random Ticker",
-                    @ColumnInfo(name = "minimumMinutes") var minimumMinutes: Int,
-                    @ColumnInfo(name = "minimumSeconds") var minimumSeconds: Int,
-                    @ColumnInfo(name = "maximumMinutes") var maximumMinutes: Int,
-                    @ColumnInfo(name = "maximumSeconds") var maximumSeconds: Int) {
+data class Bookmark(@PrimaryKey(autoGenerate = true) val id: Long?,
+                    @ColumnInfo(name = "name") val name: String = "Random Ticker",
+                    @ColumnInfo(name = "minimumMinutes") val minimumMinutes: Int,
+                    @ColumnInfo(name = "minimumSeconds") val minimumSeconds: Int,
+                    @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int,
+                    @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int) {
     @Ignore
     constructor(name: String) : this(null, name, 0, 0, 5, 0)
+
+    @Ignore
+    constructor(name: String, minimumMinutes: Int, minimumSeconds: Int, maximumMinutes: Int, maximumSeconds: Int)
+            : this(null, name, minimumMinutes, minimumSeconds, maximumMinutes, maximumSeconds)
+
+
 }
 
 

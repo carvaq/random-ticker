@@ -40,14 +40,16 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     fun createTimer(minMin: Int, minSec: Int, maxMin: Int, maxSec: Int): Boolean {
         val min = getTotalValueInMillis(minMin, minSec)
         val max = getTotalValueInMillis(maxMin, maxSec)
-        return if (max > min) {
+        if (max > min) {
             val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
             val intervalFinished = System.currentTimeMillis() + interval
-            saveToPreferences(interval, intervalFinished)
-            true
+            userPreferences.currentlyTickerRunning = true
+            userPreferences.interval = interval
+            userPreferences.intervalFinished = intervalFinished
         } else {
-            false
+            userPreferences.currentlyTickerRunning = false
         }
+        return userPreferences.currentlyTickerRunning
     }
 
 
@@ -55,14 +57,9 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         return (60 * minutes + seconds) * 1000
     }
 
-    private fun saveToPreferences(interval: Long, intervalFinished: Long) {
-        userPreferences.currentlyTickerRunning = true
-        userPreferences.interval = interval
-        userPreferences.intervalFinished = intervalFinished
-    }
-
-
     fun createAlarm(context: Context) {
+        if (!userPreferences.currentlyTickerRunning) return
+
         val intervalFinished = userPreferences.intervalFinished
 
         if (userPreferences.showNotification) {

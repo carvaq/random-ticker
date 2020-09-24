@@ -4,9 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.UserPreferences
-import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TimerHelper
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,16 +17,15 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
     @Inject
     internal lateinit var userPreferences: UserPreferences
 
+    @Inject
+    internal lateinit var repository: BookmarkRepository
+
 
     override fun onReceive(context: Context, intent: Intent) {
-        val database = TickerDatabase.getInstance(context)
+        repository.getBookmarkById(userPreferences.currentSelectedId).value?.let { bookmark ->
 
-        database.tickerDataDao().getById(userPreferences.currentSelectedId)
-                .subscribeOn(Schedulers.computation())
-                .doOnSuccess {
-                    Timber.d("Creating a new alarm!")
-                    timerHelper.newAlarmFromBookmark(context, it)
-                }
-                .subscribe()
+            Timber.d("Creating a new alarm!")
+            timerHelper.newAlarmFromBookmark(context, bookmark)
+        }
     }
 }

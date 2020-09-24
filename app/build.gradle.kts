@@ -84,6 +84,7 @@ dependencies {
     implementation(AndroidLibs.extensions)
     implementation(AndroidLibs.preference)
     implementation(AndroidLibs.activity)
+    implementation(AndroidLibs.fragment)
     implementation(AndroidLibs.coroutines)
 
     implementation(Firebase.crashlytics)

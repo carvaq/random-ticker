@@ -16,4 +16,8 @@ class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDa
     fun deleteBookmark(bookmark: Bookmark) {
         bookmarkDao.delete(bookmark.id)
     }
+
+    fun insertBookmark(newBookmark: Bookmark): Long {
+        return bookmarkDao.insert(newBookmark)
+    }
 }

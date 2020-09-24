@@ -6,15 +6,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.extensions.nonNull
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import com.fanstaticapps.randomticker.ui.BookmarkDialog
+import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
 import com.fanstaticapps.randomticker.view.MaxValueTextWatcher
 import com.fanstaticapps.randomticker.view.MinValueVerification
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.content_minimum_value.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
+class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
 
     @Inject
     lateinit var timerHelper: TimerHelper
@@ -37,8 +38,7 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
     @Inject
     lateinit var userPreferences: UserPreferences
 
-    private lateinit var presenter: MainPresenter
-
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +47,10 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
             startAlarmActivity()
         } else {
             setContentView(R.layout.activity_main)
-            val database = TickerDatabase.getInstance(this)
 
-            presenter = MainPresenter(database, this, timerHelper)
-            addDisposable(presenter.loadDataFromDatabase(userPreferences.currentSelectedId))
+            initializeListeners()
+            initializeBookmarks()
+            initializeTimerCreationStatus()
         }
     }
 
@@ -61,18 +61,21 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.settings) {
+        return if (item.itemId == R.id.settings) {
             startActivity(Intent(this, SettingsActivity::class.java))
+            true
+        } else {
+            super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
-    override fun onDestroy() {
-        TickerDatabase.destroyInstance()
-        super.onDestroy()
-    }
 
-    override fun initializeBookmarks() {
+    private fun initializeBookmarks() {
+        viewModel.currentBookmark
+                .nonNull()
+                .observe(this) {
+                    renderBookmark(it)
+                }
         btnSelectProfile.setOnClickListener {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 BookmarkDialog().show(supportFragmentManager, "BookmarkSelector")
@@ -80,26 +83,45 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
         }
     }
 
-    override fun initializeListeners() {
+    private fun initializeListeners() {
         maxSec.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> createTimer()
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                createTimer()
             }
             true
         }
         start.setOnClickListener { createTimer() }
     }
 
-    override fun applyTickerData(minimumMinutes: Int, minimumSeconds: Int, maximumMinutes: Int, maximumSeconds: Int, forceDefaultValue: Boolean, name: String) {
-        etBookmarkName.setText(name)
-        prepareValueSelectionView(minMin, minimumMinutes, 240, forceDefaultValue)
-        prepareValueSelectionView(minSec, minimumSeconds, 59, forceDefaultValue)
-        prepareValueSelectionView(maxMin, maximumMinutes, 240, forceDefaultValue)
-        prepareValueSelectionView(maxSec, maximumSeconds, 59, forceDefaultValue)
+    private fun initializeTimerCreationStatus() {
+        viewModel.timerCreationStatus.observe(this) {
+            when (it) {
+                TimerCreationStatus.TIMER_STARTED -> {
+                    timerHelper.createAlarm(this)
+                    startAlarmActivity()
+                }
+                TimerCreationStatus.INVALID_DATES -> {
+                    toast(R.string.error_min_is_bigger_than_max)
+                }
+                else -> {
+                }
+            }
+        }
     }
 
-    override fun onBookmarkSelected(bookmark: Bookmark?) {
-        presenter.selectBookmark(bookmark)
+
+    private fun renderBookmark(bookmark: Bookmark) {
+        with(bookmark) {
+            etBookmarkName.setText(name)
+            prepareValueSelectionView(minMin, minimumMinutes, 240, true)
+            prepareValueSelectionView(minSec, minimumSeconds, 59, true)
+            prepareValueSelectionView(maxMin, maximumMinutes, 240, true)
+            prepareValueSelectionView(maxSec, maximumSeconds, 59, true)
+        }
+    }
+
+    override fun onBookmarkSelected(bookmark: Bookmark) {
+        viewModel.setCurrentBookmark(bookmark)
     }
 
     private fun prepareValueSelectionView(view: EditText, startValue: Int, maxValue: Int, forceDefaultValue: Boolean) {
@@ -112,16 +134,12 @@ class MainActivity : BaseActivity(), MainView, BookmarkDialog.BookmarkSelector {
     }
 
     private fun createTimer() {
-        presenter.createTimer(etBookmarkName.name(), minMin.getTextAsInt(), minSec.getTextAsInt(), maxMin.getTextAsInt(), maxSec.getTextAsInt())
-    }
-
-    override fun showMinimumMustBeBiggerThanMaximum() {
-        toast(R.string.error_min_is_bigger_than_max)
-    }
-
-    override fun createAlarm() {
-        timerHelper.createAlarm(this)
-        startAlarmActivity()
+        viewModel.createTimer(etBookmarkName.name(),
+                minMin.getTextAsInt(),
+                minSec.getTextAsInt(),
+                maxMin.getTextAsInt(),
+                maxSec.getTextAsInt()
+        )
     }
 
     private fun startAlarmActivity() {

@@ -23,6 +23,7 @@ object AndroidLibs {
     const val appcompat = "androidx.appcompat:appcompat:1.2.0"
     const val preference = "androidx.preference:preference:1.1.1"
     const val activity = "androidx.activity:activity-ktx:1.1.0"
+    const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
 
     private const val roomVersion = "2.2.5"
     const val room_runtime = "androidx.room:room-runtime:$roomVersion"
