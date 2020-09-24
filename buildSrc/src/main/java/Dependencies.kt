@@ -49,6 +49,8 @@ object Libs {
     const val hiltVersion = "2.29-alpha"
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hilt_compile = "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
+    const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
     const val pulsator = "pl.bclogic:pulsator4droid:1.0.3"
 

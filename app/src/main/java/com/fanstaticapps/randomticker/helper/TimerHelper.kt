@@ -113,4 +113,9 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         }
     }
 
+    fun startNotification(activity: Activity) {
+        AlarmKlaxon.start(activity, userPreferences)
+        notificationManager.cancelNotifications(activity)
+    }
+
 }

@@ -10,15 +10,18 @@ import androidx.room.Query
 interface BookmarkDao {
 
     @Query("SELECT * from bookmarks")
+    fun getAll(): List<Bookmark>
+
+    @Query("SELECT * from bookmarks")
     fun getAllBookmarks(): LiveData<List<Bookmark>>
 
     @Insert(onConflict = REPLACE)
-    suspend fun insert(bookmark: Bookmark): Long
+    fun insert(bookmark: Bookmark)
 
     @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
-    suspend fun getById(id: Long): Bookmark?
+    fun getById(id: Long): LiveData<Bookmark>
 
     @Query("DELETE from bookmarks WHERE id = :id")
-    suspend fun delete(id: Long?)
+    fun delete(id: Long?)
 
 }

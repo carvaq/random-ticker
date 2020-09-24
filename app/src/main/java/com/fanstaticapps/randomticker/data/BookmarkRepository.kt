@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDao) {
 
-    suspend fun getBookmarkById(id: Long): Bookmark? {
+    fun getBookmarkById(id: Long): LiveData<Bookmark> {
         return bookmarkDao.getById(id)
     }
 
@@ -13,11 +13,7 @@ class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDa
         return bookmarkDao.getAllBookmarks()
     }
 
-    suspend fun deleteBookmark(bookmark: Bookmark) {
+    fun deleteBookmark(bookmark: Bookmark) {
         bookmarkDao.delete(bookmark.id)
-    }
-
-    suspend fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
-        return bookmarkDao.insert(newBookmark)
     }
 }

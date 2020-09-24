@@ -1,53 +1,48 @@
 package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.os.CountDownTimer
+import androidx.annotation.CheckResult
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.fanstaticapps.randomticker.TickerPreferences
+import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.helper.TimerHelper
-import kotlinx.coroutines.Dispatchers
 import kotlin.math.abs
 
 class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,
-                                                   private val tickerPreferences: TickerPreferences,
+                                                   private val userPreferences: UserPreferences,
                                                    repository: BookmarkRepository) : ViewModel() {
 
     private val timeElapsed = MutableLiveData<Boolean>()
-    private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TickerNoop)
+    private val internalViewState = MutableLiveData<KlaxonViewState>()
     private val viewStateMediator = MediatorLiveData<KlaxonViewState>()
-
-    private val countDownTimer = object : CountDownTimer(tickerPreferences.intervalWillBeFinished - System.currentTimeMillis(),
+    private val countDownTimer = object : CountDownTimer(userPreferences.intervalFinished - System.currentTimeMillis(),
             TimerHelper.ONE_SECOND_IN_MILLIS) {
         override fun onTick(millisUntilFinished: Long) {
             if (showElapsedTime) {
-                internalViewState.value = KlaxonViewState.ElapsedTimeUpdate(getElapsedTime())
+                internalViewState.value = KlaxonViewState.ElapseTimeUpdate(getElapsedTime())
             }
         }
 
         override fun onFinish() {
-            timeElapsed.value = true
+            internalViewState.value = timerFinished()
         }
     }
 
 
-    val currentBookmark: LiveData<Bookmark> = liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-        repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { emit(it) }
-    }
-    var showElapsedTime: Boolean = false
+    val currentBookmark: LiveData<Bookmark> = repository.getBookmarkById(userPreferences.currentSelectedId)
+    var showElapsedTime: Boolean = true
 
     init {
-        viewStateMediator.addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
-            Transformations.map(currentBookmark) { bookmark ->
-                if (timerElapsed) {
-                    KlaxonViewState.TickerFinished(getElapsedTime(), bookmark)
-                } else {
-                    startCountDownTimer()
-                    KlaxonViewState.TickerStarted(bookmark)
-                }
+        viewStateMediator.addSource(Transformations.map(timeElapsed) { timerElapsed ->
+            if (timerElapsed) {
+                timerFinished()
+            } else {
+                startCountDownTimer()
+                KlaxonViewState.TimerStarted
             }
         }) { viewStateMediator.value = it }
         viewStateMediator.addSource(internalViewState) { viewStateMediator.value = it }
@@ -64,12 +59,12 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
 
     fun onStop() {
         countDownTimer.cancel()
-        internalViewState.value = KlaxonViewState.TickerStopped
+        internalViewState.value = KlaxonViewState.TimerStopped
     }
 
     fun cancelTimer() {
         countDownTimer.cancel()
-        internalViewState.value = KlaxonViewState.TickerCanceled
+        internalViewState.value = KlaxonViewState.TimerCanceled
     }
 
     private fun startCountDownTimer() {
@@ -77,8 +72,14 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
     }
 
     private fun getElapsedTime(): String {
-        val millisSinceStarted = abs(tickerPreferences.intervalWillBeFinished - System.currentTimeMillis() - tickerPreferences.interval)
+        val millisSinceStarted = abs(userPreferences.intervalFinished - System.currentTimeMillis() - userPreferences.interval)
         return getFormattedElapsedMilliseconds(millisSinceStarted)
+    }
+
+    @CheckResult
+    private fun timerFinished(): KlaxonViewState.TimerFinished {
+        userPreferences.currentlyTickerRunning = false
+        return KlaxonViewState.TimerFinished(getElapsedTime())
     }
 
 }
