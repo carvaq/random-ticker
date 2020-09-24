@@ -19,6 +19,7 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
     private val timeElapsed = MutableLiveData<Boolean>()
     private val internalViewState = MutableLiveData<KlaxonViewState>()
     private val viewStateMediator = MediatorLiveData<KlaxonViewState>()
+
     private val countDownTimer = object : CountDownTimer(userPreferences.intervalFinished - System.currentTimeMillis(),
             TimerHelper.ONE_SECOND_IN_MILLIS) {
         override fun onTick(millisUntilFinished: Long) {
@@ -34,7 +35,7 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
 
 
     val currentBookmark: LiveData<Bookmark> = repository.getBookmarkById(userPreferences.currentSelectedId)
-    var showElapsedTime: Boolean = true
+    var showElapsedTime: Boolean = false
 
     init {
         viewStateMediator.addSource(Transformations.map(timeElapsed) { timerElapsed ->

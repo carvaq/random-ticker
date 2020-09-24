@@ -8,6 +8,7 @@ import android.os.Handler
 import androidx.core.app.AlarmManagerCompat
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import timber.log.Timber
 import java.util.*
@@ -33,13 +34,13 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
     fun newAlarmFromBookmark(context: Context, bookmark: Bookmark) {
         notificationManager.cancelNotifications(context)
-        createTimer(bookmark.minimumMinutes, bookmark.minimumSeconds, bookmark.maximumMinutes, bookmark.maximumSeconds)
+        createTimer(bookmark.getMinimumIntervalDefinition(), bookmark.getMaximumIntervalDefinition())
         createAlarm(context)
     }
 
-    fun createTimer(minMin: Int, minSec: Int, maxMin: Int, maxSec: Int): Boolean {
-        val min = getTotalValueInMillis(minMin, minSec)
-        val max = getTotalValueInMillis(maxMin, maxSec)
+    fun createTimer(minIntervalDefinition: IntervalDefinition, maxIntervalDefinition: IntervalDefinition): Boolean {
+        val min = minIntervalDefinition.millis
+        val max = maxIntervalDefinition.millis
         if (max > min) {
             val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
             val intervalFinished = System.currentTimeMillis() + interval
@@ -52,10 +53,6 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         return userPreferences.currentlyTickerRunning
     }
 
-
-    private fun getTotalValueInMillis(minutes: Int, seconds: Int): Int {
-        return (60 * minutes + seconds) * 1000
-    }
 
     fun createAlarm(context: Context) {
         if (!userPreferences.currentlyTickerRunning) return
