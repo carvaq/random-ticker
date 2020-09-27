@@ -1,38 +1,13 @@
 <resources>
 
-	<style name="AppTheme.Dialog" />
-	<style name="AppTheme.Dialog.Dark" parent="Theme.MaterialComponents.BottomSheetDialog" />
-	<style name="AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.BottomSheetDialog" />
-
-	<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+	<style name="AppTheme.Button" parent="Widget.MaterialComponents.Button">
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:minHeight">56dp</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_marginTop">@dimen/sectionMargin</item>
 	</style>
 
-	<style name="AppTheme.EditTextContainer">
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:paddingStart">@dimen/editTextPadding</item>
-		<item name="android:paddingEnd">@dimen/editTextPadding</item>
-		<item name="android:gravity">center_horizontal</item>
-		<item name="hintTextAppearance">@style/AppTheme.HintTextAppearance</item>
-	</style>
-
 	<style name="AppTheme.Base" />
-
-	<style name="AppTheme.Base.EditText">
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:fontFamily">monospace</item>
-		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display2</item>
-		<item name="android:digits">0123456789"</item>
-		<item name="android:selectAllOnFocus">true</item>
-		<item name="android:minWidth">@dimen/editTextMinWidth</item>
-		<item name="android:inputType">number</item>
-		<item name="android:imeOptions">actionNext</item>
-	</style>
 
 	<style name="AppTheme.Base.Label">
 		<item name="android:layout_height">wrap_content</item>
@@ -50,11 +25,33 @@
 		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
 	</style>
 
+	<style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
+		<item name="cardBackgroundColor">@color/background</item>
+		<item name="strokeColor">#18341a</item>
+		<item name="contentPadding">8dp</item>
+		<item name="strokeWidth">1dp</item>
+	</style>
+
+	<style name="ShapeAppearance" />
+
+	<style name="ShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+		<item name="cornerFamily">cut</item>
+		<item name="cornerSize">8dp</item>
+	</style>
+
+	<style name="ShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+		<item name="cornerFamily">cut</item>
+		<item name="cornerSize">16dp</item>
+	</style>
+
+	<style name="ShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+		<item name="cornerFamily">cut</item>
+		<item name="cornerSize">16dp</item>
+	</style>
+
 	<style name="AppTheme.Label" parent="AppTheme.Base.Label" />
 
 	<style name="AppTheme.Description" parent="AppTheme.Base.Description" />
-
-	<style name="AppTheme.EditText" parent="AppTheme.Base.EditText" />
 
 	<style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint" />
 
