@@ -40,21 +40,18 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     fun createTimer(minIntervalDefinition: IntervalDefinition, maxIntervalDefinition: IntervalDefinition): Boolean {
         val min = minIntervalDefinition.millis
         val max = maxIntervalDefinition.millis
-        if (max > min) {
+        return if (max > min) {
             val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
-            val intervalFinished = System.currentTimeMillis() + interval
-            userPreferences.currentlyTickerRunning = true
-            userPreferences.interval = interval
-            userPreferences.intervalFinished = intervalFinished
+            userPreferences.setTickerInterval(interval)
+            true
         } else {
-            userPreferences.currentlyTickerRunning = false
+            false
         }
-        return userPreferences.currentlyTickerRunning
     }
 
 
     fun createAlarm(context: Context) {
-        if (!userPreferences.currentlyTickerRunning) return
+        if (!isCurrentlyTickerRunning()) return
 
         val intervalFinished = userPreferences.intervalFinished
 
@@ -63,7 +60,7 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
             val timerRefreshRunnable = object : Runnable {
                 override fun run() {
-                    if (intervalFinished <= System.currentTimeMillis() || !userPreferences.currentlyTickerRunning) {
+                    if (!isCurrentlyTickerRunning()) {
                         HANDLER.removeCallbacks(this)
                         return
                     }
@@ -77,6 +74,10 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         setAlarm(context, intervalFinished)
     }
 
+    fun isCurrentlyTickerRunning(): Boolean {
+        return userPreferences.intervalFinished <= System.currentTimeMillis() && userPreferences.intervalFinished > 0
+    }
+
 
     private fun setAlarm(context: Context, intervalFinished: Long) {
         context.getAlarmManager()?.let {
@@ -86,11 +87,12 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         }
     }
 
-    fun cancelNotificationsAndGoBack(activity: Activity) {
-        AlarmKlaxon.stop(activity)
+    fun cancelTimerForNewConfiguration(activity: Activity) {
         cancelAlarm(activity)
 
         notificationManager.cancelNotifications(activity)
+
+        userPreferences.resetInterval()
 
         val startIntent = intentHelper.getMainActivity(activity)
         activity.startActivity(startIntent)
@@ -107,8 +109,6 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     }
 
     fun startNotification(activity: Activity, bookmark: Bookmark) {
-        AlarmKlaxon.start(activity, userPreferences)
-        notificationManager.cancelNotifications(activity)
         notificationManager.showKlaxonNotification(activity, bookmark)
     }
 
