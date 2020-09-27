@@ -22,4 +22,15 @@ class BookmarksViewModel @ViewModelInject constructor(@Assisted private val save
         }
     }
 
+    fun createBookmark(newBookmark: Bookmark) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = repository.insertOrUpdateBookmark(newBookmark)
+            userPreferences.currentSelectedId = id
+        }
+    }
+
+    fun selectBookmark(bookmark: Bookmark) {
+        userPreferences.currentSelectedId = bookmark.id ?: 0
+    }
+
 }

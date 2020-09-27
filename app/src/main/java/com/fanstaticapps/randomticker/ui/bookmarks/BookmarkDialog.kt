@@ -43,8 +43,8 @@ class BookmarkDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
-        viewModel.allBookmarks.observe(viewLifecycleOwner, { list ->
-            val allItems = listOf(Bookmark("Random Ticker")).plus(list)
+        viewModel.allBookmarks.observe(viewLifecycleOwner, { bookmarks ->
+            val allItems = listOf(Bookmark("Random Ticker")).plus(bookmarks)
 
             adapter.setData(allItems)
         })
@@ -53,8 +53,10 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     private fun setupRecyclerView() {
         adapter = BookmarkAdapter(requireContext(),
                 { bookmark ->
-                    if (activity is BookmarkSelector) {
-                        (activity as BookmarkSelector).onBookmarkSelected(bookmark)
+                    if (bookmark.id == null) {
+                        viewModel.createBookmark(bookmark)
+                    } else {
+                        viewModel.selectBookmark(bookmark)
                     }
                     dismiss()
                 },
@@ -64,10 +66,6 @@ class BookmarkDialog : BottomSheetDialogFragment() {
 
         rvBookmarks.layoutManager = LinearLayoutManager(requireContext())
         rvBookmarks.adapter = adapter
-    }
-
-    interface BookmarkSelector {
-        fun onBookmarkSelected(bookmark: Bookmark)
     }
 }
 

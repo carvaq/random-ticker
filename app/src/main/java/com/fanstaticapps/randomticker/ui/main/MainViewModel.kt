@@ -16,15 +16,11 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
                                                  private val timerHelper: TimerHelper,
                                                  private val repository: BookmarkRepository) : ViewModel() {
 
-    private val currentBookmarkId = MutableLiveData(userPreferences.currentSelectedId)
+    private val currentBookmarkId = userPreferences.currentSelectedBookmarkIdAsLiveData
 
     val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
     val currentBookmark: LiveData<Bookmark> = Transformations.switchMap(currentBookmarkId) { currentBookmarkId ->
         repository.getBookmarkById(currentBookmarkId)
-    }
-
-    fun setCurrentBookmark(bookmark: Bookmark) {
-        currentBookmarkId.value = bookmark.id
     }
 
     fun createTimer(bookmarkName: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
@@ -40,12 +36,11 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
     }
 
     private fun createOrUpdateBookmark(name: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
-        val newBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum)
+        val currentBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum, id = userPreferences.currentSelectedId)
 
         viewModelScope.launch(Dispatchers.IO) {
-            val id = repository.insertBookmark(newBookmark)
+            val id = repository.insertOrUpdateBookmark(currentBookmark)
             userPreferences.currentSelectedId = id
-
         }
     }
 }

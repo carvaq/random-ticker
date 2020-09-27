@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.media.RingtoneManager
 import androidx.preference.PreferenceManager
+import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveData
 
 class UserPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -50,4 +51,6 @@ class UserPreferences(context: Context) {
     var darkTheme: Boolean
         get() = prefs.getBoolean(darkThemePref, false)
         set(value) = prefs.edit().putBoolean(darkThemePref, value).apply()
+
+    val currentSelectedBookmarkIdAsLiveData = SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
 }

@@ -11,7 +11,7 @@
 	<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-	<uses-permission android:name="android.permission.SET_ALARM" />
+	<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
 	<application
 			android:name=".TickerApplication"
@@ -25,11 +25,11 @@
 		<receiver
 				android:name=".receiver.RepeatAlarmReceiver"
 				android:enabled="true"
-				android:exported="true" />
+				android:exported="false" />
 		<receiver
 				android:name=".receiver.AlarmReceiver"
 				android:enabled="true"
-				android:exported="true" />
+				android:exported="false" />
 
 		<activity android:name=".ui.main.MainActivity">
 			<intent-filter>
