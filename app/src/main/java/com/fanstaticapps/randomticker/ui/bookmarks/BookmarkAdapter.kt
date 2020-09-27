@@ -41,7 +41,7 @@ class BookmarkAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is BookmarkViewHolder) {
+        if (holder is BookmarkSelectableViewHolder) {
             val bookmark = list[position]
             holder.render(bookmark)
         }

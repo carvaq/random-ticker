@@ -1,23 +1,20 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
-import com.fanstaticapps.randomticker.extensions.nonNull
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import com.fanstaticapps.randomticker.helper.livedata.nonNull
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
@@ -29,7 +26,7 @@ import kotlinx.android.synthetic.main.content_minimum_value.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var timerHelper: TimerHelper
@@ -105,40 +102,32 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
                 }
             }
         }
+        minHours.init(10)
+        minMin.init(59)
+        minSec.init(59)
+        maxHours.init(10)
+        maxMin.init(59)
+        maxSec.init(59)
     }
 
 
     private fun renderBookmark(bookmark: Bookmark) {
         with(bookmark) {
             etBookmarkName.setText(name)
-            prepareValueSelectionView(minHours, maximumMinutes, 10)
-            prepareValueSelectionView(minMin, minimumMinutes, 59)
-            prepareValueSelectionView(minSec, minimumSeconds, 59)
-            prepareValueSelectionView(maxHours, maximumMinutes, 10)
-            prepareValueSelectionView(maxMin, maximumMinutes, 59)
-            prepareValueSelectionView(maxSec, maximumSeconds, 59)
+            minHours.value = minimumHours
+            minMin.value = minimumMinutes
+            minSec.value = minimumSeconds
+            maxHours.value = maximumHours
+            maxMin.value = maximumMinutes
+            maxSec.value = maximumSeconds
         }
-    }
-
-    override fun onBookmarkSelected(bookmark: Bookmark) {
-        viewModel.setCurrentBookmark(bookmark)
-    }
-
-    private fun prepareValueSelectionView(view: NumberPicker, startValue: Int, maxValue: Int) {
-        view.value = startValue
-        view.minValue = 0
-        view.maxValue = maxValue
     }
 
     private fun createTimer() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.SET_ALARM) == PackageManager.PERMISSION_GRANTED) {
-            viewModel.createTimer(etBookmarkName.name(),
-                    IntervalDefinition(minHours.value, minMin.value, minSec.value),
-                    IntervalDefinition(maxHours.value, maxMin.value, maxSec.value)
-            )
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(android.Manifest.permission.SET_ALARM), 1)
-        }
+        viewModel.createTimer(etBookmarkName.name(),
+                IntervalDefinition(minHours.value, minMin.value, minSec.value),
+                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value)
+        )
     }
 
     private fun startAlarmActivity() {
@@ -147,11 +136,8 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
     }
 
     private fun EditText.name(): String = if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-            createTimer()
-        }
+    private fun NumberPicker.init(max: Int) {
+        minValue = 0
+        maxValue = max
     }
 }

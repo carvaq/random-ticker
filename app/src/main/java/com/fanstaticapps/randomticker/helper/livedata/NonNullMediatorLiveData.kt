@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker.extensions
+package com.fanstaticapps.randomticker.helper.livedata
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

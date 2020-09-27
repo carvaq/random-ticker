@@ -22,8 +22,8 @@ data class Bookmark(@PrimaryKey(autoGenerate = true) val id: Long?,
     constructor(name: String) : this(null, name, 0, 0, 0, 0, 5, 0)
 
     @Ignore
-    constructor(name: String, minimum: IntervalDefinition, maximum: IntervalDefinition)
-            : this(null,
+    constructor(id: Long?, name: String, minimum: IntervalDefinition, maximum: IntervalDefinition)
+            : this(id,
             name,
             minimum.hours,
             minimum.minutes,
