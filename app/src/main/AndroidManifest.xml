@@ -58,7 +58,7 @@
 		</activity>
 		<activity
 				android:name=".ui.klaxon.KlaxonActivity"
-				android:launchMode="singleTask"
+				android:launchMode="singleTop"
 				android:showOnLockScreen="true"
 				android:turnScreenOn="true" />
 		<activity

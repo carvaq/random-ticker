@@ -20,8 +20,6 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
     private val vibrationPattern = longArrayOf(0, 1000, 1000, 1000, 1000, 1000)
 
     fun cancelNotifications(context: Context) {
-        userPreferences.currentlyTickerRunning = false
-
         val notificationManager = context.getNotificationManager()
         notificationManager.cancel(RUNNING_NOTIFICATION_ID)
         notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)

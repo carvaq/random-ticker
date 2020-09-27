@@ -11,7 +11,6 @@ class UserPreferences(context: Context) {
 
     private val generatedIntervalPref: String = "generatedInterval"
     private val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
-    private val tickerRunningPref: String = "tickerRunning"
     private val currentSelectedIdPref: String = "currentSelectedId"
 
     /**
@@ -24,14 +23,11 @@ class UserPreferences(context: Context) {
     private val darkThemePref: String = "pref_dark_theme"
 
     var interval: Long
-        get() = prefs.getLong(generatedIntervalPref, 0)
-        set(value) = prefs.edit().putLong(generatedIntervalPref, value).apply()
+        get() = prefs.getLong(generatedIntervalPref, -1)
+        private set(value) = prefs.edit().putLong(generatedIntervalPref, value).apply()
     var intervalFinished: Long
-        get() = prefs.getLong(generatedIntervalEndTimePref, 0)
-        set(value) = prefs.edit().putLong(generatedIntervalEndTimePref, value).apply()
-    var currentlyTickerRunning: Boolean
-        get() = prefs.getBoolean(tickerRunningPref, false)
-        set(value) = prefs.edit().putBoolean(tickerRunningPref, value).apply()
+        get() = prefs.getLong(generatedIntervalEndTimePref, -1)
+        private set(value) = prefs.edit().putLong(generatedIntervalEndTimePref, value).apply()
     var showNotification: Boolean
         get() = prefs.getBoolean(showNotificationPref, false)
         set(value) = prefs.edit().putBoolean(showNotificationPref, value).apply()
@@ -53,4 +49,14 @@ class UserPreferences(context: Context) {
         set(value) = prefs.edit().putBoolean(darkThemePref, value).apply()
 
     val currentSelectedBookmarkIdAsLiveData = SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
+
+    fun setTickerInterval(interval: Long) {
+        this.interval = interval
+        this.intervalFinished = System.currentTimeMillis() + interval
+    }
+
+    fun resetInterval() {
+        this.interval = -1
+        this.intervalFinished = -1
+    }
 }
