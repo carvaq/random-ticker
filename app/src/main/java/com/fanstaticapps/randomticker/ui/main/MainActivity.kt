@@ -41,7 +41,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (userPreferences.currentlyTickerRunning) {
+        if (timerHelper.isCurrentlyTickerRunning()) {
             // if the timer is running we should move the KlaxonActivity
             startAlarmActivity()
         } else {

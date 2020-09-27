@@ -13,10 +13,10 @@ import kotlin.math.abs
 
 class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,
                                                    private val userPreferences: UserPreferences,
-                                                   private val repository: BookmarkRepository) : ViewModel() {
+                                                   repository: BookmarkRepository) : ViewModel() {
 
     private val timeElapsed = MutableLiveData<Boolean>()
-    private val internalViewState = MutableLiveData<KlaxonViewState>()
+    private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TimerStarted)
     private val viewStateMediator = MediatorLiveData<KlaxonViewState>()
 
     private val countDownTimer = object : CountDownTimer(userPreferences.intervalFinished - System.currentTimeMillis(),

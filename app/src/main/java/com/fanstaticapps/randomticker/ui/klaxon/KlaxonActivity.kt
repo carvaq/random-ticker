@@ -22,9 +22,7 @@ class KlaxonActivity : BaseActivity() {
     @Inject
     lateinit var timerHelper: TimerHelper
 
-
     private val viewModel: KlaxonViewModel by viewModels()
-
 
     private var timeElapsed: Boolean = false
 
@@ -114,8 +112,9 @@ class KlaxonActivity : BaseActivity() {
                 timerHelper.cancelTimerForNewConfiguration(this)
                 laWaiting.cancelAnimation()
             }
-            is KlaxonViewState.TimerStopped ->
+            is KlaxonViewState.TimerStopped -> {
                 laWaiting.cancelAnimation()
+            }
         }
     }
 
