@@ -45,7 +45,7 @@ class UserPreferences(context: Context) {
     var currentSelectedId: Long
         get() = prefs.getLong(currentSelectedIdPref, 0)
         set(value) = prefs.edit().putLong(currentSelectedIdPref, value).apply()
-    var vibrator: Boolean
+    var vibrationEnabled: Boolean
         get() = prefs.getBoolean(vibratorPref, false)
         set(value) = prefs.edit().putBoolean(vibratorPref, value).apply()
     var darkTheme: Boolean

@@ -10,9 +10,6 @@ import androidx.room.Query
 interface BookmarkDao {
 
     @Query("SELECT * from bookmarks")
-    fun getAll(): List<Bookmark>
-
-    @Query("SELECT * from bookmarks")
     fun getAllBookmarks(): LiveData<List<Bookmark>>
 
     @Insert(onConflict = REPLACE)
