@@ -1,12 +1,15 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
@@ -128,10 +131,14 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
     }
 
     private fun createTimer() {
-        viewModel.createTimer(etBookmarkName.name(),
-                IntervalDefinition(minHours.value, minMin.value, minSec.value),
-                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value)
-        )
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.SET_ALARM) == PackageManager.PERMISSION_GRANTED) {
+            viewModel.createTimer(etBookmarkName.name(),
+                    IntervalDefinition(minHours.value, minMin.value, minSec.value),
+                    IntervalDefinition(maxHours.value, maxMin.value, maxSec.value)
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(android.Manifest.permission.SET_ALARM), 1)
+        }
     }
 
     private fun startAlarmActivity() {
@@ -140,4 +147,11 @@ class MainActivity : BaseActivity(), BookmarkDialog.BookmarkSelector {
     }
 
     private fun EditText.name(): String = if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            createTimer()
+        }
+    }
 }

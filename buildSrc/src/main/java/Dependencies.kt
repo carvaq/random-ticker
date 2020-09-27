@@ -22,7 +22,7 @@ object AndroidLibs {
     const val cardview = "androidx.cardview:cardview:1.0.0"
     const val appcompat = "androidx.appcompat:appcompat:1.2.0"
     const val preference = "androidx.preference:preference:1.1.1"
-    const val activity = "androidx.activity:activity-ktx:1.1.0"
+    const val activity = "androidx.activity:activity-ktx:1.2.0-alpha08"
     const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
 
     private const val roomVersion = "2.2.5"

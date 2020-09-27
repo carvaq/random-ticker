@@ -1,11 +1,10 @@
 package com.fanstaticapps.randomticker.helper
 
 import android.app.Activity
-import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import androidx.core.app.AlarmManagerCompat
+import android.provider.AlarmClock
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
@@ -80,15 +79,25 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
 
     private fun setAlarm(context: Context, intervalFinished: Long) {
+        val intent = Intent(AlarmClock.ACTION_SET_TIMER).apply {
+            putExtra(AlarmClock.EXTRA_LENGTH, intervalFinished)
+            putExtra(AlarmClock.EXTRA_MESSAGE, "Random Ticker")
+            putExtra(AlarmClock.EXTRA_SKIP_UI, true)
+        }
+
+        context.startActivity(intent)
+
+
         context.getAlarmManager()?.let {
             val alarmIntent = intentHelper.getAlarmReceiveAsPendingIntent(context)
-            AlarmManagerCompat.setAndAllowWhileIdle(it, AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+            // AlarmManagerCompat.setAndAllowWhileIdle(it, AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
             Timber.d("Setting alarm to sound in ${(intervalFinished - System.currentTimeMillis()) / 1000}s")
         }
     }
 
     fun cancelNotificationsAndGoBack(activity: Activity) {
         AlarmKlaxon.stop(activity)
+        cancelAlarm(activity)
 
         notificationManager.cancelNotifications(activity)
 

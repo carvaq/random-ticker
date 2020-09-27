@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppTheme.EditText" parent="AppTheme.Base.EditText">
-		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Display4</item>
-	</style>
-
 	<style name="AppTheme.Label" parent="AppTheme.Base.Label">
 		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Large</item>
 	</style>

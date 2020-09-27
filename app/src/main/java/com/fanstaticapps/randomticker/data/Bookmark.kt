@@ -16,7 +16,7 @@ data class Bookmark(@PrimaryKey(autoGenerate = true) val id: Long?,
                     @ColumnInfo(name = "minimumMinutes") val minimumMinutes: Int = 0,
                     @ColumnInfo(name = "minimumSeconds") val minimumSeconds: Int = 0,
                     @ColumnInfo(name = "maximumHours") val maximumHours: Int = 0,
-                    @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 0,
+                    @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
                     @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0) {
     @Ignore
     constructor(name: String) : this(null, name, 0, 0, 0, 0, 5, 0)
