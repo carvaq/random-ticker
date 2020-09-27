@@ -3,15 +3,16 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-android-extensions")
-    id("com.github.triplet.play")
+    id("com.github.triplet.play") version (Versions.triplet)
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.firebase.crashlytics")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
 }
 
+
 val major = 1
-val minor = 1
+val minor = 6
 val patch = 0
 
 val generatedVersionName = String.format("%s%02d%02d", major, minor, patch)
@@ -36,12 +37,15 @@ android {
 
     signingConfigs {
         create("release") {
-            if (project.hasProperty("fanstaticKeyAlias")) {
+            val fanstaticKeyAlias = project.findProperty("fanstatic_keyalias")
+            println("Adding release config for production $fanstaticKeyAlias")
+
+            if (fanstaticKeyAlias != null) {
                 println("Adding release config for production")
-                keyAlias = fanstaticKeyAlias
-                keyPassword = fanstaticKeyPassword
-                storeFile = file(fanstaticFile)
-                storePassword = fanstaticStorePassword
+                keyAlias = fanstaticKeyAlias as String
+                keyPassword = project.property("fanstatic_keypassword") as String
+                storeFile = file(project.property("fanstatic_file") as String)
+                storePassword = project.property("fanstatic_storepassword") as String
             }
         }
     }
@@ -113,9 +117,12 @@ dependencies {
 }
 
 play {
+    println("Configuring play plugin ${file("$rootDir/play_store_secret.json").exists()}")
     if (file("$rootDir/play_store_secret.json").exists()) {
-        defaultToAppBundles = true
-        serviceAccountCredentials = file("$rootDir/play_store_secret.json")
+        defaultToAppBundles.set(true)
+        serviceAccountCredentials.set(file("$rootDir/play_store_secret.json"))
+    } else {
+        enabled.set(false)
     }
 }
 
@@ -128,10 +135,3 @@ kapt {
         arg("room.expandProjection", "true")
     }
 }
-
-val fanstaticKeyAlias: String by project
-val fanstaticKeyPassword: String by project
-val fanstaticFile: String by project
-val fanstaticStorePassword: String by project
-
-
