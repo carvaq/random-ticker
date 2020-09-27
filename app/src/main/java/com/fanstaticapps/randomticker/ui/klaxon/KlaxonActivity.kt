@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.helper.AlarmKlaxon
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +71,6 @@ class KlaxonActivity : BaseActivity() {
         btnRepeat.setOnClickListener {
             viewModel.currentBookmark.observe(this, {
                 timerHelper.newAlarmFromBookmark(this, it)
-                AlarmKlaxon.stop(this)
 
                 finish()
                 startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
@@ -113,7 +111,7 @@ class KlaxonActivity : BaseActivity() {
 
             }
             is KlaxonViewState.TimerCanceled -> {
-                timerHelper.cancelNotificationsAndGoBack(this)
+                timerHelper.cancelTimerForNewConfiguration(this)
                 laWaiting.cancelAnimation()
             }
             is KlaxonViewState.TimerStopped ->
