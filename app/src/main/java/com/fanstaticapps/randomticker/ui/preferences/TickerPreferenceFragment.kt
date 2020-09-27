@@ -113,8 +113,7 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
         if (uriPath.isEmpty()) {
             preference.setSummary(R.string.pref_ringtone_silent)
         } else {
-            val ringtone = RingtoneManager.getRingtone(preference.context, Uri.parse(uriPath))
-            when (ringtone) {
+            when (val ringtone = RingtoneManager.getRingtone(preference.context, Uri.parse(uriPath))) {
                 null -> preference.summary = null
                 else -> {
                     try {

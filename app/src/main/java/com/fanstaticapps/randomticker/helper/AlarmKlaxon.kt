@@ -18,11 +18,12 @@ internal object AlarmKlaxon {
 
     fun stop(context: Context) {
         Timber.v("AlarmKlaxon.stop()")
-
+/*
         stopMediaPlayer()
 
         vibrator?.cancel()
         context.getVibrator()?.cancel()
+  */
     }
 
     private fun stopMediaPlayer() {
@@ -36,6 +37,7 @@ internal object AlarmKlaxon {
         // Make sure we are stopped before starting
         Timber.v("AlarmKlaxon.start()")
 
+        /*
         if (preferences.alarmRingtone.isNotEmpty()) {
             playAlarm(context, preferences)
         }
@@ -43,6 +45,7 @@ internal object AlarmKlaxon {
         if (preferences.vibrator) {
             vibrate(context)
         }
+        */
     }
 
     private fun vibrate(context: Context) {

@@ -98,7 +98,7 @@ class KlaxonActivity : BaseActivity() {
                 showElapsedTime(viewState.elapsedTime)
             }
             is KlaxonViewState.TimerFinished -> {
-                timerHelper.startNotification(this)
+                timerHelper.startNotification(this, viewState.bookmark)
 
                 tvElapsedTime.isEnabled = false
 
