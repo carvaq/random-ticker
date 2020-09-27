@@ -13,7 +13,9 @@ import javax.inject.Inject
 class IntentHelper @Inject constructor() {
 
     fun getMainActivity(context: Context): Intent {
-        return Intent(context, MainActivity::class.java)
+        return Intent(context, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
     }
 
     fun getKlaxonActivity(context: Context, hasTimeElapsed: Boolean): Intent {
