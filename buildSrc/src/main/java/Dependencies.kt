@@ -4,7 +4,7 @@ object Versions {
     const val targetSdkVersion = 29
     const val compileVersion = 29
     const val buildToolsVersion = "29.0.2"
-    const val triplet = "2.8.0"
+    const val triplet = "3.0.0"
 }
 
 object Kotlin {

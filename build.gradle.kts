@@ -8,7 +8,6 @@ buildscript {
 	dependencies {
 		classpath("com.android.tools.build:gradle:4.1.0-rc03")
 		classpath(kotlin("gradle-plugin", version = Versions.kotlin))
-		classpath("com.github.triplet.gradle:play-publisher:${Versions.triplet}")
 		classpath("com.google.gms:google-services:${Gms.services_plugin_version}")
 		classpath("com.google.android.gms:oss-licenses-plugin:${Gms.oss_plugin_version}")
 		classpath("com.google.dagger:hilt-android-gradle-plugin:${Libs.hiltVersion}")
