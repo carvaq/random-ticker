@@ -28,6 +28,7 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
     }
 
     fun showKlaxonNotification(context: Context, bookmark: Bookmark) {
+        cancelNotifications(context)
         val notificationManager = context.getNotificationManager()
 
         if (isAtLeastAndroid26()) {
@@ -56,8 +57,6 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         cancelNotifications(context)
 
         notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
-
-        AlarmKlaxon.start(context, userPreferences)
     }
 
     private fun getKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
@@ -89,6 +88,8 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
 
 
     internal fun showRunningNotification(context: Context) {
+        cancelNotifications(context)
+
         val notification = getRunningNotification(context)
 
         if (isAtLeastAndroid26()) {
@@ -143,6 +144,5 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
         const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:02"
         const val RUNNING_NOTIFICATION_ID = 2312
         const val FOREGROUND_NOTIFICATION_ID = 1243
-        val VIBRATION_PATTERN = longArrayOf(0, 100, 800, 600, 800, 800, 800, 1000)
     }
 }

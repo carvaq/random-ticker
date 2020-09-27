@@ -40,7 +40,6 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
         viewStateMediator.addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
             if (timerElapsed) {
                 Transformations.map(currentBookmark) { bookmark ->
-                    userPreferences.currentlyTickerRunning = false
                     KlaxonViewState.TimerFinished(getElapsedTime(), bookmark)
                 }
             } else {
