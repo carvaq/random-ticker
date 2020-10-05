@@ -25,10 +25,10 @@ class UserPreferences(context: Context) {
     var interval: Long
         get() = prefs.getLong(generatedIntervalPref, -1)
         private set(value) = prefs.edit().putLong(generatedIntervalPref, value).apply()
-    var intervalFinished: Long
+    var intervalWillBeFinished: Long
         get() = prefs.getLong(generatedIntervalEndTimePref, -1)
         private set(value) = prefs.edit().putLong(generatedIntervalEndTimePref, value).apply()
-    var showNotification: Boolean
+    var showRunningTimerNotification: Boolean
         get() = prefs.getBoolean(showNotificationPref, false)
         set(value) = prefs.edit().putBoolean(showNotificationPref, value).apply()
     var alarmRingtone: String
@@ -52,11 +52,11 @@ class UserPreferences(context: Context) {
 
     fun setTickerInterval(interval: Long) {
         this.interval = interval
-        this.intervalFinished = System.currentTimeMillis() + interval
+        this.intervalWillBeFinished = System.currentTimeMillis() + interval
     }
 
     fun resetInterval() {
         this.interval = -1
-        this.intervalFinished = -1
+        this.intervalWillBeFinished = -1
     }
 }

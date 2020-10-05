@@ -1,7 +1,6 @@
 package com.fanstaticapps.randomticker.helper
 
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
@@ -9,7 +8,6 @@ import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
-
 
 object IntentHelper {
 
@@ -40,32 +38,14 @@ object IntentHelper {
     }
 
     fun getCancelActionPendingIntent(context: Context, requestCode: Int): PendingIntent {
-        return PendingIntent.getActivity(
-                context,
-                requestCode,
-                Intent(context, CancelActivity::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        return PendingIntent.getActivity(context, requestCode, Intent(context, CancelActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    fun getAlarmReceiveAsPendingIntent(context: Context, flag: Int): PendingIntent? {
-        val intent = Intent("com.fanstaticapps.randomticker.ALARM").apply {
-            component = ComponentName(context, AlarmReceiver::class.java)
-        }
-        return PendingIntent.getBroadcast(
-                context,
-                421,
-                intent,
-                flag
-        )
+    fun getAlarmReceiveAsPendingIntent(context: Context): PendingIntent {
+        return PendingIntent.getBroadcast(context, 123, Intent(context, AlarmReceiver::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {
-        return PendingIntent.getBroadcast(
-                context,
-                112,
-                Intent(context, RepeatAlarmReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        return PendingIntent.getBroadcast(context, 112, Intent(context, RepeatAlarmReceiver::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }

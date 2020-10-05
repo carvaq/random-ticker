@@ -19,7 +19,7 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
     private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TimerStarted)
     private val viewStateMediator = MediatorLiveData<KlaxonViewState>()
 
-    private val countDownTimer = object : CountDownTimer(userPreferences.intervalFinished - System.currentTimeMillis(),
+    private val countDownTimer = object : CountDownTimer(userPreferences.intervalWillBeFinished - System.currentTimeMillis(),
             TimerHelper.ONE_SECOND_IN_MILLIS) {
         override fun onTick(millisUntilFinished: Long) {
             if (showElapsedTime) {
@@ -74,7 +74,7 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
     }
 
     private fun getElapsedTime(): String {
-        val millisSinceStarted = abs(userPreferences.intervalFinished - System.currentTimeMillis() - userPreferences.interval)
+        val millisSinceStarted = abs(userPreferences.intervalWillBeFinished - System.currentTimeMillis() - userPreferences.interval)
         return getFormattedElapsedMilliseconds(millisSinceStarted)
     }
 

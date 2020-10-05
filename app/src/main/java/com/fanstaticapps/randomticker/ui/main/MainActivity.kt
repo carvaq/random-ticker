@@ -32,9 +32,6 @@ class MainActivity : BaseActivity() {
     lateinit var timerHelper: TimerHelper
 
     @Inject
-    lateinit var intentHelper: IntentHelper
-
-    @Inject
     lateinit var userPreferences: UserPreferences
 
     private val viewModel: MainViewModel by viewModels()
@@ -92,7 +89,7 @@ class MainActivity : BaseActivity() {
         viewModel.timerCreationStatus.observe(this) {
             when (it) {
                 TimerCreationStatus.TIMER_STARTED -> {
-                    timerHelper.createAlarm(this)
+                    timerHelper.startTicker(this)
                     startAlarmActivity()
                 }
                 TimerCreationStatus.INVALID_DATES -> {
@@ -131,7 +128,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startAlarmActivity() {
-        startActivity(intentHelper.getKlaxonActivity(this, false))
+        startActivity(IntentHelper.getKlaxonActivity(this, false))
         finish()
     }
 
