@@ -1,9 +1,9 @@
 object Versions {
     const val kotlin = "1.4.10"
     const val minSdkVersion = 21
-    const val targetSdkVersion = 29
-    const val compileVersion = 29
-    const val buildToolsVersion = "29.0.2"
+    const val targetSdkVersion = 30
+    const val compileVersion = 30
+    const val buildToolsVersion = "30.0.2"
     const val triplet = "3.0.0"
 }
 
