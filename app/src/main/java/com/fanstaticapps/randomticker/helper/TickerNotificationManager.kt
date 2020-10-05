@@ -4,7 +4,8 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.media.AudioAttributes
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
@@ -23,35 +24,34 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
         notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)
     }
 
+    fun createNotificationChannelIfNecessary(context: Context) {
+        if (isAtLeastAndroid26()) {
+            val channel = createKlaxonChannel(context)
+            context.getNotificationManager().createNotificationChannel(channel)
+        }
+    }
+
     fun showKlaxonNotification(context: Context, bookmark: Bookmark) {
         cancelAllNotifications(context)
         val notificationManager = context.getNotificationManager()
 
         if (isAtLeastAndroid26()) {
-            val name = context.getString(R.string.foreground_channel_name)
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(FOREGROUND_CHANNEL_ID, name, importance).apply {
-                setBypassDnd(true)
-                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-                if (!userPreferences.alarmRingtone.isBlank()) {
-                    val audioAttributes = AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
-                            .build()
-                    setSound(userPreferences.alarmRingtone.toUri(), audioAttributes)
-                }
-                if (userPreferences.vibrationEnabled) {
-                    enableVibration(true)
-                    vibrationPattern = VIBRATION_PATTERN
-                }
-            }
-
+            val channel = createKlaxonChannel(context)
             notificationManager.createNotificationChannel(channel)
         }
 
         val notification = buildKlaxonNotification(context, bookmark)
 
         notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createKlaxonChannel(context: Context): NotificationChannel {
+        val name = context.getString(R.string.foreground_channel_name)
+        return NotificationChannel(FOREGROUND_CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH).apply {
+            setBypassDnd(true)
+            lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        }
     }
 
     private fun buildKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
@@ -72,10 +72,25 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
                         .setContentIntent(contentIntent)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-        if (!userPreferences.alarmRingtone.isBlank()) {
-            notificationBuilder.setSound(userPreferences.alarmRingtone.toUri())
+        val notificationChannel = if (isAtLeastAndroid26()) {
+            context.getNotificationManager().getNotificationChannel(FOREGROUND_CHANNEL_ID)
+        } else {
+            null
         }
-        if (userPreferences.vibrationEnabled) {
+        val alarmRingtone = if (isAtLeastAndroid26()) {
+            notificationChannel?.sound
+        } else {
+            userPreferences.alarmRingtone.toUri()
+        }
+        val vibrationEnabled = if (isAtLeastAndroid26()) {
+            notificationChannel?.shouldVibrate() ?: false
+        } else {
+            userPreferences.vibrationEnabled
+        }
+        if (alarmRingtone != null && !alarmRingtone.scheme.isNullOrEmpty()) {
+            notificationBuilder.setSound(alarmRingtone)
+        }
+        if (vibrationEnabled) {
             notificationBuilder.setVibrate(VIBRATION_PATTERN)
         }
         return notificationBuilder.build()
@@ -86,16 +101,15 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
         cancelAllNotifications(context)
 
         val notification = buildRunningNotification(context)
+        val notificationManager = context.getNotificationManager()
 
         if (isAtLeastAndroid26()) {
-            val notificationManager = context.getNotificationManager()
             val name = context.getString(R.string.running_channel_name)
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(RUNNING_CHANNEL_ID, name, importance)
+            val channel = NotificationChannel(RUNNING_CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
             notificationManager.createNotificationChannel(channel)
         }
 
-        context.getNotificationManager().notify(RUNNING_NOTIFICATION_ID, notification)
+        notificationManager.notify(RUNNING_NOTIFICATION_ID, notification)
     }
 
     private fun buildRunningNotification(context: Context): Notification {
@@ -136,7 +150,7 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
 
     companion object {
         const val RUNNING_CHANNEL_ID = "RandomTickerChannel:01"
-        const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:02"
+        const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:03"
         const val RUNNING_NOTIFICATION_ID = 2312
         const val FOREGROUND_NOTIFICATION_ID = 1243
         private val VIBRATION_PATTERN = longArrayOf(0, 1000, 1000, 1000, 1000, 1000)

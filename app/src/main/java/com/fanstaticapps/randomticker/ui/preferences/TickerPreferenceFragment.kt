@@ -13,26 +13,30 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.UserPreferences
-import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import xyz.aprildown.ultimatemusicpicker.MusicPickerListener
 import xyz.aprildown.ultimatemusicpicker.UltimateMusicPicker
+import javax.inject.Inject
 
+@AndroidEntryPoint
+class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener {
 
-class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener {
+    @Inject
+    lateinit var userPreferences: UserPreferences
 
-
-    private lateinit var userPreferences: UserPreferences
+    @Inject
+    lateinit var notificationManager: TickerNotificationManager
 
     override fun onMusicPick(uri: Uri, title: String) {
         activity?.let {
-            findPreference<Preference>(getString(R.string.pref_ringtone_key))
             userPreferences.alarmRingtone = uri.toString()
+            findPreference<Preference>(getString(R.string.pref_ringtone_key))?.let { updateRingtonePreferenceSummary(it) }
         }
     }
 
@@ -40,22 +44,28 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        userPreferences = UserPreferences(activity!!)
         addPreferencesFromResource(R.xml.pref_general)
         setHasOptionsMenu(true)
 
-        bindRingtonePreference(findPreference(getString(R.string.pref_ringtone_key)))
+        bindShowRunningNotificationPreference()
 
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_show_notification_key)))
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vibration_key)))
         findPreference<Preference>(getString(R.string.pref_license_key))?.setOnPreferenceClickListener {
             startActivity(Intent(activity, OssLicensesMenuActivity::class.java))
             true
         }
 
+        bindNotificationChannelPreference()
+
+        bindDarkThemePreference()
+    }
+
+    private fun bindNotificationChannelPreference() {
         val notificationChannelPreference = findPreference<Preference>(getString(R.string.pref_open_notification_channel))
+        val vibrationPreference = findPreference<CheckBoxPreference>(getString(R.string.pref_vibration_key))
+        val ringtonePreference = findPreference<Preference>(getString(R.string.pref_ringtone_key))
+
         if (isAtLeastAndroid26()) {
-            val notificationChannel = context?.getNotificationManager()?.getNotificationChannel(TickerNotificationManager.FOREGROUND_CHANNEL_ID)
+            notificationManager.createNotificationChannelIfNecessary(requireContext())
             notificationChannelPreference?.setOnPreferenceClickListener {
                 val intent = Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS)
                         .putExtra(EXTRA_APP_PACKAGE, context?.packageName)
@@ -63,20 +73,31 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
                 startActivity(intent)
                 true
             }
-            notificationChannelPreference?.isVisible = notificationChannel != null
+            notificationChannelPreference?.isVisible = true
+            vibrationPreference?.isVisible = false
+            ringtonePreference?.isVisible = false
         } else {
             notificationChannelPreference?.isVisible = false
+            bindRingtonePreference(ringtonePreference)
+            bindVibrationPreference(vibrationPreference)
+        }
+    }
+
+    private fun bindVibrationPreference(vibrationPreference: CheckBoxPreference?) {
+        vibrationPreference ?: return
+        vibrationPreference.isChecked = getBooleanPreference(vibrationPreference)
+        vibrationPreference.setOnPreferenceChangeListener { preference, newValue ->
+            (preference as CheckBoxPreference).isChecked = newValue.toString().toBoolean()
+            true
         }
 
-
-        bindDarkThemePreference()
 
     }
 
     private fun bindDarkThemePreference() {
         val darkThemePreference = findPreference<CheckBoxPreference>(getString(R.string.pref_dark_theme_key))
-        darkThemePreference ?: return
-        darkThemePreference.isChecked = getPreferenceValue(darkThemePreference).toString().toBoolean()
+                ?: return
+        darkThemePreference.isChecked = getBooleanPreference(darkThemePreference)
         darkThemePreference.setOnPreferenceChangeListener { preference, newValue ->
             (preference as CheckBoxPreference).isChecked = newValue.toString().toBoolean()
             setDarkTheme(userPreferences)
@@ -85,14 +106,6 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
         }
     }
 
-    private val checkboxPreferenceListener = Preference.OnPreferenceChangeListener { preference, value ->
-        if (preference is CheckBoxPreference) {
-            preference.isChecked = value.toString().toBoolean()
-            true
-        } else {
-            false
-        }
-    }
 
     private fun bindRingtonePreference(preference: Preference?) {
         preference ?: return
@@ -104,11 +117,14 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
                     .notification()
                     .alarm()
                     .music()
-                    // Show a picker dialog
                     .goWithDialog(childFragmentManager)
 
             true
         }
+        updateRingtonePreferenceSummary(preference)
+    }
+
+    private fun updateRingtonePreferenceSummary(preference: Preference) {
         val uriPath = userPreferences.alarmRingtone
         if (uriPath.isEmpty()) {
             preference.setSummary(R.string.pref_ringtone_silent)
@@ -129,19 +145,25 @@ class NotificationPreferenceFragment : PreferenceFragmentCompat(), MusicPickerLi
         }
     }
 
-    private fun bindPreferenceSummaryToValue(preference: Preference?) {
-        preference ?: return
+    private fun bindShowRunningNotificationPreference() {
+        val checkBoxPreference = findPreference<CheckBoxPreference>(getString(R.string.pref_show_notification_key))
+        checkBoxPreference ?: return
         // Set the listener to watch for value changes.
-        preference.onPreferenceChangeListener = checkboxPreferenceListener
-
-        checkboxPreferenceListener.onPreferenceChange(preference, getPreferenceValue(preference))
+        checkBoxPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, value ->
+            if (preference is CheckBoxPreference) {
+                preference.isChecked = value.toString().toBoolean()
+                true
+            } else {
+                false
+            }
+        }
     }
 
-    private fun getPreferenceValue(preference: Preference): Any {
+    private fun getBooleanPreference(preference: Preference): Boolean {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(preference.context)
         return when (preference) {
             is CheckBoxPreference -> preferenceManager.getBoolean(preference.key, false)
-            else -> preferenceManager.getString(preference.key, "").orEmpty()
+            else -> throw RuntimeException("This should not be called if not CheckBoxPrenfece")
         }
     }
 }
