@@ -16,7 +16,7 @@ interface BookmarkDao {
     fun insert(bookmark: Bookmark): Long
 
     @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
-    fun getById(id: Long): LiveData<Bookmark>
+    fun getById(id: Long): Bookmark?
 
     @Query("DELETE from bookmarks WHERE id = :id")
     fun delete(id: Long?)

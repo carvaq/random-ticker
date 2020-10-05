@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDao) {
 
-    fun getBookmarkById(id: Long): LiveData<Bookmark> {
+    fun getBookmarkById(id: Long): Bookmark? {
         return bookmarkDao.getById(id)
     }
 

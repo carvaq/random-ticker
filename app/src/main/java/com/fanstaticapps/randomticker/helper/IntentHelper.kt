@@ -38,14 +38,29 @@ object IntentHelper {
     }
 
     fun getCancelActionPendingIntent(context: Context, requestCode: Int): PendingIntent {
-        return PendingIntent.getActivity(context, requestCode, Intent(context, CancelActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(
+                context,
+                requestCode,
+                Intent(context, CancelActivity::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     fun getAlarmReceiveAsPendingIntent(context: Context): PendingIntent {
-        return PendingIntent.getBroadcast(context, 123, Intent(context, AlarmReceiver::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(
+                context,
+                123,
+                Intent(context, AlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {
-        return PendingIntent.getBroadcast(context, 112, Intent(context, RepeatAlarmReceiver::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(
+                context,
+                112,
+                Intent(context, RepeatAlarmReceiver::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 }
