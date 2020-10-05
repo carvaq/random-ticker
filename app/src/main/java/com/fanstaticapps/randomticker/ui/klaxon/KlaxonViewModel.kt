@@ -9,6 +9,7 @@ import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import kotlinx.coroutines.Dispatchers
 import kotlin.math.abs
 
 class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,
@@ -33,7 +34,9 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
     }
 
 
-    val currentBookmark: LiveData<Bookmark> = repository.getBookmarkById(userPreferences.currentSelectedId)
+    val currentBookmark: LiveData<Bookmark> = liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
+        repository.getBookmarkById(userPreferences.currentSelectedId)?.let { emit(it) }
+    }
     var showElapsedTime: Boolean = false
 
     init {

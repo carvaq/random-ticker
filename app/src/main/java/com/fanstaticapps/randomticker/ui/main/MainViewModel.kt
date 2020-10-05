@@ -20,7 +20,9 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
 
     val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
     val currentBookmark: LiveData<Bookmark> = Transformations.switchMap(currentBookmarkId) { currentBookmarkId ->
-        repository.getBookmarkById(currentBookmarkId)
+        liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
+            repository.getBookmarkById(currentBookmarkId)?.let { emit(it) }
+        }
     }
 
     fun createTimer(bookmarkName: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {

@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
-import com.fanstaticapps.randomticker.extensions.isAppInBackground
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -25,9 +27,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         Timber.d("Alarm received")
-
-        if (context.isAppInBackground()) {
-            repository.getBookmarkById(userPreferences.currentSelectedId).value?.let { bookmark ->
+        GlobalScope.launch(Dispatchers.IO) {
+            repository.getBookmarkById(userPreferences.currentSelectedId)?.let { bookmark ->
+                Timber.d("Showing notification for bookmark")
                 notificationManager.showKlaxonNotification(context, bookmark)
             }
         }
