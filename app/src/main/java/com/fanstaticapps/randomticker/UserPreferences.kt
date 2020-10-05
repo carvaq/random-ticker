@@ -9,18 +9,20 @@ import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveDa
 class UserPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    private val generatedIntervalPref: String = "generatedInterval"
-    private val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
-    private val currentSelectedIdPref: String = "currentSelectedId"
+    companion object {
+        private const val generatedIntervalPref: String = "generatedInterval"
+        private const val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
+        private const val currentSelectedIdPref: String = "currentSelectedId"
 
-    /**
-     * These preferences are changed by the user in the @see SettingsActivity.
-     * The preference keys (@see constants.xml) are also present in the xml, therefor the same should be used.
-     */
-    private val showNotificationPref: String = "pref_show_notification"
-    private val ringtonePref: String = "pref_ringtone"
-    private val vibratorPref: String = "pref_vibration"
-    private val darkThemePref: String = "pref_dark_theme"
+        /**
+         * These preferences are changed by the user in the @see SettingsActivity.
+         * The preference keys (@see constants.xml) are also present in the xml, therefor the same should be used.
+         */
+        private const val showNotificationPref: String = "pref_show_notification"
+        private const val ringtonePref: String = "pref_ringtone"
+        private const val vibratorPref: String = "pref_vibration"
+        private const val darkThemePref: String = "pref_dark_theme"
+    }
 
     var interval: Long
         get() = prefs.getLong(generatedIntervalPref, -1)
