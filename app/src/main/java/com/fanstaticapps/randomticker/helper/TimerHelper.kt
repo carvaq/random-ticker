@@ -76,10 +76,17 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
         context.getAlarmManager()?.let { alarmManger ->
             val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(context)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManger.setAlarmClock(AlarmClockInfo(intervalFinished, alarmIntent), alarmIntent)
-            } else {
-                alarmManger.setExact(AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    alarmManger.setAlarmClock(AlarmClockInfo(intervalFinished, alarmIntent), alarmIntent)
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    alarmManger.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+                }
+                else -> {
+                    alarmManger.setExact(AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+
+                }
             }
             Timber.d("Setting alarm to sound in ${(intervalFinished - System.currentTimeMillis()) / 1000}s")
         }
