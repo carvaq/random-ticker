@@ -8,9 +8,8 @@ import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
-import javax.inject.Inject
 
-class IntentHelper @Inject constructor() {
+object IntentHelper {
 
     fun getMainActivity(context: Context): Intent {
         return Intent(context, MainActivity::class.java).apply {

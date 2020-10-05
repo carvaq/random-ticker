@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.ui
 
 import android.os.Bundle
+import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -12,6 +13,10 @@ class CancelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        timerHelper.cancelTimerForNewConfiguration(this)
+        timerHelper.cancelTicker(this)
+
+        startActivity(IntentHelper.getMainActivity(this))
+        overridePendingTransition(0, 0)
+        finish()
     }
 }

@@ -6,9 +6,11 @@ import android.content.Intent
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class RepeatAlarmReceiver : BroadcastReceiver() {
 
     @Inject

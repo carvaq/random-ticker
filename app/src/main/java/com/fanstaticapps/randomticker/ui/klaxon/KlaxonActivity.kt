@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -109,7 +110,12 @@ class KlaxonActivity : BaseActivity() {
 
             }
             is KlaxonViewState.TimerCanceled -> {
-                timerHelper.cancelTimerForNewConfiguration(this)
+                timerHelper.cancelTicker(this)
+
+                startActivity(IntentHelper.getMainActivity(this))
+                overridePendingTransition(0, 0)
+                finish()
+
                 laWaiting.cancelAnimation()
             }
             is KlaxonViewState.TimerStopped -> {
@@ -128,7 +134,6 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun startWaitingIconAnimation() {
-        laWaiting.enableMergePathsForKitKatAndAbove(true)
         laWaiting.playAnimation()
     }
 

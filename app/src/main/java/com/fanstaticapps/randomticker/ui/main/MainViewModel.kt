@@ -24,7 +24,7 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
     }
 
     fun createTimer(bookmarkName: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
-        val timerCreated = timerHelper.createTimer(minimum, maximum)
+        val timerCreated = timerHelper.createTicker(minimum, maximum)
         if (timerCreated) {
             createOrUpdateBookmark(bookmarkName, minimum, maximum)
 
