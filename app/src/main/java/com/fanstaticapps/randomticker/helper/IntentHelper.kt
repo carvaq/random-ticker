@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.helper
 
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
@@ -8,6 +9,7 @@ import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
+
 
 object IntentHelper {
 
@@ -47,10 +49,13 @@ object IntentHelper {
     }
 
     fun getAlarmReceiveAsPendingIntent(context: Context): PendingIntent {
+        val intent = Intent("com.fanstaticapps.randomticker.ALARM").apply {
+            component = ComponentName(context, AlarmReceiver::class.java)
+        }
         return PendingIntent.getBroadcast(
                 context,
-                123,
-                Intent(context, AlarmReceiver::class.java),
+                421,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         )
     }

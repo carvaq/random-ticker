@@ -1,79 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:dist="http://schemas.android.com/apk/distribution"
-		xmlns:tools="http://schemas.android.com/tools"
-		package="com.fanstaticapps.randomticker">
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.fanstaticapps.randomticker">
 
-	<dist:module dist:instant="true" />
+    <dist:module dist:instant="true" />
 
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-	<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
-	<application
-			android:name=".TickerApplication"
-			android:allowBackup="true"
-			android:icon="@mipmap/ic_launcher"
-			android:label="Random Ticker"
-			android:roundIcon="@mipmap/ic_launcher_round"
-			android:supportsRtl="true"
-			android:theme="@style/AppTheme"
-			tools:replace="android:label">
-		<receiver
-				android:name=".receiver.RepeatAlarmReceiver"
-				android:enabled="true"
-				android:exported="false" />
-		<receiver
-				android:name=".receiver.AlarmReceiver"
-				android:enabled="true"
-				android:exported="false" />
+    <application
+        android:name=".TickerApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Random Ticker"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
+        <receiver
+            android:name=".receiver.RepeatAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.fanstaticapps.randomticker.ALARM" />
+            </intent-filter>
+        </receiver>
 
-		<activity android:name=".ui.main.MainActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
+        <activity android:name=".ui.main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-			<meta-data
-					android:name="default-url"
-					android:value="https://randomticker-84c18.firebaseapp.com/index" />
+            <meta-data
+                android:name="default-url"
+                android:value="https://randomticker-84c18.firebaseapp.com/index" />
 
-			<intent-filter android:autoVerify="true">
-				<action android:name="android.intent.action.VIEW" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
 
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-				<data
-						android:host="randomticker-84c18.firebaseapp.com"
-						android:scheme="https" />
-				<data
-						android:host="randomticker-84c18.firebaseapp.com"
-						android:scheme="http" />
-			</intent-filter>
-		</activity>
-		<activity
-				android:name=".ui.klaxon.KlaxonActivity"
-				android:launchMode="singleTop"
-				android:showOnLockScreen="true"
-				android:turnScreenOn="true" />
-		<activity
-				android:name=".ui.preferences.SettingsActivity"
-				android:label="@string/title_activity_settings"
-				android:parentActivityName=".ui.main.MainActivity" />
-		<activity
-				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:theme="@style/AppTheme.LicenseActivity" />
-		<activity
-				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:parentActivityName=".ui.preferences.SettingsActivity"
-				android:theme="@style/AppTheme" />
-		<activity android:name=".ui.CancelActivity" />
-	</application>
+                <data
+                    android:host="randomticker-84c18.firebaseapp.com"
+                    android:scheme="https" />
+                <data
+                    android:host="randomticker-84c18.firebaseapp.com"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.klaxon.KlaxonActivity"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true" />
+        <activity
+            android:name=".ui.preferences.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.main.MainActivity" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.LicenseActivity" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:parentActivityName=".ui.preferences.SettingsActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.CancelActivity" />
+    </application>
 
 </manifest>
