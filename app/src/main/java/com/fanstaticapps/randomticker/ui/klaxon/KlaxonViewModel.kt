@@ -17,7 +17,7 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
                                                    repository: BookmarkRepository) : ViewModel() {
 
     private val timeElapsed = MutableLiveData<Boolean>()
-    private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TickerStarted)
+    private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TickerNoop)
     private val viewStateMediator = MediatorLiveData<KlaxonViewState>()
 
     private val countDownTimer = object : CountDownTimer(userPreferences.intervalWillBeFinished - System.currentTimeMillis(),
@@ -41,13 +41,13 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
 
     init {
         viewStateMediator.addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
-            if (timerElapsed) {
-                Transformations.map(currentBookmark) { bookmark ->
+            Transformations.map(currentBookmark) { bookmark ->
+                if (timerElapsed) {
                     timerFinished(bookmark)
+                } else {
+                    startCountDownTimer()
+                    KlaxonViewState.TickerStarted(bookmark)
                 }
-            } else {
-                startCountDownTimer()
-                liveData { KlaxonViewState.TickerStarted }
             }
         }) { viewStateMediator.value = it }
         viewStateMediator.addSource(internalViewState) { viewStateMediator.value = it }
