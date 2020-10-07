@@ -4,9 +4,9 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.view.animation.CycleInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.viewModels
-import androidx.core.animation.doOnEnd
+import androidx.core.view.isVisible
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -14,6 +14,9 @@ import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_klaxon.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -58,13 +61,15 @@ class KlaxonActivity : BaseActivity() {
         val imageXAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleX", 4f)
         val imageYAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleY", 4f)
         val imageAlphaAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "alpha", 0.6f)
+        val animators = listOf(imageXAnimator, imageYAnimator, imageAlphaAnimator)
         pulsatorAnimation.apply {
             playTogether(imageXAnimator, imageYAnimator, imageAlphaAnimator)
-            duration = 8000
-            interpolator = CycleInterpolator(5)
-            doOnEnd {
-                reverse()
-            }
+            duration = 1800
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        animators.forEach { animator ->
+            animator.repeatCount = ObjectAnimator.INFINITE
+            animator.repeatMode = ObjectAnimator.REVERSE
         }
     }
 
@@ -108,38 +113,52 @@ class KlaxonActivity : BaseActivity() {
             is KlaxonViewState.TickerStarted -> {
                 startWaitingIconAnimation()
                 tvElapsedTime.setOnClickListener { viewModel.showElapsedTime = true }
+                btnRepeat.isVisible = !viewState.bookmark.autoRepeat
             }
             is KlaxonViewState.ElapsedTimeUpdate -> {
                 showElapsedTime(viewState.elapsedTime)
             }
             is KlaxonViewState.TickerFinished -> {
-                timerHelper.startNotification(this, viewState.bookmark)
-
-                tvElapsedTime.isEnabled = false
-
                 showElapsedTime(viewState.elapsedTime)
-                laWaiting.cancelAnimation()
-
-                mlKlaxon.transitionToEnd()
-                pulsatorAnimation.start()
+                startTickerRinging(viewState.bookmark)
             }
 
             is KlaxonViewState.TickerCanceled -> {
                 timerHelper.cancelTicker(this)
-
-                laWaiting.cancelAnimation()
-                pulsatorAnimation.cancel()
+                stopTickerRunning()
 
                 startActivity(IntentHelper.getMainActivity(this))
                 overridePendingTransition(0, 0)
                 finish()
+            }
+            is KlaxonViewState.TickerRepeat -> {
+                startTickerRinging(viewState.bookmark)
 
+                GlobalScope.launch {
+                    delay(2000)
+                    autoRepeatTicker(viewState.bookmark)
+                }
             }
             is KlaxonViewState.TickerStopped -> {
-                laWaiting.cancelAnimation()
-                pulsatorAnimation.cancel()
+                stopTickerRunning()
+            }
+            KlaxonViewState.TickerNoop -> {
             }
         }
+    }
+
+    private fun stopTickerRunning() {
+        laWaiting.cancelAnimation()
+        pulsatorAnimation.cancel()
+    }
+
+    private fun startTickerRinging(bookmark: Bookmark) {
+        timerHelper.startNotification(this, bookmark)
+
+        tvElapsedTime.isEnabled = false
+        laWaiting.cancelAnimation()
+        mlKlaxon.transitionToEnd()
+        pulsatorAnimation.start()
     }
 
 

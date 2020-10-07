@@ -117,6 +117,7 @@ class MainActivity : BaseActivity() {
             maxHours.value = maximumHours
             maxMin.value = maximumMinutes
             maxSec.value = maximumSeconds
+            cbAutoRepeat.isChecked = bookmark.autoRepeat
         }
     }
 

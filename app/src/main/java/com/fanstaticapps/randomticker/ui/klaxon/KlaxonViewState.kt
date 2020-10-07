@@ -6,8 +6,9 @@ sealed class KlaxonViewState {
     data class ElapsedTimeUpdate(val elapsedTime: String?) : KlaxonViewState()
     data class TickerFinished(val elapsedTime: String, val bookmark: Bookmark) : KlaxonViewState()
     data class TickerRepeat(val bookmark: Bookmark) : KlaxonViewState()
-    object TickerStarted : KlaxonViewState()
+    data class TickerStarted(val bookmark: Bookmark) : KlaxonViewState()
     object TickerCanceled : KlaxonViewState()
     object TickerStopped : KlaxonViewState()
+    object TickerNoop : KlaxonViewState()
 }
 
