@@ -1,9 +1,12 @@
 package com.fanstaticapps.randomticker.ui.klaxon
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.view.animation.*
+import android.view.animation.CycleInterpolator
 import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -13,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_klaxon.*
 import timber.log.Timber
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class KlaxonActivity : BaseActivity() {
@@ -27,6 +31,7 @@ class KlaxonActivity : BaseActivity() {
     private val viewModel: KlaxonViewModel by viewModels()
 
     private var timeElapsed: Boolean = false
+    private val pulsatorAnimation = AnimatorSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +39,7 @@ class KlaxonActivity : BaseActivity() {
 
         setContentView(R.layout.activity_klaxon)
         updateScreenStatus()
+        prepareAnimation()
 
         viewModel.getCurrentViewState().observe(this) {
             render(it)
@@ -46,6 +52,20 @@ class KlaxonActivity : BaseActivity() {
             readExtras(intent)
         }
         updateScreenStatus()
+    }
+
+    private fun prepareAnimation() {
+        val imageXAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleX", 4f)
+        val imageYAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleY", 4f)
+        val imageAlphaAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "alpha", 0.6f)
+        pulsatorAnimation.apply {
+            playTogether(imageXAnimator, imageYAnimator, imageAlphaAnimator)
+            duration = 8000
+            interpolator = CycleInterpolator(5)
+            doOnEnd {
+                reverse()
+            }
+        }
     }
 
     private fun updateScreenStatus() {
@@ -101,14 +121,14 @@ class KlaxonActivity : BaseActivity() {
                 laWaiting.cancelAnimation()
 
                 mlKlaxon.transitionToEnd()
-                animatePulsator()
+                pulsatorAnimation.start()
             }
 
             is KlaxonViewState.TickerCanceled -> {
                 timerHelper.cancelTicker(this)
 
                 laWaiting.cancelAnimation()
-                ivPulsatorDismiss.animation.cancel()
+                pulsatorAnimation.cancel()
 
                 startActivity(IntentHelper.getMainActivity(this))
                 overridePendingTransition(0, 0)
@@ -117,29 +137,9 @@ class KlaxonActivity : BaseActivity() {
             }
             is KlaxonViewState.TickerStopped -> {
                 laWaiting.cancelAnimation()
-                ivPulsatorDismiss.animation.cancel()
+                pulsatorAnimation.cancel()
             }
         }
-    }
-
-    private fun animatePulsator() {
-        val animationSet = AnimationSet(false)
-        val alphaAnimation = AlphaAnimation(0f, 0.5f).apply {
-            fillAfter = true
-            duration = 2000
-            interpolator = LinearInterpolator()
-            repeatCount = 5
-        }
-        val scaleAnimation = ScaleAnimation(0f, 4f, 0f, 4f).apply {
-            fillAfter = true
-            duration = 2000
-            interpolator = AccelerateDecelerateInterpolator()
-            repeatCount = 5
-        }
-        animationSet.addAnimation(alphaAnimation)
-        animationSet.addAnimation(scaleAnimation)
-
-        ivPulsatorDismiss.animation = animationSet
     }
 
 
