@@ -25,10 +25,10 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
         }
     }
 
-    fun createTimer(bookmarkName: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
+    fun createTimer(bookmarkName: String, minimum: IntervalDefinition, maximum: IntervalDefinition, autoRepeat: Boolean) {
         val timerCreated = timerHelper.createTicker(minimum, maximum)
         if (timerCreated) {
-            createOrUpdateBookmark(bookmarkName, minimum, maximum)
+            createOrUpdateBookmark(bookmarkName, minimum, maximum, autoRepeat)
 
             timerCreationStatus.value = TimerCreationStatus.TIMER_STARTED
         } else {
@@ -37,8 +37,8 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
 
     }
 
-    private fun createOrUpdateBookmark(name: String, minimum: IntervalDefinition, maximum: IntervalDefinition) {
-        val currentBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum, id = userPreferences.currentSelectedId)
+    private fun createOrUpdateBookmark(name: String, minimum: IntervalDefinition, maximum: IntervalDefinition, autoRepeat: Boolean) {
+        val currentBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum, id = userPreferences.currentSelectedId, autoRepeat = autoRepeat)
 
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.insertOrUpdateBookmark(currentBookmark)

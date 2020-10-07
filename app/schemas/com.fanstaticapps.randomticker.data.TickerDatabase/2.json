@@ -1,21 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-<<<<<<< HEAD:app/schemas/com.fanstaticapps.randomticker.data.TickerDatabase/1.json
-    "version": 1,
-    "identityHash": "91ca1f39627b02db2eff35e42a96d48d",
-    "entities": [
-      {
-        "tableName": "bookmarks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL)",
-=======
     "version": 2,
-    "identityHash": "8196927bd17fb775b5142e0dc31ce9ca",
+    "identityHash": "ed5ea4b204b407a7b71bffe41702034b",
     "entities": [
       {
         "tableName": "bookmarks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `minimumHours` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumHours` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL)",
->>>>>>> [Selection] migrates database:app/schemas/com.fanstaticapps.randomticker.data.TickerDatabase/2.json
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL DEFAULT 'Random Ticker', `minimumHours` INTEGER NOT NULL DEFAULT 0, `minimumMinutes` INTEGER NOT NULL DEFAULT 0, `minimumSeconds` INTEGER NOT NULL DEFAULT 0, `maximumHours` INTEGER NOT NULL DEFAULT 0, `maximumMinutes` INTEGER NOT NULL DEFAULT 0, `maximumSeconds` INTEGER NOT NULL DEFAULT 0, `autoRepeat` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,46 +18,57 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-<<<<<<< HEAD:app/schemas/com.fanstaticapps.randomticker.data.TickerDatabase/1.json
-=======
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "'Random Ticker'"
           },
           {
             "fieldPath": "minimumHours",
             "columnName": "minimumHours",
             "affinity": "INTEGER",
->>>>>>> [Selection] migrates database:app/schemas/com.fanstaticapps.randomticker.data.TickerDatabase/2.json
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "minimumMinutes",
             "columnName": "minimumMinutes",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "minimumSeconds",
             "columnName": "minimumSeconds",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "maximumHours",
             "columnName": "maximumHours",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "maximumMinutes",
             "columnName": "maximumMinutes",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "maximumSeconds",
             "columnName": "maximumSeconds",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "autoRepeat",
+            "columnName": "autoRepeat",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -82,11 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-<<<<<<< HEAD:app/schemas/com.fanstaticapps.randomticker.data.TickerDatabase/1.json
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"91ca1f39627b02db2eff35e42a96d48d\")"
-=======
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8196927bd17fb775b5142e0dc31ce9ca')"
->>>>>>> [Selection] migrates database:app/schemas/com.fanstaticapps.randomticker.data.TickerDatabase/2.json
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed5ea4b204b407a7b71bffe41702034b')"
     ]
   }
 }

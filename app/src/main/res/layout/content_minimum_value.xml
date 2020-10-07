@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-	<androidx.constraintlayout.widget.ConstraintLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-		<TextView
-				android:id="@+id/textView"
-				style="@style/AppTheme.Label"
-				android:text="@string/from"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView"
+            style="@style/AppTheme.Label"
+            android:text="@string/from"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<NumberPicker
-				android:id="@+id/minHours"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintEnd_toStartOf="@id/minMin"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/textView" />
+        <NumberPicker
+            android:id="@+id/minHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            app:layout_constraintEnd_toStartOf="@id/minMin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<TextView
-				android:id="@+id/tvMinHours"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hours"
-				app:layout_constraintBottom_toBottomOf="@id/minHours"
-				app:layout_constraintEnd_toEndOf="@id/minHours"
-				app:layout_constraintHorizontal_bias="0.8"
-				app:layout_constraintStart_toStartOf="@id/minHours"
-				app:layout_constraintTop_toTopOf="@id/minHours" />
+        <TextView
+            android:id="@+id/tvMinHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hours"
+            app:layout_constraintBottom_toBottomOf="@id/minHours"
+            app:layout_constraintEnd_toEndOf="@id/minHours"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@id/minHours"
+            app:layout_constraintTop_toTopOf="@id/minHours" />
 
-		<NumberPicker
-				android:id="@+id/minMin"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintEnd_toStartOf="@id/minSec"
-				app:layout_constraintStart_toEndOf="@id/minHours"
-				app:layout_constraintTop_toBottomOf="@id/textView" />
+        <NumberPicker
+            android:id="@+id/minMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/minSec"
+            app:layout_constraintStart_toEndOf="@id/minHours"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<TextView
-				android:id="@+id/tvMinMin"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/minutes"
-				app:layout_constraintBottom_toBottomOf="@id/minMin"
-				app:layout_constraintEnd_toEndOf="@id/minMin"
-				app:layout_constraintHorizontal_bias="0.8"
-				app:layout_constraintStart_toStartOf="@id/minMin"
-				app:layout_constraintTop_toTopOf="@id/minMin" />
+        <TextView
+            android:id="@+id/tvMinMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minutes"
+            app:layout_constraintBottom_toBottomOf="@id/minMin"
+            app:layout_constraintEnd_toEndOf="@id/minMin"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@id/minMin"
+            app:layout_constraintTop_toTopOf="@id/minMin" />
 
-		<NumberPicker
-				android:id="@+id/minSec"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toEndOf="@+id/minMin"
-				app:layout_constraintTop_toBottomOf="@id/textView" />
+        <NumberPicker
+            android:id="@+id/minSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/minMin"
+            app:layout_constraintTop_toTopOf="parent" />
 
-		<TextView
-				android:id="@+id/tvMinSec"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/seconds"
-				app:layout_constraintBottom_toBottomOf="@id/minSec"
-				app:layout_constraintEnd_toEndOf="@id/minSec"
-				app:layout_constraintHorizontal_bias="0.8"
-				app:layout_constraintStart_toStartOf="@id/minSec"
-				app:layout_constraintTop_toTopOf="@id/minSec" />
-	</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvMinSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seconds"
+            app:layout_constraintBottom_toBottomOf="@id/minSec"
+            app:layout_constraintEnd_toEndOf="@id/minSec"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@id/minSec"
+            app:layout_constraintTop_toTopOf="@id/minSec" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
