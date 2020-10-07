@@ -68,14 +68,12 @@
         android:id="@+id/ivPulsatorDismiss"
         android:layout_width="@dimen/dismissButtonMinSize"
         android:layout_height="@dimen/dismissButtonMinSize"
-        android:alpha="0.5"
+        android:alpha="0"
         android:src="@drawable/ripple_effect"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="@id/guideline" />
 
     <ImageView
         android:id="@+id/btnDismiss"
