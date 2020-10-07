@@ -7,9 +7,10 @@
 	<color name="secondaryColor">#6d4c41</color>
 	<color name="secondaryLightColor">#9c786c</color>
 	<color name="secondaryDarkColor">#40241a</color>
-	<color name="primaryTextColor">#ffffff</color>
-	<color name="secondaryTextColor">#ffffff</color>
+	<color name="primaryTextColor">#FF231816</color>
+	<color name="secondaryTextColor">#FF231816</color>
 
 	<color name="background">#e0e0e0</color>
 
+	<color name="cancelButtonColor">#40241a</color>
 </resources>

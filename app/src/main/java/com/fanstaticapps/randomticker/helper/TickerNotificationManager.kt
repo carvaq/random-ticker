@@ -98,8 +98,6 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
 
 
     internal fun showRunningNotification(context: Context) {
-        cancelAllNotifications(context)
-
         val notification = buildRunningNotification(context)
         val notificationManager = context.getNotificationManager()
 

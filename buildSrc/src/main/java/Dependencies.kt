@@ -53,12 +53,10 @@ object Libs {
     const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
     const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
-    const val pulsator = "pl.bclogic:pulsator4droid:1.0.3"
-
     private const val timberVersion = "4.7.1"
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
 
-    private const val lottieVersion = "3.2.0"
+    private const val lottieVersion = "3.4.4"
     const val lottie = "com.airbnb.android:lottie:$lottieVersion"
 
     private const val ultimateVersion = "2.0.6"

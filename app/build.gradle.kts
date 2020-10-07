@@ -97,7 +97,6 @@ dependencies {
     implementation(Libs.hilt_viewmodel)
     implementation(Libs.timber)
     implementation(Libs.lottie)
-    implementation(Libs.pulsator)
     implementation(Libs.ultimatePicker)
 
     implementation(Gms.oss)
