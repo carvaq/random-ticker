@@ -6,6 +6,7 @@ import android.app.AlarmManager.AlarmClockInfo
 import android.content.Context
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import com.fanstaticapps.randomticker.UserPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
@@ -25,7 +26,7 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
                                       private val userPreferences: UserPreferences) {
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
-        private val HANDLER = Handler()
+        private val HANDLER = Handler(Looper.myLooper() ?: Looper.getMainLooper())
     }
 
     private val randomGenerator = Random(System.currentTimeMillis())
