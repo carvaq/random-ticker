@@ -26,4 +26,5 @@
 	<string name="open_notification_channel_description">If you are experiencing alarm notifcation issues, there could be an issue with the app notification settings for the app.</string>
 	<string name="action_repeat">Repeat</string>
 	<string name="action_stop">Stop</string>
+    <string name="auto_repeat">Auto Repeat</string>
 </resources>

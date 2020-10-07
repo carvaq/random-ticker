@@ -29,9 +29,10 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         GlobalScope.launch(Dispatchers.IO) {
             repository.getBookmarkById(userPreferences.currentSelectedId)?.let { bookmark ->
-                Timber.d("Showing notification for bookmark")
                 Timber.d("Creating a new alarm!")
-                timerHelper.newAlarmFromBookmark(context, bookmark)
+                if (!bookmark.autoRepeat) {
+                    timerHelper.newAlarmFromBookmark(context, bookmark)
+                }
             }
         }
     }

@@ -82,7 +82,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initializeListeners() {
-        start.setOnClickListener { createTimer() }
+        btnStartTicker.setOnClickListener { createTimer() }
     }
 
     private fun initializeTimerCreationStatus() {
@@ -123,7 +123,8 @@ class MainActivity : BaseActivity() {
     private fun createTimer() {
         viewModel.createTimer(etBookmarkName.name(),
                 IntervalDefinition(minHours.value, minMin.value, minSec.value),
-                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value)
+                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value),
+                cbAutoRepeat.isChecked
         )
     }
 
