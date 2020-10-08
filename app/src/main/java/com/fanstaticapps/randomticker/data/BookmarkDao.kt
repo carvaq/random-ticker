@@ -13,12 +13,12 @@ interface BookmarkDao {
     fun getAllBookmarks(): LiveData<List<Bookmark>>
 
     @Insert(onConflict = REPLACE)
-    fun insert(bookmark: Bookmark): Long
+    suspend fun insert(bookmark: Bookmark): Long
 
     @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
-    fun getById(id: Long): Bookmark?
+    suspend fun getById(id: Long): Bookmark?
 
     @Query("DELETE from bookmarks WHERE id = :id")
-    fun delete(id: Long?)
+    suspend fun delete(id: Long?)
 
 }
