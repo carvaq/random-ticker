@@ -35,9 +35,8 @@ object AndroidLibs {
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     const val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
-    private const val coroutinesVersion = "1.3.9"
+     const val coroutinesVersion = "1.3.9"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
-    const val coroutines_testing = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
     private const val constraintLayoutVersion = "2.0.0"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
@@ -47,7 +46,6 @@ object Libs {
     const val hiltVersion = "2.29-alpha"
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hilt_compiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
-    const val hilt_testing = "com.google.dagger:hilt-android-testing:$hiltVersion"
     const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
     const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
@@ -64,7 +62,7 @@ object Libs {
 
 object TestLibs {
     const val mockito_core = "org.mockito:mockito-core:3.1.0"
-    const val junit = "junit:junit:4.12"
+    const val junit = "junit:junit:4.13"
     const val robolectric = "org.robolectric:robolectric:4.3.1"
     const val mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
@@ -81,6 +79,7 @@ object TestLibs {
 
     const val rules = "androidx.test:rules:$testVersion"
     const val junit_runner = "androidx.test:runner:$testVersion"
+    const val orchestrator = "androidx.test:orchestrator:$testVersion"
 
     const val assertions_junit = "androidx.test.ext:junit-ktx:1.1.2"
     const val assertions_truth = "androidx.test.ext:truth:$testVersion"
@@ -88,6 +87,8 @@ object TestLibs {
 
 
     const val room_testing = "androidx.room:room-testing:${AndroidLibs.roomVersion}"
+    const val hilt_testing = "com.google.dagger:hilt-android-testing:${Libs.hiltVersion}"
+    const val coroutines_testing = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${AndroidLibs.coroutinesVersion}"
 
 }
 

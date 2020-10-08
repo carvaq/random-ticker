@@ -124,7 +124,6 @@ class KlaxonActivity : BaseActivity() {
                 showElapsedTime(viewState.elapsedTime)
                 startTickerRinging(viewState.bookmark)
             }
-
             is KlaxonViewState.TickerCanceled -> {
                 timerHelper.cancelTicker(this)
                 stopTickerRunning()
@@ -135,6 +134,9 @@ class KlaxonActivity : BaseActivity() {
             }
             is KlaxonViewState.TickerRepeat -> {
                 startTickerRinging(viewState.bookmark)
+                if (viewState.bookmark.autoRepeat) {
+                    btnRepeat.visibility = View.GONE
+                }
 
                 GlobalScope.launch {
                     delay(2000)
