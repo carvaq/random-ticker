@@ -8,26 +8,24 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
-import androidx.test.filters.LargeTest
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.pickValue
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.rules.RuleChain
 
-
-@LargeTest
-@RunWith(AndroidJUnit4ClassRunner::class)
+@HiltAndroidTest
 class BookmarksAndroidTest {
 
     @get:Rule
-    var activityScenarioRule = activityScenarioRule<MainActivity>()
+    val rule: RuleChain = RuleChain.outerRule(HiltAndroidRule(this))
+            .around(activityScenarioRule<MainActivity>())
 
     @Test
     fun testBookmarkSaving() {
-        activityScenarioRule.scenario
 
         onView(withId(R.id.etBookmarkName))
                 .perform(replaceText("TestLife"), closeSoftKeyboard())
@@ -49,8 +47,6 @@ class BookmarksAndroidTest {
 
     @Test
     fun testBookmarkSelection() {
-        activityScenarioRule.scenario
-
         createTicker("Alisteir", 5, 10)
 
         onView(withId(R.id.btnSelectBookmark)).perform(click())

@@ -13,7 +13,7 @@ plugins {
 
 val major = 1
 val minor = 6
-val patch = 2
+val patch = 3
 
 val generatedVersionName = String.format("%s%02d%02d", major, minor, patch)
 val generateVersionCode = Integer.parseInt(generatedVersionName)
@@ -33,6 +33,7 @@ android {
         versionName = generatedVersionName
 
         testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
+        setTestInstrumentationRunnerArguments(mutableMapOf("clearPackageData" to "true"))
     }
 
     signingConfigs {
@@ -64,6 +65,8 @@ android {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
         }
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        animationsDisabled = true
     }
     sourceSets {
         getByName("androidTest").assets.srcDirs("$projectDir/schemas")
@@ -116,8 +119,8 @@ dependencies {
     testImplementation(TestLibs.robolectric)
     testImplementation(TestLibs.mockito_kotlin)
     testImplementation(TestLibs.assertions_junit)
-    testImplementation(Libs.hilt_testing)
-    testImplementation(AndroidLibs.coroutines_testing)
+    testImplementation(TestLibs.hilt_testing)
+    testImplementation(TestLibs.coroutines_testing)
     kaptTest(Libs.hilt_compiler)
 
     androidTestImplementation(TestLibs.room_testing)
@@ -131,8 +134,9 @@ dependencies {
     androidTestImplementation(TestLibs.assertions_junit)
     androidTestImplementation(TestLibs.assertions_truth)
     androidTestImplementation(TestLibs.assertions_google_truth)
-    androidTestImplementation(Libs.hilt_testing)
+    androidTestImplementation(TestLibs.hilt_testing)
     kaptAndroidTest(Libs.hilt_compiler)
+    androidTestUtil(TestLibs.orchestrator)
 }
 
 play {
