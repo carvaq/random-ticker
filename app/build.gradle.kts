@@ -32,7 +32,7 @@ android {
         versionCode = generateVersionCode
         versionName = generatedVersionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
     }
 
     signingConfigs {
@@ -117,6 +117,7 @@ dependencies {
     testImplementation(TestLibs.mockito_kotlin)
     testImplementation(TestLibs.assertions_junit)
     testImplementation(Libs.hilt_testing)
+    testImplementation(AndroidLibs.coroutines_testing)
     kaptTest(Libs.hilt_compiler)
 
     androidTestImplementation(TestLibs.room_testing)

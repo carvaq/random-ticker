@@ -4,9 +4,9 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -113,7 +113,9 @@ class KlaxonActivity : BaseActivity() {
             is KlaxonViewState.TickerStarted -> {
                 startWaitingIconAnimation()
                 tvElapsedTime.setOnClickListener { viewModel.showElapsedTime = true }
-                btnRepeat.isVisible = !viewState.bookmark.autoRepeat
+                if (viewState.bookmark.autoRepeat) {
+                    btnRepeat.visibility = View.GONE
+                }
             }
             is KlaxonViewState.ElapsedTimeUpdate -> {
                 showElapsedTime(viewState.elapsedTime)
