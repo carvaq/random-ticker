@@ -8,7 +8,7 @@
 
     <include layout="@layout/app_bar" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         style="@style/AppTheme.RootContainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -24,6 +24,6 @@
             <include layout="@layout/content_main" />
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
