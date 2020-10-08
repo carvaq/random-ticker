@@ -16,6 +16,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - uses: actions/checkout@master
+    - name: Copy Google Services Json File
+      uses: canastro/copy-file-action@master
+      with:
+        source: "google-services-for-ci.json"
+        target: "app/google-services.json"
     - name: Build with Gradle
       run: ./gradlew build
     - name: Run Unit Tests
