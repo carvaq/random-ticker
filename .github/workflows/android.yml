@@ -23,6 +23,6 @@ jobs:
         source: "google-services-for-ci.json"
         target: "app/google-services.json"
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew assembleDebug
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest
