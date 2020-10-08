@@ -5,14 +5,14 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class BookmarksViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,
-                                                      private val userPreferences: UserPreferences,
+                                                      private val tickerPreferences: TickerPreferences,
                                                       private val repository: BookmarkRepository) : ViewModel() {
     val allBookmarks = repository.getAllBookmarks()
 
@@ -25,12 +25,12 @@ class BookmarksViewModel @ViewModelInject constructor(@Assisted private val save
     fun createBookmark(newBookmark: Bookmark) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.insertOrUpdateBookmark(newBookmark)
-            userPreferences.currentSelectedId = id
+            tickerPreferences.currentSelectedId = id
         }
     }
 
     fun selectBookmark(bookmark: Bookmark) {
-        userPreferences.currentSelectedId = bookmark.id ?: 0
+        tickerPreferences.currentSelectedId = bookmark.id ?: 0
     }
 
 }

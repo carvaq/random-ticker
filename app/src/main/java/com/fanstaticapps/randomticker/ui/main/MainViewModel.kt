@@ -3,7 +3,7 @@ package com.fanstaticapps.randomticker.ui.main
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.data.IntervalDefinition
@@ -12,11 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,
-                                                 private val userPreferences: UserPreferences,
+                                                 private val tickerPreferences: TickerPreferences,
                                                  private val timerHelper: TimerHelper,
                                                  private val repository: BookmarkRepository) : ViewModel() {
 
-    private val currentBookmarkId = userPreferences.currentSelectedBookmarkIdAsLiveData
+    private val currentBookmarkId = tickerPreferences.currentSelectedBookmarkIdAsLiveData
 
     val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
     val currentBookmark: LiveData<Bookmark> = Transformations.switchMap(currentBookmarkId) { currentBookmarkId ->
@@ -38,11 +38,11 @@ class MainViewModel @ViewModelInject constructor(@Assisted private val savedStat
     }
 
     private fun createOrUpdateBookmark(name: String, minimum: IntervalDefinition, maximum: IntervalDefinition, autoRepeat: Boolean) {
-        val currentBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum, id = userPreferences.currentSelectedId, autoRepeat = autoRepeat)
+        val currentBookmark = Bookmark(name = name, minimum = minimum, maximum = maximum, id = tickerPreferences.currentSelectedId, autoRepeat = autoRepeat)
 
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.insertOrUpdateBookmark(currentBookmark)
-            userPreferences.currentSelectedId = id
+            tickerPreferences.currentSelectedId = id
         }
     }
 }

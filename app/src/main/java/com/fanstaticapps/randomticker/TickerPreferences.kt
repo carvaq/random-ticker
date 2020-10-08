@@ -6,7 +6,7 @@ import android.media.RingtoneManager
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveData
 
-class UserPreferences(context: Context) {
+class TickerPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     companion object {

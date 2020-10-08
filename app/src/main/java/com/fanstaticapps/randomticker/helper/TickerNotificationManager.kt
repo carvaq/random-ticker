@@ -9,14 +9,14 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import javax.inject.Inject
 
-class TickerNotificationManager @Inject constructor(private val userPreferences: UserPreferences) {
+class TickerNotificationManager @Inject constructor(private val tickerPreferences: TickerPreferences) {
 
     fun cancelAllNotifications(context: Context) {
         val notificationManager = context.getNotificationManager()
@@ -80,12 +80,12 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
         val alarmRingtone = if (isAtLeastAndroid26()) {
             notificationChannel?.sound
         } else {
-            userPreferences.alarmRingtone.toUri()
+            tickerPreferences.alarmRingtone.toUri()
         }
         val vibrationEnabled = if (isAtLeastAndroid26()) {
             notificationChannel?.shouldVibrate() ?: false
         } else {
-            userPreferences.vibrationEnabled
+            tickerPreferences.vibrationEnabled
         }
         if (alarmRingtone != null && !alarmRingtone.scheme.isNullOrEmpty()) {
             notificationBuilder.setSound(alarmRingtone)
@@ -111,8 +111,8 @@ class TickerNotificationManager @Inject constructor(private val userPreferences:
     }
 
     private fun buildRunningNotification(context: Context): Notification {
-        val interval = userPreferences.interval
-        val intervalFinished = userPreferences.intervalWillBeFinished
+        val interval = tickerPreferences.interval
+        val intervalFinished = tickerPreferences.intervalWillBeFinished
         val alarmPendingIntent = IntentHelper.getContentPendingIntent(context, RUNNING_NOTIFICATION_ID, false)
         val cancelAction = getCancelAction(context)
 

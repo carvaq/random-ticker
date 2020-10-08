@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class BookmarkDialog : BottomSheetDialogFragment() {
 
     @Inject
-    lateinit var userPreferences: UserPreferences
+    lateinit var tickerPreferences: TickerPreferences
 
     private val viewModel: BookmarksViewModel by viewModels()
     private lateinit var adapter: BookmarkAdapter
@@ -27,7 +27,7 @@ class BookmarkDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (userPreferences.darkTheme) {
+        if (tickerPreferences.darkTheme) {
             setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Dark)
         } else {
             setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Light)

@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TickerApplication : Application() {
 
     @Inject
-    lateinit var preferences: UserPreferences
+    lateinit var preferences: TickerPreferences
 
     @Inject
     lateinit var notificationManager: TickerNotificationManager
