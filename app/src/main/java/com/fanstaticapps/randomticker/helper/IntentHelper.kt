@@ -48,7 +48,7 @@ object IntentHelper {
         )
     }
 
-    fun getAlarmReceiveAsPendingIntent(context: Context): PendingIntent {
+    fun getAlarmReceiveAsPendingIntent(context: Context, flag: Int): PendingIntent? {
         val intent = Intent("com.fanstaticapps.randomticker.ALARM").apply {
             component = ComponentName(context, AlarmReceiver::class.java)
         }
@@ -56,7 +56,7 @@ object IntentHelper {
                 context,
                 421,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                flag
         )
     }
 

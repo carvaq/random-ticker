@@ -62,6 +62,7 @@ android {
     testOptions {
         unitTests.apply {
             isReturnDefaultValues = true
+            isIncludeAndroidResources = true
         }
     }
     sourceSets {
@@ -106,17 +107,21 @@ dependencies {
     implementation(Gms.oss)
 
     kapt(AndroidLibs.room_compiler)
-    kapt(Libs.hilt_compile)
+    kapt(Libs.hilt_compiler)
     kapt(Libs.hilt_viewmodel_compiler)
 
     testImplementation(TestLibs.mockito_core)
     testImplementation(TestLibs.junit)
+    testImplementation(TestLibs.test_core)
     testImplementation(TestLibs.robolectric)
     testImplementation(TestLibs.mockito_kotlin)
+    testImplementation(TestLibs.assertions_junit)
+    testImplementation(Libs.hilt_testing)
+    kaptTest(Libs.hilt_compiler)
 
     androidTestImplementation(TestLibs.room_testing)
     androidTestImplementation(TestLibs.uiautomator)
-    androidTestImplementation(TestLibs.android_test_core)
+    androidTestImplementation(TestLibs.test_core)
     androidTestImplementation(TestLibs.rules)
     androidTestImplementation(TestLibs.junit_runner)
     androidTestImplementation(TestLibs.espresso_core)
@@ -125,7 +130,8 @@ dependencies {
     androidTestImplementation(TestLibs.assertions_junit)
     androidTestImplementation(TestLibs.assertions_truth)
     androidTestImplementation(TestLibs.assertions_google_truth)
-
+    androidTestImplementation(Libs.hilt_testing)
+    kaptAndroidTest(Libs.hilt_compiler)
 }
 
 play {

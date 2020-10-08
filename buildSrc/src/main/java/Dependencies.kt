@@ -44,7 +44,8 @@ object AndroidLibs {
 object Libs {
     const val hiltVersion = "2.29-alpha"
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
-    const val hilt_compile = "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    const val hilt_compiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    const val hilt_testing = "com.google.dagger:hilt-android-testing:$hiltVersion"
     const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
     const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
@@ -56,8 +57,6 @@ object Libs {
 
     private const val ultimateVersion = "2.0.6"
     const val ultimatePicker = "com.github.DeweyReed:UltimateMusicPicker:$ultimateVersion"
-
-
 }
 
 
@@ -69,8 +68,9 @@ object TestLibs {
 
     private const val testVersion = "1.3.0"
 
+    const val test_core = "androidx.test:core-ktx:$testVersion"
+
     const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"
-    const val android_test_core = "androidx.test:core-ktx:$testVersion"
 
     private const val espressoVersion = "3.3.0"
     const val espresso_core = "androidx.test.espresso:espresso-core:$espressoVersion"
