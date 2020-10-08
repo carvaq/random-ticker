@@ -12,7 +12,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
@@ -28,14 +28,14 @@ import javax.inject.Inject
 class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener {
 
     @Inject
-    lateinit var userPreferences: UserPreferences
+    lateinit var tickerPreferences: TickerPreferences
 
     @Inject
     lateinit var notificationManager: TickerNotificationManager
 
     override fun onMusicPick(uri: Uri, title: String) {
         activity?.let {
-            userPreferences.alarmRingtone = uri.toString()
+            tickerPreferences.alarmRingtone = uri.toString()
             findPreference<Preference>(getString(R.string.pref_ringtone_key))?.let { updateRingtonePreferenceSummary(it) }
         }
     }
@@ -100,7 +100,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
         darkThemePreference.isChecked = getBooleanPreference(darkThemePreference)
         darkThemePreference.setOnPreferenceChangeListener { preference, newValue ->
             (preference as CheckBoxPreference).isChecked = newValue.toString().toBoolean()
-            setDarkTheme(userPreferences)
+            setDarkTheme(tickerPreferences)
             activity?.recreate()
             true
         }
@@ -110,7 +110,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     private fun bindRingtonePreference(preference: Preference?) {
         preference ?: return
         preference.setOnPreferenceClickListener {
-            val defaultUri = Uri.parse(UserPreferences(it.context).alarmRingtone)
+            val defaultUri = Uri.parse(TickerPreferences(it.context).alarmRingtone)
             UltimateMusicPicker()
                     .defaultUri(defaultUri)
                     .ringtone()
@@ -125,7 +125,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     }
 
     private fun updateRingtonePreferenceSummary(preference: Preference) {
-        val uriPath = userPreferences.alarmRingtone
+        val uriPath = tickerPreferences.alarmRingtone
         if (uriPath.isEmpty()) {
             preference.setSummary(R.string.pref_ringtone_silent)
         } else {

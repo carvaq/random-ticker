@@ -1,7 +1,7 @@
 package com.fanstaticapps.randomticker.injection
 
 import android.app.Application
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @Module
 object ProvidesModules {
     @Provides
-    fun provideUserPreferences(context: Application): UserPreferences {
-        return UserPreferences(context)
+    fun provideUserPreferences(context: Application): TickerPreferences {
+        return TickerPreferences(context)
     }
 }

@@ -3,7 +3,7 @@ package com.fanstaticapps.randomticker.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +20,7 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
     internal lateinit var timerHelper: TimerHelper
 
     @Inject
-    internal lateinit var userPreferences: UserPreferences
+    internal lateinit var tickerPreferences: TickerPreferences
 
     @Inject
     internal lateinit var repository: BookmarkRepository
@@ -28,7 +28,7 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         GlobalScope.launch(Dispatchers.IO) {
-            repository.getBookmarkById(userPreferences.currentSelectedId)?.let { bookmark ->
+            repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { bookmark ->
                 Timber.d("Creating a new alarm!")
                 if (!bookmark.autoRepeat) {
                     timerHelper.newAlarmFromBookmark(context, bookmark)

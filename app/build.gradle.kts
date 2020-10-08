@@ -64,6 +64,10 @@ android {
             isReturnDefaultValues = true
         }
     }
+    sourceSets {
+        getByName("androidTest").assets.srcDirs("$projectDir/schemas")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -110,9 +114,10 @@ dependencies {
     testImplementation(TestLibs.robolectric)
     testImplementation(TestLibs.mockito_kotlin)
 
-    androidTestImplementation(AndroidLibs.uiautomator)
-    androidTestImplementation(AndroidLibs.rules)
-    androidTestImplementation(AndroidLibs.espresso_core)
+    androidTestImplementation(TestLibs.room_testing)
+    androidTestImplementation(TestLibs.uiautomator)
+    androidTestImplementation(TestLibs.rules)
+    androidTestImplementation(TestLibs.espresso_core)
 }
 
 play {

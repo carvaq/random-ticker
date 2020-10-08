@@ -9,7 +9,7 @@ import android.widget.NumberPicker
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
     lateinit var timerHelper: TimerHelper
 
     @Inject
-    lateinit var userPreferences: UserPreferences
+    lateinit var tickerPreferences: TickerPreferences
 
     private val viewModel: MainViewModel by viewModels()
 

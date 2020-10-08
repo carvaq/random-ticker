@@ -3,7 +3,7 @@ package com.fanstaticapps.randomticker.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.UserPreferences
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +20,7 @@ class AlarmReceiver : BroadcastReceiver() {
     lateinit var notificationManager: TickerNotificationManager
 
     @Inject
-    lateinit var userPreferences: UserPreferences
+    lateinit var tickerPreferences: TickerPreferences
 
     @Inject
     lateinit var repository: BookmarkRepository
@@ -28,7 +28,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Timber.d("Alarm received")
         GlobalScope.launch(Dispatchers.IO) {
-            repository.getBookmarkById(userPreferences.currentSelectedId)?.let { bookmark ->
+            repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { bookmark ->
                 Timber.d("Showing notification for bookmark")
                 notificationManager.showKlaxonNotification(context, bookmark)
             }

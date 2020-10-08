@@ -25,7 +25,7 @@ object AndroidLibs {
     const val activity = "androidx.activity:activity-ktx:1.2.0-alpha08"
     const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
 
-    private const val roomVersion = "2.2.5"
+    const val roomVersion = "2.2.5"
     const val room_runtime = "androidx.room:room-runtime:$roomVersion"
     const val room_ktx = "androidx.room:room-ktx:$roomVersion"
     const val room_compiler = "androidx.room:room-compiler:$roomVersion"
@@ -39,11 +39,6 @@ object AndroidLibs {
 
     private const val constraintLayoutVersion = "2.0.0"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-
-    const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"
-    const val rules = "androidx.test:rules:1.3.0"
-    const val espresso_core = "androidx.test.espresso:espresso-core:3.3.0"
-
 }
 
 object Libs {
@@ -70,6 +65,13 @@ object TestLibs {
     const val junit = "junit:junit:4.12"
     const val robolectric = "org.robolectric:robolectric:4.3.1"
     const val mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+
+    const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"
+    const val rules = "androidx.test:rules:1.3.0"
+    const val espresso_core = "androidx.test.espresso:espresso-core:3.3.0"
+
+    const val room_testing = "androidx.room:room-testing:${AndroidLibs.roomVersion}"
+
 }
 
 object Firebase {
