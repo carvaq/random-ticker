@@ -7,6 +7,7 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,10 +43,10 @@ class TickerDatabaseMigrationTest {
                     val bookmark = tickerDataDao().getById(1)
                     assert(bookmark != null)
                     bookmark!!.run {
-                        assert(name == "TickerLife")
-                        assert(maximumHours == 0)
-                        assert(minimumHours == 0)
-                        assert(!autoRepeat)
+                        assertThat(name).isEqualTo("TickerLife")
+                        assertThat(maximumHours).isEqualTo(0)
+                        assertThat(minimumHours).isEqualTo(0)
+                        assertThat(autoRepeat).isFalse()
                     }
 
                     close()

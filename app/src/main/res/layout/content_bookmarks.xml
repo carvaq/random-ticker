@@ -14,9 +14,9 @@
 			android:importantForAutofill="no"/>
 
 	<Button
-			android:id="@+id/btnSelectProfile"
-			style="@style/Widget.MaterialComponents.Button.TextButton"
-			android:text="@string/button_select_profile"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" />
+		android:id="@+id/btnSelectBookmark"
+		style="@style/Widget.MaterialComponents.Button.TextButton"
+		android:text="@string/button_select_profile"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
 </LinearLayout>

@@ -60,15 +60,30 @@ object Libs {
 
 }
 
+
 object TestLibs {
     const val mockito_core = "org.mockito:mockito-core:3.1.0"
     const val junit = "junit:junit:4.12"
     const val robolectric = "org.robolectric:robolectric:4.3.1"
     const val mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
+    private const val testVersion = "1.3.0"
+
     const val uiautomator = "androidx.test.uiautomator:uiautomator:2.2.0"
-    const val rules = "androidx.test:rules:1.3.0"
-    const val espresso_core = "androidx.test.espresso:espresso-core:3.3.0"
+    const val android_test_core = "androidx.test:core-ktx:$testVersion"
+
+    private const val espressoVersion = "3.3.0"
+    const val espresso_core = "androidx.test.espresso:espresso-core:$espressoVersion"
+    const val espresso_idling = "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+    const val espresso_contrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"
+
+    const val rules = "androidx.test:rules:$testVersion"
+    const val junit_runner = "androidx.test:runner:$testVersion"
+
+    const val assertions_junit = "androidx.test.ext:junit-ktx:1.1.2"
+    const val assertions_truth = "androidx.test.ext:truth:$testVersion"
+    const val assertions_google_truth = "com.google.truth:truth:1.0.1"
+
 
     const val room_testing = "androidx.room:room-testing:${AndroidLibs.roomVersion}"
 

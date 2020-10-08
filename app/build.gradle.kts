@@ -116,8 +116,16 @@ dependencies {
 
     androidTestImplementation(TestLibs.room_testing)
     androidTestImplementation(TestLibs.uiautomator)
+    androidTestImplementation(TestLibs.android_test_core)
     androidTestImplementation(TestLibs.rules)
+    androidTestImplementation(TestLibs.junit_runner)
     androidTestImplementation(TestLibs.espresso_core)
+    androidTestImplementation(TestLibs.espresso_idling)
+    androidTestImplementation(TestLibs.espresso_contrib)
+    androidTestImplementation(TestLibs.assertions_junit)
+    androidTestImplementation(TestLibs.assertions_truth)
+    androidTestImplementation(TestLibs.assertions_google_truth)
+
 }
 
 play {

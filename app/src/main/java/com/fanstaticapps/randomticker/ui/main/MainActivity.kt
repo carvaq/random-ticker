@@ -74,7 +74,7 @@ class MainActivity : BaseActivity() {
                 .observe(this) {
                     renderBookmark(it)
                 }
-        btnSelectProfile.setOnClickListener {
+        btnSelectBookmark.setOnClickListener {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 BookmarkDialog().show(supportFragmentManager, "BookmarkSelector")
             }
