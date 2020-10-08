@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.helper
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.AlarmManager.AlarmClockInfo
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import android.os.Handler
@@ -31,7 +32,7 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
     private val randomGenerator = Random(System.currentTimeMillis())
 
-    fun newAlarmFromBookmark(context: Context, bookmark: Bookmark) {
+    fun newTickerFromBookmark(context: Context, bookmark: Bookmark) {
         Timber.d("creating a new ticker for bookmark $bookmark")
         cancelTicker(context)
         createTicker(bookmark.getMinimumIntervalDefinition(), bookmark.getMaximumIntervalDefinition())
@@ -76,7 +77,7 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         }
 
         context.getAlarmManager()?.let { alarmManger ->
-            val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(context)
+            val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_UPDATE_CURRENT)
             when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
                     alarmManger.setAlarmClock(AlarmClockInfo(intervalFinished, alarmIntent), alarmIntent)
@@ -102,9 +103,9 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
     fun isTickerInvalid(): Boolean {
         val intervalWillBeFinished = tickerPreferences.intervalWillBeFinished
-        val tickerRunning = intervalWillBeFinished > 0 && intervalWillBeFinished >= System.currentTimeMillis()
-        Timber.d("Ticker is valid: $tickerRunning")
-        return !tickerRunning
+        val hasTickerNotExpiredYet = intervalWillBeFinished >= System.currentTimeMillis()
+        Timber.d("Ticker is valid: $hasTickerNotExpiredYet")
+        return !hasTickerNotExpiredYet
     }
 
     fun cancelTicker(context: Context) {
@@ -113,8 +114,9 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
         tickerPreferences.resetInterval()
 
-        val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(context)
-        context.getAlarmManager()?.cancel(alarmIntent)
+        IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_NO_CREATE)?.let { alarmIntent ->
+            context.getAlarmManager()?.cancel(alarmIntent)
+        }
     }
 
     fun startNotification(activity: Activity, bookmark: Bookmark) {

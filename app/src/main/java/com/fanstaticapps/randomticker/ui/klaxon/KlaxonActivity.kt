@@ -95,7 +95,7 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun autoRepeatTicker(bookmark: Bookmark) {
-        timerHelper.newAlarmFromBookmark(this, bookmark)
+        timerHelper.newTickerFromBookmark(this, bookmark)
 
         finish()
         startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
