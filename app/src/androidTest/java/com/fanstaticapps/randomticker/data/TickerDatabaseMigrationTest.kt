@@ -8,6 +8,7 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,7 +41,9 @@ class TickerDatabaseMigrationTest {
         )
                 .addMigrations(*ALL_MIGRATIONS).build().apply {
                     openHelper.writableDatabase
-                    val bookmark = tickerDataDao().getById(1)
+                    val bookmark = runBlocking {
+                        tickerDataDao().getById(1)
+                    }
                     assert(bookmark != null)
                     bookmark!!.run {
                         assertThat(name).isEqualTo("TickerLife")

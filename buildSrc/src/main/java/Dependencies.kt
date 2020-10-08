@@ -35,7 +35,9 @@ object AndroidLibs {
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     const val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
-    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+    private const val coroutinesVersion = "1.3.9"
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    const val coroutines_testing = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
     private const val constraintLayoutVersion = "2.0.0"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
