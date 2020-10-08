@@ -35,11 +35,11 @@ class BookmarksAndroidTest {
         onView(withId(R.id.maxHours)).perform(pickValue(0))
         onView(withId(R.id.maxSec)).perform(pickValue(10))
 
-        onView(withId(R.id.btnStartTicker)).perform(click())
+        onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
 
         onView(withId(R.id.btnRepeat)).check(matches(not(isDisplayed())))
 
-        onView(withId(R.id.btnDismiss)).perform(click())
+        onView(withId(R.id.btnDismiss)).perform(scrollTo(), click())
 
         onView(withId(R.id.etBookmarkName)).check(matches(withText("TestLife")))
     }
@@ -49,7 +49,7 @@ class BookmarksAndroidTest {
     fun testBookmarkSelection() {
         createTicker("Alisteir", 5, 10)
 
-        onView(withId(R.id.btnSelectBookmark)).perform(click())
+        onView(withId(R.id.btnSelectBookmark)).perform(scrollTo(), click())
         onView(withId(R.id.rvBookmarks))
                 .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
@@ -57,7 +57,7 @@ class BookmarksAndroidTest {
 
         onView(withId(R.id.etBookmarkName)).check(matches(withText("Lucinda")))
 
-        onView(withId(R.id.btnSelectBookmark)).perform(click())
+        onView(withId(R.id.btnSelectBookmark)).perform(scrollTo(), click())
         onView(withId(R.id.rvBookmarks))
                 .check(matches(hasDescendant(withText("Alisteir"))))
         onView(withId(R.id.rvBookmarks))
@@ -71,8 +71,8 @@ class BookmarksAndroidTest {
         onView(withId(R.id.minSec)).perform(pickValue(minSec))
         onView(withId(R.id.maxSec)).perform(pickValue(maxSec))
 
-        onView(withId(R.id.btnStartTicker)).perform(click())
-        onView(withId(R.id.btnDismiss)).perform(click())
+        onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
+        onView(withId(R.id.btnDismiss)).perform(scrollTo(), click())
     }
 
 
