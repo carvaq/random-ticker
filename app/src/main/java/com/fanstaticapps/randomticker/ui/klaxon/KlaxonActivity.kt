@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.viewModels
+import androidx.core.view.isGone
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -123,6 +124,14 @@ class KlaxonActivity : BaseActivity() {
             is KlaxonViewState.TickerFinished -> {
                 showElapsedTime(viewState.elapsedTime)
                 startTickerRinging(viewState.bookmark)
+
+                btnRepeat.isGone = viewState.bookmark.autoRepeat
+                if (viewState.bookmark.autoRepeat) {
+                    GlobalScope.launch {
+                        delay(2000)
+                        autoRepeatTicker(viewState.bookmark)
+                    }
+                }
             }
             is KlaxonViewState.TickerCanceled -> {
                 timerHelper.cancelTicker(this)
@@ -131,17 +140,6 @@ class KlaxonActivity : BaseActivity() {
                 startActivity(IntentHelper.getMainActivity(this))
                 overridePendingTransition(0, 0)
                 finish()
-            }
-            is KlaxonViewState.TickerRepeat -> {
-                startTickerRinging(viewState.bookmark)
-                if (viewState.bookmark.autoRepeat) {
-                    btnRepeat.visibility = View.GONE
-                }
-
-                GlobalScope.launch {
-                    delay(2000)
-                    autoRepeatTicker(viewState.bookmark)
-                }
             }
             is KlaxonViewState.TickerStopped -> {
                 stopTickerRunning()
