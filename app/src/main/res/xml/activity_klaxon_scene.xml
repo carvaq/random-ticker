@@ -11,7 +11,14 @@
     <ConstraintSet android:id="@+id/ringing">
         <Constraint
             android:id="@id/laWaiting"
-            android:visibility="gone" />
+            android:alpha="0"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvElapsedTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <Constraint
             android:id="@id/tvElapsedTime"
             app:layout_constraintBottom_toTopOf="@id/btnRepeat"
@@ -35,5 +42,5 @@
         app:constraintSetEnd="@id/ringing"
         app:constraintSetStart="@+id/waiting"
         app:duration="500"
-        app:motionInterpolator="easeInOut" />
+        app:motionInterpolator="bounce" />
 </MotionScene>
