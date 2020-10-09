@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
@@ -99,12 +100,12 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-        minHours.init(10)
-        minMin.init(59)
-        minSec.init(59)
-        maxHours.init(10)
-        maxMin.init(59)
-        maxSec.init(59)
+        minHours.init(10, R.string.from, R.string.hours)
+        minMin.init(59, R.string.from, R.string.minutes)
+        minSec.init(59, R.string.from, R.string.seconds)
+        maxHours.init(10, R.string.to, R.string.hours)
+        maxMin.init(59, R.string.to, R.string.minutes)
+        maxSec.init(59, R.string.to, R.string.seconds)
     }
 
 
@@ -135,8 +136,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun EditText.name(): String = if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
-    private fun NumberPicker.init(max: Int) {
+
+    private fun NumberPicker.init(max: Int, @StringRes fromToResId: Int, @StringRes type: Int) {
         minValue = 0
         maxValue = max
+        contentDescription = "${getString(fromToResId)} ${getString(type)}"
     }
 }
