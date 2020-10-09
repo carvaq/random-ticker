@@ -5,9 +5,9 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.viewModels
 import androidx.core.view.isGone
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -59,14 +59,15 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun prepareAnimation() {
-        val imageXAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleX", 4f)
-        val imageYAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleY", 4f)
+        val imageXAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleX", 3f)
+        val imageYAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleY", 3f)
         val imageAlphaAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "alpha", 0.6f)
         val animators = listOf(imageXAnimator, imageYAnimator, imageAlphaAnimator)
+
         pulsatorAnimation.apply {
             playTogether(imageXAnimator, imageYAnimator, imageAlphaAnimator)
             duration = 1800
-            interpolator = AccelerateDecelerateInterpolator()
+            interpolator = FastOutSlowInInterpolator()
         }
         animators.forEach { animator ->
             animator.repeatCount = ObjectAnimator.INFINITE
