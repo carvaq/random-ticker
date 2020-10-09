@@ -52,9 +52,6 @@ class RepeatAndroidTest {
         onView(withId(R.id.btnRepeat)).check(matches(not(isDisplayed())))
     }
 
-    private fun registerIdlingResource() {
-        IdlingRegistry.getInstance().register(TickerFinishedIdlingResource(tickerPreferences))
-    }
 
     @Test
     fun testWhenRepeatIsNotCheckedTheRepeatButtonIsDisplayed() {
@@ -74,6 +71,10 @@ class RepeatAndroidTest {
         onView(withId(R.id.minSec)).perform(pickValue(2))
         onView(withId(R.id.maxSec)).perform(pickValue(4))
 
+    }
+
+    private fun registerIdlingResource() {
+        IdlingRegistry.getInstance().register(TickerFinishedIdlingResource(tickerPreferences))
     }
 
 }
