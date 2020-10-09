@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
-import kotlin.properties.Delegates
 
 class BookmarkAdapter(private val context: Context,
                       private val select: (Bookmark) -> Unit,
@@ -64,10 +63,14 @@ class BookmarkAdapter(private val context: Context,
     private open class BookmarkSelectableViewHolder(itemView: View, select: (Bookmark) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         init {
-            itemView.setOnClickListener { select(bookmark) }
+            itemView.setOnClickListener {
+                if (::bookmark.isInitialized) {
+                    select(bookmark)
+                }
+            }
         }
 
-        protected var bookmark: Bookmark by Delegates.notNull()
+        protected lateinit var bookmark: Bookmark
 
         open fun render(bookmark: Bookmark) {
             this.bookmark = bookmark

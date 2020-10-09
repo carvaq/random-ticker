@@ -10,7 +10,7 @@
 	<color name="primaryTextColor">#FFFFFF</color>
 	<color name="secondaryTextColor">#FFFFFF</color>
 
-	<color name="background">#e0e0e0</color>
+	<color name="background">#F9FBE7</color>
 
 	<color name="cancelButtonColor">#40241a</color>
 </resources>
