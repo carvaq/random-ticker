@@ -100,12 +100,12 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-        minHours.init(10, R.string.from, R.string.hours)
-        minMin.init(59, R.string.from, R.string.minutes)
-        minSec.init(59, R.string.from, R.string.seconds)
-        maxHours.init(10, R.string.to, R.string.hours)
-        maxMin.init(59, R.string.to, R.string.minutes)
-        maxSec.init(59, R.string.to, R.string.seconds)
+        minHours.init(10, R.string.from, R.string.hours_label)
+        minMin.init(59, R.string.from, R.string.minutes_label)
+        minSec.init(59, R.string.from, R.string.seconds_label)
+        maxHours.init(10, R.string.to, R.string.hours_label)
+        maxMin.init(59, R.string.to, R.string.minutes_label)
+        maxSec.init(59, R.string.to, R.string.seconds_label)
     }
 
 
