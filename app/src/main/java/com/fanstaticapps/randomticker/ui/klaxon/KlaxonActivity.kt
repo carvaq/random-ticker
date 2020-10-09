@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.view.isGone
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
@@ -126,7 +125,6 @@ class KlaxonActivity : BaseActivity() {
                 showElapsedTime(viewState.elapsedTime)
                 startTickerRinging(viewState.bookmark)
 
-                btnRepeat.isGone = viewState.bookmark.autoRepeat
                 if (viewState.bookmark.autoRepeat) {
                     GlobalScope.launch {
                         delay(2000)
