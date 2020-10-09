@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:cc="http://creativecommons.org/ns#"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	xmlns:svg="http://www.w3.org/2000/svg"
-	xmlns="http://www.w3.org/2000/svg"
-	xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+<svg xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-	width="1024"
-	height="1024"
-	viewBox="0 0 270.93333 270.93334"
-	version="1.1"
-	id="svg8"
-	sodipodi:docname="background_tile.svg"
-	inkscape:version="0.92.3 (unknown)"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" height="1024" id="svg8"
+	version="1.1" viewBox="0 0 270.93333 270.93334" width="1024" xmlns="http://www.w3.org/2000/svg"
+	inkscape:export-xdpi="96" inkscape:version="0.92.3 (unknown)"
 	inkscape:export-filename="/home/carla/Android/Projects/random-ticker/assets/background_tile.png"
-	inkscape:export-xdpi="96"
-	inkscape:export-ydpi="96">
-	<defs
-		id="defs2">
-		<inkscape:perspective
-			sodipodi:type="inkscape:persp3d"
-			inkscape:vp_x="0 : 135.46667 : 1"
-			inkscape:vp_y="0 : 1000 : 0"
-			inkscape:vp_z="270.93333 : 135.46667 : 1"
-			inkscape:persp3d-origin="135.46667 : 90.311113 : 1"
-			id="perspective3791"/>
+	inkscape:export-ydpi="96" sodipodi:docname="background_tile.svg">
+	<defs id="defs2">
+		<inkscape:perspective sodipodi:type="inkscape:persp3d" inkscape:vp_x="0 : 135.46667 : 1"
+			inkscape:vp_y="0 : 1000 : 0" inkscape:vp_z="270.93333 : 135.46667 : 1"
+			inkscape:persp3d-origin="135.46667 : 90.311113 : 1" id="perspective3791" />
 		<filter
 			style="color-interpolation-filters:sRGB;"
 			inkscape:label="Greyscale"

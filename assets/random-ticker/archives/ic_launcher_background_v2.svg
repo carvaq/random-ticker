@@ -1,43 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg
-		xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
-		xmlns:dc="http://purl.org/dc/elements/1.1/"
-		xmlns:cc="http://creativecommons.org/ns#"
-		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-		xmlns:svg="http://www.w3.org/2000/svg"
-		xmlns="http://www.w3.org/2000/svg"
-		xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-		xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-		width="1024"
-		height="1024"
-		viewBox="0 0 270.93333 270.93334"
-		version="1.1"
-		id="svg8"
-		sodipodi:docname="ic_launcher_background_v2.svg"
-		inkscape:export-filename="/home/carla/Android/Projects/random-ticker/assets/ic_launcher_background_v2.png"
-		inkscape:export-xdpi="96.000008"
-		inkscape:export-ydpi="96.000008"
-		inkscape:version="0.92.3 (unknown)">
-	<defs
-			id="defs2">
-		<linearGradient
-				id="linearGradient5871"
-				osb:paint="solid">
-			<stop
-					style="stop-color:#9c27b0;stop-opacity:1;"
-					offset="0"
-					id="stop5869"/>
+<svg xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" height="1024" id="svg8"
+	version="1.1" viewBox="0 0 270.93333 270.93334" width="1024" xmlns="http://www.w3.org/2000/svg"
+	inkscape:export-filename="/home/carla/Android/Projects/random-ticker/assets/ic_launcher_background_v2.png"
+	inkscape:export-xdpi="96.000008" inkscape:export-ydpi="96.000008"
+	inkscape:version="0.92.3 (unknown)" sodipodi:docname="ic_launcher_background_v2.svg">
+	<defs id="defs2">
+		<linearGradient id="linearGradient5871" osb:paint="solid">
+			<stop style="stop-color:#9c27b0;stop-opacity:1;" id="stop5869" offset="0" />
 		</linearGradient>
-		<meshgradient
-				inkscape:collect="always"
-				id="meshgradient5887"
-				gradientUnits="userSpaceOnUse"
-				x="0.1185616"
-				y="26.449547">
-			<meshrow
-					id="meshrow9885">
+		<meshgradient inkscape:collect="always" id="meshgradient5887" gradientUnits="userSpaceOnUse"
+			x="0.1185616" y="26.449547">
+			<meshrow id="meshrow9885">
 				<meshpatch
 						id="meshpatch9887">
 					<stop
