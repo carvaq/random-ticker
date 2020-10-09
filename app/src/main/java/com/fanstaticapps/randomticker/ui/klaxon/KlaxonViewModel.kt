@@ -43,7 +43,7 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
         viewStateMediator.addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
             Transformations.map(currentBookmark) { bookmark ->
                 if (timerElapsed) {
-                    timerFinished(bookmark)
+                    KlaxonViewState.TickerFinished(getElapsedTime(), bookmark)
                 } else {
                     startCountDownTimer()
                     KlaxonViewState.TickerStarted(bookmark)
@@ -51,14 +51,6 @@ class KlaxonViewModel @ViewModelInject constructor(@Assisted private val savedSt
             }
         }) { viewStateMediator.value = it }
         viewStateMediator.addSource(internalViewState) { viewStateMediator.value = it }
-    }
-
-    private fun timerFinished(bookmark: Bookmark): KlaxonViewState {
-        return if (bookmark.autoRepeat) {
-            KlaxonViewState.TickerRepeat(bookmark)
-        } else {
-            KlaxonViewState.TickerFinished(getElapsedTime(), bookmark)
-        }
     }
 
 
