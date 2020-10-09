@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD:assets/random-ticker/archives/ic_launcher_foreground.svg
+<svg
+		xmlns:dc="http://purl.org/dc/elements/1.1/"
+		xmlns:cc="http://creativecommons.org/ns#"
+		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+		xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+		fill="#000000"
+		height="24"
+		viewBox="0 0 24 24"
+		width="24"
+		id="svg2"
+		version="1.1"
+		inkscape:version="0.91 r13725"
+		sodipodi:docname="ic_timer_black_24px.svg">
+	<metadata
+			id="metadata12">
+=======
 <svg xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -6,11 +25,17 @@
 	id="svg2" version="1.1" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"
 	inkscape:version="0.92.3 (unknown)" sodipodi:docname="ic_launcher_foreground_v2.svg">
 	<metadata id="metadata12">
+>>>>>>> [Assets] new assets for updated design:assets/random-ticker/archives/ic_launcher_foreground_v2.svg
 		<rdf:RDF>
 			<cc:Work rdf:about="">
 				<dc:format>image/svg+xml</dc:format>
+<<<<<<< HEAD:assets/random-ticker/archives/ic_launcher_foreground.svg
+				<dc:type
+						rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+=======
 				<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
 				<dc:title></dc:title>
+>>>>>>> [Assets] new assets for updated design:assets/random-ticker/archives/ic_launcher_foreground_v2.svg
 			</cc:Work>
 		</rdf:RDF>
 	</metadata>
@@ -24,15 +49,15 @@
 			guidetolerance="10"
 			inkscape:pageopacity="0"
 			inkscape:pageshadow="2"
-			inkscape:window-width="1920"
-			inkscape:window-height="965"
+			inkscape:window-width="1536"
+			inkscape:window-height="801"
 			id="namedview8"
 			showgrid="false"
 			inkscape:zoom="9.8333333"
-			inkscape:cx="-6.2542373"
+			inkscape:cx="12"
 			inkscape:cy="12"
-			inkscape:window-x="0"
-			inkscape:window-y="30"
+			inkscape:window-x="-8"
+			inkscape:window-y="-8"
 			inkscape:window-maximized="1"
 			inkscape:current-layer="svg2"/>
 	<path
@@ -42,5 +67,5 @@
 	<path
 			d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"
 			id="path6"
-			style="fill:#ffffff;fill-opacity:1"/>
+			style="fill:#9c27b0;fill-opacity:1"/>
 </svg>
