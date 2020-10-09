@@ -22,7 +22,6 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     lateinit var tickerPreferences: TickerPreferences
 
     private val viewModel: BookmarksViewModel by viewModels()
-    private lateinit var adapter: BookmarkAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,17 +40,7 @@ class BookmarkDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-
-        viewModel.allBookmarks.observe(viewLifecycleOwner, { bookmarks ->
-            val allItems = listOf(Bookmark("Random Ticker")).plus(bookmarks)
-
-            adapter.setData(allItems)
-        })
-    }
-
-    private fun setupRecyclerView() {
-        adapter = BookmarkAdapter(requireContext(),
+        val adapter = BookmarkAdapter(requireContext(),
                 { bookmark ->
                     if (bookmark.id == null) {
                         viewModel.createBookmark(bookmark)
@@ -66,6 +55,11 @@ class BookmarkDialog : BottomSheetDialogFragment() {
 
         rvBookmarks.layoutManager = LinearLayoutManager(requireContext())
         rvBookmarks.adapter = adapter
+
+        viewModel.allBookmarks.observe(viewLifecycleOwner, { bookmarks ->
+            val allItems = listOf(Bookmark("Random Ticker")).plus(bookmarks)
+            adapter.setData(allItems)
+        })
     }
 }
 
