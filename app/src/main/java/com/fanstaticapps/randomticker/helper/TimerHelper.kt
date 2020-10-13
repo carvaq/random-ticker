@@ -8,10 +8,10 @@ import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject

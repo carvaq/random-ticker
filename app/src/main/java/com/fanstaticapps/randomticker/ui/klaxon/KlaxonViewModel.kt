@@ -4,11 +4,11 @@ import android.os.CountDownTimer
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlin.math.abs
 

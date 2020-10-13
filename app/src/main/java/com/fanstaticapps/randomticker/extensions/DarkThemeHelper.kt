@@ -1,7 +1,7 @@
 package com.fanstaticapps.randomticker.extensions
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.fanstaticapps.randomticker.TickerPreferences
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 
 fun setDarkTheme(prefs: TickerPreferences) {
     if (prefs.darkTheme) {

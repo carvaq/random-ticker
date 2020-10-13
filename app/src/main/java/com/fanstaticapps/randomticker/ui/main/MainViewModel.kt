@@ -3,11 +3,11 @@ package com.fanstaticapps.randomticker.ui.main
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

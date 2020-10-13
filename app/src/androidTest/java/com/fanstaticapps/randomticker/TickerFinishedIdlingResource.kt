@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker
 
 import androidx.test.espresso.IdlingResource
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 
 class TickerFinishedIdlingResource(private val prefs: TickerPreferences) : IdlingResource {
 

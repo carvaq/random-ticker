@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object DataBaseModule {
+object DatabaseModule {
     @Provides
     @Singleton
     fun provideTickerDatabase(application: Application): TickerDatabase {

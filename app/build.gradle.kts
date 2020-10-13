@@ -1,3 +1,5 @@
+import com.google.protobuf.gradle.*
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,6 +10,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.google.protobuf") version ("0.8.12")
 }
 
 
@@ -59,7 +62,9 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-
+    buildFeatures {
+        compose = true
+    }
     testOptions {
         unitTests.apply {
             isReturnDefaultValues = true
@@ -77,10 +82,26 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        useIR = true
+    }
+    composeOptions {
+        kotlinCompilerVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = "1.0.0-alpha03"
     }
 }
 
 dependencies {
+
+    implementation(AndroidLibs.compose_ui)
+    implementation(AndroidLibs.ui_tooling)
+    implementation(AndroidLibs.compose_foundation)
+    implementation(AndroidLibs.compose_material)
+    implementation(AndroidLibs.material_icons_core)
+    implementation(AndroidLibs.material_icons_extended)
+    implementation(AndroidLibs.runtime_runtime_livedata)
+    implementation(AndroidLibs.datastore_protobobuf)
+    implementation(Libs.protobuf)
+
     implementation(Kotlin.stdlib)
 
     implementation(AndroidLibs.material)
@@ -157,5 +178,25 @@ kapt {
         arg("room.schemaLocation", "$projectDir/schemas")
         arg("room.incremental", "true")
         arg("room.expandProjection", "true")
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${Libs.protobufVersion}"
+    }
+    plugins {
+        id("javalite") {
+            artifact = "com.google.protobuf:protoc-gen-javalite:${Libs.protobufVersion}"
+        }
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                id("java") {
+                    option("lite")
+                }
+            }
+        }
     }
 }

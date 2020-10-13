@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "com.fanstaticapps.randomticker.preferences";
+option java_multiple_files = true;
+
+message UserPreferences {
+  bool migration_completed = 1;
+  bool show_notification = 2;
+  string ringtone = 3;
+  bool vibration_enabled = 4;
+  bool dark_theme = 5;
+}

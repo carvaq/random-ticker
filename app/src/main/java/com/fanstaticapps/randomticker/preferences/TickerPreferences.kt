@@ -1,4 +1,4 @@
-package com.fanstaticapps.randomticker
+package com.fanstaticapps.randomticker.preferences
 
 import android.content.Context
 import android.content.SharedPreferences

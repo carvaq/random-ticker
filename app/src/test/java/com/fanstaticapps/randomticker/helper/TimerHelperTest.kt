@@ -3,10 +3,10 @@ package com.fanstaticapps.randomticker.helper
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import com.nhaarman.mockitokotlin2.*
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication

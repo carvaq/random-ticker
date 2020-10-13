@@ -3,9 +3,9 @@ package com.fanstaticapps.randomticker.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

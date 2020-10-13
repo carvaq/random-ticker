@@ -5,9 +5,9 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import kotlinx.coroutines.launch
 
 internal class BookmarksViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,

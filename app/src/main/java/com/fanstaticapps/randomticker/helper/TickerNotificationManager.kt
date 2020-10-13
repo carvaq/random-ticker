@@ -9,11 +9,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import javax.inject.Inject
 
 class TickerNotificationManager @Inject constructor(private val tickerPreferences: TickerPreferences) {

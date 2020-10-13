@@ -10,12 +10,12 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.helper.livedata.nonNull
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity

@@ -35,11 +35,22 @@ object AndroidLibs {
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     const val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
-     const val coroutinesVersion = "1.3.9"
+    const val coroutinesVersion = "1.3.9"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 
     private const val constraintLayoutVersion = "2.0.0"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+    private const val composeVersion = "1.0.0-alpha04"
+    const val compose_ui = "androidx.compose.ui:ui:$composeVersion"
+    const val ui_tooling = "androidx.ui:ui-tooling:$composeVersion"
+    const val compose_foundation = "androidx.compose.foundation:foundation:$composeVersion"
+    const val compose_material = "androidx.compose.material:material:$composeVersion"
+    const val material_icons_core = "androidx.compose.material:material-icons-core:$composeVersion"
+    const val material_icons_extended = "androidx.compose.material:material-icons-extended:$composeVersion"
+    const val runtime_runtime_livedata = "androidx.compose.runtime:runtime-livedata:$composeVersion"
+
+    const val datastore_protobobuf = "androidx.datastore:datastore-core:1.0.0-alpha01"
 }
 
 object Libs {
@@ -57,6 +68,9 @@ object Libs {
 
     private const val ultimateVersion = "2.0.6"
     const val ultimatePicker = "com.github.DeweyReed:UltimateMusicPicker:$ultimateVersion"
+
+    const val protobufVersion = "3.11.0"
+    const val protobuf = "com.google.protobuf:protobuf-javalite:$protobufVersion"
 }
 
 

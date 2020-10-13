@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker
 import android.app.Application
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.preferences.TickerPreferences
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
