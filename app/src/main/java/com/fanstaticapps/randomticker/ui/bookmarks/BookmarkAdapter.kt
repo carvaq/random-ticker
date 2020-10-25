@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
@@ -56,6 +57,7 @@ class BookmarkAdapter(private val context: Context,
         }
 
         override fun render(bookmark: Bookmark) {
+            super.render(bookmark)
             tvBookmarkName.text = bookmark.name
         }
     }
@@ -64,14 +66,14 @@ class BookmarkAdapter(private val context: Context,
 
         init {
             itemView.setOnClickListener {
-                if (::bookmark.isInitialized) {
-                    select(bookmark)
-                }
+                select(bookmark)
             }
+
         }
 
         protected lateinit var bookmark: Bookmark
 
+        @CallSuper
         open fun render(bookmark: Bookmark) {
             this.bookmark = bookmark
         }
