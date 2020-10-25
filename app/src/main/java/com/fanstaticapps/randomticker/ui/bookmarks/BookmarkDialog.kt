@@ -58,7 +58,7 @@ class BookmarkDialog : BottomSheetDialogFragment() {
 
         viewModel.allBookmarks.observe(viewLifecycleOwner, { bookmarks ->
             val allItems = listOf(Bookmark("Random Ticker")).plus(bookmarks)
-            adapter.setData(allItems)
+            adapter.updateBookmarks(allItems)
         })
     }
 }

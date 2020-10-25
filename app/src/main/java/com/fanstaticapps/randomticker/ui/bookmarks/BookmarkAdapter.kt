@@ -14,11 +14,16 @@ class BookmarkAdapter(private val context: Context,
                       private val select: (Bookmark) -> Unit,
                       private val delete: (Bookmark) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var list: List<Bookmark> = listOf()
+    companion object {
+        private const val VIEW_TYPE_ADD_NEW = 0
+        private const val VIEW_TYPE_BOOKMARK = 1
+    }
+
+    var bookmarks: List<Bookmark> = listOf()
         private set
 
-    fun setData(list: List<Bookmark>) {
-        this.list = list
+    fun updateBookmarks(list: List<Bookmark>) {
+        this.bookmarks = list
         notifyDataSetChanged()
     }
 
@@ -33,16 +38,16 @@ class BookmarkAdapter(private val context: Context,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) 0 else 1
+        return if (position == 0) VIEW_TYPE_ADD_NEW else VIEW_TYPE_BOOKMARK
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return bookmarks.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is BookmarkSelectableViewHolder) {
-            val bookmark = list[position]
+            val bookmark = bookmarks[position]
             holder.render(bookmark)
         }
     }
@@ -50,7 +55,6 @@ class BookmarkAdapter(private val context: Context,
     private class BookmarkViewHolder(itemView: View, select: (Bookmark) -> Unit, delete: (Bookmark) -> Unit) : BookmarkSelectableViewHolder(itemView, select) {
         private var tvBookmarkName: TextView = itemView.findViewById(R.id.tvBookmarkName)
         private var btnDelete: View = itemView.findViewById(R.id.btnDelete)
-
 
         init {
             btnDelete.setOnClickListener { delete(bookmark) }
