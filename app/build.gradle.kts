@@ -38,15 +38,15 @@ android {
 
     signingConfigs {
         create("release") {
-            val fanstaticKeyAlias = project.findProperty("fanstatic_keyalias")
+            val fanstaticKeyAlias = System.getenv("RELEASE_KEY_ALIAS")
             println("Adding release config for production $fanstaticKeyAlias")
 
             if (fanstaticKeyAlias != null) {
                 println("Adding release config for production")
-                keyAlias = fanstaticKeyAlias as String
-                keyPassword = project.property("fanstatic_keypassword") as String
-                storeFile = file(project.property("fanstatic_file") as String)
-                storePassword = project.property("fanstatic_storepassword") as String
+                keyAlias = fanstaticKeyAlias
+                keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+                storeFile = file("$rootDir/fanstaticapps.keystore")
+                storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
             }
         }
     }
@@ -63,7 +63,6 @@ android {
     testOptions {
         unitTests.apply {
             isReturnDefaultValues = true
-            isIncludeAndroidResources = true
         }
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
@@ -121,6 +120,8 @@ dependencies {
     testImplementation(TestLibs.assertions_junit)
     testImplementation(TestLibs.hilt_testing)
     testImplementation(TestLibs.coroutines_testing)
+    testImplementation(TestLibs.assertions_truth)
+    testImplementation(TestLibs.assertions_google_truth)
     kaptTest(Libs.hilt_compiler)
 
     androidTestImplementation(TestLibs.room_testing)
