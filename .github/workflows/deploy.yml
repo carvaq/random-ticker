@@ -16,7 +16,7 @@ jobs:
 
       - name: Decode google-services.json
         env:
-            FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: echo $FIREBASE_CONFIG > app/google-services.json
 
       - name: Decode service account key
@@ -30,3 +30,8 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ secrests.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrests.RELEASE_KEY_PASSWORD }}
         run: ./gradlew assemble publishBundle
+
+      - name: Save artifact
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          path: ../../app/build/outputs/apk/release/app-release.apk
