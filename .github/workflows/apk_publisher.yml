@@ -49,4 +49,5 @@ jobs:
       - name: Save artifact
         uses: actions/upload-artifact@v2.2.0
         with:
-          path: ../../app/build/outputs/apk/release/app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: ignore
