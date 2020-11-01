@@ -22,7 +22,7 @@ jobs:
       - name: Decode service account key
         env:
           SERVICE_ACCOUNT: ${{ secrets.PLAY_STORE_JSON }}
-        run: echo $SERVICE_ACCOUNT > app/play_store_secret.json
+        run: echo $SERVICE_ACCOUNT > play_store_secret.json
 
       - name: Publish APK
         env:
