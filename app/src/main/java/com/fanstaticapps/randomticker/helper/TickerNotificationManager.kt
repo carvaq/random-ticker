@@ -4,54 +4,66 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.fanstaticapps.randomticker.PREFS
+import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import javax.inject.Inject
 
-class TickerNotificationManager @Inject constructor(private val intentHelper: IntentHelper) {
+class TickerNotificationManager @Inject constructor(private val tickerPreferences: TickerPreferences) {
 
-    internal fun showRunningNotification(context: Context) {
-        val notification = getRunningNotification(context)
-
-        if (isAtLeastAndroid26()) {
-            val notificationManager = context.getNotificationManager()
-            val name = context.getString(R.string.running_channel_name)
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(RUNNING_CHANNEL_ID, name, importance)
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        context.getNotificationManager().notify(RUNNING_NOTIFICATION_ID, notification)
-    }
-
-
-    fun cancelNotifications(context: Context) {
-        PREFS.currentlyTickerRunning = false
-
+    fun cancelAllNotifications(context: Context) {
         val notificationManager = context.getNotificationManager()
         notificationManager.cancel(RUNNING_NOTIFICATION_ID)
         notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)
     }
 
-    private fun getKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
-        val contentIntent = intentHelper.getContentPendingIntent(context, FOREGROUND_NOTIFICATION_ID, true)
-        val fullscreenIntent = intentHelper.getFullscreenPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
+    fun createNotificationChannelIfNecessary(context: Context) {
+        if (isAtLeastAndroid26()) {
+            val channel = createKlaxonChannel(context)
+            context.getNotificationManager().createNotificationChannel(channel)
+        }
+    }
+
+    fun showKlaxonNotification(context: Context, bookmark: Bookmark) {
+        cancelAllNotifications(context)
+        val notificationManager = context.getNotificationManager()
+
+        if (isAtLeastAndroid26()) {
+            val channel = createKlaxonChannel(context)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = buildKlaxonNotification(context, bookmark)
+
+        notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createKlaxonChannel(context: Context): NotificationChannel {
+        val name = context.getString(R.string.foreground_channel_name)
+        return NotificationChannel(FOREGROUND_CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH).apply {
+            setBypassDnd(true)
+            lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        }
+    }
+
+    private fun buildKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
+        val contentIntent = IntentHelper.getContentPendingIntent(context, FOREGROUND_NOTIFICATION_ID, true)
+        val fullscreenIntent = IntentHelper.getFullscreenPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
 
         val notificationBuilder =
                 NotificationCompat.Builder(context, FOREGROUND_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_stat_timer)
                         .setAutoCancel(true)
                         .setContentTitle(bookmark.name)
-                        .setDefaults(Notification.DEFAULT_LIGHTS)
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .addAction(getStopAction(context))
                         .addAction(getRepeatAction(context))
                         .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -60,33 +72,48 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
                         .setContentIntent(contentIntent)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
+        val notificationChannel = if (isAtLeastAndroid26()) {
+            context.getNotificationManager().getNotificationChannel(FOREGROUND_CHANNEL_ID)
+        } else {
+            null
+        }
+        val alarmRingtone = if (isAtLeastAndroid26()) {
+            notificationChannel?.sound
+        } else {
+            tickerPreferences.alarmRingtone.toUri()
+        }
+        val vibrationEnabled = if (isAtLeastAndroid26()) {
+            notificationChannel?.shouldVibrate() ?: false
+        } else {
+            tickerPreferences.vibrationEnabled
+        }
+        if (alarmRingtone != null && !alarmRingtone.scheme.isNullOrEmpty()) {
+            notificationBuilder.setSound(alarmRingtone)
+        }
+        if (vibrationEnabled) {
+            notificationBuilder.setVibrate(VIBRATION_PATTERN)
+        }
         return notificationBuilder.build()
     }
 
-    fun showKlaxonNotification(context: Context, bookmark: Bookmark) {
+
+    internal fun showRunningNotification(context: Context) {
+        val notification = buildRunningNotification(context)
         val notificationManager = context.getNotificationManager()
 
         if (isAtLeastAndroid26()) {
-            val name = context.getString(R.string.foreground_channel_name)
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(FOREGROUND_CHANNEL_ID, name, importance)
-            channel.setBypassDnd(true)
-            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            val name = context.getString(R.string.running_channel_name)
+            val channel = NotificationChannel(RUNNING_CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
             notificationManager.createNotificationChannel(channel)
         }
 
-        val notification = getKlaxonNotification(context, bookmark)
-
-        cancelNotifications(context)
-
-        notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
-        AlarmKlaxon.start(context)
+        notificationManager.notify(RUNNING_NOTIFICATION_ID, notification)
     }
 
-    private fun getRunningNotification(context: Context): Notification {
-        val interval = PREFS.interval
-        val intervalFinished = PREFS.intervalFinished
-        val alarmPendingIntent = intentHelper.getContentPendingIntent(context, RUNNING_NOTIFICATION_ID, false)
+    private fun buildRunningNotification(context: Context): Notification {
+        val interval = tickerPreferences.interval
+        val intervalFinished = tickerPreferences.intervalWillBeFinished
+        val alarmPendingIntent = IntentHelper.getContentPendingIntent(context, RUNNING_NOTIFICATION_ID, false)
         val cancelAction = getCancelAction(context)
 
         val formattedInterval = getFormattedElapsedMilliseconds(interval)
@@ -105,25 +132,25 @@ class TickerNotificationManager @Inject constructor(private val intentHelper: In
     }
 
     private fun getCancelAction(context: Context): NotificationCompat.Action {
-        val cancelPendingIntent = intentHelper.getCancelActionPendingIntent(context, RUNNING_NOTIFICATION_ID)
+        val cancelPendingIntent = IntentHelper.getCancelActionPendingIntent(context, RUNNING_NOTIFICATION_ID)
         return NotificationCompat.Action(R.drawable.ic_action_stop_timer, context.getString(android.R.string.cancel), cancelPendingIntent)
     }
 
     private fun getStopAction(context: Context): NotificationCompat.Action {
-        val cancelPendingIntent = intentHelper.getCancelActionPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
+        val cancelPendingIntent = IntentHelper.getCancelActionPendingIntent(context, FOREGROUND_NOTIFICATION_ID)
         return NotificationCompat.Action(R.drawable.ic_action_stop_timer, context.getString(R.string.action_stop), cancelPendingIntent)
     }
 
     private fun getRepeatAction(context: Context): NotificationCompat.Action {
-        val pendingIntent = intentHelper.getRepeatReceiverPendingIntent(context)
+        val pendingIntent = IntentHelper.getRepeatReceiverPendingIntent(context)
         return NotificationCompat.Action(R.drawable.ic_action_repeat_timer, context.getString(R.string.action_repeat), pendingIntent)
     }
 
     companion object {
         const val RUNNING_CHANNEL_ID = "RandomTickerChannel:01"
-        const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:02"
+        const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:03"
         const val RUNNING_NOTIFICATION_ID = 2312
         const val FOREGROUND_NOTIFICATION_ID = 1243
-        val VIBRATION_PATTERN = longArrayOf(0, 100, 800, 600, 800, 800, 800, 1000)
+        private val VIBRATION_PATTERN = longArrayOf(0, 1000, 1000, 1000, 1000, 1000)
     }
 }

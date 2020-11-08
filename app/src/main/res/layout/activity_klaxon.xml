@@ -1,98 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools"
-		android:id="@+id/mlKlaxon"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:animateLayoutChanges="true"
-		android:background="@drawable/klaxon_background"
-		android:keepScreenOn="true"
-		app:applyMotionScene="true"
-		app:layoutDescription="@xml/activity_klaxon_scene"
-		tools:context="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mlKlaxon"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/klaxon_background"
+    android:keepScreenOn="true"
+    app:applyMotionScene="true"
+    app:layoutDescription="@xml/activity_klaxon_scene"
+    tools:context="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity">
 
 
-	<com.airbnb.lottie.LottieAnimationView
-			android:id="@+id/laWaiting"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:layout_marginBottom="8dp"
-			android:paddingTop="@dimen/sectionMargin"
-			android:paddingBottom="@dimen/sectionMargin"
-			app:layout_constraintBottom_toTopOf="@+id/tvElapsedTime"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:lottie_autoPlay="true"
-			app:lottie_loop="true"
-			app:lottie_rawRes="@raw/hourglass" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/laWaiting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:paddingTop="@dimen/sectionMargin"
+        android:paddingBottom="@dimen/sectionMargin"
+        app:layout_constraintBottom_toTopOf="@+id/tvElapsedTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_enableMergePathsForKitKatAndAbove="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/hourglass" />
 
-	<TextView
-			android:id="@+id/tvElapsedTime"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="?attr/selectableItemBackground"
-			android:fontFamily="monospace"
-			android:gravity="center"
-			android:padding="8dp"
-			android:text="@string/show_elapsed_time"
-			android:textAllCaps="true"
-			android:textColor="@color/secondaryColor"
-			android:textSize="@dimen/elapsedTimeTextSize"
-			android:textStyle="bold"
-			app:layout_constraintBottom_toTopOf="@id/btnRepeat"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			tools:background="@color/colorAccent"
-			tools:textColor="#fff" />
+    <Button
+        android:id="@+id/tvElapsedTime"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:fontFamily="monospace"
+        android:text="@string/show_elapsed_time"
+        app:layout_constraintBottom_toTopOf="@id/btnRepeat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-	<Button
-			android:id="@+id/btnRepeat"
-			style="@style/Widget.AppCompat.Button.Borderless"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/action_repeat"
-			android:textColor="@color/colorPrimaryDark"
-			android:textSize="24sp"
-			android:visibility="gone"
-			app:layout_constraintBottom_toTopOf="@id/plDismiss"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/btnRepeat"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_repeat"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
-	<pl.bclogic.pulsator4droid.library.PulsatorLayout
-			android:id="@+id/plDismiss"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:layout_marginStart="16dp"
-			android:layout_marginLeft="16dp"
-			android:layout_marginEnd="16dp"
-			android:layout_marginRight="16dp"
-			android:layout_marginBottom="16dp"
-			android:gravity="center"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHeight_percent="0.4"
-			app:layout_constraintStart_toStartOf="parent"
-			app:pulse_color="@color/secondaryColor"
-			app:pulse_count="4"
-			app:pulse_duration="4000"
-			app:pulse_interpolator="Linear"
-			app:pulse_repeat="0"
-			app:pulse_startFromScratch="true">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-		<ImageView
-				android:id="@+id/btnDismiss"
-				style="@style/Base.TextAppearance.AppCompat.Widget.Button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:contentDescription="@android:string/cancel"
-				android:elevation="4dp"
-				android:minWidth="@dimen/dismissButtonMinSize"
-				android:minHeight="@dimen/dismissButtonMinSize"
-				android:src="@drawable/ic_cancel"
-				android:tint="@color/contrastTextColor" />
-	</pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+    <ImageView
+        android:id="@+id/ivPulsatorDismiss"
+        android:layout_width="@dimen/dismissButtonMinSize"
+        android:layout_height="@dimen/dismissButtonMinSize"
+        android:alpha="0"
+        android:src="@drawable/ripple_effect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline" />
+
+    <ImageView
+        android:id="@+id/btnDismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@android:string/cancel"
+        android:elevation="4dp"
+        android:minWidth="@dimen/dismissButtonMinSize"
+        android:minHeight="@dimen/dismissButtonMinSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        app:srcCompat="@drawable/ic_cancel" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

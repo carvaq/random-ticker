@@ -9,8 +9,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:name=".TickerApplication"
@@ -24,11 +23,15 @@
         <receiver
             android:name=".receiver.RepeatAlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="false" />
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.fanstaticapps.randomticker.ALARM" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
@@ -57,33 +60,21 @@
         </activity>
         <activity
             android:name=".ui.klaxon.KlaxonActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
         <activity
             android:name=".ui.preferences.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity" />
-        </activity> <!-- Google Activities, need to be here because of styling -->
+            android:parentActivityName=".ui.main.MainActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/AppTheme.LicenseActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
-        </activity>
+            android:theme="@style/AppTheme.LicenseActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:parentActivityName=".ui.preferences.SettingsActivity"
-            android:theme="@style/AppTheme.LicenseActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.preferences.SettingsActivity" />
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".ui.CancelActivity" />
     </application>
 

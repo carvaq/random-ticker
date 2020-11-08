@@ -5,19 +5,14 @@ import android.view.MenuItem
 import androidx.core.app.NavUtils
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import kotlinx.android.synthetic.main.app_bar.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        setupActionBar()
-    }
-
-    private fun setupActionBar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

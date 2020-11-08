@@ -1,34 +1,28 @@
 package com.fanstaticapps.randomticker.data
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [(Bookmark::class)], version = 1)
+@Database(entities = [Bookmark::class], version = 3)
 abstract class TickerDatabase : RoomDatabase() {
 
     abstract fun tickerDataDao(): BookmarkDao
 
     companion object {
-        private var INSTANCE: TickerDatabase? = null
-
-        fun getInstance(context: Context): TickerDatabase {
-            if (INSTANCE == null) {
-                synchronized(TickerDatabase::class) {
-                    INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            TickerDatabase::class.java, "tickerV2.db")
-                            .build()
-                }
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE bookmarks ADD COLUMN minimumHours INTEGER NOT NULL DEFAULT 0")
+                database.execSQL("ALTER TABLE bookmarks ADD COLUMN maximumHours INTEGER NOT NULL DEFAULT 0")
             }
-            return INSTANCE!!
         }
-
-        fun destroyInstance() {
-            INSTANCE = null
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE bookmarks ADD COLUMN autoRepeat INTEGER NOT NULL DEFAULT 0")
+            }
         }
     }
-
 
 }
