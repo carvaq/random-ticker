@@ -1,10 +1,10 @@
 object Versions {
-    const val kotlin = "1.4.10"
+    const val kotlin = "1.4.21"
     const val minSdkVersion = 21
     const val targetSdkVersion = 30
     const val compileVersion = 30
     const val buildToolsVersion = "30.0.2"
-    const val triplet = "3.0.0"
+    const val triplet = "3.2.0-agp4.2"
 }
 
 object Kotlin {
@@ -22,10 +22,10 @@ object AndroidLibs {
     const val cardview = "androidx.cardview:cardview:1.0.0"
     const val appcompat = "androidx.appcompat:appcompat:1.2.0"
     const val preference = "androidx.preference:preference:1.1.1"
-    const val activity = "androidx.activity:activity-ktx:1.2.0-alpha08"
+    const val activity = "androidx.activity:activity-ktx:1.2.0-rc01"
     const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
 
-    const val roomVersion = "2.2.5"
+    const val roomVersion = "2.2.6"
     const val room_runtime = "androidx.room:room-runtime:$roomVersion"
     const val room_ktx = "androidx.room:room-ktx:$roomVersion"
     const val room_compiler = "androidx.room:room-compiler:$roomVersion"
@@ -38,12 +38,12 @@ object AndroidLibs {
      const val coroutinesVersion = "1.3.9"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 
-    private const val constraintLayoutVersion = "2.0.0"
+    private const val constraintLayoutVersion = "2.0.4"
     const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 }
 
 object Libs {
-    const val hiltVersion = "2.29-alpha"
+    const val hiltVersion = "2.31.2-alpha"
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hilt_compiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
     const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"

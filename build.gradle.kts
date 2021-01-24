@@ -6,12 +6,12 @@ buildscript {
 		maven("https://plugins.gradle.org/m2/")
 	}
 	dependencies {
-		classpath("com.android.tools.build:gradle:4.1.0-rc03")
-		classpath(kotlin("gradle-plugin", version = Versions.kotlin))
+		classpath("com.android.tools.build:gradle:7.0.0-alpha04")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
 		classpath("com.google.gms:google-services:${Gms.services_plugin_version}")
 		classpath("com.google.android.gms:oss-licenses-plugin:${Gms.oss_plugin_version}")
 		classpath("com.google.dagger:hilt-android-gradle-plugin:${Libs.hiltVersion}")
-		classpath("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
+		classpath("com.google.firebase:firebase-crashlytics-gradle:2.4.1")
 	}
 }
 
