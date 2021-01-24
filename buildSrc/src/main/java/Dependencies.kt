@@ -31,9 +31,10 @@ object AndroidLibs {
     const val room_compiler = "androidx.room:room-compiler:$roomVersion"
 
     private const val lifecycleVersion = "2.2.0"
-    const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    const val extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    const val lifecycle_livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    const val lifecycle_viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    const val lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    const val lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 
      const val coroutinesVersion = "1.3.9"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"

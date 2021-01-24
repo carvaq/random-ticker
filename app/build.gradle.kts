@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("kotlin-android-extensions")
     id("com.github.triplet.play") version (Versions.triplet)
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.firebase.crashlytics")
@@ -60,6 +59,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     testOptions {
         unitTests.apply {
             isReturnDefaultValues = true
@@ -91,9 +94,10 @@ dependencies {
     implementation(AndroidLibs.room_runtime)
     implementation(AndroidLibs.room_ktx)
 
-    implementation(AndroidLibs.livedata)
-    implementation(AndroidLibs.viewmodel)
-    implementation(AndroidLibs.extensions)
+    implementation(AndroidLibs.lifecycle_livedata)
+    implementation(AndroidLibs.lifecycle_viewmodel)
+    implementation(AndroidLibs.lifecycle_extensions)
+    implementation(AndroidLibs.lifecycle_common)
     implementation(AndroidLibs.preference)
     implementation(AndroidLibs.activity)
     implementation(AndroidLibs.fragment)

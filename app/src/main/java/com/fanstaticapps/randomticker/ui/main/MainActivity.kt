@@ -13,6 +13,8 @@ import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
+import com.fanstaticapps.randomticker.databinding.ActivityMainBinding
+import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.helper.livedata.nonNull
@@ -20,10 +22,6 @@ import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.content_bookmarks.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.content_maximum_value.*
-import kotlinx.android.synthetic.main.content_minimum_value.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,15 +35,17 @@ class MainActivity : BaseActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    private val viewBinding by viewBinding(ActivityMainBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (timerHelper.isCurrentlyTickerRunning()) {
             // if the timer is running we should move the KlaxonActivity
             startAlarmActivity()
         } else {
-            setContentView(R.layout.activity_main)
+            setContentView(viewBinding.root)
 
-            setSupportActionBar(findViewById(R.id.toolbar))
+            setSupportActionBar(viewBinding.appbar.toolbar)
 
             initializeListeners()
             initializeBookmarks()
@@ -75,7 +75,7 @@ class MainActivity : BaseActivity() {
                 .observe(this) {
                     renderBookmark(it)
                 }
-        btnSelectBookmark.setOnClickListener {
+        viewBinding.content.bookmarks.btnSelectBookmark.setOnClickListener {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 BookmarkDialog().show(supportFragmentManager, "BookmarkSelector")
             }
@@ -83,7 +83,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initializeListeners() {
-        btnStartTicker.setOnClickListener { createTimer() }
+        viewBinding.content.btnStartTicker.setOnClickListener { createTimer() }
     }
 
     private fun initializeTimerCreationStatus() {
@@ -100,33 +100,37 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-        minHours.init(10, R.string.from, R.string.hours_label)
-        minMin.init(59, R.string.from, R.string.minutes_label)
-        minSec.init(59, R.string.from, R.string.seconds_label)
-        maxHours.init(10, R.string.to, R.string.hours_label)
-        maxMin.init(59, R.string.to, R.string.minutes_label)
-        maxSec.init(59, R.string.to, R.string.seconds_label)
+        viewBinding.content.contentMin.minHours.init(10, R.string.from, R.string.hours_label)
+        viewBinding.content.contentMin.minMin.init(59, R.string.from, R.string.minutes_label)
+        viewBinding.content.contentMin.minSec.init(59, R.string.from, R.string.seconds_label)
+        viewBinding.content.contentMax.maxHours.init(10, R.string.to, R.string.hours_label)
+        viewBinding.content.contentMax.maxMin.init(59, R.string.to, R.string.minutes_label)
+        viewBinding.content.contentMax.maxSec.init(59, R.string.to, R.string.seconds_label)
     }
 
 
     private fun renderBookmark(bookmark: Bookmark) {
         with(bookmark) {
-            etBookmarkName.setText(name)
-            minHours.value = minimumHours
-            minMin.value = minimumMinutes
-            minSec.value = minimumSeconds
-            maxHours.value = maximumHours
-            maxMin.value = maximumMinutes
-            maxSec.value = maximumSeconds
-            cbAutoRepeat.isChecked = bookmark.autoRepeat
+            viewBinding.content.bookmarks.etBookmarkName.setText(name)
+            viewBinding.content.contentMin.minHours.value = minimumHours
+            viewBinding.content.contentMin.minMin.value = minimumMinutes
+            viewBinding.content.contentMin.minSec.value = minimumSeconds
+            viewBinding.content.contentMax.maxHours.value = maximumHours
+            viewBinding.content.contentMax.maxMin.value = maximumMinutes
+            viewBinding.content.contentMax.maxSec.value = maximumSeconds
+            viewBinding.content.cbAutoRepeat.isChecked = bookmark.autoRepeat
         }
     }
 
     private fun createTimer() {
-        viewModel.createTimer(etBookmarkName.name(),
-                IntervalDefinition(minHours.value, minMin.value, minSec.value),
-                IntervalDefinition(maxHours.value, maxMin.value, maxSec.value),
-                cbAutoRepeat.isChecked
+        viewModel.createTimer(viewBinding.content.bookmarks.etBookmarkName.name(),
+                IntervalDefinition(viewBinding.content.contentMin.minHours.value,
+                        viewBinding.content.contentMin.minMin.value,
+                        viewBinding.content.contentMin.minSec.value),
+                IntervalDefinition(viewBinding.content.contentMax.maxHours.value,
+                        viewBinding.content.contentMax.maxMin.value,
+                        viewBinding.content.contentMax.maxSec.value),
+                viewBinding.content.cbAutoRepeat.isChecked
         )
     }
 

@@ -9,11 +9,12 @@ import androidx.activity.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.databinding.ActivityKlaxonBinding
+import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_klaxon.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class KlaxonActivity : BaseActivity() {
     lateinit var timerHelper: TimerHelper
 
     private val viewModel: KlaxonViewModel by viewModels()
+    private val binding by viewBinding(ActivityKlaxonBinding::inflate)
 
     private var timeElapsed: Boolean = false
     private val pulsatorAnimation = AnimatorSet()
@@ -40,7 +42,7 @@ class KlaxonActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         readExtras(intent)
 
-        setContentView(R.layout.activity_klaxon)
+        setContentView(binding.root)
         updateScreenStatus()
         prepareAnimation()
 
@@ -58,9 +60,9 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun prepareAnimation() {
-        val imageXAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleX", 3f)
-        val imageYAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "scaleY", 3f)
-        val imageAlphaAnimator = ObjectAnimator.ofFloat(ivPulsatorDismiss, "alpha", 0.6f)
+        val imageXAnimator = ObjectAnimator.ofFloat(binding.ivPulsatorDismiss, "scaleX", 3f)
+        val imageYAnimator = ObjectAnimator.ofFloat(binding.ivPulsatorDismiss, "scaleY", 3f)
+        val imageAlphaAnimator = ObjectAnimator.ofFloat(binding.ivPulsatorDismiss, "alpha", 0.6f)
         val animators = listOf(imageXAnimator, imageYAnimator, imageAlphaAnimator)
 
         pulsatorAnimation.apply {
@@ -76,18 +78,18 @@ class KlaxonActivity : BaseActivity() {
 
     private fun updateScreenStatus() {
         if (!timeElapsed) {
-            mlKlaxon.transitionToStart()
+            binding.mlKlaxon.transitionToStart()
         }
     }
 
     override fun onResume() {
         super.onResume()
         Timber.d("Alarm time elapsed?  $timeElapsed")
-        btnDismiss.setOnClickListener {
+        binding.btnDismiss.setOnClickListener {
             viewModel.cancelTimer()
         }
 
-        btnRepeat.setOnClickListener {
+        binding.btnRepeat.setOnClickListener {
             viewModel.currentBookmark.observe(this, {
                 autoRepeatTicker(it)
             })
@@ -113,9 +115,9 @@ class KlaxonActivity : BaseActivity() {
         when (viewState) {
             is KlaxonViewState.TickerStarted -> {
                 startWaitingIconAnimation()
-                tvElapsedTime.setOnClickListener { viewModel.showElapsedTime = true }
+                binding.tvElapsedTime.setOnClickListener { viewModel.showElapsedTime = true }
                 if (viewState.bookmark.autoRepeat) {
-                    btnRepeat.visibility = View.GONE
+                    binding.btnRepeat.visibility = View.GONE
                 }
             }
             is KlaxonViewState.ElapsedTimeUpdate -> {
@@ -149,16 +151,16 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun stopTickerRunning() {
-        laWaiting.cancelAnimation()
+        binding.laWaiting.cancelAnimation()
         pulsatorAnimation.cancel()
     }
 
     private fun startTickerRinging(bookmark: Bookmark) {
         timerHelper.startNotification(this, bookmark)
 
-        tvElapsedTime.isEnabled = false
-        laWaiting.cancelAnimation()
-        mlKlaxon.transitionToEnd()
+        binding.tvElapsedTime.isEnabled = false
+        binding.laWaiting.cancelAnimation()
+        binding.mlKlaxon.transitionToEnd()
         pulsatorAnimation.start()
     }
 
@@ -168,11 +170,11 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun showElapsedTime(elapsedTimeInMillis: String?) {
-        elapsedTimeInMillis?.let { tvElapsedTime.text = elapsedTimeInMillis }
+        elapsedTimeInMillis?.let { binding.tvElapsedTime.text = elapsedTimeInMillis }
     }
 
     private fun startWaitingIconAnimation() {
-        laWaiting.playAnimation()
+        binding.laWaiting.playAnimation()
     }
 
 }

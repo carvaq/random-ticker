@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.databinding.DialogBookmarkBinding
+import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.dialog_bookmark.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,6 +24,7 @@ class BookmarkDialog : BottomSheetDialogFragment() {
 
     private val viewModel: BookmarksViewModel by viewModels()
 
+    private val binding by viewBinding(DialogBookmarkBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +55,8 @@ class BookmarkDialog : BottomSheetDialogFragment() {
                     viewModel.deleteBookmark(bookmark)
                 })
 
-        rvBookmarks.layoutManager = LinearLayoutManager(requireContext())
-        rvBookmarks.adapter = adapter
+        binding.rvBookmarks.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvBookmarks.adapter = adapter
 
         viewModel.allBookmarks.observe(viewLifecycleOwner, { bookmarks ->
             val allItems = listOf(Bookmark("Random Ticker")).plus(bookmarks)
