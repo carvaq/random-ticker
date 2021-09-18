@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:layout_width="match_parent"
-			  android:gravity="center_vertical"
-			  android:layout_height="wrap_content">
+		android:layout_width="match_parent"
+		android:gravity="center_vertical"
+		android:layout_height="wrap_content">
 
 	<EditText
 			android:inputType="textCapWords"
@@ -11,12 +11,12 @@
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="wrap_content"
-			android:importantForAutofill="no"/>
+			android:importantForAutofill="no" />
 
 	<Button
-		android:id="@+id/btnSelectBookmark"
-		style="@style/Widget.MaterialComponents.Button.TextButton"
-		android:text="@string/button_select_profile"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
+			android:id="@+id/btnSelectBookmark"
+			style="@style/Widget.MaterialComponents.Button.TextButton"
+			android:text="@string/button_select_profile"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 </LinearLayout>

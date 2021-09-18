@@ -10,9 +10,11 @@ import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import kotlinx.coroutines.launch
 
-internal class BookmarksViewModel @ViewModelInject constructor(@Assisted private val savedStateHandle: SavedStateHandle,
-                                                               private val tickerPreferences: TickerPreferences,
-                                                               private val repository: BookmarkRepository) : ViewModel() {
+internal class BookmarksViewModel @ViewModelInject constructor(
+    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val tickerPreferences: TickerPreferences,
+    private val repository: BookmarkRepository
+) : ViewModel() {
 
     val allBookmarks = repository.getAllBookmarks()
 

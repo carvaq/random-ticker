@@ -36,8 +36,11 @@ class TickerPreferences(context: Context) {
     var alarmRingtone: String
         get() {
             val defaultFallback = "content://settings/system/notification_sound"
-            return prefs.getString(ringtonePref, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)?.toString())
-                    ?: defaultFallback
+            return prefs.getString(
+                ringtonePref,
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)?.toString()
+            )
+                ?: defaultFallback
         }
         set(value) = prefs.edit().putString(ringtonePref, value).apply()
     var currentSelectedId: Long
@@ -50,7 +53,8 @@ class TickerPreferences(context: Context) {
         get() = prefs.getBoolean(darkThemePref, false)
         set(value) = prefs.edit().putBoolean(darkThemePref, value).apply()
 
-    val currentSelectedBookmarkIdAsLiveData = SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
+    val currentSelectedBookmarkIdAsLiveData =
+        SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
 
     fun setTickerInterval(interval: Long) {
         this.interval = interval

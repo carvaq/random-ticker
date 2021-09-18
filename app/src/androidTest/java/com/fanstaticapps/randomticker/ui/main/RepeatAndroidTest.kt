@@ -3,7 +3,10 @@ package com.fanstaticapps.randomticker.ui.main
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -30,7 +33,7 @@ class RepeatAndroidTest {
 
     @get:Rule
     val rule: RuleChain = RuleChain.outerRule(hiltAndroidRule)
-            .around(activityScenarioRule)
+        .around(activityScenarioRule)
 
     @Inject
     lateinit var tickerPreferences: TickerPreferences
@@ -66,7 +69,7 @@ class RepeatAndroidTest {
 
     private fun createTicker() {
         onView(withId(R.id.etBookmarkName))
-                .perform(replaceText("Alisteir"), closeSoftKeyboard())
+            .perform(replaceText("Alisteir"), closeSoftKeyboard())
 
         onView(withId(R.id.minSec)).perform(pickValue(2))
         onView(withId(R.id.maxSec)).perform(pickValue(4))

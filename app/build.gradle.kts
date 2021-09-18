@@ -4,9 +4,10 @@ plugins {
     id("kotlin-kapt")
     id("com.github.triplet.play") version (Versions.triplet)
     id("com.google.android.gms.oss-licenses-plugin")
-    id("com.google.firebase.crashlytics")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.github.ben-manes.versions") version (Versions.bennames)
+    id("se.patrikerdes.use-latest-versions") version "0.2.17"
 }
 
 
@@ -19,20 +20,20 @@ val generateVersionCode = Integer.parseInt(generatedVersionName)
 
 
 android {
-    compileSdkVersion(Versions.compileVersion)
-    buildToolsVersion(Versions.buildToolsVersion)
 
+    compileSdk = Versions.compileVersion
+    buildToolsVersion = Versions.buildToolsVersion
     defaultConfig {
-        minSdkVersion(Versions.minSdkVersion)
-        targetSdkVersion(Versions.targetSdkVersion)
 
+        testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
+        minSdk = Versions.minSdkVersion
+        targetSdk = Versions.targetSdkVersion
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = generateVersionCode
         versionName = generatedVersionName
 
         testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
-        setTestInstrumentationRunnerArguments(mutableMapOf("clearPackageData" to "true"))
     }
 
     signingConfigs {
@@ -53,7 +54,12 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
+            setProguardFiles(
+                listOf(
+                    getDefaultProguardFile("proguard-android.txt"),
+                    "proguard-rules.pro"
+                )
+            )
             isDebuggable = false
             signingConfig = signingConfigs.getByName("release")
         }
@@ -102,8 +108,6 @@ dependencies {
     implementation(AndroidLibs.activity)
     implementation(AndroidLibs.fragment)
     implementation(AndroidLibs.coroutines)
-
-    implementation(Firebase.crashlytics)
 
     implementation(Libs.hilt)
     implementation(Libs.hilt_viewmodel)
@@ -163,4 +167,7 @@ kapt {
         arg("room.incremental", "true")
         arg("room.expandProjection", "true")
     }
+}
+repositories {
+    mavenCentral()
 }

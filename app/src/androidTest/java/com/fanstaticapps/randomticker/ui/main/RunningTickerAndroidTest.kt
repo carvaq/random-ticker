@@ -22,7 +22,7 @@ class RunningTickerAndroidTest {
 
     @get:Rule
     val rule: RuleChain = RuleChain.outerRule(hiltRule)
-            .around(activityScenarioRule<MainActivity>())
+        .around(activityScenarioRule<MainActivity>())
 
     @Inject
     lateinit var tickerPreferences: TickerPreferences

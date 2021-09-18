@@ -1,80 +1,80 @@
 <resources>
 
-    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">56dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginTop">@dimen/sectionMargin</item>
-    </style>
+	<style name="AppTheme.Button" parent="Widget.MaterialComponents.Button">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:minHeight">56dp</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_marginTop">@dimen/sectionMargin</item>
+	</style>
 
-    <style name="AppTheme.Base" />
+	<style name="AppTheme.Base" />
 
-    <style name="AppTheme.Base.Label">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/titleMargin</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Subhead</item>
-    </style>
+	<style name="AppTheme.Base.Label">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textAllCaps">true</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Subhead</item>
+	</style>
 
-    <style name="AppTheme.Base.Description">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Tooltip</item>
-        <item name="android:layout_marginBottom">@dimen/titleMargin</item>
-    </style>
+	<style name="AppTheme.Base.Description">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Tooltip</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+	</style>
 
-    <style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@color/background</item>
-        <item name="strokeColor">@color/secondaryColor</item>
-        <item name="contentPadding">8dp</item>
-        <item name="strokeWidth">1.5dp</item>
-    </style>
+	<style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
+		<item name="cardBackgroundColor">@color/background</item>
+		<item name="strokeColor">@color/secondaryColor</item>
+		<item name="contentPadding">8dp</item>
+		<item name="strokeWidth">1.5dp</item>
+	</style>
 
-    <style name="ShapeAppearance" />
+	<style name="ShapeAppearance" />
 
-    <style name="ShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">8dp</item>
-    </style>
+	<style name="ShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+		<item name="cornerFamily">cut</item>
+		<item name="cornerSize">8dp</item>
+	</style>
 
-    <style name="ShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">8dp</item>
-    </style>
+	<style name="ShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+		<item name="cornerFamily">cut</item>
+		<item name="cornerSize">8dp</item>
+	</style>
 
-    <style name="ShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">12dp</item>
-    </style>
+	<style name="ShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+		<item name="cornerFamily">cut</item>
+		<item name="cornerSize">12dp</item>
+	</style>
 
-    <style name="AppTheme.Label" parent="AppTheme.Base.Label" />
+	<style name="AppTheme.Label" parent="AppTheme.Base.Label" />
 
-    <style name="AppTheme.Description" parent="AppTheme.Base.Description" />
+	<style name="AppTheme.Description" parent="AppTheme.Base.Description" />
 
-    <style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint" />
+	<style name="AppTheme.HintTextAppearance" parent="TextAppearance.Design.Hint" />
 
-    <style name="AppTheme.RootContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
+	<style name="AppTheme.RootContainer">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+	</style>
 
-    <style name="AppTheme.Bookmark">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:elevation">5dp</item>
-        <item name="android:background">@drawable/bookmark_background</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:gravity">center</item>
-    </style>
+	<style name="AppTheme.Bookmark">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:elevation">5dp</item>
+		<item name="android:background">@drawable/bookmark_background</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginStart">8dp</item>
+		<item name="android:padding">4dp</item>
+		<item name="android:gravity">center</item>
+	</style>
 
-    <style name="AppTheme.BookmarksContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/titleMargin</item>
-    </style>
+	<style name="AppTheme.BookmarksContainer">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginBottom">@dimen/titleMargin</item>
+	</style>
 
 </resources>

@@ -2,7 +2,7 @@
 <resources>
 	<dimen name="activityPaddingHorizontal">64dp</dimen>
 	<dimen name="activityPaddingVertical">32dp</dimen>
-    <dimen name="dismissButtonMinSize">128dp</dimen>
+	<dimen name="dismissButtonMinSize">128dp</dimen>
 	<dimen name="contentPadding">32dp</dimen>
 	<dimen name="editTextMinWidth">150dp</dimen>
 	<dimen name="titleMargin">32dp</dimen>

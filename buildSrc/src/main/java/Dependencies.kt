@@ -1,10 +1,11 @@
 object Versions {
-    const val kotlin = "1.4.21"
+    const val kotlin = "1.5.30"
     const val minSdkVersion = 21
-    const val targetSdkVersion = 30
-    const val compileVersion = 30
-    const val buildToolsVersion = "30.0.2"
+    const val targetSdkVersion = 31
+    const val compileVersion = 31
+    const val buildToolsVersion = "30.0.3"
     const val triplet = "3.2.0-agp4.2"
+    const val bennames = "0.39.0"
 }
 
 object Kotlin {
@@ -13,7 +14,7 @@ object Kotlin {
 
 object Gms {
     const val services_plugin_version = "4.3.3"
-    const val oss_plugin_version = "0.10.2"
+    const val oss_plugin_version = "0.10.4"
     const val oss = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 }
 
@@ -36,24 +37,25 @@ object AndroidLibs {
     const val lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     const val lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 
-     const val coroutinesVersion = "1.3.9"
+    const val coroutinesVersion = "1.5.1"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 
     private const val constraintLayoutVersion = "2.0.4"
-    const val constraint_layout = "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    const val constraint_layout =
+        "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 }
 
 object Libs {
-    const val hiltVersion = "2.31.2-alpha"
+    const val hiltVersion = "2.38.1"
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hilt_compiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
     const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
     const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
 
-    private const val timberVersion = "4.7.1"
+    private const val timberVersion = "5.0.1"
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
 
-    private const val lottieVersion = "3.4.4"
+    private const val lottieVersion = "4.1.0"
     const val lottie = "com.airbnb.android:lottie:$lottieVersion"
 
     private const val ultimateVersion = "2.0.6"
@@ -89,10 +91,7 @@ object TestLibs {
 
     const val room_testing = "androidx.room:room-testing:${AndroidLibs.roomVersion}"
     const val hilt_testing = "com.google.dagger:hilt-android-testing:${Libs.hiltVersion}"
-    const val coroutines_testing = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${AndroidLibs.coroutinesVersion}"
+    const val coroutines_testing =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${AndroidLibs.coroutinesVersion}"
 
-}
-
-object Firebase {
-    const val crashlytics = "com.google.firebase:firebase-crashlytics:17.2.1"
 }

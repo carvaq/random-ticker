@@ -1,14 +1,14 @@
 <resources>
-    <string name="app_name" translatable="false">Random Ticker</string>
-    <string name="license" translatable="false">Open Source Licenses</string>
-    <string name="dark_theme" translatable="false">Dark Theme</string>
-    <string name="pref_ringtone_key" translatable="false">pref_ringtone</string>
-    <string name="pref_license_key" translatable="false">pref_license</string>
-    <string name="pref_show_notification_key" translatable="false">pref_show_notification</string>
-    <string name="pref_vibration_key" translatable="false">pref_vibration</string>
-    <string name="pref_dark_theme_key" translatable="false">pref_dark_theme</string>
-    <string name="pref_open_notification_channel" translatable="false">pref_open_notification_channel</string>
-    <string name="hours" translatable="false">h</string>
-    <string name="minutes" translatable="false">m</string>
-    <string name="seconds" translatable="false">s</string>
+	<string name="app_name" translatable="false">Random Ticker</string>
+	<string name="license" translatable="false">Open Source Licenses</string>
+	<string name="dark_theme" translatable="false">Dark Theme</string>
+	<string name="pref_ringtone_key" translatable="false">pref_ringtone</string>
+	<string name="pref_license_key" translatable="false">pref_license</string>
+	<string name="pref_show_notification_key" translatable="false">pref_show_notification</string>
+	<string name="pref_vibration_key" translatable="false">pref_vibration</string>
+	<string name="pref_dark_theme_key" translatable="false">pref_dark_theme</string>
+	<string name="pref_open_notification_channel" translatable="false">pref_open_notification_channel</string>
+	<string name="hours" translatable="false">h</string>
+	<string name="minutes" translatable="false">m</string>
+	<string name="seconds" translatable="false">s</string>
 </resources>

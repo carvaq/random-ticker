@@ -7,7 +7,13 @@ import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Assert.assertFalse
@@ -35,7 +41,7 @@ class TimerHelperTest {
     fun `when repeating a ticker from bookmark then start notifications and create alarm`() {
         whenever(tickerPreferencesMock.showRunningTimerNotification).doReturn(false)
         whenever(tickerPreferencesMock.intervalWillBeFinished)
-                .doReturn(System.currentTimeMillis() + 2300)
+            .doReturn(System.currentTimeMillis() + 2300)
 
         testee.newTickerFromBookmark(context, Bookmark("Test"))
 
@@ -48,8 +54,10 @@ class TimerHelperTest {
     @Test
     fun `when creating ticker if min max is invalid do not create`() {
 
-        val tickerCreated = testee.createTicker(minIntervalDefinition = IntervalDefinition(0, 20, 0),
-                maxIntervalDefinition = IntervalDefinition(0, 0, 20))
+        val tickerCreated = testee.createTicker(
+            minIntervalDefinition = IntervalDefinition(0, 20, 0),
+            maxIntervalDefinition = IntervalDefinition(0, 0, 20)
+        )
 
         verify(tickerPreferencesMock, never()).setTickerInterval(any())
         assertFalse(tickerCreated)
@@ -57,8 +65,10 @@ class TimerHelperTest {
 
     @Test
     fun `when creating ticker if min max is valid do not create`() {
-        val tickerCreated = testee.createTicker(minIntervalDefinition = IntervalDefinition(0, 20, 0),
-                maxIntervalDefinition = IntervalDefinition(0, 20, 20))
+        val tickerCreated = testee.createTicker(
+            minIntervalDefinition = IntervalDefinition(0, 20, 0),
+            maxIntervalDefinition = IntervalDefinition(0, 20, 20)
+        )
 
         val argumentCaptor = argumentCaptor<Long>()
         verify(tickerPreferencesMock).setTickerInterval(argumentCaptor.capture())

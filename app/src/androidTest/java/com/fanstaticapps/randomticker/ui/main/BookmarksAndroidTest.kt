@@ -3,10 +3,16 @@ package com.fanstaticapps.randomticker.ui.main
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.pickValue
@@ -22,13 +28,13 @@ class BookmarksAndroidTest {
 
     @get:Rule
     val rule: RuleChain = RuleChain.outerRule(HiltAndroidRule(this))
-            .around(activityScenarioRule<MainActivity>())
+        .around(activityScenarioRule<MainActivity>())
 
     @Test
     fun testBookmarkSaving() {
 
         onView(withId(R.id.etBookmarkName))
-                .perform(replaceText("TestLife"), closeSoftKeyboard())
+            .perform(replaceText("TestLife"), closeSoftKeyboard())
 
         onView(withId(R.id.minSec)).perform(pickValue(5))
         onView(withId(R.id.maxHours)).perform(pickValue(2))
@@ -51,7 +57,7 @@ class BookmarksAndroidTest {
 
         onView(withId(R.id.btnSelectBookmark)).perform(scrollTo(), click())
         onView(withId(R.id.rvBookmarks))
-                .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+            .perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         createTicker("Lucinda", 20, 21)
 
@@ -59,14 +65,14 @@ class BookmarksAndroidTest {
 
         onView(withId(R.id.btnSelectBookmark)).perform(scrollTo(), click())
         onView(withId(R.id.rvBookmarks))
-                .check(matches(hasDescendant(withText("Alisteir"))))
+            .check(matches(hasDescendant(withText("Alisteir"))))
         onView(withId(R.id.rvBookmarks))
-                .check(matches(hasDescendant(withText("Lucinda"))))
+            .check(matches(hasDescendant(withText("Lucinda"))))
     }
 
     private fun createTicker(name: String, minSec: Int, maxSec: Int) {
         onView(withId(R.id.etBookmarkName))
-                .perform(replaceText(name), closeSoftKeyboard())
+            .perform(replaceText(name), closeSoftKeyboard())
 
         onView(withId(R.id.minSec)).perform(pickValue(minSec))
         onView(withId(R.id.maxSec)).perform(pickValue(maxSec))

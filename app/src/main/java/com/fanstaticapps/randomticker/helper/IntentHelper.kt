@@ -25,26 +25,40 @@ object IntentHelper {
         return intent
     }
 
-    fun getContentPendingIntent(context: Context, requestCode: Int, hasTimeElapsed: Boolean): PendingIntent {
+    fun getContentPendingIntent(
+        context: Context,
+        requestCode: Int,
+        hasTimeElapsed: Boolean
+    ): PendingIntent {
         val intent = getKlaxonActivity(context, hasTimeElapsed).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        return PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     fun getFullscreenPendingIntent(context: Context, requestCode: Int): PendingIntent {
         val intent = getKlaxonActivity(context, true).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        return PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     fun getCancelActionPendingIntent(context: Context, requestCode: Int): PendingIntent {
         return PendingIntent.getActivity(
-                context,
-                requestCode,
-                Intent(context, CancelActivity::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
+            context,
+            requestCode,
+            Intent(context, CancelActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
     }
 
@@ -53,19 +67,19 @@ object IntentHelper {
             component = ComponentName(context, AlarmReceiver::class.java)
         }
         return PendingIntent.getBroadcast(
-                context,
-                421,
-                intent,
-                flag
+            context,
+            421,
+            intent,
+            flag
         )
     }
 
     fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {
         return PendingIntent.getBroadcast(
-                context,
-                112,
-                Intent(context, RepeatAlarmReceiver::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
+            context,
+            112,
+            Intent(context, RepeatAlarmReceiver::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
     }
 }

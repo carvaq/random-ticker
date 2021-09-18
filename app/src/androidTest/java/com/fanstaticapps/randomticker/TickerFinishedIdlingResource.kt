@@ -11,7 +11,8 @@ class TickerFinishedIdlingResource(private val prefs: TickerPreferences) : Idlin
 
     override fun isIdleNow(): Boolean {
         val intervalFinished = prefs.intervalWillBeFinished
-        val isIdle = intervalFinished != originalInterval || intervalFinished < System.currentTimeMillis() && intervalFinished > 0
+        val isIdle =
+            intervalFinished != originalInterval || intervalFinished < System.currentTimeMillis() && intervalFinished > 0
         if (isIdle) {
             callback?.onTransitionToIdle()
         }

@@ -1,39 +1,39 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.Preference
-        android:key="@string/pref_ringtone_key"
-        android:title="@string/pref_title_ringtone" />
+	<androidx.preference.Preference
+			android:key="@string/pref_ringtone_key"
+			android:title="@string/pref_title_ringtone" />
 
-    <androidx.preference.CheckBoxPreference
-        android:defaultValue="false"
-        android:key="@string/pref_vibration_key"
-        android:title="@string/pref_vibration_title" />
+	<androidx.preference.CheckBoxPreference
+			android:defaultValue="false"
+			android:key="@string/pref_vibration_key"
+			android:title="@string/pref_vibration_title" />
 
-    <androidx.preference.CheckBoxPreference
-        android:defaultValue="false"
-        android:key="@string/pref_show_notification_key"
-        android:summary="@string/show_notification_summary"
-        android:title="@string/show_notification" />
+	<androidx.preference.CheckBoxPreference
+			android:defaultValue="false"
+			android:key="@string/pref_show_notification_key"
+			android:summary="@string/show_notification_summary"
+			android:title="@string/show_notification" />
 
-    <Preference
-        android:key="@string/pref_open_notification_channel"
-        android:summary="@string/open_notification_channel_description"
-        android:title="@string/open_notification_channel_title" />
+	<Preference
+			android:key="@string/pref_open_notification_channel"
+			android:summary="@string/open_notification_channel_description"
+			android:title="@string/open_notification_channel_title" />
 
-    <androidx.preference.PreferenceCategory>
+	<androidx.preference.PreferenceCategory>
 
-        <androidx.preference.CheckBoxPreference
-            android:defaultValue="false"
-            android:key="@string/pref_dark_theme_key"
-            android:title="@string/dark_theme" />
+		<androidx.preference.CheckBoxPreference
+				android:defaultValue="false"
+				android:key="@string/pref_dark_theme_key"
+				android:title="@string/dark_theme" />
 
-    </androidx.preference.PreferenceCategory>
+	</androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/license">
+	<androidx.preference.PreferenceCategory android:title="@string/license">
 
-        <androidx.preference.Preference
-            android:key="@string/pref_license_key"
-            android:title="@string/license" />
+		<androidx.preference.Preference
+				android:key="@string/pref_license_key"
+				android:title="@string/license" />
 
-    </androidx.preference.PreferenceCategory>
+	</androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

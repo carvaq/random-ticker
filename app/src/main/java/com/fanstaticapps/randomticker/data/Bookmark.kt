@@ -10,33 +10,39 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "bookmarks")
-data class Bookmark(@PrimaryKey(autoGenerate = true) val id: Long?,
-                    @ColumnInfo(name = "name") val name: String = "Random Ticker",
-                    @ColumnInfo(name = "minimumHours") val minimumHours: Int = 0,
-                    @ColumnInfo(name = "minimumMinutes") val minimumMinutes: Int = 0,
-                    @ColumnInfo(name = "minimumSeconds") val minimumSeconds: Int = 0,
-                    @ColumnInfo(name = "maximumHours") val maximumHours: Int = 0,
-                    @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
-                    @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0,
-                    @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false) {
+data class Bookmark(
+    @PrimaryKey(autoGenerate = true) val id: Long?,
+    @ColumnInfo(name = "name") val name: String = "Random Ticker",
+    @ColumnInfo(name = "minimumHours") val minimumHours: Int = 0,
+    @ColumnInfo(name = "minimumMinutes") val minimumMinutes: Int = 0,
+    @ColumnInfo(name = "minimumSeconds") val minimumSeconds: Int = 0,
+    @ColumnInfo(name = "maximumHours") val maximumHours: Int = 0,
+    @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
+    @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0,
+    @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false
+) {
     @Ignore
     constructor(name: String) : this(null, name, 0, 0, 0, 0, 5, 0, false)
 
     @Ignore
-    constructor(id: Long?,
-                name: String,
-                minimum: IntervalDefinition,
-                maximum: IntervalDefinition,
-                autoRepeat: Boolean)
-            : this(id,
-            name,
-            minimum.hours,
-            minimum.minutes,
-            minimum.seconds,
-            maximum.hours,
-            maximum.minutes,
-            maximum.seconds,
-            autoRepeat)
+    constructor(
+        id: Long?,
+        name: String,
+        minimum: IntervalDefinition,
+        maximum: IntervalDefinition,
+        autoRepeat: Boolean
+    )
+            : this(
+        id,
+        name,
+        minimum.hours,
+        minimum.minutes,
+        minimum.seconds,
+        maximum.hours,
+        maximum.minutes,
+        maximum.seconds,
+        autoRepeat
+    )
 
     fun getMinimumIntervalDefinition(): IntervalDefinition {
         return IntervalDefinition(minimumHours, minimumMinutes, minimumSeconds)

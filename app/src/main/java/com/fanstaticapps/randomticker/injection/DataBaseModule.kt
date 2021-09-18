@@ -19,8 +19,8 @@ object DataBaseModule {
     @Singleton
     fun provideTickerDatabase(application: Application): TickerDatabase {
         return Room.databaseBuilder(application, TickerDatabase::class.java, "tickerV2.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-                .build()
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+            .build()
     }
 
     @Provides

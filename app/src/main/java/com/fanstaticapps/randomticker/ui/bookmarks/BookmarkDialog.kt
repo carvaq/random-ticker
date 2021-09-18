@@ -35,7 +35,11 @@ class BookmarkDialog : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         return inflater.inflate(R.layout.dialog_bookmark, container, false)
     }
@@ -43,17 +47,17 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = BookmarkAdapter(requireContext(),
-                { bookmark ->
-                    if (bookmark.id == null) {
-                        viewModel.createBookmark(bookmark)
-                    } else {
-                        viewModel.selectBookmark(bookmark)
-                    }
-                    dismiss()
-                },
-                { bookmark ->
-                    viewModel.deleteBookmark(bookmark)
-                })
+            { bookmark ->
+                if (bookmark.id == null) {
+                    viewModel.createBookmark(bookmark)
+                } else {
+                    viewModel.selectBookmark(bookmark)
+                }
+                dismiss()
+            },
+            { bookmark ->
+                viewModel.deleteBookmark(bookmark)
+            })
 
         binding.rvBookmarks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBookmarks.adapter = adapter

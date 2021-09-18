@@ -13,7 +13,7 @@ import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import timber.log.Timber
-import java.util.*
+import java.util.Random
 import javax.inject.Inject
 
 
@@ -23,8 +23,10 @@ import javax.inject.Inject
  * Project: RandomTicker
  */
 
-class TimerHelper @Inject constructor(private val notificationManager: TickerNotificationManager,
-                                      private val tickerPreferences: TickerPreferences) {
+class TimerHelper @Inject constructor(
+    private val notificationManager: TickerNotificationManager,
+    private val tickerPreferences: TickerPreferences
+) {
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
         private val HANDLER = Handler(Looper.myLooper() ?: Looper.getMainLooper())
@@ -35,11 +37,17 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
     fun newTickerFromBookmark(context: Context, bookmark: Bookmark) {
         Timber.d("creating a new ticker for bookmark $bookmark")
         cancelTicker(context)
-        createTicker(bookmark.getMinimumIntervalDefinition(), bookmark.getMaximumIntervalDefinition())
+        createTicker(
+            bookmark.getMinimumIntervalDefinition(),
+            bookmark.getMaximumIntervalDefinition()
+        )
         startTicker(context)
     }
 
-    fun createTicker(minIntervalDefinition: IntervalDefinition, maxIntervalDefinition: IntervalDefinition): Boolean {
+    fun createTicker(
+        minIntervalDefinition: IntervalDefinition,
+        maxIntervalDefinition: IntervalDefinition
+    ): Boolean {
         val min = minIntervalDefinition.millis
         val max = maxIntervalDefinition.millis
         Timber.d("Creating a ticker between $min and $max")
@@ -77,13 +85,23 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
         }
 
         context.getAlarmManager()?.let { alarmManger ->
-            val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_UPDATE_CURRENT)
+            val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(
+                context,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
             when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    alarmManger.setAlarmClock(AlarmClockInfo(intervalFinished, alarmIntent), alarmIntent)
+                    alarmManger.setAlarmClock(
+                        AlarmClockInfo(intervalFinished, alarmIntent),
+                        alarmIntent
+                    )
                 }
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    alarmManger.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
+                    alarmManger.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        intervalFinished,
+                        alarmIntent
+                    )
                 }
                 else -> {
                     alarmManger.setExact(AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
@@ -114,9 +132,10 @@ class TimerHelper @Inject constructor(private val notificationManager: TickerNot
 
         tickerPreferences.resetInterval()
 
-        IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_NO_CREATE)?.let { alarmIntent ->
-            context.getAlarmManager()?.cancel(alarmIntent)
-        }
+        IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_NO_CREATE)
+            ?.let { alarmIntent ->
+                context.getAlarmManager()?.cancel(alarmIntent)
+            }
     }
 
     fun startNotification(activity: Activity, bookmark: Bookmark) {

@@ -71,10 +71,10 @@ class MainActivity : BaseActivity() {
 
     private fun initializeBookmarks() {
         viewModel.currentBookmark
-                .nonNull()
-                .observe(this) {
-                    renderBookmark(it)
-                }
+            .nonNull()
+            .observe(this) {
+                renderBookmark(it)
+            }
         viewBinding.content.bookmarks.btnSelectBookmark.setOnClickListener {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 BookmarkDialog().show(supportFragmentManager, "BookmarkSelector")
@@ -123,14 +123,19 @@ class MainActivity : BaseActivity() {
     }
 
     private fun createTimer() {
-        viewModel.createTimer(viewBinding.content.bookmarks.etBookmarkName.name(),
-                IntervalDefinition(viewBinding.content.contentMin.minHours.value,
-                        viewBinding.content.contentMin.minMin.value,
-                        viewBinding.content.contentMin.minSec.value),
-                IntervalDefinition(viewBinding.content.contentMax.maxHours.value,
-                        viewBinding.content.contentMax.maxMin.value,
-                        viewBinding.content.contentMax.maxSec.value),
-                viewBinding.content.cbAutoRepeat.isChecked
+        viewModel.createTimer(
+            viewBinding.content.bookmarks.etBookmarkName.name(),
+            IntervalDefinition(
+                viewBinding.content.contentMin.minHours.value,
+                viewBinding.content.contentMin.minMin.value,
+                viewBinding.content.contentMin.minSec.value
+            ),
+            IntervalDefinition(
+                viewBinding.content.contentMax.maxHours.value,
+                viewBinding.content.contentMax.maxMin.value,
+                viewBinding.content.contentMax.maxSec.value
+            ),
+            viewBinding.content.cbAutoRepeat.isChecked
         )
     }
 
@@ -139,7 +144,8 @@ class MainActivity : BaseActivity() {
         finish()
     }
 
-    private fun EditText.name(): String = if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
+    private fun EditText.name(): String =
+        if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
 
     private fun NumberPicker.init(max: Int, @StringRes fromToResId: Int, @StringRes type: Int) {
         minValue = 0

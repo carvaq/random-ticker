@@ -17,7 +17,6 @@ import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import xyz.aprildown.ultimatemusicpicker.MusicPickerListener
@@ -36,7 +35,11 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     override fun onMusicPick(uri: Uri, title: String) {
         activity?.let {
             tickerPreferences.alarmRingtone = uri.toString()
-            findPreference<Preference>(getString(R.string.pref_ringtone_key))?.let { updateRingtonePreferenceSummary(it) }
+            findPreference<Preference>(getString(R.string.pref_ringtone_key))?.let {
+                updateRingtonePreferenceSummary(
+                    it
+                )
+            }
         }
     }
 
@@ -60,16 +63,21 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     }
 
     private fun bindNotificationChannelPreference() {
-        val notificationChannelPreference = findPreference<Preference>(getString(R.string.pref_open_notification_channel))
-        val vibrationPreference = findPreference<CheckBoxPreference>(getString(R.string.pref_vibration_key))
+        val notificationChannelPreference =
+            findPreference<Preference>(getString(R.string.pref_open_notification_channel))
+        val vibrationPreference =
+            findPreference<CheckBoxPreference>(getString(R.string.pref_vibration_key))
         val ringtonePreference = findPreference<Preference>(getString(R.string.pref_ringtone_key))
 
         if (isAtLeastAndroid26()) {
             notificationManager.createNotificationChannelIfNecessary(requireContext())
             notificationChannelPreference?.setOnPreferenceClickListener {
                 val intent = Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS)
-                        .putExtra(EXTRA_APP_PACKAGE, context?.packageName)
-                        .putExtra(Settings.EXTRA_CHANNEL_ID, TickerNotificationManager.FOREGROUND_CHANNEL_ID)
+                    .putExtra(EXTRA_APP_PACKAGE, context?.packageName)
+                    .putExtra(
+                        Settings.EXTRA_CHANNEL_ID,
+                        TickerNotificationManager.FOREGROUND_CHANNEL_ID
+                    )
                 startActivity(intent)
                 true
             }
@@ -95,7 +103,8 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     }
 
     private fun bindDarkThemePreference() {
-        val darkThemePreference = findPreference<CheckBoxPreference>(getString(R.string.pref_dark_theme_key))
+        val darkThemePreference =
+            findPreference<CheckBoxPreference>(getString(R.string.pref_dark_theme_key))
                 ?: return
         darkThemePreference.isChecked = getBooleanPreference(darkThemePreference)
         darkThemePreference.setOnPreferenceChangeListener { preference, newValue ->
@@ -112,12 +121,12 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
         preference.setOnPreferenceClickListener {
             val defaultUri = Uri.parse(TickerPreferences(it.context).alarmRingtone)
             UltimateMusicPicker()
-                    .defaultUri(defaultUri)
-                    .ringtone()
-                    .notification()
-                    .alarm()
-                    .music()
-                    .goWithDialog(childFragmentManager)
+                .defaultUri(defaultUri)
+                .ringtone()
+                .notification()
+                .alarm()
+                .music()
+                .goWithDialog(childFragmentManager)
 
             true
         }
@@ -129,14 +138,14 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
         if (uriPath.isEmpty()) {
             preference.setSummary(R.string.pref_ringtone_silent)
         } else {
-            when (val ringtone = RingtoneManager.getRingtone(preference.context, Uri.parse(uriPath))) {
+            when (val ringtone =
+                RingtoneManager.getRingtone(preference.context, Uri.parse(uriPath))) {
                 null -> preference.summary = null
                 else -> {
                     try {
                         val name = ringtone.getTitle(preference.context)
                         preference.summary = name
                     } catch (e: Exception) {
-                        FirebaseCrashlytics.getInstance().recordException(e)
                         Timber.e(e, "Could not load title for ringtone")
                         preference.summary = null
                     }
@@ -146,17 +155,19 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     }
 
     private fun bindShowRunningNotificationPreference() {
-        val checkBoxPreference = findPreference<CheckBoxPreference>(getString(R.string.pref_show_notification_key))
+        val checkBoxPreference =
+            findPreference<CheckBoxPreference>(getString(R.string.pref_show_notification_key))
         checkBoxPreference ?: return
         // Set the listener to watch for value changes.
-        checkBoxPreference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, value ->
-            if (preference is CheckBoxPreference) {
-                preference.isChecked = value.toString().toBoolean()
-                true
-            } else {
-                false
+        checkBoxPreference.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { preference, value ->
+                if (preference is CheckBoxPreference) {
+                    preference.isChecked = value.toString().toBoolean()
+                    true
+                } else {
+                    false
+                }
             }
-        }
     }
 
     private fun getBooleanPreference(preference: Preference): Boolean {
