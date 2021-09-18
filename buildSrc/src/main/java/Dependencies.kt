@@ -34,7 +34,7 @@ object AndroidLibs {
     private const val lifecycleVersion = "2.3.1"
     const val lifecycle_livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     const val lifecycle_viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-    const val lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    const val lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
     const val lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 
     const val coroutinesVersion = "1.5.2"
@@ -49,8 +49,8 @@ object Libs {
     const val hiltVersion = "2.38.1"
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hilt_compiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
-    const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01"
-    const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha01"
+    const val hilt_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    const val hilt_viewmodel_compiler = "androidx.hilt:hilt-compiler:1.0.0"
 
     private const val timberVersion = "5.0.1"
     const val timber = "com.jakewharton.timber:timber:$timberVersion"
