@@ -13,7 +13,7 @@ plugins {
 
 val major = 1
 val minor = 6
-val patch = 8
+val patch = 9
 
 val generatedVersionName = String.format("%s%02d%02d", major, minor, patch)
 val generateVersionCode = Integer.parseInt(generatedVersionName)
