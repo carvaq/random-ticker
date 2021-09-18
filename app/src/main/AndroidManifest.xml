@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:dist="http://schemas.android.com/apk/distribution"
-		xmlns:tools="http://schemas.android.com/tools"
 		package="com.fanstaticapps.randomticker">
 
 	<dist:module dist:instant="true" />
@@ -19,8 +18,7 @@
 			android:label="Random Ticker"
 			android:roundIcon="@mipmap/ic_launcher_round"
 			android:supportsRtl="true"
-			android:theme="@style/AppTheme"
-			tools:replace="android:label">
+			android:theme="@style/AppTheme">
 		<receiver
 				android:name=".receiver.RepeatAlarmReceiver"
 				android:enabled="true"

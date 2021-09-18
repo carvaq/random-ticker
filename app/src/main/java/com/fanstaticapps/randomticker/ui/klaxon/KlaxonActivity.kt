@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.lifecycleScope
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.databinding.ActivityKlaxonBinding
@@ -15,7 +16,6 @@ import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -90,9 +90,9 @@ class KlaxonActivity : BaseActivity() {
         }
 
         binding.btnRepeat.setOnClickListener {
-            viewModel.currentBookmark.observe(this, {
+            viewModel.currentBookmark.observe(this) {
                 autoRepeatTicker(it)
-            })
+            }
         }
 
     }
@@ -128,7 +128,7 @@ class KlaxonActivity : BaseActivity() {
                 startTickerRinging(viewState.bookmark)
 
                 if (viewState.bookmark.autoRepeat) {
-                    GlobalScope.launch {
+                    lifecycleScope.launch {
                         delay(2000)
                         autoRepeatTicker(viewState.bookmark)
                     }

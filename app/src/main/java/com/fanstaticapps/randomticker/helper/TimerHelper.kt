@@ -87,7 +87,7 @@ class TimerHelper @Inject constructor(
         context.getAlarmManager()?.let { alarmManger ->
             val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(
                 context,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                immutableFlag(PendingIntent.FLAG_UPDATE_CURRENT)
             )
             when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
@@ -132,10 +132,20 @@ class TimerHelper @Inject constructor(
 
         tickerPreferences.resetInterval()
 
-        IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
-            ?.let { alarmIntent ->
-                context.getAlarmManager()?.cancel(alarmIntent)
-            }
+        IntentHelper.getAlarmReceiveAsPendingIntent(
+            context,
+            immutableFlag(PendingIntent.FLAG_NO_CREATE)
+        )?.let { alarmIntent ->
+            context.getAlarmManager()?.cancel(alarmIntent)
+        }
+    }
+
+    private fun immutableFlag(flag: Int): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flag or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            flag
+        }
     }
 
     fun startNotification(activity: Activity, bookmark: Bookmark) {
