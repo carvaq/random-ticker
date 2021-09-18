@@ -1,7 +1,6 @@
 package com.fanstaticapps.randomticker.ui.bookmarks
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.SavedStateHandle
 import androidx.test.core.app.ApplicationProvider
 import com.fanstaticapps.randomticker.CoroutineTestRule
 import com.fanstaticapps.randomticker.TickerPreferences
@@ -32,7 +31,7 @@ class BookmarksViewModelTest {
     private val repositoryMock: BookmarkRepository = mock()
 
     private val testee =
-        BookmarksViewModel(SavedStateHandle(emptyMap()), tickerPreferences, repositoryMock)
+        BookmarksViewModel(tickerPreferences, repositoryMock)
 
     @Test
     fun `when deleting a bookmark then delete in on the repository`() =
