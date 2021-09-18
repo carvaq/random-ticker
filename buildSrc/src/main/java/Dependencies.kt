@@ -4,7 +4,7 @@ object Versions {
     const val targetSdkVersion = 31
     const val compileVersion = 31
     const val buildToolsVersion = "30.0.3"
-    const val triplet = "3.2.0-agp4.2"
+    const val triplet = "3.6.0"
     const val bennames = "0.39.0"
 }
 
