@@ -7,10 +7,7 @@ import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,7 +25,7 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        GlobalScope.launch(Dispatchers.IO) {
+        runBlocking {
             repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { bookmark ->
                 Timber.d("Creating a new alarm!")
                 if (!bookmark.autoRepeat) {
