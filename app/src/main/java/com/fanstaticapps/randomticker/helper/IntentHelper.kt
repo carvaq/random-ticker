@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
 import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
@@ -37,7 +38,7 @@ object IntentHelper {
             context,
             requestCode,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
 
@@ -49,7 +50,7 @@ object IntentHelper {
             context,
             requestCode,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
 
@@ -58,11 +59,19 @@ object IntentHelper {
             context,
             requestCode,
             Intent(context, CancelActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
 
-    fun getAlarmReceiveAsPendingIntent(context: Context, flag: Int): PendingIntent? {
+    fun getCreateAlarmReceiverAsPendingIntent(context: Context): PendingIntent? {
+        return getAlarmReceiverAsPendingIntent(context, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    fun getCancelAlarmReceiverAsPendingIntent(context: Context): PendingIntent? {
+        return getAlarmReceiverAsPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT)
+    }
+
+    private fun getAlarmReceiverAsPendingIntent(context: Context, flag: Int): PendingIntent? {
         val intent = Intent("com.fanstaticapps.randomticker.ALARM").apply {
             component = ComponentName(context, AlarmReceiver::class.java)
         }
@@ -70,7 +79,7 @@ object IntentHelper {
             context,
             421,
             intent,
-            flag
+            flag.asImmutable
         )
     }
 
@@ -79,7 +88,15 @@ object IntentHelper {
             context,
             112,
             Intent(context, RepeatAlarmReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
+
+    private val Int.asImmutable
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            this
+        }
+
 }

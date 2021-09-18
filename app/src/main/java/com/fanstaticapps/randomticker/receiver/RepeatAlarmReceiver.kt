@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-@DelicateCoroutinesApi
 @AndroidEntryPoint
 class RepeatAlarmReceiver : BroadcastReceiver() {
 

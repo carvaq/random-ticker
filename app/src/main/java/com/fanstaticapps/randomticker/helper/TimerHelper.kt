@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker.helper
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.AlarmManager.AlarmClockInfo
-import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import android.os.Handler
@@ -85,10 +84,7 @@ class TimerHelper @Inject constructor(
         }
 
         context.getAlarmManager()?.let { alarmManger ->
-            val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(
-                context,
-                immutableFlag(PendingIntent.FLAG_UPDATE_CURRENT)
-            )
+            val alarmIntent = IntentHelper.getCreateAlarmReceiverAsPendingIntent(context)
             when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
                     alarmManger.setAlarmClock(
@@ -132,19 +128,8 @@ class TimerHelper @Inject constructor(
 
         tickerPreferences.resetInterval()
 
-        IntentHelper.getAlarmReceiveAsPendingIntent(
-            context,
-            immutableFlag(PendingIntent.FLAG_NO_CREATE)
-        )?.let { alarmIntent ->
+        IntentHelper.getCancelAlarmReceiverAsPendingIntent(context)?.let { alarmIntent ->
             context.getAlarmManager()?.cancel(alarmIntent)
-        }
-    }
-
-    private fun immutableFlag(flag: Int): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            flag or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            flag
         }
     }
 
