@@ -19,28 +19,28 @@ object Gms {
 }
 
 object AndroidLibs {
-    const val material = "com.google.android.material:material:1.2.1"
+    const val material = "com.google.android.material:material:1.4.0"
     const val cardview = "androidx.cardview:cardview:1.0.0"
-    const val appcompat = "androidx.appcompat:appcompat:1.2.0"
+    const val appcompat = "androidx.appcompat:appcompat:1.3.1"
     const val preference = "androidx.preference:preference:1.1.1"
-    const val activity = "androidx.activity:activity-ktx:1.2.0-rc01"
-    const val fragment = "androidx.fragment:fragment-ktx:1.2.5"
+    const val activity = "androidx.activity:activity-ktx:1.3.1"
+    const val fragment = "androidx.fragment:fragment-ktx:1.3.6"
 
-    const val roomVersion = "2.2.6"
+    const val roomVersion = "2.3.0"
     const val room_runtime = "androidx.room:room-runtime:$roomVersion"
     const val room_ktx = "androidx.room:room-ktx:$roomVersion"
     const val room_compiler = "androidx.room:room-compiler:$roomVersion"
 
-    private const val lifecycleVersion = "2.2.0"
+    private const val lifecycleVersion = "2.3.1"
     const val lifecycle_livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     const val lifecycle_viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     const val lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     const val lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 
-    const val coroutinesVersion = "1.5.1"
+    const val coroutinesVersion = "1.5.2"
     const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 
-    private const val constraintLayoutVersion = "2.0.4"
+    private const val constraintLayoutVersion = "2.1.0"
     const val constraint_layout =
         "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 }
@@ -66,7 +66,7 @@ object Libs {
 object TestLibs {
     const val mockito_core = "org.mockito:mockito-core:3.1.0"
     const val junit = "junit:junit:4.13"
-    const val robolectric = "org.robolectric:robolectric:4.3.1"
+    const val robolectric = "org.robolectric:robolectric:4.6.1"
     const val mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
     private const val testVersion = "1.3.0"
