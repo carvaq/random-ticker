@@ -87,7 +87,7 @@ class TimerHelper @Inject constructor(
         context.getAlarmManager()?.let { alarmManger ->
             val alarmIntent = IntentHelper.getAlarmReceiveAsPendingIntent(
                 context,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
             when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
@@ -132,7 +132,7 @@ class TimerHelper @Inject constructor(
 
         tickerPreferences.resetInterval()
 
-        IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_NO_CREATE)
+        IntentHelper.getAlarmReceiveAsPendingIntent(context, PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
             ?.let { alarmIntent ->
                 context.getAlarmManager()?.cancel(alarmIntent)
             }
