@@ -8,7 +8,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.lifecycleScope
-import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.databinding.ActivityKlaxonBinding
 import com.fanstaticapps.randomticker.extensions.viewBinding
@@ -102,7 +101,6 @@ class KlaxonActivity : BaseActivity() {
 
         finish()
         startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_left)
     }
 
     override fun onStop() {
@@ -125,7 +123,7 @@ class KlaxonActivity : BaseActivity() {
             }
             is KlaxonViewState.TickerFinished -> {
                 showElapsedTime(viewState.elapsedTime)
-                startTickerRinging(viewState.bookmark)
+                startTickerRinging()
 
                 if (viewState.bookmark.autoRepeat) {
                     lifecycleScope.launch {
@@ -155,8 +153,8 @@ class KlaxonActivity : BaseActivity() {
         pulsatorAnimation.cancel()
     }
 
-    private fun startTickerRinging(bookmark: Bookmark) {
-        timerHelper.startNotification(this, bookmark)
+    private fun startTickerRinging() {
+        timerHelper.startNotification(this)
 
         binding.tvElapsedTime.isEnabled = false
         binding.laWaiting.cancelAnimation()

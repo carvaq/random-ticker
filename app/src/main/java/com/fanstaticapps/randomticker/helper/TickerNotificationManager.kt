@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.helper
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -31,18 +32,11 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
         }
     }
 
-    fun showKlaxonNotification(context: Context, bookmark: Bookmark) {
-        cancelAllNotifications(context)
-        val notificationManager = context.getNotificationManager()
+    fun showKlaxonNotification(service: Service, bookmark: Bookmark) = with(service) {
+        cancelAllNotifications(baseContext)
+        createNotificationChannelIfNecessary(baseContext)
 
-        if (isAtLeastAndroid26()) {
-            val channel = createKlaxonChannel(context)
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        val notification = buildKlaxonNotification(context, bookmark)
-
-        notificationManager.notify(FOREGROUND_NOTIFICATION_ID, notification)
+        startForeground(FOREGROUND_NOTIFICATION_ID, buildKlaxonNotification(baseContext, bookmark))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

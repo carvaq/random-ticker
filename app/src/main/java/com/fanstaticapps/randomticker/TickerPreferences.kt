@@ -3,8 +3,10 @@ package com.fanstaticapps.randomticker
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.RingtoneManager
+import android.provider.Settings
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveData
+import timber.log.Timber
 
 class TickerPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -62,6 +64,7 @@ class TickerPreferences(context: Context) {
     }
 
     fun resetInterval() {
+        Timber.d("Reset timer")
         this.interval = -1
         this.intervalWillBeFinished = -1
     }

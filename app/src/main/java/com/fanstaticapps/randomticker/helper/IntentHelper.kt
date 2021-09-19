@@ -8,6 +8,7 @@ import android.os.Build
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
 import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
+import com.fanstaticapps.randomticker.ui.RingtonePlayingService
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
 
@@ -81,6 +82,10 @@ object IntentHelper {
             intent,
             flag.asImmutable
         )
+    }
+
+    fun getRingtoneServiceIntent(context: Context): Intent {
+        return Intent(context, RingtonePlayingService::class.java)
     }
 
     fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {

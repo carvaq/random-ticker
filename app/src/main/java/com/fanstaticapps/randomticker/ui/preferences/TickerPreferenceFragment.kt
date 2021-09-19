@@ -16,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
+import com.fanstaticapps.randomticker.extensions.getVibrator
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
@@ -69,14 +70,13 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
                 }.let { startActivity(it) }
                 true
             }
-            notificationChannelPreference?.isVisible = true
-            vibrationPreference?.isVisible = false
-            ringtonePreference?.isVisible = false
         } else {
             notificationChannelPreference?.isVisible = false
-            ringtonePreference?.bindRingtonePreference()
-            vibrationPreference?.bindVibrationPreference()
         }
+        vibrationPreference?.isVisible = requireContext().getVibrator()?.hasVibrator() == true
+
+        ringtonePreference?.bindRingtonePreference()
+        vibrationPreference?.bindVibrationPreference()
     }
 
     private fun CheckBoxPreference.bindVibrationPreference() {

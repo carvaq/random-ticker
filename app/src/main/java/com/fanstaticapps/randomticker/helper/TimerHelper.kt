@@ -62,7 +62,7 @@ class TimerHelper @Inject constructor(
     fun startTicker(context: Context) {
         val intervalFinished = tickerPreferences.intervalWillBeFinished
 
-        if (isTickerInvalid()) return
+        if (hasTickerExpired()) return
 
 
         if (tickerPreferences.showRunningTimerNotification) {
@@ -72,7 +72,7 @@ class TimerHelper @Inject constructor(
 
             val tickerRefreshRunnable = object : Runnable {
                 override fun run() {
-                    if (isTickerInvalid()) {
+                    if (hasTickerExpired()) {
                         HANDLER.removeCallbacks(this)
                         return
                     }
@@ -115,12 +115,14 @@ class TimerHelper @Inject constructor(
         return tickerRunning
     }
 
-    fun isTickerInvalid(): Boolean {
+    fun hasTickerExpired(): Boolean {
         val intervalWillBeFinished = tickerPreferences.intervalWillBeFinished
         val hasTickerNotExpiredYet = intervalWillBeFinished >= System.currentTimeMillis()
-        Timber.d("Ticker is valid: $hasTickerNotExpiredYet")
+        Timber.d("Ticker is running: $hasTickerNotExpiredYet")
         return !hasTickerNotExpiredYet
     }
+
+    fun hasAValidTicker() = tickerPreferences.intervalWillBeFinished > 0
 
     fun cancelTicker(context: Context) {
         Timber.d("Cancel ticker")
@@ -131,10 +133,11 @@ class TimerHelper @Inject constructor(
         IntentHelper.getCancelAlarmReceiverAsPendingIntent(context)?.let { alarmIntent ->
             context.getAlarmManager()?.cancel(alarmIntent)
         }
+        IntentHelper.getRingtoneServiceIntent(context).let { context.startService(it) }
     }
 
-    fun startNotification(activity: Activity, bookmark: Bookmark) {
-        notificationManager.showKlaxonNotification(activity, bookmark)
+    fun startNotification(activity: Activity) {
+        IntentHelper.getRingtoneServiceIntent(activity).let { activity.startService(it) }
     }
 
 }
