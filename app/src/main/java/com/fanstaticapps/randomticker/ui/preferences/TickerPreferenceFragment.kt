@@ -1,5 +1,6 @@
 package com.fanstaticapps.randomticker.ui.preferences
 
+import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
@@ -7,6 +8,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS
 import android.provider.Settings.EXTRA_APP_PACKAGE
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -19,12 +22,10 @@ import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import xyz.aprildown.ultimatemusicpicker.MusicPickerListener
-import xyz.aprildown.ultimatemusicpicker.UltimateMusicPicker
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener {
+class TickerPreferenceFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var tickerPreferences: TickerPreferences
@@ -32,19 +33,6 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     @Inject
     lateinit var notificationManager: TickerNotificationManager
 
-    override fun onMusicPick(uri: Uri, title: String) {
-        activity?.let {
-            tickerPreferences.alarmRingtone = uri.toString()
-            findPreference<Preference>(getString(R.string.pref_ringtone_key))?.let {
-                updateRingtonePreferenceSummary(
-                    it
-                )
-            }
-        }
-    }
-
-    override fun onPickCanceled() {
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_general)
@@ -72,13 +60,13 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
         if (isAtLeastAndroid26()) {
             notificationManager.createNotificationChannelIfNecessary(requireContext())
             notificationChannelPreference?.setOnPreferenceClickListener {
-                val intent = Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS)
-                    .putExtra(EXTRA_APP_PACKAGE, context?.packageName)
-                    .putExtra(
+                Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                    putExtra(EXTRA_APP_PACKAGE, context?.packageName)
+                    putExtra(
                         Settings.EXTRA_CHANNEL_ID,
                         TickerNotificationManager.FOREGROUND_CHANNEL_ID
                     )
-                startActivity(intent)
+                }.let { startActivity(it) }
                 true
             }
             notificationChannelPreference?.isVisible = true
@@ -86,20 +74,17 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
             ringtonePreference?.isVisible = false
         } else {
             notificationChannelPreference?.isVisible = false
-            bindRingtonePreference(ringtonePreference)
-            bindVibrationPreference(vibrationPreference)
+            ringtonePreference?.bindRingtonePreference()
+            vibrationPreference?.bindVibrationPreference()
         }
     }
 
-    private fun bindVibrationPreference(vibrationPreference: CheckBoxPreference?) {
-        vibrationPreference ?: return
-        vibrationPreference.isChecked = getBooleanPreference(vibrationPreference)
-        vibrationPreference.setOnPreferenceChangeListener { preference, newValue ->
+    private fun CheckBoxPreference.bindVibrationPreference() {
+        isChecked = getBooleanPreference(this)
+        setOnPreferenceChangeListener { preference, newValue ->
             (preference as CheckBoxPreference).isChecked = newValue.toString().toBoolean()
             true
         }
-
-
     }
 
     private fun bindDarkThemePreference() {
@@ -116,21 +101,37 @@ class TickerPreferenceFragment : PreferenceFragmentCompat(), MusicPickerListener
     }
 
 
-    private fun bindRingtonePreference(preference: Preference?) {
-        preference ?: return
-        preference.setOnPreferenceClickListener {
-            val defaultUri = Uri.parse(TickerPreferences(it.context).alarmRingtone)
-            UltimateMusicPicker()
-                .defaultUri(defaultUri)
-                .ringtone()
-                .notification()
-                .alarm()
-                .music()
-                .goWithDialog(childFragmentManager)
+    private fun Preference.bindRingtonePreference() {
+        updateRingtonePreferenceSummary(this)
 
+        val callback = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { activityResult ->
+            if (activityResult.resultCode == Activity.RESULT_OK) {
+                activityResult.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+                    .let { uri ->
+                        tickerPreferences.alarmRingtone = uri?.toString().orEmpty()
+                    }
+            }
+            updateRingtonePreferenceSummary(this)
+        }
+        setOnPreferenceClickListener {
+            Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
+                putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL)
+                putExtra(
+                    RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
+                    Settings.System.DEFAULT_NOTIFICATION_URI
+                )
+                putExtra(
+                    RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,
+                    Settings.System.DEFAULT_NOTIFICATION_URI
+                )
+                tickerPreferences.alarmRingtone.takeIf { it.isNotBlank() }?.let {
+                    putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, it.toUri())
+                }
+            }.let { callback.launch(it) }
             true
         }
-        updateRingtonePreferenceSummary(preference)
     }
 
     private fun updateRingtonePreferenceSummary(preference: Preference) {

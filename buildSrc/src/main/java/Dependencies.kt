@@ -58,8 +58,6 @@ object Libs {
     private const val lottieVersion = "4.1.0"
     const val lottie = "com.airbnb.android:lottie:$lottieVersion"
 
-    private const val ultimateVersion = "2.0.6"
-    const val ultimatePicker = "com.github.DeweyReed:UltimateMusicPicker:$ultimateVersion"
 }
 
 
