@@ -18,3 +18,5 @@ local.properties
 random-ticker-app/google-services.json
 play_store_secret.json
 app/google-services.json
+
+.project

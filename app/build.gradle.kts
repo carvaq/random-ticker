@@ -2,12 +2,10 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("com.github.triplet.play") version (Versions.triplet)
+    id("com.github.triplet.play") version "3.7.0"
     id("com.google.android.gms.oss-licenses-plugin")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-    id("com.github.ben-manes.versions") version (Versions.bennames)
-    id("se.patrikerdes.use-latest-versions") version "0.2.17"
 }
 
 
@@ -21,13 +19,13 @@ val generateVersionCode = Integer.parseInt(generatedVersionName)
 
 android {
 
-    compileSdk = Versions.compileVersion
-    buildToolsVersion = Versions.buildToolsVersion
+    compileSdk = 33
+    buildToolsVersion = "33.0.0"
     defaultConfig {
 
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
-        minSdk = Versions.minSdkVersion
-        targetSdk = Versions.targetSdkVersion
+        minSdk = 21
+        targetSdk = 33
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = generateVersionCode
@@ -88,64 +86,66 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
+    namespace = "com.fanstaticapps.randomticker"
+    testNamespace = "your.package.name"
 }
 
 dependencies {
-    implementation(Kotlin.stdlib)
+    implementation("com.google.android.material:material:1.6.1")
 
-    implementation(AndroidLibs.material)
-    implementation(AndroidLibs.cardview)
-    implementation(AndroidLibs.appcompat)
-    implementation(AndroidLibs.constraint_layout)
-    implementation(AndroidLibs.room_runtime)
-    implementation(AndroidLibs.room_ktx)
+    implementation("androidx.preference:preference-ktx:1.2.0")
 
-    implementation(AndroidLibs.lifecycle_livedata)
-    implementation(AndroidLibs.lifecycle_viewmodel)
-    implementation(AndroidLibs.lifecycle_extensions)
-    implementation(AndroidLibs.lifecycle_common)
-    implementation(AndroidLibs.preference)
-    implementation(AndroidLibs.activity)
-    implementation(AndroidLibs.fragment)
-    implementation(AndroidLibs.coroutines)
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.appcompat:appcompat:1.5.0")
+    implementation("androidx.activity:activity-ktx:1.5.1")
+    implementation("androidx.fragment:fragment-ktx:1.5.2")
 
-    implementation(Libs.hilt)
-    implementation(Libs.hilt_viewmodel)
-    implementation(Libs.timber)
-    implementation(Libs.lottie)
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+    implementation("androidx.room:room-compiler:2.4.3")
 
-    implementation(Gms.oss)
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
 
-    kapt(AndroidLibs.room_compiler)
-    kapt(Libs.hilt_compiler)
-    kapt(Libs.hilt_viewmodel_compiler)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
 
-    testImplementation(TestLibs.mockito_core)
-    testImplementation(TestLibs.junit)
-    testImplementation(TestLibs.test_core)
-    testImplementation(TestLibs.robolectric)
-    testImplementation(TestLibs.mockito_kotlin)
-    testImplementation(TestLibs.assertions_junit)
-    testImplementation(TestLibs.hilt_testing)
-    testImplementation(TestLibs.coroutines_testing)
-    testImplementation(TestLibs.assertions_truth)
-    testImplementation(TestLibs.assertions_google_truth)
-    kaptTest(Libs.hilt_compiler)
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
 
-    androidTestImplementation(TestLibs.room_testing)
-    androidTestImplementation(TestLibs.uiautomator)
-    androidTestImplementation(TestLibs.test_core)
-    androidTestImplementation(TestLibs.rules)
-    androidTestImplementation(TestLibs.junit_runner)
-    androidTestImplementation(TestLibs.espresso_core)
-    androidTestImplementation(TestLibs.espresso_idling)
-    androidTestImplementation(TestLibs.espresso_contrib)
-    androidTestImplementation(TestLibs.assertions_junit)
-    androidTestImplementation(TestLibs.assertions_truth)
-    androidTestImplementation(TestLibs.assertions_google_truth)
-    androidTestImplementation(TestLibs.hilt_testing)
-    kaptAndroidTest(Libs.hilt_compiler)
-    androidTestUtil(TestLibs.orchestrator)
+    implementation("com.google.dagger:hilt-android:2.43.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.43.2")
+    kapt("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+
+    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.airbnb.android:lottie:5.2.0")
+
+
+    testImplementation("org.mockito:mockito-core:3.1.0")
+    testImplementation("junit:junit:4.13")
+    testImplementation("org.robolectric:robolectric:4.6.1")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    testImplementation("androidx.test:core-ktx:1.3.0")
+    testImplementation("androidx.room:room-testing:2.4.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("com.google.truth:truth:1.0.1")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.43.2")
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.43.2")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.3.0")
+    androidTestImplementation("androidx.test:rules:1.3.0")
+    androidTestImplementation("androidx.test:runner:1.3.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.2")
+    androidTestImplementation("androidx.test.ext:truth:1.3.0")
+    androidTestImplementation("com.google.truth:truth:1.0.1")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.43.2")
+    androidTestUtil("androidx.test:orchestrator:1.3.0")
 }
 
 play {

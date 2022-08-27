@@ -6,11 +6,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.1.0-alpha12")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
-        classpath("com.google.gms:google-services:${Gms.services_plugin_version}")
-        classpath("com.google.android.gms:oss-licenses-plugin:${Gms.oss_plugin_version}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Libs.hiltVersion}")
+        classpath("com.android.tools.build:gradle:7.3.0-rc01")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
+        classpath("com.google.gms:google-services:4.3.13")
+        classpath("com.google.android.gms:oss-licenses-plugin:0.10.5")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.43.2")
     }
 }
 
@@ -29,4 +29,10 @@ allprojects {
 
 tasks.register<Delete>("clean").configure {
     delete(rootProject.buildDir)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
