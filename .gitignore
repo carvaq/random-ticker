@@ -20,3 +20,4 @@ play_store_secret.json
 app/google-services.json
 
 .project
+.settings

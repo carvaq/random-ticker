@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker
 import android.app.Application
 import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -27,6 +28,8 @@ class TickerApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this)
+
 
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())

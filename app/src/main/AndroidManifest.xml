@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:dist="http://schemas.android.com/apk/distribution"
-		package="com.fanstaticapps.randomticker">
+		xmlns:dist="http://schemas.android.com/apk/distribution">
 
 	<dist:module dist:instant="true" />
 
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-	<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	<uses-permission android:name="android.permission.POST_NOTIFICATION" />
 
 	<application
 			android:name=".TickerApplication"

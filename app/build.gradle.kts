@@ -83,9 +83,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
+
     namespace = "com.fanstaticapps.randomticker"
     testNamespace = "your.package.name"
 }
@@ -103,7 +101,7 @@ dependencies {
 
     implementation("androidx.room:room-runtime:2.4.3")
     implementation("androidx.room:room-ktx:2.4.3")
-    implementation("androidx.room:room-compiler:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
@@ -111,7 +109,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
 
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
 
@@ -124,28 +121,28 @@ dependencies {
     implementation("com.airbnb.android:lottie:5.2.0")
 
 
-    testImplementation("org.mockito:mockito-core:3.1.0")
-    testImplementation("junit:junit:4.13")
-    testImplementation("org.robolectric:robolectric:4.6.1")
+    testImplementation("org.mockito:mockito-core:4.7.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.8.2")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-    testImplementation("androidx.test:core-ktx:1.3.0")
+    testImplementation("androidx.test:core-ktx:1.4.0")
     testImplementation("androidx.room:room-testing:2.4.3")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-    testImplementation("com.google.truth:truth:1.0.1")
+    testImplementation("com.google.truth:truth:1.1.3")
     kaptTest("com.google.dagger:hilt-android-compiler:2.43.2")
 
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.43.2")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.3.0")
-    androidTestImplementation("androidx.test:rules:1.3.0")
-    androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.2")
-    androidTestImplementation("androidx.test.ext:truth:1.3.0")
-    androidTestImplementation("com.google.truth:truth:1.0.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
+    androidTestImplementation("androidx.test:rules:1.4.0")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
+    androidTestImplementation("androidx.test.ext:truth:1.4.0")
+    androidTestImplementation("com.google.truth:truth:1.1.3")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.43.2")
-    androidTestUtil("androidx.test:orchestrator:1.3.0")
+    androidTestUtil("androidx.test:orchestrator:1.4.1")
 }
 
 play {

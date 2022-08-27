@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS
@@ -37,7 +38,6 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_general)
-        setHasOptionsMenu(true)
 
         bindShowRunningNotificationPreference()
 
@@ -108,10 +108,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
             ActivityResultContracts.StartActivityForResult()
         ) { activityResult ->
             if (activityResult.resultCode == Activity.RESULT_OK) {
-                activityResult.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-                    .let { uri ->
-                        tickerPreferences.alarmRingtone = uri?.toString().orEmpty()
-                    }
+                tickerPreferences.alarmRingtone = activityResult.data?.getUri().toString()
             }
             updateRingtonePreferenceSummary(this)
         }
@@ -133,6 +130,17 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
     }
+
+    @Suppress("DEPRECATION")
+    private fun Intent.getUri() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getParcelableExtra(
+                RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
+                Uri::class.java
+            )
+        } else {
+            getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+        }
 
     private fun updateRingtonePreferenceSummary(preference: Preference) {
         val uriPath = tickerPreferences.alarmRingtone
