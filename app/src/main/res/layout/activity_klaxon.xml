@@ -25,6 +25,7 @@
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			app:lottie_autoPlay="true"
+			app:lottie_colorFilter="?attr/colorOnSecondaryContainer"
 			app:lottie_enableMergePathsForKitKatAndAbove="true"
 			app:lottie_loop="true"
 			app:lottie_rawRes="@raw/hourglass" />
@@ -73,7 +74,8 @@
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="@id/guideline" />
+			app:layout_constraintTop_toTopOf="@id/guideline"
+			app:tint="?attr/colorOnSurfaceVariant" />
 
 	<ImageView
 			android:id="@+id/btnDismiss"
@@ -88,6 +90,7 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="@id/guideline"
-			app:srcCompat="@drawable/ic_cancel" />
+			app:srcCompat="@drawable/ic_cancel"
+			app:tint="?attr/colorOnSurfaceVariant" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

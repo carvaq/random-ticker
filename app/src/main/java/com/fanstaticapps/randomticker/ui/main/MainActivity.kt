@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.activity.viewModels
@@ -45,7 +44,7 @@ class MainActivity : BaseActivity() {
         } else {
             setContentView(viewBinding.root)
 
-            setSupportActionBar(viewBinding.appbar.toolbar)
+            setupToolbar()
 
             initializeListeners()
             initializeBookmarks()
@@ -53,19 +52,23 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setupToolbar() {
+        setSupportActionBar(viewBinding.appbar.toolbar)
+        viewBinding.appbar.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_main_activity, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.settings) {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
     }
 
 
