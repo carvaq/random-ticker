@@ -6,25 +6,27 @@ import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class BookmarksViewModel @Inject constructor(
     private val tickerPreferences: TickerPreferences,
-    private val repository: BookmarkRepository
+    private val repository: BookmarkRepository,
+    private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     val allBookmarks = repository.getAllBookmarks()
 
     fun deleteBookmark(bookmark: Bookmark) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             repository.deleteBookmark(bookmark)
         }
     }
 
     fun createBookmark(newBookmark: Bookmark) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             val id = repository.insertOrUpdateBookmark(newBookmark)
             tickerPreferences.currentSelectedId = id
         }

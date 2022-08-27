@@ -6,13 +6,11 @@ import com.fanstaticapps.randomticker.CoroutineTestRule
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.spy
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
@@ -27,11 +25,11 @@ class BookmarksViewModelTest {
     val coroutinesRule = CoroutineTestRule()
 
     private val tickerPreferences =
-        spy(TickerPreferences(ApplicationProvider.getApplicationContext()))
-    private val repositoryMock: BookmarkRepository = mock()
+        spyk(TickerPreferences(ApplicationProvider.getApplicationContext()))
+    private val repositoryMock: BookmarkRepository = mockk(relaxed = true, relaxUnitFun = true)
 
     private val testee =
-        BookmarksViewModel(tickerPreferences, repositoryMock)
+        BookmarksViewModel(tickerPreferences, repositoryMock, coroutinesRule.testDispatcher)
 
     @Test
     fun `when deleting a bookmark then delete in on the repository`() =
@@ -43,42 +41,45 @@ class BookmarksViewModelTest {
             testee.deleteBookmark(bookmarkToBeDeleted)
 
             //then
-            verify(repositoryMock).deleteBookmark(eq(bookmarkToBeDeleted))
+            coVerify { repositoryMock.deleteBookmark(eq(bookmarkToBeDeleted)) }
         }
 
     @Test
-    fun `when selecting a bookmark save it to ticker preferences`() {
-        //given
-        val selectedBookmark = Bookmark(id = 29, name = "Test Bookmark")
+    fun `when selecting a bookmark save it to ticker preferences`() =
+        coroutinesRule.runBlockingTest {
+            //given
+            val bookmarkId: Long = 29
+            val selectedBookmark = Bookmark(id = bookmarkId, name = "Test Bookmark")
 
-        val mockedObserver: Observer<Long> = mock()
-        tickerPreferences.currentSelectedBookmarkIdAsLiveData.observeForever(mockedObserver)
+            val mockedObserver: Observer<Long> = mockk(relaxed = true, relaxUnitFun = true)
+            tickerPreferences.currentSelectedBookmarkIdAsLiveData.observeForever(mockedObserver)
 
-        //when
-        testee.selectBookmark(selectedBookmark)
+            //when
+            testee.selectBookmark(selectedBookmark)
 
-        //then
-        verify(tickerPreferences).currentSelectedId = 29
-        verify(mockedObserver).onChanged(eq(29))
-    }
+            //then
+            verify { tickerPreferences.currentSelectedId = bookmarkId }
+            coVerify { mockedObserver.onChanged(bookmarkId) }
+        }
 
     @Test
     fun `when creating a new bookmark save it ticker preferences`() =
         coroutinesRule.runBlockingTest {
             //given
-            whenever(repositoryMock.insertOrUpdateBookmark(any())).doReturn(20)
+            val bookmarkId: Long = 20
+            coEvery { repositoryMock.insertOrUpdateBookmark(any()) } returns bookmarkId
 
             val newBookmark = Bookmark("New")
-            val mockedObserver: Observer<Long> = mock()
+            val mockedObserver: Observer<Long> = mockk(relaxed = true, relaxUnitFun = true)
             tickerPreferences.currentSelectedBookmarkIdAsLiveData.observeForever(mockedObserver)
 
             //when
             testee.createBookmark(newBookmark)
 
             //then
-            verify(tickerPreferences).currentSelectedId = 20
-            verify(mockedObserver).onChanged(eq(20))
-            verify(repositoryMock).insertOrUpdateBookmark(eq(newBookmark))
+            verify { tickerPreferences.currentSelectedId = bookmarkId }
+            verify { mockedObserver.onChanged(bookmarkId) }
+            coVerify { repositoryMock.insertOrUpdateBookmark(eq(newBookmark)) }
         }
 
 }
