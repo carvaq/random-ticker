@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.ui.main
 
 
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
@@ -10,7 +11,6 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.activityScenarioRule
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerFinishedIdlingResource
 import com.fanstaticapps.randomticker.TickerPreferences
@@ -21,19 +21,14 @@ import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import javax.inject.Inject
 
 @HiltAndroidTest
 class RepeatAndroidTest {
 
-    private val activityScenarioRule = activityScenarioRule<MainActivity>()
-
-    private val hiltAndroidRule = HiltAndroidRule(this)
 
     @get:Rule
-    val rule: RuleChain = RuleChain.outerRule(hiltAndroidRule)
-        .around(activityScenarioRule)
+    val hiltAndroidRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var tickerPreferences: TickerPreferences
@@ -44,28 +39,30 @@ class RepeatAndroidTest {
     }
 
     @Test
-    fun testWhenRepeatIsCheckedTheRepeatButtonIsNotDisplayed() {
-        createTicker()
+    fun testWhenRepeatIsCheckedTheRepeatButtonIsNotDisplayed(): Unit =
+        launchActivity<MainActivity>().use {
+            createTicker()
 
-        onView(withId(R.id.cbAutoRepeat)).perform(scrollTo(), click())
-        onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
+            onView(withId(R.id.cbAutoRepeat)).perform(scrollTo(), click())
+            onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
 
-        registerIdlingResource()
+            registerIdlingResource()
 
-        onView(withId(R.id.btnRepeat)).check(matches(not(isDisplayed())))
-    }
+            onView(withId(R.id.btnRepeat)).check(matches(not(isDisplayed())))
+        }
 
 
     @Test
-    fun testWhenRepeatIsNotCheckedTheRepeatButtonIsDisplayed() {
-        createTicker()
+    fun testWhenRepeatIsNotCheckedTheRepeatButtonIsDisplayed(): Unit =
+        launchActivity<MainActivity>().use {
+            createTicker()
 
-        onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
+            onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
 
-        registerIdlingResource()
+            registerIdlingResource()
 
-        onView(withId(R.id.btnRepeat)).check(matches(isDisplayed()))
-    }
+            onView(withId(R.id.btnRepeat)).check(matches(isDisplayed()))
+        }
 
     private fun createTicker() {
         onView(withId(R.id.etBookmarkName))

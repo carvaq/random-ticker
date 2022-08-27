@@ -11,7 +11,7 @@ plugins {
 
 val major = 1
 val minor = 7
-val patch = 0
+val patch = 1
 
 val generatedVersionName = String.format("%s%02d%02d", major, minor, patch)
 val generateVersionCode = Integer.parseInt(generatedVersionName)
@@ -85,7 +85,6 @@ android {
     }
 
     namespace = "com.fanstaticapps.randomticker"
-    testNamespace = "your.package.name"
 }
 
 dependencies {
@@ -125,7 +124,6 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.8.2")
     testImplementation("io.mockk:mockk:1.12.7")
     testImplementation("androidx.test:core-ktx:1.4.0")
-    testImplementation("androidx.room:room-testing:2.4.3")
     testImplementation("androidx.test.ext:junit-ktx:1.1.3")
     testImplementation("androidx.test:runner:1.4.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
@@ -134,15 +132,16 @@ dependencies {
     kaptTest("com.google.dagger:hilt-android-compiler:2.43.2")
 
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.43.2")
+    androidTestImplementation("androidx.room:room-testing:2.4.3")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
     androidTestImplementation("androidx.test:rules:1.4.0")
+    androidTestImplementation("androidx.test:core-ktx:1.4.0")
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
     androidTestImplementation("androidx.test.ext:truth:1.4.0")
-    androidTestImplementation("com.google.truth:truth:1.1.3")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.43.2")
     androidTestUtil("androidx.test:orchestrator:1.4.1")
 }

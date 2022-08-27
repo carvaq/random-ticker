@@ -26,7 +26,8 @@ class TickerDatabaseMigrationTest {
     @get:Rule
     val testHelper: MigrationTestHelper = MigrationTestHelper(
         InstrumentationRegistry.getInstrumentation(),
-        TickerDatabase::class.java.canonicalName,
+        TickerDatabase::class.java,
+        listOf(),
         FrameworkSQLiteOpenHelperFactory()
     )
 
@@ -46,7 +47,7 @@ class TickerDatabaseMigrationTest {
                     tickerDataDao().getById(1)
                 }
                 assert(bookmark != null)
-                bookmark!!.run {
+                bookmark?.run {
                     assertThat(name).isEqualTo("TickerLife")
                     assertThat(maximumHours).isEqualTo(0)
                     assertThat(minimumHours).isEqualTo(0)

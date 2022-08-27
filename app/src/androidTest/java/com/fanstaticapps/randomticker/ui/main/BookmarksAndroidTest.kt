@@ -45,7 +45,7 @@ class BookmarksAndroidTest {
 
         onView(withId(R.id.btnRepeat)).check(matches(not(isDisplayed())))
 
-        onView(withId(R.id.btnDismiss)).perform(scrollTo(), click())
+        onView(withId(R.id.btnDismiss)).perform(click())
 
         onView(withId(R.id.etBookmarkName)).check(matches(withText("TestLife")))
     }
@@ -78,7 +78,7 @@ class BookmarksAndroidTest {
         onView(withId(R.id.maxSec)).perform(pickValue(maxSec))
 
         onView(withId(R.id.btnStartTicker)).perform(scrollTo(), click())
-        onView(withId(R.id.btnDismiss)).perform(scrollTo(), click())
+        onView(withId(R.id.btnDismiss)).perform(click())
     }
 
 
