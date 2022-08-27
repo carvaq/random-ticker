@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.RingtoneManager
-import android.provider.Settings
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveData
 import timber.log.Timber
@@ -23,7 +22,6 @@ class TickerPreferences(context: Context) {
         private const val showNotificationPref: String = "pref_show_notification"
         private const val ringtonePref: String = "pref_ringtone"
         private const val vibratorPref: String = "pref_vibration"
-        private const val darkThemePref: String = "pref_dark_theme"
     }
 
     var interval: Long
@@ -51,9 +49,6 @@ class TickerPreferences(context: Context) {
     var vibrationEnabled: Boolean
         get() = prefs.getBoolean(vibratorPref, false)
         set(value) = prefs.edit().putBoolean(vibratorPref, value).apply()
-    var darkTheme: Boolean
-        get() = prefs.getBoolean(darkThemePref, false)
-        set(value) = prefs.edit().putBoolean(darkThemePref, value).apply()
 
     val currentSelectedBookmarkIdAsLiveData =
         SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)

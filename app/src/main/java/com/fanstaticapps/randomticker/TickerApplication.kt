@@ -1,7 +1,6 @@
 package com.fanstaticapps.randomticker
 
 import android.app.Application
-import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
@@ -30,10 +29,8 @@ class TickerApplication : Application() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
 
-
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
-        setDarkTheme(preferences)
     }
 }

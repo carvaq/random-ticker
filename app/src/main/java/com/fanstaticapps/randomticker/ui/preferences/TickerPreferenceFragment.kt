@@ -19,7 +19,6 @@ import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.extensions.getVibrator
 import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
-import com.fanstaticapps.randomticker.extensions.setDarkTheme
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,8 +46,6 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
         }
 
         bindNotificationChannelPreference()
-
-        bindDarkThemePreference()
     }
 
     private fun bindNotificationChannelPreference() {
@@ -86,20 +83,6 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
             true
         }
     }
-
-    private fun bindDarkThemePreference() {
-        val darkThemePreference =
-            findPreference<CheckBoxPreference>(getString(R.string.pref_dark_theme_key))
-                ?: return
-        darkThemePreference.isChecked = getBooleanPreference(darkThemePreference)
-        darkThemePreference.setOnPreferenceChangeListener { preference, newValue ->
-            (preference as CheckBoxPreference).isChecked = newValue.toString().toBoolean()
-            setDarkTheme(tickerPreferences)
-            activity?.recreate()
-            true
-        }
-    }
-
 
     private fun Preference.bindRingtonePreference() {
         updateRingtonePreferenceSummary(this)
