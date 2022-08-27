@@ -41,6 +41,5 @@
 	<Transition
 			app:constraintSetEnd="@id/ringing"
 			app:constraintSetStart="@+id/waiting"
-			app:duration="500"
-			app:motionInterpolator="bounce" />
+			app:duration="500" />
 </MotionScene>
