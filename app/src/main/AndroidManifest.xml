@@ -70,8 +70,7 @@
 				android:parentActivityName=".ui.main.MainActivity" />
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:theme="@style/AppTheme.LicenseActivity" />
+				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
 				android:parentActivityName=".ui.preferences.SettingsActivity"

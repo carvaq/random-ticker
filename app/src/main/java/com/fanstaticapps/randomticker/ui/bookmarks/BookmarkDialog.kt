@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fanstaticapps.randomticker.R
@@ -25,15 +24,6 @@ class BookmarkDialog : BottomSheetDialogFragment() {
     private val viewModel: BookmarksViewModel by viewModels()
 
     private val binding by viewBinding(DialogBookmarkBinding::bind)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (tickerPreferences.darkTheme) {
-            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Dark)
-        } else {
-            setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme_Dialog_Light)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,4 +58,3 @@ class BookmarkDialog : BottomSheetDialogFragment() {
         })
     }
 }
-
