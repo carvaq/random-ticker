@@ -1,10 +1,12 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.widget.EditText
 import android.widget.NumberPicker
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
@@ -35,6 +37,14 @@ class MainActivity : BaseActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private val viewBinding by viewBinding(ActivityMainBinding::inflate)
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                createTimer()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +96,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initializeListeners() {
-        viewBinding.content.btnStartTicker.setOnClickListener { createTimer() }
+        viewBinding.content.btnStartTicker.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                createTimer()
+            }
+        }
     }
 
     private fun initializeTimerCreationStatus() {
