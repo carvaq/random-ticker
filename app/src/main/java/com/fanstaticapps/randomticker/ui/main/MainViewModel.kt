@@ -24,7 +24,7 @@ class MainViewModel @Inject constructor(
     private val repository: BookmarkRepository
 ) : ViewModel() {
 
-    private val currentBookmarkId = tickerPreferences.currentSelectedBookmarkIdAsLiveData
+    private val currentBookmarkId = tickerPreferences.currentSelectedBookmarkIdLD
 
     val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
     val currentBookmark: LiveData<Bookmark> =

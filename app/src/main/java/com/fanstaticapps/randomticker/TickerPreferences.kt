@@ -50,7 +50,7 @@ class TickerPreferences(context: Context) {
         get() = prefs.getBoolean(vibratorPref, false)
         set(value) = prefs.edit().putBoolean(vibratorPref, value).apply()
 
-    val currentSelectedBookmarkIdAsLiveData =
+    val currentSelectedBookmarkIdLD =
         SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
 
     fun setTickerInterval(interval: Long) {

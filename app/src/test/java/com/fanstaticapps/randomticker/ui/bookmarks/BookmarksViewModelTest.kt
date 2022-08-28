@@ -52,7 +52,7 @@ class BookmarksViewModelTest {
             val selectedBookmark = Bookmark(id = bookmarkId, name = "Test Bookmark")
 
             val mockedObserver: Observer<Long> = mockk(relaxed = true, relaxUnitFun = true)
-            tickerPreferences.currentSelectedBookmarkIdAsLiveData.observeForever(mockedObserver)
+            tickerPreferences.currentSelectedBookmarkIdLD.observeForever(mockedObserver)
 
             //when
             testee.selectBookmark(selectedBookmark)
@@ -71,7 +71,7 @@ class BookmarksViewModelTest {
 
             val newBookmark = Bookmark("New")
             val mockedObserver: Observer<Long> = mockk(relaxed = true, relaxUnitFun = true)
-            tickerPreferences.currentSelectedBookmarkIdAsLiveData.observeForever(mockedObserver)
+            tickerPreferences.currentSelectedBookmarkIdLD.observeForever(mockedObserver)
 
             //when
             testee.createBookmark(newBookmark)
