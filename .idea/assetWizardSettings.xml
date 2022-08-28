@@ -96,9 +96,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="ffffff" />
-                                                <entry key="imagePath" value="C:\Users\Carla\AppData\Local\Temp\baseline_timer_24.xml" />
-                                                <entry key="scalingPercent" value="79" />
-                                                <entry key="trimmed" value="true" />
+                                                <entry key="imagePath" value="C:\Users\Carla\AppData\Local\Temp\round_timer_24.xml" />
+                                                <entry key="scalingPercent" value="99" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -109,7 +108,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="file:$PROJECT_DIR$/../../Sdk/icons/material/materialicons/timer/baseline_timer_24.xml" />
+                                                <entry key="url" value="file:/$PROJECT_DIR$/../../Sdk/icons/material/materialiconsround/timer/round_timer_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -155,7 +154,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="24c665" />
+                                      <entry key="backgroundColor" value="00629e" />
                                       <entry key="foregroundAssetType" value="CLIP_ART" />
                                     </map>
                                   </option>
