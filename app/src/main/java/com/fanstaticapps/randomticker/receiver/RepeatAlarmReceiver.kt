@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.helper.TimerHelper
@@ -34,8 +35,14 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
                 Timber.d("Creating a new alarm!")
                 if (!bookmark.autoRepeat) {
                     timerHelper.newTickerFromBookmark(context, bookmark)
+                    LocalBroadcastManager.getInstance(context)
+                        .sendBroadcast(Intent(TICKER_RESTARTED))
                 }
             }
         }
+    }
+
+    companion object {
+        const val TICKER_RESTARTED = "TICKER_RESTARTED"
     }
 }

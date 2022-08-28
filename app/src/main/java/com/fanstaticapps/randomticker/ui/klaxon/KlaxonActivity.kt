@@ -2,18 +2,23 @@ package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.databinding.ActivityKlaxonBinding
 import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
+import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -35,7 +40,6 @@ class KlaxonActivity : BaseActivity() {
     private val viewModel: KlaxonViewModel by viewModels()
     private val binding by viewBinding(ActivityKlaxonBinding::inflate)
 
-    private var timeElapsed: Boolean = false
     private val pulsatorAnimation = AnimatorSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +51,20 @@ class KlaxonActivity : BaseActivity() {
         updateScreenStatus()
         prepareAnimation()
 
-        viewModel.getCurrentViewState().observe(this) {
-            render(it)
-        }
+        viewModel.currentStateLD.observe(this) { render(it) }
+        registerBroadcast()
+    }
+
+    private fun registerBroadcast() = with(LocalBroadcastManager.getInstance(this)) {
+        registerReceiver(
+            object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    unregisterReceiver(this)
+                    reloadKlaxonView()
+                }
+            },
+            IntentFilter(RepeatAlarmReceiver.TICKER_RESTARTED)
+        )
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -78,14 +93,11 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun updateScreenStatus() {
-        if (!timeElapsed) {
-            binding.mlKlaxon.transitionToStart()
-        }
+        binding.mlKlaxon.transitionToStart()
     }
 
     override fun onResume() {
         super.onResume()
-        Timber.d("Alarm time elapsed?  $timeElapsed")
         binding.btnDismiss.setOnClickListener {
             viewModel.cancelTimer()
         }
@@ -101,6 +113,10 @@ class KlaxonActivity : BaseActivity() {
     private fun autoRepeatTicker(bookmark: Bookmark) {
         timerHelper.newTickerFromBookmark(this, bookmark)
 
+        reloadKlaxonView()
+    }
+
+    private fun reloadKlaxonView() {
         finish()
         startActivity(intent.apply { putExtra(EXTRA_TIME_ELAPSED, false) })
     }

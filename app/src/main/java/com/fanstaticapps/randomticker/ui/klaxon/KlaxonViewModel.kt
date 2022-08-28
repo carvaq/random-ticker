@@ -26,7 +26,19 @@ class KlaxonViewModel @Inject constructor(
 
     private val timeElapsed = MutableLiveData<Boolean>()
     private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TickerNoop)
-    private val viewStateMediator = MediatorLiveData<KlaxonViewState>()
+    val currentStateLD: LiveData<KlaxonViewState> = MediatorLiveData<KlaxonViewState>().apply {
+        addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
+            Transformations.map(currentBookmark) { bookmark ->
+                if (timerElapsed) {
+                    KlaxonViewState.TickerFinished(getElapsedTime(), bookmark)
+                } else {
+                    startCountDownTimer()
+                    KlaxonViewState.TickerStarted(bookmark)
+                }
+            }
+        }) { value = it }
+        addSource(internalViewState) { value = it }
+    }
 
     private val countDownTimer = object : CountDownTimer(
         tickerPreferences.intervalWillBeFinished - System.currentTimeMillis(),
@@ -50,27 +62,9 @@ class KlaxonViewModel @Inject constructor(
         }
     var showElapsedTime: Boolean = false
 
-    init {
-        viewStateMediator.addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
-            Transformations.map(currentBookmark) { bookmark ->
-                if (timerElapsed) {
-                    KlaxonViewState.TickerFinished(getElapsedTime(), bookmark)
-                } else {
-                    startCountDownTimer()
-                    KlaxonViewState.TickerStarted(bookmark)
-                }
-            }
-        }) { viewStateMediator.value = it }
-        viewStateMediator.addSource(internalViewState) { viewStateMediator.value = it }
-    }
-
 
     fun setTimeElapsed(timerElapsed: Boolean) {
         this.timeElapsed.value = timerElapsed
-    }
-
-    fun getCurrentViewState(): LiveData<KlaxonViewState> {
-        return viewStateMediator
     }
 
     fun onStop() {
