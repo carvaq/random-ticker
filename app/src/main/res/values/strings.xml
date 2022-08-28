@@ -27,4 +27,5 @@
 	<string name="action_repeat">Repeat</string>
 	<string name="action_stop">Stop</string>
 	<string name="auto_repeat">Auto repeat after 2 seconds</string>
+	<string name="please_allow_alarm_scheduling">You have disabled alarm scheduling for Random Ticker, please go to settings and grant the permission.</string>
 </resources>

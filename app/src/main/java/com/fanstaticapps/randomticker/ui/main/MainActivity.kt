@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.ui.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.widget.EditText
 import android.widget.NumberPicker
@@ -15,6 +16,7 @@ import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.databinding.ActivityMainBinding
+import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
@@ -22,6 +24,7 @@ import com.fanstaticapps.randomticker.helper.livedata.nonNull
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,7 +42,11 @@ class MainActivity : BaseActivity() {
     private val viewBinding by viewBinding(ActivityMainBinding::inflate)
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) createTimer()
+            if (isGranted) createTimerIfScheduleAlarmGranted()
+        }
+    private val scheduleAlarmLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            createTimerIfScheduleAlarmGranted()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +59,7 @@ class MainActivity : BaseActivity() {
 
             setupToolbar()
 
-            initializeListeners()
+            initializeSartButtonListener()
             initializeBookmarks()
             initializeTimerCreationStatus()
         }
@@ -91,12 +98,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initializeListeners() {
+    private fun initializeSartButtonListener() {
         viewBinding.content.btnStartTicker.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             } else {
-                createTimer()
+                createTimerIfScheduleAlarmGranted()
             }
         }
     }
@@ -134,6 +141,21 @@ class MainActivity : BaseActivity() {
             viewBinding.content.contentMax.maxMin.value = maximumMinutes
             viewBinding.content.contentMax.maxSec.value = maximumSeconds
             viewBinding.content.cbAutoRepeat.isChecked = bookmark.autoRepeat
+        }
+    }
+
+    private fun createTimerIfScheduleAlarmGranted() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || getAlarmManager()?.canScheduleExactAlarms() == true) {
+            createTimer()
+        } else {
+            MaterialAlertDialogBuilder(this).apply {
+                setMessage(R.string.please_allow_alarm_scheduling)
+                setPositiveButton(android.R.string.ok) { _, _ ->
+                    scheduleAlarmLauncher.launch(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+                }
+                setPositiveButton(android.R.string.cancel, null)
+            }
+
         }
     }
 

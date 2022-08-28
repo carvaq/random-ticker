@@ -1,10 +1,8 @@
 package com.fanstaticapps.randomticker.helper
 
 import android.app.Activity
-import android.app.AlarmManager
 import android.app.AlarmManager.AlarmClockInfo
 import android.content.Context
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import com.fanstaticapps.randomticker.TickerPreferences
@@ -64,7 +62,6 @@ class TimerHelper @Inject constructor(
 
         if (hasTickerExpired()) return
 
-
         if (tickerPreferences.showRunningTimerNotification) {
             Timber.d("showing running ticker notification")
 
@@ -85,25 +82,7 @@ class TimerHelper @Inject constructor(
 
         context.getAlarmManager()?.let { alarmManger ->
             val alarmIntent = IntentHelper.getCreateAlarmReceiverAsPendingIntent(context)
-            when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    alarmManger.setAlarmClock(
-                        AlarmClockInfo(intervalFinished, alarmIntent),
-                        alarmIntent
-                    )
-                }
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                    alarmManger.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP,
-                        intervalFinished,
-                        alarmIntent
-                    )
-                }
-                else -> {
-                    alarmManger.setExact(AlarmManager.RTC_WAKEUP, intervalFinished, alarmIntent)
-
-                }
-            }
+            alarmManger.setAlarmClock(AlarmClockInfo(intervalFinished, alarmIntent), alarmIntent)
             Timber.d("Setting alarm to sound in ${(intervalFinished - System.currentTimeMillis()) / 1000}s")
         }
     }
@@ -139,5 +118,4 @@ class TimerHelper @Inject constructor(
     fun startNotification(activity: Activity) {
         IntentHelper.getRingtoneServiceIntent(activity).let { activity.startService(it) }
     }
-
 }

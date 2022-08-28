@@ -28,5 +28,6 @@
 	<string name="action_repeat">Wiederholen</string>
 	<string name="action_stop">Stopp</string>
 	<string name="auto_repeat">Wiederholen nach 2 Sekunden</string>
+	<string name="please_allow_alarm_scheduling">Du hast Alarmplanung für den Random-Ticker deaktiviert. Bitte gehe zu den Einstellungen und gib die Erlaubnis frei.</string>
 
 </resources>
