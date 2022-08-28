@@ -4,7 +4,7 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+import com.fanstaticapps.randomticker.extensions.isAtLeastM
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
 import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
@@ -78,7 +78,7 @@ object IntentHelper {
         }
         return PendingIntent.getBroadcast(
             context,
-            421,
+            REQUEST_CODE_ALARM,
             intent,
             flag.asImmutable
         )
@@ -91,17 +91,18 @@ object IntentHelper {
     fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {
         return PendingIntent.getBroadcast(
             context,
-            112,
+            REQUEST_CODE_REPEAT,
             Intent(context, RepeatAlarmReceiver::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
 
     private val Int.asImmutable
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        get() = if (isAtLeastM()) {
             this or PendingIntent.FLAG_IMMUTABLE
         } else {
             this
         }
-
+    private const val REQUEST_CODE_REPEAT = 112
+    private const val REQUEST_CODE_ALARM = 421
 }

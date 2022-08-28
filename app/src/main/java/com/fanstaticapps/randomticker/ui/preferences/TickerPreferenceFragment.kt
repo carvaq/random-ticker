@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS
@@ -18,7 +17,8 @@ import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.extensions.getVibrator
-import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
+import com.fanstaticapps.randomticker.extensions.isAtLeastO
+import com.fanstaticapps.randomticker.extensions.isAtLeastT
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +55,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
             findPreference<CheckBoxPreference>(getString(R.string.pref_vibration_key))
         val ringtonePreference = findPreference<Preference>(getString(R.string.pref_ringtone_key))
 
-        if (isAtLeastAndroid26()) {
+        if (isAtLeastO()) {
             notificationManager.createNotificationChannelIfNecessary(requireContext())
             notificationChannelPreference?.setOnPreferenceClickListener {
                 Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
@@ -116,7 +116,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
 
     @Suppress("DEPRECATION")
     private fun Intent.getUri() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (isAtLeastT()) {
             getParcelableExtra(
                 RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
                 Uri::class.java

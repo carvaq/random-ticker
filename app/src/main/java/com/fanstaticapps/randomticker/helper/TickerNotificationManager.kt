@@ -14,7 +14,7 @@ import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getFormattedElapsedMilliseconds
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
-import com.fanstaticapps.randomticker.extensions.isAtLeastAndroid26
+import com.fanstaticapps.randomticker.extensions.isAtLeastO
 import javax.inject.Inject
 
 class TickerNotificationManager @Inject constructor(private val tickerPreferences: TickerPreferences) {
@@ -26,7 +26,7 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
     }
 
     fun createNotificationChannelIfNecessary(context: Context) {
-        if (isAtLeastAndroid26()) {
+        if (isAtLeastO()) {
             val channel = createKlaxonChannel(context)
             context.getNotificationManager().createNotificationChannel(channel)
         }
@@ -72,17 +72,17 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
                 .setContentIntent(contentIntent)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-        val notificationChannel = if (isAtLeastAndroid26()) {
+        val notificationChannel = if (isAtLeastO()) {
             context.getNotificationManager().getNotificationChannel(FOREGROUND_CHANNEL_ID)
         } else {
             null
         }
-        val alarmRingtone = if (isAtLeastAndroid26()) {
+        val alarmRingtone = if (isAtLeastO()) {
             notificationChannel?.sound
         } else {
             tickerPreferences.alarmRingtone.toUri()
         }
-        val vibrationEnabled = if (isAtLeastAndroid26()) {
+        val vibrationEnabled = if (isAtLeastO()) {
             notificationChannel?.shouldVibrate() ?: false
         } else {
             tickerPreferences.vibrationEnabled
@@ -101,7 +101,7 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
         val notification = buildRunningNotification(context)
         val notificationManager = context.getNotificationManager()
 
-        if (isAtLeastAndroid26()) {
+        if (isAtLeastO()) {
             val name = context.getString(R.string.running_channel_name)
             val channel =
                 NotificationChannel(RUNNING_CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)

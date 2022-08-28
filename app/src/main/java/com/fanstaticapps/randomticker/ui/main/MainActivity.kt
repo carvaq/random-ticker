@@ -1,7 +1,6 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
@@ -17,6 +16,8 @@ import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.databinding.ActivityMainBinding
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
+import com.fanstaticapps.randomticker.extensions.isAtLeastS
+import com.fanstaticapps.randomticker.extensions.isAtLeastT
 import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.TimerHelper
@@ -100,7 +101,7 @@ class MainActivity : BaseActivity() {
 
     private fun initializeSartButtonListener() {
         viewBinding.content.btnStartTicker.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (isAtLeastT()) {
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             } else {
                 createTimerIfScheduleAlarmGranted()
@@ -145,7 +146,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun createTimerIfScheduleAlarmGranted() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || getAlarmManager()?.canScheduleExactAlarms() == true) {
+        if (isAtLeastS() || getAlarmManager()?.canScheduleExactAlarms() == true) {
             createTimer()
         } else {
             MaterialAlertDialogBuilder(this).apply {
