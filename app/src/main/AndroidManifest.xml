@@ -7,7 +7,10 @@
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+	<uses-permission
+			android:name="android.permission.SCHEDULE_EXACT_ALARM"
+			android:maxSdkVersion="32" />
+	<uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -68,6 +71,8 @@
 				android:name=".ui.preferences.SettingsActivity"
 				android:label="@string/title_activity_settings"
 				android:parentActivityName=".ui.main.MainActivity" />
+		<activity android:name=".ui.CancelActivity" />
+
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
 				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
@@ -75,7 +80,6 @@
 				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
 				android:parentActivityName=".ui.preferences.SettingsActivity"
 				android:theme="@style/AppTheme" />
-		<activity android:name=".ui.CancelActivity" />
 
 		<service android:name=".ui.RingtonePlayingService" />
 	</application>

@@ -6,12 +6,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:animateLayoutChanges="true"
-		android:background="@drawable/klaxon_background"
+		android:fitsSystemWindows="false"
 		android:keepScreenOn="true"
 		app:applyMotionScene="true"
 		app:layoutDescription="@xml/activity_klaxon_scene"
 		tools:context="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity">
-
 
 	<com.airbnb.lottie.LottieAnimationView
 			android:id="@+id/laWaiting"

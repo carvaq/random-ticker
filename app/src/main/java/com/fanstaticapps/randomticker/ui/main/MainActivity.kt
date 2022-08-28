@@ -38,12 +38,8 @@ class MainActivity : BaseActivity() {
 
     private val viewBinding by viewBinding(ActivityMainBinding::inflate)
     private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                createTimer()
-            }
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) createTimer()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.lifecycleScope
+import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.databinding.ActivityKlaxonBinding
 import com.fanstaticapps.randomticker.extensions.viewBinding
@@ -38,6 +39,7 @@ class KlaxonActivity : BaseActivity() {
     private val pulsatorAnimation = AnimatorSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setBackgroundDrawableResource(R.drawable.klaxon_background)
         super.onCreate(savedInstanceState)
         readExtras(intent)
 
