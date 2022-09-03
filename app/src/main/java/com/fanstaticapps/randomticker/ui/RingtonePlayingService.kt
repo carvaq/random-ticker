@@ -69,7 +69,7 @@ class RingtonePlayingService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun Context.preparePlayer(uri: Uri) = MediaPlayer.create(this, uri).apply {
+    private fun Context.preparePlayer(uri: Uri) = MediaPlayer.create(this, uri)?.apply {
         setOnCompletionListener {
             if (isRunning) {
                 it.start()
