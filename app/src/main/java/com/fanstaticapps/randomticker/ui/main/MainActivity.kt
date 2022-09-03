@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
@@ -8,7 +9,9 @@ import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
@@ -146,7 +149,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun createTimerIfScheduleAlarmGranted() {
-        if (isAtLeastS() || getAlarmManager()?.canScheduleExactAlarms() == true) {
+        if (isAtLeastS() || canScheduleAlarms()) {
             createTimer()
         } else {
             MaterialAlertDialogBuilder(this).apply {
@@ -159,6 +162,11 @@ class MainActivity : BaseActivity() {
 
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun canScheduleAlarms() =
+        kotlin.runCatching { getAlarmManager()?.canScheduleExactAlarms() == true }
+            .getOrDefault(NotificationManagerCompat.from(this).areNotificationsEnabled())
 
     private fun createTimer() {
         viewModel.createTimer(
