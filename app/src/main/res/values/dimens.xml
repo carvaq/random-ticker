@@ -11,5 +11,5 @@
 	<dimen name="editTextMinWidth">100dp</dimen>
 	<dimen name="elapsedTimeTextSizeZoomed">30sp</dimen>
 	<dimen name="elapsedTimeTextSize">14sp</dimen>
-	<dimen name="touchHeight">48sp</dimen>
+	<dimen name="touchHeight">48dp</dimen>
 </resources>
