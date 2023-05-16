@@ -155,7 +155,7 @@ class KlaxonActivity : BaseActivity() {
                 stopTickerRunning()
 
                 startActivity(IntentHelper.getMainActivity(this))
-                overridePendingTransition(0, 0)
+                noOpenOrCloseTransitions()
                 finish()
             }
             is KlaxonViewState.TickerStopped -> {

@@ -4,9 +4,10 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
@@ -27,8 +28,8 @@ class KlaxonViewModel @Inject constructor(
     private val timeElapsed = MutableLiveData<Boolean>()
     private val internalViewState = MutableLiveData<KlaxonViewState>(KlaxonViewState.TickerNoop)
     val currentStateLD: LiveData<KlaxonViewState> = MediatorLiveData<KlaxonViewState>().apply {
-        addSource(Transformations.switchMap(timeElapsed) { timerElapsed ->
-            Transformations.map(currentBookmark) { bookmark ->
+        addSource(timeElapsed.switchMap { timerElapsed ->
+            currentBookmark.map { bookmark ->
                 if (timerElapsed) {
                     KlaxonViewState.TickerFinished(getElapsedTime(), bookmark)
                 } else {

@@ -16,7 +16,7 @@ class CancelActivity : BaseActivity() {
         timerHelper.cancelTicker(this)
 
         startActivity(IntentHelper.getMainActivity(this))
-        overridePendingTransition(0, 0)
+        noOpenOrCloseTransitions()
         finish()
     }
 }

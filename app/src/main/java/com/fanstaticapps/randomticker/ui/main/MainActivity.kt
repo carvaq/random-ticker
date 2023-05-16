@@ -63,7 +63,7 @@ class MainActivity : BaseActivity() {
 
             setupToolbar()
 
-            initializeSartButtonListener()
+            initializeStartButtonListener()
             initializeBookmarks()
             initializeTimerCreationStatus()
         }
@@ -102,7 +102,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initializeSartButtonListener() {
+    private fun initializeStartButtonListener() {
         viewBinding.content.btnStartTicker.setOnClickListener {
             if (isAtLeastT()) {
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
@@ -149,7 +149,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun createTimerIfScheduleAlarmGranted() {
-        if (isAtLeastS() || canScheduleAlarms()) {
+        if (!isAtLeastS() || canScheduleAlarms()) {
             createTimer()
         } else {
             MaterialAlertDialogBuilder(this).apply {

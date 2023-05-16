@@ -2,10 +2,11 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("com.github.triplet.play") version "3.7.0"
+    id("com.github.triplet.play") version "3.8.3"
     id("com.google.android.gms.oss-licenses-plugin")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
 }
 
 
@@ -20,12 +21,13 @@ val generateVersionCode = Integer.parseInt(generatedVersionName)
 android {
 
     compileSdk = 33
-    buildToolsVersion = "33.0.0"
+    compileSdkPreview = "UpsideDownCake"
     defaultConfig {
 
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 21
         targetSdk = 33
+        targetSdkPreview = "UpsideDownCake"
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = generateVersionCode
@@ -88,62 +90,60 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
 
     implementation("androidx.preference:preference-ktx:1.2.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.appcompat:appcompat:1.5.0")
-    implementation("androidx.activity:activity-ktx:1.5.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.2")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.activity:activity-ktx:1.7.1")
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
 
-    implementation("androidx.room:room-runtime:2.4.3")
-    implementation("androidx.room:room-ktx:2.4.3")
-    kapt("androidx.room:room-compiler:2.4.3")
+    implementation("androidx.room:room-runtime:2.5.1")
+    implementation("androidx.room:room-ktx:2.5.1")
+    ksp("androidx.room:room-compiler:2.5.1")
 
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
-    implementation("com.google.dagger:hilt-android:2.43.2")
-    kapt("com.google.dagger:hilt-android-compiler:2.43.2")
-    kapt("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    implementation("com.google.dagger:hilt-android:2.46.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("com.airbnb.android:lottie:5.2.0")
+    implementation("com.airbnb.android:lottie:6.0.0")
 
 
-    testImplementation("org.mockito:mockito-core:4.7.0")
+    testImplementation("org.mockito:mockito-core:5.3.1")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.8.2")
-    testImplementation("io.mockk:mockk:1.12.7")
-    testImplementation("androidx.test:core-ktx:1.4.0")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.3")
-    testImplementation("androidx.test:runner:1.4.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("org.robolectric:robolectric:4.10.2")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("androidx.test:core-ktx:1.5.0")
+    testImplementation("androidx.test.ext:junit-ktx:1.1.5")
+    testImplementation("androidx.test:runner:1.5.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("com.google.dagger:hilt-android-testing:2.43.2")
-    kaptTest("com.google.dagger:hilt-android-compiler:2.43.2")
+    testImplementation("com.google.dagger:hilt-android-testing:2.46.1")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.46.1")
 
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.43.2")
-    androidTestImplementation("androidx.room:room-testing:2.4.3")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
+    androidTestImplementation("androidx.room:room-testing:2.5.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
-    androidTestImplementation("androidx.test:rules:1.4.0")
-    androidTestImplementation("androidx.test:core-ktx:1.4.0")
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
-    androidTestImplementation("androidx.test.ext:truth:1.4.0")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.43.2")
-    androidTestUtil("androidx.test:orchestrator:1.4.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
+    androidTestImplementation("androidx.test.ext:truth:1.5.0")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.46.1")
+    androidTestUtil("androidx.test:orchestrator:1.4.2")
 }
 
 play {

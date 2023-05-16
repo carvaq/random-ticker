@@ -2,9 +2,9 @@ package com.fanstaticapps.randomticker.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
@@ -28,7 +28,7 @@ class MainViewModel @Inject constructor(
 
     val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
     val currentBookmark: LiveData<Bookmark> =
-        Transformations.switchMap(currentBookmarkId) { currentBookmarkId ->
+        currentBookmarkId.switchMap { currentBookmarkId ->
             liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
                 repository.getBookmarkById(currentBookmarkId)?.let { emit(it) }
             }
