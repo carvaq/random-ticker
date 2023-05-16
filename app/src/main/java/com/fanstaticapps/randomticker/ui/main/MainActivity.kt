@@ -129,7 +129,7 @@ class MainActivity : BaseActivity() {
         viewBinding.content.contentMin.minHours.init(10, R.string.from, R.string.hours_label)
         viewBinding.content.contentMin.minMin.init(59, R.string.from, R.string.minutes_label)
         viewBinding.content.contentMin.minSec.init(59, R.string.from, R.string.seconds_label)
-        viewBinding.content.contentMax.maxHours.init(10, R.string.to, R.string.hours_label)
+        viewBinding.content.contentMax.maxHours.init(23, R.string.to, R.string.hours_label)
         viewBinding.content.contentMax.maxMin.init(59, R.string.to, R.string.minutes_label)
         viewBinding.content.contentMax.maxSec.init(59, R.string.to, R.string.seconds_label)
     }
