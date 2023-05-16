@@ -14,18 +14,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-
-      - name: Create Release
-        id: create_release
-        uses: action-pack/github-release@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: true
-          prerelease: false
-
       - name: Decode google-services.json
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
