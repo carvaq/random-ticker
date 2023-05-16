@@ -17,13 +17,13 @@ abstract class BaseActivity : AppCompatActivity() {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show()
     }
 
-    @Suppress("DEPRECATION")
     protected fun noOpenOrCloseTransitions() {
-        if (isAtLeastU()) {
+        /*if (isAtLeastU()) {
             overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
             overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0)
         } else {
             overridePendingTransition(0, 0)
-        }
+        }*/
+        overridePendingTransition(0, 0)
     }
 }

@@ -7,11 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Projects.random-ticker.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Projects.random-ticker.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Projects.random-ticker.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Projects.random-ticker.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Projects.random-ticker.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Projects.random-ticker.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/random-ticker.iml" filepath="$PROJECT_DIR$/.idea/modules/random-ticker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/random-ticker.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/random-ticker.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/random-ticker.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/random-ticker.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/random-ticker.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/random-ticker.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/random-ticker.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/random-ticker.app.unitTest.iml" />
     </modules>
   </component>
 </project>

@@ -12,7 +12,7 @@ plugins {
 
 val major = 1
 val minor = 7
-val patch = 4
+val patch = 5
 
 val generatedVersionName = String.format("%s%02d%02d", major, minor, patch)
 val generateVersionCode = Integer.parseInt(generatedVersionName)
@@ -21,13 +21,11 @@ val generateVersionCode = Integer.parseInt(generatedVersionName)
 android {
 
     compileSdk = 33
-    compileSdkPreview = "UpsideDownCake"
     defaultConfig {
 
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 21
         targetSdk = 33
-        targetSdkPreview = "UpsideDownCake"
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = generateVersionCode
