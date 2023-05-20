@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker.ui
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import com.fanstaticapps.randomticker.extensions.isAtLeastU
 
 /**
  * Created by carvaq
