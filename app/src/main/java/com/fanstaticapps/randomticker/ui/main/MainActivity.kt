@@ -45,8 +45,8 @@ class MainActivity : BaseActivity() {
 
     private val viewBinding by viewBinding(ActivityMainBinding::inflate)
     private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) createTimerIfScheduleAlarmGranted()
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            if (result.values.all { it }) createTimerIfScheduleAlarmGranted()
         }
     private val scheduleAlarmLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -77,6 +77,7 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, SettingsActivity::class.java))
                     true
                 }
+
                 else -> false
             }
         }
@@ -105,7 +106,12 @@ class MainActivity : BaseActivity() {
     private fun initializeStartButtonListener() {
         viewBinding.content.btnStartTicker.setOnClickListener {
             if (isAtLeastT()) {
-                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                requestPermissionLauncher.launch(
+                    arrayOf(
+                        android.Manifest.permission.POST_NOTIFICATIONS,
+                        android.Manifest.permission.SCHEDULE_EXACT_ALARM
+                    )
+                )
             } else {
                 createTimerIfScheduleAlarmGranted()
             }
@@ -119,9 +125,11 @@ class MainActivity : BaseActivity() {
                     timerHelper.startTicker(this)
                     startAlarmActivity()
                 }
+
                 TimerCreationStatus.INVALID_DATES -> {
                     toast(R.string.error_min_is_bigger_than_max)
                 }
+
                 else -> {
                 }
             }
@@ -148,41 +156,40 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun createTimerIfScheduleAlarmGranted() {
-        if (!isAtLeastS() || canScheduleAlarms()) {
-            createTimer()
-        } else {
-            MaterialAlertDialogBuilder(this).apply {
-                setMessage(R.string.please_allow_alarm_scheduling)
-                setPositiveButton(android.R.string.ok) { _, _ ->
-                    scheduleAlarmLauncher.launch(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
-                }
-                setPositiveButton(android.R.string.cancel, null)
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun requestScheduleAlarmPermission() {
+        MaterialAlertDialogBuilder(this).apply {
+            setMessage(R.string.please_allow_alarm_scheduling)
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                scheduleAlarmLauncher.launch(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
             }
-
+            setPositiveButton(android.R.string.cancel, null)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     private fun canScheduleAlarms() =
-        kotlin.runCatching { getAlarmManager()?.canScheduleExactAlarms() == true }
+        !isAtLeastS() || kotlin.runCatching { getAlarmManager()?.canScheduleExactAlarms() == true }
             .getOrDefault(NotificationManagerCompat.from(this).areNotificationsEnabled())
 
-    private fun createTimer() {
-        viewModel.createTimer(
-            viewBinding.content.bookmarks.etBookmarkName.name(),
-            IntervalDefinition(
-                viewBinding.content.contentMin.minHours.value,
-                viewBinding.content.contentMin.minMin.value,
-                viewBinding.content.contentMin.minSec.value
-            ),
-            IntervalDefinition(
-                viewBinding.content.contentMax.maxHours.value,
-                viewBinding.content.contentMax.maxMin.value,
-                viewBinding.content.contentMax.maxSec.value
-            ),
-            viewBinding.content.cbAutoRepeat.isChecked
-        )
+    private fun createTimerIfScheduleAlarmGranted() {
+        if (canScheduleAlarms()) {
+            viewModel.createTimer(
+                viewBinding.content.bookmarks.etBookmarkName.name(),
+                IntervalDefinition(
+                    viewBinding.content.contentMin.minHours.value,
+                    viewBinding.content.contentMin.minMin.value,
+                    viewBinding.content.contentMin.minSec.value
+                ),
+                IntervalDefinition(
+                    viewBinding.content.contentMax.maxHours.value,
+                    viewBinding.content.contentMax.maxMin.value,
+                    viewBinding.content.contentMax.maxSec.value
+                ),
+                viewBinding.content.cbAutoRepeat.isChecked
+            )
+        } else {
+            requestScheduleAlarmPermission()
+        }
     }
 
     private fun startAlarmActivity() {
