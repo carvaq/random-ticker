@@ -32,6 +32,10 @@ android {
         versionName = generatedVersionName
 
         testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     signingConfigs {
@@ -157,11 +161,6 @@ play {
 kapt {
     generateStubs = false
     correctErrorTypes = true
-    arguments {
-        arg("room.schemaLocation", "$projectDir/schemas")
-        arg("room.incremental", "true")
-        arg("room.expandProjection", "true")
-    }
 }
 repositories {
     mavenCentral()
