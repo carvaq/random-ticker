@@ -5,24 +5,25 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
+import android.widget.Button
 import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.databinding.ActivityMainBinding
+import com.fanstaticapps.randomticker.databinding.ContentMainBinding
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
 import com.fanstaticapps.randomticker.extensions.isAtLeastT
 import com.fanstaticapps.randomticker.extensions.viewBinding
-import com.fanstaticapps.randomticker.helper.IntentHelper
+import com.fanstaticapps.randomticker.helper.Migration
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.helper.livedata.nonNull
 import com.fanstaticapps.randomticker.ui.BaseActivity
@@ -41,6 +42,9 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var tickerPreferences: TickerPreferences
 
+    @Inject
+    lateinit var migrator: Migration
+
     private val viewModel: MainViewModel by viewModels()
 
     private val viewBinding by viewBinding(ActivityMainBinding::inflate)
@@ -55,18 +59,15 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (timerHelper.isCurrentlyTickerRunning()) {
-            // if the timer is running we should move the KlaxonActivity
-            startAlarmActivity()
-        } else {
-            setContentView(viewBinding.root)
 
-            setupToolbar()
+        migrator.migrate()
 
-            initializeStartButtonListener()
-            initializeBookmarks()
-            initializeTimerCreationStatus()
-        }
+        setContentView(viewBinding.root)
+
+        setupToolbar()
+
+        initializeBookmarks()
+        viewBinding.content.initializeTimerCreationStatus()
     }
 
     private fun setupToolbar() {
@@ -94,7 +95,7 @@ class MainActivity : BaseActivity() {
         viewModel.currentBookmark
             .nonNull()
             .observe(this) {
-                renderBookmark(it)
+                viewBinding.content.renderBookmark(it)
             }
         viewBinding.content.bookmarks.btnSelectBookmark.setOnClickListener {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
@@ -103,9 +104,35 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initializeStartButtonListener() {
-        viewBinding.content.btnStartTicker.setOnClickListener {
-            if (isAtLeastT()) {
+    private fun ContentMainBinding.initializeTimerCreationStatus() {
+        contentMin.minHours.init(10, R.string.from, R.string.hours_label)
+        contentMin.minMin.init(59, R.string.from, R.string.minutes_label)
+        contentMin.minSec.init(59, R.string.from, R.string.seconds_label)
+        contentMax.maxHours.init(23, R.string.to, R.string.hours_label)
+        contentMax.maxMin.init(59, R.string.to, R.string.minutes_label)
+        contentMax.maxSec.init(59, R.string.to, R.string.seconds_label)
+    }
+
+
+    private fun ContentMainBinding.renderBookmark(bookmark: Bookmark) = with(bookmark) {
+        bookmarks.etBookmarkName.setText(name)
+        contentMin.minHours.value = minimumHours
+        contentMin.minMin.value = minimumMinutes
+        contentMin.minSec.value = minimumSeconds
+        contentMax.maxHours.value = maximumHours
+        contentMax.maxMin.value = maximumMinutes
+        contentMax.maxSec.value = maximumSeconds
+        cbAutoRepeat.isChecked = autoRepeat
+        viewBinding.content.btnStartTicker.initializeStartButtonListener(bookmark)
+    }
+
+    private fun Button.initializeStartButtonListener(bookmark: Bookmark) {
+        val timerRunning = bookmark.intervalEnd < System.currentTimeMillis()
+        setText(if (timerRunning) R.string.start_button else R.string.start_button)
+        setOnClickListener {
+            if (timerRunning) {
+                timerHelper.cancelTicker(bookmark.id)
+            } else if (isAtLeastT()) {
                 requestPermissionLauncher.launch(
                     arrayOf(
                         android.Manifest.permission.POST_NOTIFICATIONS,
@@ -115,44 +142,6 @@ class MainActivity : BaseActivity() {
             } else {
                 createTimerIfScheduleAlarmGranted()
             }
-        }
-    }
-
-    private fun initializeTimerCreationStatus() {
-        viewModel.timerCreationStatus.observe(this) {
-            when (it) {
-                TimerCreationStatus.TIMER_STARTED -> {
-                    timerHelper.startTicker(this)
-                    startAlarmActivity()
-                }
-
-                TimerCreationStatus.INVALID_DATES -> {
-                    toast(R.string.error_min_is_bigger_than_max)
-                }
-
-                else -> {
-                }
-            }
-        }
-        viewBinding.content.contentMin.minHours.init(10, R.string.from, R.string.hours_label)
-        viewBinding.content.contentMin.minMin.init(59, R.string.from, R.string.minutes_label)
-        viewBinding.content.contentMin.minSec.init(59, R.string.from, R.string.seconds_label)
-        viewBinding.content.contentMax.maxHours.init(23, R.string.to, R.string.hours_label)
-        viewBinding.content.contentMax.maxMin.init(59, R.string.to, R.string.minutes_label)
-        viewBinding.content.contentMax.maxSec.init(59, R.string.to, R.string.seconds_label)
-    }
-
-
-    private fun renderBookmark(bookmark: Bookmark) {
-        with(bookmark) {
-            viewBinding.content.bookmarks.etBookmarkName.setText(name)
-            viewBinding.content.contentMin.minHours.value = minimumHours
-            viewBinding.content.contentMin.minMin.value = minimumMinutes
-            viewBinding.content.contentMin.minSec.value = minimumSeconds
-            viewBinding.content.contentMax.maxHours.value = maximumHours
-            viewBinding.content.contentMax.maxMin.value = maximumMinutes
-            viewBinding.content.contentMax.maxSec.value = maximumSeconds
-            viewBinding.content.cbAutoRepeat.isChecked = bookmark.autoRepeat
         }
     }
 
@@ -167,12 +156,9 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun canScheduleAlarms() =
-        !isAtLeastS() || kotlin.runCatching { getAlarmManager()?.canScheduleExactAlarms() == true }
-            .getOrDefault(NotificationManagerCompat.from(this).areNotificationsEnabled())
 
     private fun createTimerIfScheduleAlarmGranted() {
-        if (canScheduleAlarms()) {
+        if (!isAtLeastS() || getAlarmManager()?.canScheduleExactAlarms() == true) {
             viewModel.createTimer(
                 viewBinding.content.bookmarks.etBookmarkName.name(),
                 IntervalDefinition(
@@ -186,15 +172,10 @@ class MainActivity : BaseActivity() {
                     viewBinding.content.contentMax.maxSec.value
                 ),
                 viewBinding.content.cbAutoRepeat.isChecked
-            )
+            ).takeUnless { it }?.let { toast(R.string.error_min_is_bigger_than_max) }
         } else {
             requestScheduleAlarmPermission()
         }
-    }
-
-    private fun startAlarmActivity() {
-        startActivity(IntentHelper.getKlaxonActivity(this, false))
-        finish()
     }
 
     private fun EditText.name(): String =
@@ -204,5 +185,9 @@ class MainActivity : BaseActivity() {
         minValue = 0
         maxValue = max
         contentDescription = "${getString(fromToResId)} ${getString(type)}"
+    }
+
+    companion object {
+        const val EXTRA_BOOKMARK_ID = "EXTRA_BOOKMARK_ID"
     }
 }

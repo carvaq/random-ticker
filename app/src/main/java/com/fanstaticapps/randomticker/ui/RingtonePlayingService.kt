@@ -7,13 +7,11 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
-import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.extensions.getVibrator
-import com.fanstaticapps.randomticker.extensions.isAtLeastO
 import com.fanstaticapps.randomticker.helper.TickerNotificationManager
 import com.fanstaticapps.randomticker.helper.TimerHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,23 +47,14 @@ class RingtonePlayingService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val context = baseContext
-        if (timerHelper.hasTickerExpired() && timerHelper.hasAValidTicker()) {
-            runBlocking { showNotification() }
-            if (!isRunning) {
-                vibrator = vibrator ?: context.getVibrator()
-                mediaPlayer = preferences.alarmRingtone.takeIf { it.isNotBlank() }
-                    ?.toUri()
-                    ?.let { uri -> context.preparePlayer(uri) }
-            }
-            isRunning = true
-        } else {
-            isRunning = false
-            notificationManager.cancelAllNotifications(context)
-            mediaPlayer?.stop()
-            mediaPlayer?.reset()
-            vibrator?.cancel()
-            stopSelf()
+        runBlocking { showNotification() }
+        if (!isRunning) {
+            vibrator = vibrator ?: context.getVibrator()
+            mediaPlayer = preferences.alarmRingtone.takeIf { it.isNotBlank() }
+                ?.toUri()
+                ?.let { uri -> context.preparePlayer(uri) }
         }
+        isRunning = true
         return START_NOT_STICKY
     }
 
@@ -83,14 +72,14 @@ class RingtonePlayingService : Service() {
     }
 
     private fun vibrate() {
-        if (isAtLeastO()) {
-            vibrator?.vibrate(
-                VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE)
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator?.vibrate(1000)
-        }
+        /*        if (isAtLeastO()) {
+                    vibrator?.vibrate(
+                        VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE)
+                    )
+                } else {
+                    @Suppress("DEPRECATION")
+                    vibrator?.vibrate(1000)
+                }*/
     }
 
     private suspend fun showNotification() {

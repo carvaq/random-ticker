@@ -34,7 +34,7 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
             repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { bookmark ->
                 Timber.d("Creating a new alarm!")
                 if (!bookmark.autoRepeat) {
-                    timerHelper.newTickerFromBookmark(context, bookmark)
+                    timerHelper.startTicker(bookmark)
                     LocalBroadcastManager.getInstance(context)
                         .sendBroadcast(Intent(TICKER_RESTARTED))
                 }

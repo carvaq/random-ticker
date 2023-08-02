@@ -19,7 +19,8 @@ data class Bookmark(
     @ColumnInfo(name = "maximumHours") val maximumHours: Int = 0,
     @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
     @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0,
-    @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false
+    @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false,
+    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = 0
 ) {
     @Ignore
     constructor(name: String) : this(null, name, 0, 0, 0, 0, 5, 0, false)
@@ -30,9 +31,9 @@ data class Bookmark(
         name: String,
         minimum: IntervalDefinition,
         maximum: IntervalDefinition,
-        autoRepeat: Boolean
-    )
-            : this(
+        autoRepeat: Boolean,
+        intervalEnd: Long
+    ) : this(
         id,
         name,
         minimum.hours,
@@ -41,16 +42,9 @@ data class Bookmark(
         maximum.hours,
         maximum.minutes,
         maximum.seconds,
-        autoRepeat
+        autoRepeat,
+        intervalEnd
     )
-
-    fun getMinimumIntervalDefinition(): IntervalDefinition {
-        return IntervalDefinition(minimumHours, minimumMinutes, minimumSeconds)
-    }
-
-    fun getMaximumIntervalDefinition(): IntervalDefinition {
-        return IntervalDefinition(maximumHours, maximumMinutes, maximumSeconds)
-    }
 }
 
 

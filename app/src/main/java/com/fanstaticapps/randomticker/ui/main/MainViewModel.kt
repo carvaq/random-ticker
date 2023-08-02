@@ -1,7 +1,6 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
@@ -14,6 +13,7 @@ import com.fanstaticapps.randomticker.helper.TimerHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Random
 import javax.inject.Inject
 
 
@@ -25,8 +25,8 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val currentBookmarkId = tickerPreferences.currentSelectedBookmarkIdLD
+    private val randomGenerator = Random()
 
-    val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
     val currentBookmark: LiveData<Bookmark> =
         currentBookmarkId.switchMap { currentBookmarkId ->
             liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
@@ -39,16 +39,12 @@ class MainViewModel @Inject constructor(
         minimum: IntervalDefinition,
         maximum: IntervalDefinition,
         autoRepeat: Boolean
-    ) {
-        val timerCreated = timerHelper.createTicker(minimum, maximum)
-        if (timerCreated) {
+    ): Boolean {
+        val valid = minimum < maximum
+        if (valid) {
             createOrUpdateBookmark(bookmarkName, minimum, maximum, autoRepeat)
-
-            timerCreationStatus.value = TimerCreationStatus.TIMER_STARTED
-        } else {
-            timerCreationStatus.value = TimerCreationStatus.INVALID_DATES
         }
-
+        return valid
     }
 
     private fun createOrUpdateBookmark(
@@ -57,17 +53,20 @@ class MainViewModel @Inject constructor(
         maximum: IntervalDefinition,
         autoRepeat: Boolean
     ) {
+        val interval = randomGenerator.nextInt((maximum - minimum + 1).toInt()) + minimum.millis
         val currentBookmark = Bookmark(
             name = name,
             minimum = minimum,
             maximum = maximum,
             id = tickerPreferences.currentSelectedId,
-            autoRepeat = autoRepeat
+            autoRepeat = autoRepeat,
+            intervalEnd = interval + System.currentTimeMillis()
         )
 
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.insertOrUpdateBookmark(currentBookmark)
             tickerPreferences.currentSelectedId = id
+            timerHelper.startTicker(currentBookmark)
         }
     }
 }

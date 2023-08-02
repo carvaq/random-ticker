@@ -5,14 +5,11 @@ import android.content.SharedPreferences
 import android.media.RingtoneManager
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveData
-import timber.log.Timber
 
 class TickerPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     companion object {
-        private const val generatedIntervalPref: String = "generatedInterval"
-        private const val generatedIntervalEndTimePref: String = "generatedIntervalEndTime"
         private const val currentSelectedIdPref: String = "currentSelectedId"
 
         /**
@@ -24,12 +21,6 @@ class TickerPreferences(context: Context) {
         private const val vibratorPref: String = "pref_vibration"
     }
 
-    var interval: Long
-        get() = prefs.getLong(generatedIntervalPref, -1)
-        private set(value) = prefs.edit().putLong(generatedIntervalPref, value).apply()
-    var intervalWillBeFinished: Long
-        get() = prefs.getLong(generatedIntervalEndTimePref, -1)
-        private set(value) = prefs.edit().putLong(generatedIntervalEndTimePref, value).apply()
     var showRunningTimerNotification: Boolean
         get() = prefs.getBoolean(showNotificationPref, false)
         set(value) = prefs.edit().putBoolean(showNotificationPref, value).apply()
@@ -52,15 +43,4 @@ class TickerPreferences(context: Context) {
 
     val currentSelectedBookmarkIdLD =
         SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
-
-    fun setTickerInterval(interval: Long) {
-        this.interval = interval
-        this.intervalWillBeFinished = System.currentTimeMillis() + interval
-    }
-
-    fun resetInterval() {
-        Timber.d("Reset timer")
-        this.interval = -1
-        this.intervalWillBeFinished = -1
-    }
 }

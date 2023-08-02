@@ -1,67 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools"
-		android:id="@+id/mlKlaxon"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:orientation="vertical"
 		android:animateLayoutChanges="true"
 		android:fitsSystemWindows="false"
 		android:keepScreenOn="true"
-		app:applyMotionScene="true"
-		app:layoutDescription="@xml/activity_klaxon_scene"
 		tools:context="com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity">
-
-	<com.airbnb.lottie.LottieAnimationView
-			android:id="@+id/laWaiting"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:layout_marginBottom="8dp"
-			android:paddingTop="@dimen/sectionMargin"
-			android:paddingBottom="@dimen/sectionMargin"
-			app:layout_constraintBottom_toTopOf="@+id/tvElapsedTime"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:lottie_autoPlay="true"
-			app:lottie_colorFilter="?attr/colorOnSecondaryContainer"
-			app:lottie_enableMergePathsForKitKatAndAbove="true"
-			app:lottie_loop="true"
-			app:lottie_rawRes="@raw/hourglass" />
-
-	<Button
-			android:id="@+id/tvElapsedTime"
-			style="@style/Widget.Material3.Button.TextButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="?attr/selectableItemBackground"
-			android:fontFamily="monospace"
-			android:text="@string/show_elapsed_time"
-			app:layout_constraintBottom_toTopOf="@id/btnRepeat"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent" />
-
-	<Button
-			android:id="@+id/btnRepeat"
-			style="@style/Widget.Material3.Button.TextButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/action_repeat"
-			android:textSize="24sp"
-			android:visibility="gone"
-			app:layout_constraintBottom_toTopOf="@id/guideline"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			tools:visibility="visible" />
-
-	<androidx.constraintlayout.widget.Guideline
-			android:id="@+id/guideline"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			app:layout_constraintGuide_percent="0.6"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
 
 
 	<ImageView
@@ -73,7 +20,7 @@
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="@id/guideline"
+			app:layout_constraintTop_toTopOf="parent"
 			app:tint="?attr/colorOnSurfaceVariant" />
 
 	<ImageView
@@ -88,8 +35,20 @@
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="@id/guideline"
+			app:layout_constraintTop_toTopOf="parent"
 			app:srcCompat="@drawable/ic_cancel"
 			app:tint="?attr/colorOnSurfaceVariant" />
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+	<Button
+			android:id="@+id/btnRepeat"
+			style="@style/Widget.Material3.Button.TextButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/action_repeat"
+			android:textSize="24sp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/ivPulsatorDismiss" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

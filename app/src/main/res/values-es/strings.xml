@@ -29,4 +29,5 @@
 	<string name="open_notification_channel_description">Cambiar el tono de llamada y la vibración de las notificaciones</string>
 	<string name="button_select_profile">Elige marcador</string>
 	<string name="please_allow_alarm_scheduling">Ha deshabilitado la programación de alarmas para Random Ticker, ve a la configuración y conceda el permiso.</string>
+	<string name="notification_timer_runned_out">Ya esta</string>
 </resources>

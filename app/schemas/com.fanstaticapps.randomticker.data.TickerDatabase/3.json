@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "e581ce934d84bf2882ed727d681d8ecd",
+    "identityHash": "5a492281dae3d3b2e7b276d4210d7f61",
     "entities": [
       {
         "tableName": "bookmarks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `minimumHours` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumHours` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL, `autoRepeat` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `minimumHours` INTEGER NOT NULL, `minimumMinutes` INTEGER NOT NULL, `minimumSeconds` INTEGER NOT NULL, `maximumHours` INTEGER NOT NULL, `maximumMinutes` INTEGER NOT NULL, `maximumSeconds` INTEGER NOT NULL, `autoRepeat` INTEGER NOT NULL, `intervalEnd` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -61,13 +61,19 @@
             "columnName": "autoRepeat",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "intervalEnd",
+            "columnName": "intervalEnd",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -76,7 +82,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e581ce934d84bf2882ed727d681d8ecd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5a492281dae3d3b2e7b276d4210d7f61')"
     ]
   }
 }

@@ -4,35 +4,29 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.fanstaticapps.randomticker.extensions.isAtLeastM
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
 import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
 import com.fanstaticapps.randomticker.ui.RingtonePlayingService
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
+import com.fanstaticapps.randomticker.ui.main.MainActivity.Companion.EXTRA_BOOKMARK_ID
 
 
 object IntentHelper {
 
-    fun getMainActivity(context: Context): Intent {
+    fun getMainActivity(context: Context, bookmarkId: Long?): Intent {
         return Intent(context, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
         }
-    }
-
-    fun getKlaxonActivity(context: Context, hasTimeElapsed: Boolean): Intent {
-        val intent = Intent(context, KlaxonActivity::class.java)
-        intent.putExtra(KlaxonActivity.EXTRA_TIME_ELAPSED, hasTimeElapsed)
-        return intent
     }
 
     fun getContentPendingIntent(
         context: Context,
-        requestCode: Int,
-        hasTimeElapsed: Boolean
+        requestCode: Int
     ): PendingIntent {
-        val intent = getKlaxonActivity(context, hasTimeElapsed).apply {
+        val intent = getKlaxonActivity(context, bookmarkId = null).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         return PendingIntent.getActivity(
@@ -43,8 +37,12 @@ object IntentHelper {
         )
     }
 
-    fun getFullscreenPendingIntent(context: Context, requestCode: Int): PendingIntent {
-        val intent = getKlaxonActivity(context, true).apply {
+    fun getFullscreenPendingIntent(
+        context: Context,
+        requestCode: Int,
+        bookmarkId: Long?
+    ): PendingIntent {
+        val intent = getKlaxonActivity(context, bookmarkId).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(
@@ -55,26 +53,66 @@ object IntentHelper {
         )
     }
 
-    fun getCancelActionPendingIntent(context: Context, requestCode: Int): PendingIntent {
+    private fun getKlaxonActivity(context: Context, bookmarkId: Long?): Intent {
+        return Intent(context, KlaxonActivity::class.java).apply {
+            putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
+        }
+    }
+
+    fun getCancelActionPendingIntent(
+        context: Context,
+        requestCode: Int,
+        bookmarkId: Long?
+    ): PendingIntent {
         return PendingIntent.getActivity(
             context,
             requestCode,
-            Intent(context, CancelActivity::class.java),
+            Intent(context, CancelActivity::class.java).apply {
+                putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
+            },
             PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
 
-    fun getCreateAlarmReceiverAsPendingIntent(context: Context): PendingIntent? {
-        return getAlarmReceiverAsPendingIntent(context, PendingIntent.FLAG_UPDATE_CURRENT)
+    fun getOpenAppPendingIntent(
+        context: Context,
+        requestCode: Int,
+        bookmarkId: Long?
+    ): PendingIntent {
+        return PendingIntent.getActivity(
+            context,
+            requestCode,
+            Intent(context, MainActivity::class.java).apply {
+                putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
+        )
     }
 
-    fun getCancelAlarmReceiverAsPendingIntent(context: Context): PendingIntent? {
-        return getAlarmReceiverAsPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT)
+    fun getAlarmReceiverPendingIntent(context: Context, bookmarkId: Long?): PendingIntent? {
+        return getAlarmReceiverPendingIntent(
+            context,
+            PendingIntent.FLAG_UPDATE_CURRENT,
+            bookmarkId
+        )
     }
 
-    private fun getAlarmReceiverAsPendingIntent(context: Context, flag: Int): PendingIntent? {
+    fun getCancelAlarmReceiverAsPendingIntent(context: Context, bookmarkId: Long?): PendingIntent? {
+        return getAlarmReceiverPendingIntent(
+            context,
+            PendingIntent.FLAG_CANCEL_CURRENT,
+            bookmarkId
+        )
+    }
+
+    private fun getAlarmReceiverPendingIntent(
+        context: Context,
+        flag: Int,
+        bookmarkId: Long?
+    ): PendingIntent? {
         val intent = Intent("com.fanstaticapps.randomticker.ALARM").apply {
             component = ComponentName(context, AlarmReceiver::class.java)
+            putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
         }
         return PendingIntent.getBroadcast(
             context,
@@ -98,11 +136,7 @@ object IntentHelper {
     }
 
     private val Int.asImmutable
-        get() = if (isAtLeastM()) {
-            this or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            this
-        }
+        get() = this or PendingIntent.FLAG_IMMUTABLE
     private const val REQUEST_CODE_REPEAT = 112
     private const val REQUEST_CODE_ALARM = 421
 }

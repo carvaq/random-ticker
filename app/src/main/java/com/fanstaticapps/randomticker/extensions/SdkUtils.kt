@@ -3,11 +3,11 @@ package com.fanstaticapps.randomticker.extensions
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.M)
-fun isAtLeastM() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O)
 fun isAtLeastO() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O_MR1)
+fun isAtLeastO_MR1() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
 fun isAtLeastS() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S

@@ -1,121 +1,46 @@
 package com.fanstaticapps.randomticker.helper
 
-import android.app.Activity
-import android.app.AlarmManager.AlarmClockInfo
+import android.app.AlarmManager.RTC_WAKEUP
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.data.IntervalDefinition
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
+import com.fanstaticapps.randomticker.extensions.isAtLeastS
+import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import java.util.Random
 import javax.inject.Inject
 
 
-/**
- * Created by carvaq
- * Date: 20/09/2017
- * Project: RandomTicker
- */
-
 class TimerHelper @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val notificationManager: TickerNotificationManager,
     private val tickerPreferences: TickerPreferences
 ) {
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
-        private val HANDLER = Handler(Looper.myLooper() ?: Looper.getMainLooper())
     }
 
-    private val randomGenerator = Random(System.currentTimeMillis())
-
-    fun newTickerFromBookmark(context: Context, bookmark: Bookmark) {
+    fun startTicker(bookmark: Bookmark) {
         Timber.d("creating a new ticker for bookmark $bookmark")
-        cancelTicker(context)
-        createTicker(
-            bookmark.getMinimumIntervalDefinition(),
-            bookmark.getMaximumIntervalDefinition()
-        )
-        startTicker(context)
-    }
-
-    fun createTicker(
-        minIntervalDefinition: IntervalDefinition,
-        maxIntervalDefinition: IntervalDefinition
-    ): Boolean {
-        val min = minIntervalDefinition.millis
-        val max = maxIntervalDefinition.millis
-        Timber.d("Creating a ticker between $min and $max")
-        return if (max > min) {
-            val interval = (randomGenerator.nextInt(max - min + 1) + min).toLong()
-            tickerPreferences.setTickerInterval(interval)
-            true
-        } else {
-            false
-        }
-    }
-
-    fun startTicker(context: Context) {
-        val intervalFinished = tickerPreferences.intervalWillBeFinished
-
-        if (hasTickerExpired()) return
+        cancelTicker(bookmark.id)
 
         if (tickerPreferences.showRunningTimerNotification) {
             Timber.d("showing running ticker notification")
-
-            notificationManager.showRunningNotification(context)
-
-            val tickerRefreshRunnable = object : Runnable {
-                override fun run() {
-                    if (hasTickerExpired()) {
-                        HANDLER.removeCallbacks(this)
-                        return
-                    }
-                    notificationManager.showRunningNotification(context)
-                    HANDLER.postDelayed(this, ONE_SECOND_IN_MILLIS)
-                }
-            }
-            HANDLER.postDelayed(tickerRefreshRunnable, ONE_SECOND_IN_MILLIS)
+            notificationManager.showRunningNotification(context, bookmark)
         }
 
-        context.getAlarmManager()?.let { alarmManger ->
-            val alarmIntent = IntentHelper.getCreateAlarmReceiverAsPendingIntent(context)
-            alarmManger.setAlarmClock(AlarmClockInfo(intervalFinished, alarmIntent), alarmIntent)
-            Timber.d("Setting alarm to sound in ${(intervalFinished - System.currentTimeMillis()) / 1000}s")
+        val alarmManger = context.getAlarmManager()
+        if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
+            val alarmIntent = IntentHelper.getAlarmReceiverPendingIntent(context, bookmark.id)
+            alarmManger?.setExactAndAllowWhileIdle(RTC_WAKEUP, bookmark.intervalEnd, alarmIntent)
+            Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
         }
     }
 
-    fun isCurrentlyTickerRunning(): Boolean {
-        val intervalWillBeFinished = tickerPreferences.intervalWillBeFinished
-        val tickerRunning = intervalWillBeFinished > 0
-        Timber.d("Currently is a ticker running: $tickerRunning ($intervalWillBeFinished)")
-        return tickerRunning
-    }
-
-    fun hasTickerExpired(): Boolean {
-        val intervalWillBeFinished = tickerPreferences.intervalWillBeFinished
-        val hasTickerNotExpiredYet = intervalWillBeFinished >= System.currentTimeMillis()
-        Timber.d("Ticker is running: $hasTickerNotExpiredYet")
-        return !hasTickerNotExpiredYet
-    }
-
-    fun hasAValidTicker() = tickerPreferences.intervalWillBeFinished > 0
-
-    fun cancelTicker(context: Context) {
+    fun cancelTicker(bookmarkId: Long?) {
         Timber.d("Cancel ticker")
         notificationManager.cancelAllNotifications(context)
-
-        tickerPreferences.resetInterval()
-
-        IntentHelper.getCancelAlarmReceiverAsPendingIntent(context)?.let { alarmIntent ->
-            context.getAlarmManager()?.cancel(alarmIntent)
-        }
-        IntentHelper.getRingtoneServiceIntent(context).let { context.startService(it) }
-    }
-
-    fun startNotification(activity: Activity) {
-        IntentHelper.getRingtoneServiceIntent(activity).let { activity.startService(it) }
+        context.getAlarmManager()
+            ?.cancel(IntentHelper.getCancelAlarmReceiverAsPendingIntent(context, bookmarkId))
     }
 }

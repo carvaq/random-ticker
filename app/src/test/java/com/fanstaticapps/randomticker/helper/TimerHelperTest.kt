@@ -43,7 +43,7 @@ class TimerHelperTest {
             tickerPreferencesMock.intervalWillBeFinished
         } returns System.currentTimeMillis() + 2300
 
-        testee.newTickerFromBookmark(context, Bookmark("Test"))
+        testee.startTicker(context, Bookmark("Test"))
 
         verify { notificationManagerMock.cancelAllNotifications(context) }
         verify { tickerPreferencesMock.resetInterval() }
