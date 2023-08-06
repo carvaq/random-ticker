@@ -19,17 +19,13 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
 		<receiver
-				android:name=".receiver.RepeatAlarmReceiver"
+				android:name=".receiver.AlarmEndedReceiver"
 				android:enabled="true"
 				android:exported="false" />
 		<receiver
-				android:name=".receiver.AlarmReceiver"
+				android:name=".receiver.CreateAlarmReceiver"
 				android:enabled="true"
-				android:exported="false">
-			<intent-filter>
-				<action android:name="com.fanstaticapps.randomticker.ALARM" />
-			</intent-filter>
-		</receiver>
+				android:exported="false" />
 
 		<activity
 				android:name=".ui.main.MainActivity"
@@ -66,7 +62,7 @@
 				android:name=".ui.preferences.SettingsActivity"
 				android:label="@string/title_activity_settings"
 				android:parentActivityName=".ui.main.MainActivity" />
-		<activity android:name=".ui.CancelActivity" />
+		<activity android:name=".ui.cancel.CancelActivity" />
 
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"

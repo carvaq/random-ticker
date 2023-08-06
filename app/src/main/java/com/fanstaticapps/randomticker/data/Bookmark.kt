@@ -5,13 +5,9 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
-/**
- * Created by carvaq on 24/6/18
- */
-
 @Entity(tableName = "bookmarks")
 data class Bookmark(
-    @PrimaryKey(autoGenerate = true) val id: Long?,
+    @PrimaryKey(autoGenerate = true) val id: Long = DEFAULT,
     @ColumnInfo(name = "name") val name: String = "Random Ticker",
     @ColumnInfo(name = "minimumHours") val minimumHours: Int = 0,
     @ColumnInfo(name = "minimumMinutes") val minimumMinutes: Int = 0,
@@ -20,12 +16,12 @@ data class Bookmark(
     @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
     @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0,
     @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false,
-    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = -1
+    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = DEFAULT
 ) {
-    fun reset(): Bookmark = copy(intervalEnd = -1)
+    fun reset(): Bookmark = copy(intervalEnd = DEFAULT)
 
     @Ignore
-    constructor(name: String) : this(null, name, 0, 0, 0, 0, 5, 0, false)
+    constructor(name: String) : this(DEFAULT, name, 0, 0, 0, 0, 5, 0, false)
 
     @Ignore
     constructor(
@@ -36,7 +32,7 @@ data class Bookmark(
         autoRepeat: Boolean,
         intervalEnd: Long
     ) : this(
-        id,
+        id ?: DEFAULT,
         name,
         minimum.hours,
         minimum.minutes,
@@ -49,7 +45,13 @@ data class Bookmark(
     )
 
     fun klaxonChannelId() = "$name-KLAXON"
+    fun klaxonNotificationId() = Int.MAX_VALUE - id.toInt()
     fun runningChannelId() = "$name-RUNNING"
+    fun runningNotificationId() = id.toInt()
+
+    private companion object {
+        const val DEFAULT: Long = -1
+    }
 }
 
 

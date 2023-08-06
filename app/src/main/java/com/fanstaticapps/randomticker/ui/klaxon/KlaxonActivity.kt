@@ -13,19 +13,14 @@ import com.fanstaticapps.randomticker.extensions.turnScreenOffAndKeyguardOn
 import com.fanstaticapps.randomticker.extensions.turnScreenOnAndKeyguardOff
 import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
-import com.fanstaticapps.randomticker.helper.TimerHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class KlaxonActivity : BaseActivity() {
-
-    @Inject
-    lateinit var timerHelper: TimerHelper
 
     private val viewModel: KlaxonViewModel by viewModels()
     private val binding by viewBinding(ActivityKlaxonBinding::inflate)
@@ -78,7 +73,7 @@ class KlaxonActivity : BaseActivity() {
     private fun ActivityKlaxonBinding.prepareView() {
         btnDismiss.setOnClickListener {
             viewModel.currentBookmark.value?.let { bookmark ->
-                timerHelper.cancelTicker(bookmark.id)
+                viewModel.cancelTimer(this@KlaxonActivity)
                 openMainActivity(bookmark)
             }
             pulsatorAnimation.end()
@@ -92,7 +87,7 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun autoRepeatTicker(bookmark: Bookmark) {
-        timerHelper.startTicker(bookmark)
+        viewModel.createTimer(this)
         openMainActivity(bookmark)
     }
 

@@ -25,12 +25,10 @@ import com.fanstaticapps.randomticker.extensions.isAtLeastT
 import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.Migration
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import com.fanstaticapps.randomticker.ui.CancelBookmarkViewModel
 import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,7 +39,6 @@ class MainActivity : BaseActivity() {
     lateinit var migrator: Migration
 
     private val viewModel: MainViewModel by viewModels()
-    private val cancelBookmarkViewModel: CancelBookmarkViewModel by viewModels()
     private val viewBinding by viewBinding(ActivityMainBinding::inflate)
 
     private val requestPermissionLauncher =
@@ -123,10 +120,9 @@ class MainActivity : BaseActivity() {
 
     private fun Button.prepareListener(bookmark: Bookmark) {
         val timerRunning = bookmark.intervalEnd > System.currentTimeMillis()
-        Timber.d("Timer running: $timerRunning ${bookmark.intervalEnd}  ${System.currentTimeMillis()}")
         setText(if (timerRunning) R.string.stop_button else R.string.start_button)
         setOnClickListener {
-            if (timerRunning) cancelBookmarkViewModel.cancelTimer(bookmark.id)
+            if (timerRunning) viewModel.cancelTimer(this@MainActivity, bookmark)
             else onStartClicked()
         }
     }
@@ -153,20 +149,27 @@ class MainActivity : BaseActivity() {
 
     private fun createTimerIfScheduleAlarmGranted() {
         if (!isAtLeastS() || getAlarmManager()?.canScheduleExactAlarms() == true) {
-            viewModel.createTimer(
-                viewBinding.content.bookmarks.etBookmarkName.name(),
-                IntervalDefinition(
-                    viewBinding.content.contentMin.minHours.value,
-                    viewBinding.content.contentMin.minMin.value,
-                    viewBinding.content.contentMin.minSec.value
-                ),
-                IntervalDefinition(
-                    viewBinding.content.contentMax.maxHours.value,
-                    viewBinding.content.contentMax.maxMin.value,
-                    viewBinding.content.contentMax.maxSec.value
-                ),
-                viewBinding.content.cbAutoRepeat.isChecked
-            ).takeUnless { it }?.let { toast(R.string.error_min_is_bigger_than_max) }
+            val minimum = IntervalDefinition(
+                viewBinding.content.contentMin.minHours.value,
+                viewBinding.content.contentMin.minMin.value,
+                viewBinding.content.contentMin.minSec.value
+            )
+            val maximum = IntervalDefinition(
+                viewBinding.content.contentMax.maxHours.value,
+                viewBinding.content.contentMax.maxMin.value,
+                viewBinding.content.contentMax.maxSec.value
+            )
+            if (minimum < maximum) {
+                viewModel.createTimer(
+                    this,
+                    viewBinding.content.bookmarks.etBookmarkName.name(),
+                    minimum,
+                    maximum,
+                    viewBinding.content.cbAutoRepeat.isChecked
+                )
+            } else {
+                toast(R.string.error_min_is_bigger_than_max)
+            }
         } else {
             requestScheduleAlarmPermission()
         }
