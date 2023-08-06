@@ -6,7 +6,7 @@ plugins {
     id("com.google.android.gms.oss-licenses-plugin")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
 }
 
 
@@ -98,8 +98,8 @@ dependencies {
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.7.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.7")
+    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
 
     implementation("androidx.room:room-runtime:2.5.1")
     implementation("androidx.room:room-ktx:2.5.1")
@@ -109,7 +109,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
 
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
@@ -118,18 +118,18 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("com.airbnb.android:lottie:6.0.0")
+    implementation("com.airbnb.android:lottie:6.1.0")
 
 
-    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("org.mockito:mockito-core:5.4.0")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.10.2")
+    testImplementation("org.robolectric:robolectric:4.10.3")
     testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("androidx.test:core-ktx:1.5.0")
     testImplementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("androidx.test:runner:1.5.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
-    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2")
+    testImplementation("com.google.truth:truth:1.1.5")
     testImplementation("com.google.dagger:hilt-android-testing:2.46.1")
     kaptTest("com.google.dagger:hilt-android-compiler:2.46.1")
 

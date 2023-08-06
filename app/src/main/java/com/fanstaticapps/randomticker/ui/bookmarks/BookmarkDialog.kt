@@ -38,10 +38,10 @@ class BookmarkDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = BookmarkAdapter(requireContext(),
             { bookmark ->
-                if (bookmark.id == null) {
-                    viewModel.createBookmark(bookmark)
-                } else {
+                if (bookmark.isIdSet()) {
                     viewModel.selectBookmark(bookmark)
+                } else {
+                    viewModel.createBookmark(bookmark)
                 }
                 dismiss()
             },
@@ -52,9 +52,9 @@ class BookmarkDialog : BottomSheetDialogFragment() {
         binding.rvBookmarks.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBookmarks.adapter = adapter
 
-        viewModel.allBookmarks.observe(viewLifecycleOwner, { bookmarks ->
+        viewModel.allBookmarks.observe(viewLifecycleOwner) { bookmarks ->
             val allItems = listOf(Bookmark("Random Ticker")).plus(bookmarks)
             adapter.updateBookmarks(allItems)
-        })
+        }
     }
 }

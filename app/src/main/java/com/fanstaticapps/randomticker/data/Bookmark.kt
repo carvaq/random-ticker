@@ -19,6 +19,7 @@ data class Bookmark(
     @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = DEFAULT
 ) {
     fun reset(): Bookmark = copy(intervalEnd = DEFAULT)
+    fun isIdSet() = id != DEFAULT
 
     @Ignore
     constructor(name: String) : this(DEFAULT, name, 0, 0, 0, 0, 5, 0, false)
