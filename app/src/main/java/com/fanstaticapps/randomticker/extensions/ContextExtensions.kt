@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.net.Uri
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.fanstaticapps.randomticker.R
@@ -16,7 +17,11 @@ fun Context.getNotificationManager() = NotificationManagerCompat.from(this)
 
 fun Context.getAlarmManager() = ContextCompat.getSystemService(this, AlarmManager::class.java)
 
-fun Context.createKlaxonChannel(bookmark: Bookmark) {
+fun Context.createKlaxonChannel(
+    bookmark: Bookmark,
+    soundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+    enableVibration: Boolean = true
+) {
     val notificationChannelGroup = NotificationChannelGroup("${bookmark.id}", bookmark.name)
     getNotificationManager().createNotificationChannelGroup(notificationChannelGroup)
     val channel = NotificationChannel(
@@ -25,14 +30,13 @@ fun Context.createKlaxonChannel(bookmark: Bookmark) {
         NotificationManager.IMPORTANCE_HIGH
     ).apply {
         group = notificationChannelGroup.id
-        setBypassDnd(true)
         setSound(
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+            soundUri,
             AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ALARM)
                 .build()
         )
-        enableVibration(true)
+        enableVibration(enableVibration)
     }
     getNotificationManager().createNotificationChannel(channel)
 }

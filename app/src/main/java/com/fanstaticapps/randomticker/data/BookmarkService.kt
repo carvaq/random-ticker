@@ -14,6 +14,7 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -93,6 +94,12 @@ class BookmarkService @Inject constructor(
     private fun fetchBookmarkById(bookmarkId: Long, onBookmark: suspend (Bookmark) -> Unit) {
         coroutineScope.launch {
             getBookmarkById(bookmarkId).take(1).collect(onBookmark)
+        }
+    }
+
+    fun applyForAllBookmarks(action: (Bookmark) -> Unit) {
+        coroutineScope.launch {
+            repository.getAllBookmarks().firstOrNull()?.forEach(action)
         }
     }
 }
