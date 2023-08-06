@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class TickerPreferenceFragment : PreferenceFragmentCompat() {
     lateinit var tickerPreferences: TickerPreferences
 
     @Inject
-    lateinit var notificationManager: TickerNotificationManager
+    lateinit var notificationManager: NotificationCoordinator
 
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

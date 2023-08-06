@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.launch
 import java.util.Random
 import javax.inject.Inject
 
@@ -26,10 +27,10 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val randomGenerator = Random()
-    private val bookmarkId = MutableStateFlow(savedStateHandle.getBookmarkId())
+    private val currentBookmarkId = MutableStateFlow(savedStateHandle.getBookmarkId())
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val currentBookmark: LiveData<Bookmark> = bookmarkId
+    val currentBookmark: LiveData<Bookmark> = currentBookmarkId
         .filterNotNull()
         .flatMapMerge { bookmarkService.getBookmarkById(it) }
         .asLiveData(viewModelScope.coroutineContext)
@@ -46,12 +47,15 @@ class MainViewModel @Inject constructor(
             name = bookmarkName,
             minimum = minimum,
             maximum = maximum,
-            id = currentBookmark.value?.id,
+            id = currentBookmarkId.value,
             autoRepeat = autoRepeat,
             intervalEnd = interval + System.currentTimeMillis()
         )
 
-        bookmarkService.createOrUpdate(context, currentBookmark)
+        viewModelScope.launch {
+            currentBookmarkId.value =
+                bookmarkService.createOrUpdate(context, currentBookmark).receive()
+        }
     }
 
     fun cancelTicker(context: Context, bookmark: Bookmark) {

@@ -5,10 +5,13 @@ import android.content.Context
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
 import com.fanstaticapps.randomticker.helper.IntentHelper
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
@@ -19,7 +22,7 @@ import javax.inject.Inject
 
 class BookmarkService @Inject constructor(
     private val repository: BookmarkRepository,
-    private val notificationManager: TickerNotificationManager,
+    private val notificationManager: NotificationCoordinator,
 ) {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -30,10 +33,12 @@ class BookmarkService @Inject constructor(
             .filterNotNull()
     }
 
-    fun createOrUpdate(context: Context, bookmark: Bookmark) {
-        coroutineScope.launch {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun createOrUpdate(context: Context, bookmark: Bookmark): ReceiveChannel<Long> {
+        return coroutineScope.produce {
             val id = repository.insertOrUpdateBookmark(bookmark)
             schedulerAlarm(context, id, true)
+            trySend(id)
         }
     }
 

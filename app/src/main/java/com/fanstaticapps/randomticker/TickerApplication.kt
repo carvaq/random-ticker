@@ -1,7 +1,7 @@
 package com.fanstaticapps.randomticker
 
 import android.app.Application
-import com.fanstaticapps.randomticker.helper.TickerNotificationManager
+import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -23,7 +23,7 @@ class TickerApplication : Application() {
     lateinit var preferences: TickerPreferences
 
     @Inject
-    lateinit var notificationManager: TickerNotificationManager
+    lateinit var notificationManager: NotificationCoordinator
 
     override fun onCreate() {
         super.onCreate()
