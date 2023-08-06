@@ -20,9 +20,9 @@ data class Bookmark(
     @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
     @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0,
     @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false,
-    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = Long.MAX_VALUE
+    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = -1
 ) {
-    fun reset(): Bookmark = copy(intervalEnd = Long.MAX_VALUE)
+    fun reset(): Bookmark = copy(intervalEnd = -1)
 
     @Ignore
     constructor(name: String) : this(null, name, 0, 0, 0, 0, 5, 0, false)

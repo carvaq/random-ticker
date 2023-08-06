@@ -30,6 +30,7 @@ import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
 import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -121,7 +122,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun Button.prepareListener(bookmark: Bookmark) {
-        val timerRunning = bookmark.intervalEnd < System.currentTimeMillis()
+        val timerRunning = bookmark.intervalEnd > System.currentTimeMillis()
+        Timber.d("Timer running: $timerRunning ${bookmark.intervalEnd}  ${System.currentTimeMillis()}")
         setText(if (timerRunning) R.string.stop_button else R.string.start_button)
         setOnClickListener {
             if (timerRunning) cancelBookmarkViewModel.cancelTimer(bookmark.id)
