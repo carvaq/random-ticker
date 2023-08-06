@@ -87,7 +87,7 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun autoRepeatTicker(bookmark: Bookmark) {
-        viewModel.createTimer(this)
+        viewModel.scheduleTicker(this)
         openMainActivity(bookmark)
     }
 

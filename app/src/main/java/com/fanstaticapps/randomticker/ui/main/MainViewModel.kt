@@ -34,7 +34,7 @@ class MainViewModel @Inject constructor(
         .flatMapMerge { bookmarkService.getBookmarkById(it) }
         .asLiveData(viewModelScope.coroutineContext)
 
-    fun createTimer(
+    fun createTicker(
         context: Context,
         bookmarkName: String,
         minimum: IntervalDefinition,
@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
         bookmarkService.createOrUpdate(context, currentBookmark)
     }
 
-    fun cancelTimer(context: Context, bookmark: Bookmark) {
-        bookmarkService.cancelAlarm(context, bookmark.id)
+    fun cancelTicker(context: Context, bookmark: Bookmark) {
+        bookmarkService.cancelTicker(context, bookmark.id)
     }
 }

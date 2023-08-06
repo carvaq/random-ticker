@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="random_timer_introduction">"Elige "</string>
+	<string name="random_ticker_introduction">"Elige "</string>
 	<string name="pref_vibration_title">Vibración</string>
 	<string name="show_notification">"Muestra notificación del temporizador "</string>
 	<string name="show_elapsed_time">Muestra el tiempo transcurrido</string>
@@ -29,5 +29,5 @@
 	<string name="open_notification_channel_description">Cambiar el tono de llamada y la vibración de las notificaciones</string>
 	<string name="button_select_profile">Elige marcador</string>
 	<string name="please_allow_alarm_scheduling">Ha deshabilitado la programación de alarmas para Random Ticker, ve a la configuración y conceda el permiso.</string>
-	<string name="notification_timer_runned_out">Ya esta</string>
+	<string name="notification_ticker_ended">Ya esta</string>
 </resources>

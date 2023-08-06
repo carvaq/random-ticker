@@ -102,7 +102,7 @@ class TickerNotificationManager @Inject constructor() {
         val notification = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
             .setSmallIcon(R.drawable.ic_stat_timer)
             .setContentTitle(context.getString(R.string.app_name))
-            .setContentText(context.getString(R.string.notification_timer_runned_out))
+            .setContentText(context.getString(R.string.notification_ticker_ended))
             .setCategory(Notification.CATEGORY_ALARM)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setFullScreenIntent(context.getFullScreenIntent(bookmark), true)

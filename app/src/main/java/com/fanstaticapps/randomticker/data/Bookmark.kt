@@ -50,7 +50,7 @@ data class Bookmark(
     fun runningNotificationId() = id.toInt()
 
     private companion object {
-        const val DEFAULT: Long = -1
+        const val DEFAULT: Long = 0
     }
 }
 

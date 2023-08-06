@@ -10,7 +10,7 @@
 
 	<TextView
 			style="@style/AppTheme.Description"
-			android:text="@string/random_timer_introduction" />
+			android:text="@string/random_ticker_introduction" />
 
 	<LinearLayout
 			style="@style/AppTheme.BookmarksContainer"

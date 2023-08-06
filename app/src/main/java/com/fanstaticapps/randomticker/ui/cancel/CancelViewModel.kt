@@ -15,8 +15,8 @@ class CancelViewModel @Inject constructor(
 ) : ViewModel() {
     private val bookmarkId = savedStateHandle.getBookmarkId()
 
-    fun cancelTimer(context: Context) {
-        bookmarkId?.let { service.cancelAlarm(context, it) }
+    fun cancelTicker(context: Context) {
+        bookmarkId?.let { service.cancelTicker(context, it) }
     }
 
 }

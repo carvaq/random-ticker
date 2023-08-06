@@ -70,7 +70,7 @@ class BookmarkService @Inject constructor(
         }
     }
 
-    fun cancelAlarm(context: Context, bookmarkId: Long) {
+    fun cancelTicker(context: Context, bookmarkId: Long) {
         fetchBookmarkById(bookmarkId) {
             Timber.d("cancel bookmark $it")
             repository.insertOrUpdateBookmark(it.reset())

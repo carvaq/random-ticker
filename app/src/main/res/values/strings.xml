@@ -1,5 +1,5 @@
 <resources>
-	<string name="random_timer_introduction">Define a time range in which an alarm will ring randomly.</string>
+	<string name="random_ticker_introduction">Define a time range in which an alarm will ring randomly.</string>
 	<string name="from">From</string>
 	<string name="to">To</string>
 	<string name="start_button">Start</string>
@@ -29,5 +29,5 @@
 	<string name="action_stop">Stop</string>
 	<string name="auto_repeat">Auto repeat after 2 seconds</string>
 	<string name="please_allow_alarm_scheduling">You have disabled alarm scheduling for Random Ticker, please go to settings and grant the permission.</string>
-	<string name="notification_timer_runned_out">Timer run out</string>
+	<string name="notification_ticker_ended">Time\'s up!</string>
 </resources>

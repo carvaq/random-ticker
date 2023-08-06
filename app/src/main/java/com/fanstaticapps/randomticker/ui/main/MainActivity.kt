@@ -43,11 +43,11 @@ class MainActivity : BaseActivity() {
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            if (result) createTimerIfScheduleAlarmGranted()
+            if (result) createTickerIfScheduleAlarmGranted()
         }
     private val scheduleAlarmLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            createTimerIfScheduleAlarmGranted()
+            createTickerIfScheduleAlarmGranted()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
 
         initializeBookmarks()
-        viewBinding.content.initializeTimerCreationStatus()
+        viewBinding.content.initializeTickerCreationStatus()
         viewBinding.content.btnStartTicker.setOnClickListener { onStartClicked() }
     }
 
@@ -96,7 +96,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun ContentMainBinding.initializeTimerCreationStatus() {
+    private fun ContentMainBinding.initializeTickerCreationStatus() {
         contentMin.minHours.init(10, R.string.from, R.string.hours_label)
         contentMin.minMin.init(59, R.string.from, R.string.minutes_label)
         contentMin.minSec.init(59, R.string.from, R.string.seconds_label)
@@ -119,10 +119,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun Button.prepareListener(bookmark: Bookmark) {
-        val timerRunning = bookmark.intervalEnd > System.currentTimeMillis()
-        setText(if (timerRunning) R.string.stop_button else R.string.start_button)
+        val tickerRunning = bookmark.intervalEnd > System.currentTimeMillis()
+        setText(if (tickerRunning) R.string.stop_button else R.string.start_button)
         setOnClickListener {
-            if (timerRunning) viewModel.cancelTimer(this@MainActivity, bookmark)
+            if (tickerRunning) viewModel.cancelTicker(this@MainActivity, bookmark)
             else onStartClicked()
         }
     }
@@ -131,7 +131,7 @@ class MainActivity : BaseActivity() {
         if (isAtLeastT()) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            createTimerIfScheduleAlarmGranted()
+            createTickerIfScheduleAlarmGranted()
         }
     }
 
@@ -147,7 +147,7 @@ class MainActivity : BaseActivity() {
     }
 
 
-    private fun createTimerIfScheduleAlarmGranted() {
+    private fun createTickerIfScheduleAlarmGranted() {
         if (!isAtLeastS() || getAlarmManager()?.canScheduleExactAlarms() == true) {
             val minimum = IntervalDefinition(
                 viewBinding.content.contentMin.minHours.value,
@@ -160,7 +160,7 @@ class MainActivity : BaseActivity() {
                 viewBinding.content.contentMax.maxSec.value
             )
             if (minimum < maximum) {
-                viewModel.createTimer(
+                viewModel.createTicker(
                     this,
                     viewBinding.content.bookmarks.etBookmarkName.name(),
                     minimum,

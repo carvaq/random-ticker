@@ -26,10 +26,10 @@ class KlaxonViewModel @Inject constructor(
         service.getBookmarkById(bookmarkId).asLiveData(viewModelScope.coroutineContext)
 
     fun cancelTimer(context: Context) {
-        service.cancelAlarm(context, bookmarkId)
+        service.cancelTicker(context, bookmarkId)
     }
 
-    fun createTimer(context: Context) {
+    fun scheduleTicker(context: Context) {
         service.schedulerAlarm(context, bookmarkId, true)
     }
 }
