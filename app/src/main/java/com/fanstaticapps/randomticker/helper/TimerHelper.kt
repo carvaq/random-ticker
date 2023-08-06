@@ -2,7 +2,6 @@ package com.fanstaticapps.randomticker.helper
 
 import android.app.AlarmManager.RTC_WAKEUP
 import android.content.Context
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
@@ -14,7 +13,6 @@ import javax.inject.Inject
 class TimerHelper @Inject constructor(
     @ApplicationContext private val context: Context,
     private val notificationManager: TickerNotificationManager,
-    private val tickerPreferences: TickerPreferences
 ) {
     companion object {
         const val ONE_SECOND_IN_MILLIS: Long = 1000
@@ -24,10 +22,8 @@ class TimerHelper @Inject constructor(
         Timber.d("creating a new ticker for bookmark $bookmark")
         cancelTicker(bookmark.id)
 
-        if (tickerPreferences.showRunningTimerNotification) {
-            Timber.d("showing running ticker notification")
-            notificationManager.showRunningNotification(context, bookmark)
-        }
+        Timber.d("showing running ticker notification")
+        notificationManager.showRunningNotification(context, bookmark)
 
         val alarmManger = context.getAlarmManager()
         if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {

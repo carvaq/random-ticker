@@ -4,14 +4,12 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import com.fanstaticapps.randomticker.extensions.EXTRA_BOOKMARK_ID
 import com.fanstaticapps.randomticker.receiver.AlarmReceiver
 import com.fanstaticapps.randomticker.receiver.RepeatAlarmReceiver
 import com.fanstaticapps.randomticker.ui.CancelActivity
-import com.fanstaticapps.randomticker.ui.RingtonePlayingService
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
-import com.fanstaticapps.randomticker.ui.main.MainActivity.Companion.EXTRA_BOOKMARK_ID
-
 
 object IntentHelper {
 
@@ -120,10 +118,6 @@ object IntentHelper {
             intent,
             flag.asImmutable
         )
-    }
-
-    fun getRingtoneServiceIntent(context: Context): Intent {
-        return Intent(context, RingtonePlayingService::class.java)
     }
 
     fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {

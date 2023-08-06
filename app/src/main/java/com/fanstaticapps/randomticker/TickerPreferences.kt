@@ -16,14 +16,10 @@ class TickerPreferences(context: Context) {
          * These preferences are changed by the user in the @see SettingsActivity.
          * The preference keys (@see constants.xml) are also present in the xml, therefor the same should be used.
          */
-        private const val showNotificationPref: String = "pref_show_notification"
         private const val ringtonePref: String = "pref_ringtone"
         private const val vibratorPref: String = "pref_vibration"
     }
 
-    var showRunningTimerNotification: Boolean
-        get() = prefs.getBoolean(showNotificationPref, false)
-        set(value) = prefs.edit().putBoolean(showNotificationPref, value).apply()
     var alarmRingtone: String
         get() {
             val defaultFallback = "content://settings/system/notification_sound"

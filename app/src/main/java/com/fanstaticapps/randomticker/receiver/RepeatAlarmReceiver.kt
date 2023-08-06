@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,14 +32,15 @@ class RepeatAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         scope.launch(Dispatchers.Default) {
-            repository.getBookmarkById(tickerPreferences.currentSelectedId)?.let { bookmark ->
-                Timber.d("Creating a new alarm!")
-                if (!bookmark.autoRepeat) {
-                    timerHelper.startTicker(bookmark)
-                    LocalBroadcastManager.getInstance(context)
-                        .sendBroadcast(Intent(TICKER_RESTARTED))
+            repository.getBookmarkById(tickerPreferences.currentSelectedId).firstOrNull()
+                ?.let { bookmark ->
+                    if (!bookmark.autoRepeat) {
+                        Timber.d("Creating a new alarm!")
+                        timerHelper.startTicker(bookmark)
+                        LocalBroadcastManager.getInstance(context)
+                            .sendBroadcast(Intent(TICKER_RESTARTED))
+                    }
                 }
-            }
         }
     }
 

@@ -2,21 +2,19 @@ package com.fanstaticapps.randomticker.helper
 
 import android.Manifest
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.extensions.createKlaxonChannel
+import com.fanstaticapps.randomticker.extensions.createTimerChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastO
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
@@ -30,31 +28,10 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
         notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)
     }
 
-    fun createNotificationChannelIfNecessary(context: Context) {
-        if (isAtLeastO()) {
-            val channel = createKlaxonChannel(context)
-            context.getNotificationManager().createNotificationChannel(channel)
-        }
-    }
-
     fun showKlaxonNotification(service: Service, bookmark: Bookmark) = with(service) {
         cancelAllNotifications(baseContext)
-        createNotificationChannelIfNecessary(baseContext)
-
+        service.applicationContext.createKlaxonChannel(bookmark)
         startForeground(FOREGROUND_NOTIFICATION_ID, buildKlaxonNotification(baseContext, bookmark))
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createKlaxonChannel(context: Context): NotificationChannel {
-        val name = context.getString(R.string.foreground_channel_name)
-        return NotificationChannel(
-            FOREGROUND_CHANNEL_ID,
-            name,
-            NotificationManager.IMPORTANCE_HIGH
-        ).apply {
-            setBypassDnd(true)
-            lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-        }
     }
 
     private fun buildKlaxonNotification(context: Context, bookmark: Bookmark): Notification {
@@ -68,7 +45,7 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
             )
 
         val notificationBuilder =
-            NotificationCompat.Builder(context, FOREGROUND_CHANNEL_ID)
+            NotificationCompat.Builder(context, bookmark.klaxonChannelId())
                 .setSmallIcon(R.drawable.ic_stat_timer)
                 .setAutoCancel(true)
                 .setContentTitle(bookmark.name)
@@ -82,7 +59,7 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
         val notificationChannel = if (isAtLeastO()) {
-            context.getNotificationManager().getNotificationChannel(FOREGROUND_CHANNEL_ID)
+            context.getNotificationManager().getNotificationChannel(bookmark.name)
         } else {
             null
         }
@@ -111,7 +88,7 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
             IntentHelper.getOpenAppPendingIntent(context, RUNNING_NOTIFICATION_ID, bookmark.id)
         val cancelAction = getCancelAction(context, bookmark.id)
 
-        val builder = NotificationCompat.Builder(context, RUNNING_CHANNEL_ID)
+        val notification = NotificationCompat.Builder(context, bookmark.runningChannelId())
             .addAction(cancelAction)
             .setContentTitle(bookmark.name)
             .setAutoCancel(false)
@@ -119,31 +96,20 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
             .setWhen(bookmark.intervalEnd)
             .setContentIntent(alarmPendingIntent)
             .setUsesChronometer(true)
-            .setChronometerCountDown(true)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
             .setSmallIcon(R.drawable.ic_stat_timer)
-
-        return builder.build().showRunningNotification(context)
-    }
-
-    private fun Notification.showRunningNotification(context: Context) {
-        val notificationManager = context.getNotificationManager()
-
-        if (isAtLeastO()) {
-            val name = context.getString(R.string.running_channel_name)
-            val channel =
-                NotificationChannel(RUNNING_CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW)
-            notificationManager.createNotificationChannel(channel)
-        }
+            .build()
 
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         ) {
+            context.createTimerChannel(bookmark)
+            val notificationManager = context.getNotificationManager()
             notificationManager.cancel(RUNNING_NOTIFICATION_ID)
-            notificationManager.notify(RUNNING_NOTIFICATION_ID, this)
+            notificationManager.notify(RUNNING_NOTIFICATION_ID, notification)
         }
     }
 
@@ -181,15 +147,26 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
         )
     }
 
-    fun showNotificationWithFullScreenIntent(context: Context) {
-        NotificationCompat.Builder(context, RUNNING_CHANNEL_ID)
+    fun showNotificationWithFullScreenIntent(context: Context, bookmark: Bookmark) {
+        val notification = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
             .setSmallIcon(R.drawable.ic_stat_timer)
             .setContentTitle(context.getString(R.string.app_name))
             .setContentText(context.getString(R.string.notification_timer_runned_out))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setFullScreenIntent(context.getFullScreenIntent(), true)
+            .addAction(getStopAction(context, bookmark.id))
+            .addAction(getRepeatAction(context))
             .build()
-            .showRunningNotification(context)
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            context.createKlaxonChannel(bookmark)
+            val notificationManager = context.getNotificationManager()
+            notificationManager.cancel(RUNNING_NOTIFICATION_ID)
+            notificationManager.notify(RUNNING_NOTIFICATION_ID, notification)
+        }
     }
 
     private fun Context.getFullScreenIntent(): PendingIntent {
@@ -203,8 +180,6 @@ class TickerNotificationManager @Inject constructor(private val tickerPreference
     }
 
     companion object {
-        const val RUNNING_CHANNEL_ID = "RandomTickerChannel:04"
-        const val FOREGROUND_CHANNEL_ID = "RandomTickerChannel:03"
         const val RUNNING_NOTIFICATION_ID = 2312
         const val FOREGROUND_NOTIFICATION_ID = 1243
         const val FULL_SCREEN_NOTIFICATION_ID = 987

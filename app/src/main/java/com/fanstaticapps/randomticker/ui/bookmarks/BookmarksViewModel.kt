@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.ui.bookmarks
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
@@ -17,7 +18,7 @@ internal class BookmarksViewModel @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val allBookmarks = repository.getAllBookmarks()
+    val allBookmarks = repository.getAllBookmarks().asLiveData(viewModelScope.coroutineContext)
 
     fun deleteBookmark(bookmark: Bookmark) {
         viewModelScope.launch(dispatcher) {
