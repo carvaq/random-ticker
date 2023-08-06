@@ -1,17 +1,52 @@
 package com.fanstaticapps.randomticker.ui.klaxon
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.databinding.ActivityKlaxonBinding
 import com.fanstaticapps.randomticker.extensions.turnScreenOffAndKeyguardOn
 import com.fanstaticapps.randomticker.extensions.turnScreenOnAndKeyguardOff
-import com.fanstaticapps.randomticker.extensions.viewBinding
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,24 +54,26 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 class KlaxonActivity : BaseActivity() {
 
     private val viewModel: KlaxonViewModel by viewModels()
-    private val binding by viewBinding(ActivityKlaxonBinding::inflate)
-
-    private val pulsatorAnimation = AnimatorSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setBackgroundDrawableResource(R.drawable.klaxon_background)
         super.onCreate(savedInstanceState)
 
-        setContentView(binding.root)
-        binding.prepareView()
-        prepareAnimation()
-
+        setContent {
+            val bookmark = viewModel.currentBookmark.observeAsState().value
+            if (bookmark != null) {
+                val windowSizeClass = calculateWindowSizeClass(this)
+                KlaxonView(
+                    bookmark,
+                    windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+                )
+            }
+        }
         viewModel.currentBookmark.observe(this) {
-            pulsatorAnimation.start()
             if (it.autoRepeat) {
                 lifecycleScope.launch {
                     delay(2000)
@@ -47,43 +84,81 @@ class KlaxonActivity : BaseActivity() {
         turnScreenOnAndKeyguardOff()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        turnScreenOffAndKeyguardOn()
+    @Composable
+    private fun KlaxonView(bookmark: Bookmark, compactSize: Boolean) {
+        AppTheme {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = bookmark.name, style = MaterialTheme.typography.headlineLarge
+                )
+                val size = if (compactSize) 80.dp else 128.dp
+                Box(
+                    modifier = Modifier.defaultMinSize(size, size),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Pulsating(size = size)
+                    IconButton(onClick = {
+                        viewModel.cancelTimer(this@KlaxonActivity)
+                        openMainActivity(bookmark)
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(size),
+                            imageVector = Icons.Filled.Close,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            contentDescription = stringResource(id = android.R.string.cancel)
+                        )
+                    }
+                }
+                Button(
+                    onClick = { autoRepeatTicker(bookmark) },
+                    modifier = Modifier.alpha(if (bookmark.autoRepeat) 0f else 1f)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.action_repeat)
+                    )
+                }
+            }
+        }
     }
 
+    @Composable
+    fun Pulsating(size: Dp) {
+        val infiniteTransition = rememberInfiniteTransition(label = "Pulsating")
 
-    private fun prepareAnimation() {
-        val imageXAnimator = ObjectAnimator.ofFloat(binding.ivPulsatorDismiss, "scaleX", 3f)
-        val imageYAnimator = ObjectAnimator.ofFloat(binding.ivPulsatorDismiss, "scaleY", 3f)
-        val imageAlphaAnimator = ObjectAnimator.ofFloat(binding.ivPulsatorDismiss, "alpha", 0.6f)
-        val animators = listOf(imageXAnimator, imageYAnimator, imageAlphaAnimator)
+        val scale by infiniteTransition.animateFloat(
+            initialValue = 1f,
+            targetValue = 2.5f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1800),
+                repeatMode = RepeatMode.Reverse
+            ),
+            label = "ScalePulsating"
+        )
 
-        pulsatorAnimation.apply {
-            playTogether(imageXAnimator, imageYAnimator, imageAlphaAnimator)
-            duration = 1800
-            interpolator = FastOutSlowInInterpolator()
-        }
-        animators.forEach { animator ->
-            animator.repeatCount = ObjectAnimator.INFINITE
-            animator.repeatMode = ObjectAnimator.REVERSE
+        Box(modifier = Modifier.scale(scale)) {
+            Surface(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = CircleShape,
+                modifier = Modifier.size(size),
+                content = {}
+            )
         }
     }
 
-    private fun ActivityKlaxonBinding.prepareView() {
-        btnDismiss.setOnClickListener {
-            viewModel.currentBookmark.value?.let { bookmark ->
-                viewModel.cancelTimer(this@KlaxonActivity)
-                openMainActivity(bookmark)
-            }
-            pulsatorAnimation.end()
-        }
-
-        btnRepeat.setOnClickListener {
-            viewModel.currentBookmark.observe(this@KlaxonActivity) {
-                autoRepeatTicker(it)
-            }
-        }
+    @Preview(device = Devices.PIXEL_4)
+    @Composable
+    private fun KlaxonPreview() {
+        KlaxonView(
+            Bookmark("Test"),
+            true
+        )
     }
 
     private fun autoRepeatTicker(bookmark: Bookmark) {
@@ -95,6 +170,11 @@ class KlaxonActivity : BaseActivity() {
         startActivity(IntentHelper.getMainActivity(this, bookmark.id))
         noOpenOrCloseTransitions()
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        turnScreenOffAndKeyguardOn()
     }
 
 

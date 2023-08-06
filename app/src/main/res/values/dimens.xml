@@ -5,7 +5,6 @@
 	<dimen name="sectionMargin">36dp</dimen>
 	<dimen name="titleMargin">16dp</dimen>
 	<dimen name="widgetMargin">24dp</dimen>
-	<dimen name="dismissButtonMinSize">80dp</dimen>
 	<dimen name="contentPadding">16dp</dimen>
 	<dimen name="editTextPadding">16dp</dimen>
 	<dimen name="editTextMinWidth">100dp</dimen>
