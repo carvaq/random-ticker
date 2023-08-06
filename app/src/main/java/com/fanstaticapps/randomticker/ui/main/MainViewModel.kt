@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.data.IntervalDefinition
@@ -15,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Random
 import javax.inject.Inject
@@ -23,15 +25,18 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val bookmarkService: BookmarkService,
+    private val prefs: TickerPreferences,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val randomGenerator = Random()
-    private val currentBookmarkId = MutableStateFlow(savedStateHandle.getBookmarkId())
+    private val currentBookmarkId =
+        MutableStateFlow(savedStateHandle.getBookmarkId(prefs.currentSelectedId))
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val currentBookmark: LiveData<Bookmark> = currentBookmarkId
         .filterNotNull()
+        .onEach { prefs.currentSelectedId = it }
         .flatMapMerge { bookmarkService.getBookmarkById(it) }
         .asLiveData(viewModelScope.coroutineContext)
 
