@@ -24,7 +24,7 @@ android {
     defaultConfig {
 
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         applicationId = "com.cvv.fanstaticapps.randomticker"
 

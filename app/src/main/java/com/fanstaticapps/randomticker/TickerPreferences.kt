@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.media.RingtoneManager
 import androidx.preference.PreferenceManager
-import com.fanstaticapps.randomticker.helper.livedata.SharedPreferenceLongLiveData
 
 class TickerPreferences(context: Context) {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -37,6 +36,4 @@ class TickerPreferences(context: Context) {
         get() = prefs.getBoolean(vibratorPref, false)
         set(value) = prefs.edit().putBoolean(vibratorPref, value).apply()
 
-    val currentSelectedBookmarkIdLD =
-        SharedPreferenceLongLiveData(prefs, currentSelectedIdPref, 0)
 }

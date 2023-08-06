@@ -6,12 +6,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.createKlaxonChannel
 import com.fanstaticapps.randomticker.extensions.createTimerChannel
+import com.fanstaticapps.randomticker.extensions.getKlaxonChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import javax.inject.Inject
@@ -53,8 +55,8 @@ class NotificationCoordinator @Inject constructor() {
 
     fun showNotificationWithFullScreenIntent(context: Context, bookmark: Bookmark) {
         context.createKlaxonChannel(bookmark)
-
-        val notification = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
+        val channel = context.getKlaxonChannel(bookmark)
+        val builder = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
             .setSmallIcon(R.drawable.ic_stat_timer)
             .setContentTitle(context.getString(R.string.app_name))
             .setContentText(context.getString(R.string.notification_ticker_ended))
@@ -63,7 +65,12 @@ class NotificationCoordinator @Inject constructor() {
             .setFullScreenIntent(context.getFullScreenIntent(bookmark), true)
             .addAction(getStopAction(context, bookmark))
             .addAction(getRepeatAction(context))
-            .build()
+
+        channel?.let {
+            builder.setSound(channel.sound, AudioManager.STREAM_ALARM)
+        }
+
+        val notification = builder.build()
         notification.flags = notification.flags or Notification.FLAG_INSISTENT
 
         notification.show(context, bookmark.runningNotificationId())
