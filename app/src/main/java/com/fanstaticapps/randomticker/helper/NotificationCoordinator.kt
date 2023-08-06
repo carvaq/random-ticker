@@ -26,40 +26,48 @@ class NotificationCoordinator @Inject constructor() {
 
 
     internal fun showRunningNotification(context: Context, bookmark: Bookmark) {
-        if (ActivityCompat.checkSelfPermission(
+        context.createTimerChannel(bookmark)
+
+        val alarmPendingIntent =
+            IntentHelper.getOpenAppPendingIntent(
                 context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            val alarmPendingIntent =
-                IntentHelper.getOpenAppPendingIntent(
-                    context,
-                    bookmark.runningNotificationId(),
-                    bookmark.id
-                )
-            val cancelAction = getCancelAction(context, bookmark)
+                bookmark.runningNotificationId(),
+                bookmark.id
+            )
+        val cancelAction = getCancelAction(context, bookmark)
 
-            val notification = NotificationCompat.Builder(context, bookmark.runningChannelId())
-                .addAction(cancelAction)
-                .setContentTitle(bookmark.name)
-                .setShowWhen(true)
-                .setWhen(bookmark.intervalEnd)
-                .setContentIntent(alarmPendingIntent)
-                .setChronometerCountDown(true)
-                .setUsesChronometer(true)
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_stat_timer)
-                .setOnlyAlertOnce(false)
-                .build()
-            notification.flags = notification.flags or Notification.FLAG_INSISTENT
+        val notification = NotificationCompat.Builder(context, bookmark.runningChannelId())
+            .addAction(cancelAction)
+            .setContentTitle(bookmark.name)
+            .setShowWhen(true)
+            .setWhen(bookmark.intervalEnd)
+            .setContentIntent(alarmPendingIntent)
+            .setChronometerCountDown(true)
+            .setUsesChronometer(true)
+            .setSmallIcon(R.drawable.ic_stat_timer)
+            .build()
 
-            context.createTimerChannel(bookmark)
-            val notificationManager = context.getNotificationManager()
-            notificationManager.cancel(bookmark.runningNotificationId())
-            notificationManager.notify(bookmark.runningNotificationId(), notification)
-        }
+        notification.show(context, bookmark.runningNotificationId())
     }
 
+
+    fun showNotificationWithFullScreenIntent(context: Context, bookmark: Bookmark) {
+        context.createKlaxonChannel(bookmark)
+
+        val notification = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
+            .setSmallIcon(R.drawable.ic_stat_timer)
+            .setContentTitle(context.getString(R.string.app_name))
+            .setContentText(context.getString(R.string.notification_ticker_ended))
+            .setCategory(Notification.CATEGORY_ALARM)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setFullScreenIntent(context.getFullScreenIntent(bookmark), true)
+            .addAction(getStopAction(context, bookmark))
+            .addAction(getRepeatAction(context))
+            .build()
+        notification.flags = notification.flags or Notification.FLAG_INSISTENT
+
+        notification.show(context, bookmark.runningNotificationId())
+    }
 
     private fun getCancelAction(context: Context, bookmark: Bookmark): NotificationCompat.Action {
         val cancelPendingIntent =
@@ -90,34 +98,22 @@ class NotificationCoordinator @Inject constructor() {
     }
 
     private fun getRepeatAction(context: Context): NotificationCompat.Action {
-        val pendingIntent = IntentHelper.getRepeatReceiverPendingIntent(context)
         return NotificationCompat.Action(
             R.drawable.ic_action_repeat_timer,
             context.getString(R.string.action_repeat),
-            pendingIntent
+            IntentHelper.getRepeatReceiverPendingIntent(context)
         )
     }
 
-    fun showNotificationWithFullScreenIntent(context: Context, bookmark: Bookmark) {
-        val notification = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
-            .setSmallIcon(R.drawable.ic_stat_timer)
-            .setContentTitle(context.getString(R.string.app_name))
-            .setContentText(context.getString(R.string.notification_ticker_ended))
-            .setCategory(Notification.CATEGORY_ALARM)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setFullScreenIntent(context.getFullScreenIntent(bookmark), true)
-            .addAction(getStopAction(context, bookmark))
-            .addAction(getRepeatAction(context))
-            .build()
+    private fun Notification.show(context: Context, notificationId: Int) {
+        val notificationManager = context.getNotificationManager()
+        notificationManager.cancel(notificationId)
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            context.createKlaxonChannel(bookmark)
-            val notificationManager = context.getNotificationManager()
-            notificationManager.cancel(bookmark.runningNotificationId())
-            notificationManager.notify(bookmark.runningNotificationId(), notification)
+            notificationManager.notify(notificationId, this)
         }
     }
 
