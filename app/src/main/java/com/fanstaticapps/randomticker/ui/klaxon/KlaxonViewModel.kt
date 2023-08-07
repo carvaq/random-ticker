@@ -28,6 +28,6 @@ class KlaxonViewModel @Inject constructor(
     }
 
     fun scheduleTicker(context: Context) {
-        service.schedulerAlarm(context, bookmarkId, true)
+        service.scheduleAlarm(context, bookmarkId, true)
     }
 }

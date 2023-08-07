@@ -28,8 +28,8 @@ data class Bookmark(
     constructor(
         id: Long?,
         name: String,
-        minimum: IntervalDefinition,
-        maximum: IntervalDefinition,
+        minimum: Boundary,
+        maximum: Boundary,
         autoRepeat: Boolean,
         intervalEnd: Long
     ) : this(
@@ -44,6 +44,12 @@ data class Bookmark(
         autoRepeat,
         intervalEnd
     )
+
+    @Ignore
+    val min = Boundary(minimumHours, minimumMinutes, minimumSeconds)
+
+    @Ignore
+    val max = Boundary(maximumHours, maximumMinutes, maximumSeconds)
 
     fun klaxonChannelId() = "$name-KLAXON"
     fun klaxonNotificationId() = Int.MAX_VALUE - id.toInt()

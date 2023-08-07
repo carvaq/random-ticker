@@ -7,7 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class CreateAlarmReceiver : BaseReceiver() {
 
     override fun handleBookmark(context: Context, bookmarkId: Long) {
-        bookmarkService.schedulerAlarm(context, bookmarkId, false)
+        bookmarkService.scheduleAlarm(context, bookmarkId, false)
     }
 
 }

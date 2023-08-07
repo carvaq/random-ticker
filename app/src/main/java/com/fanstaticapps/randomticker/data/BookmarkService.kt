@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.Random
 import javax.inject.Inject
 
 class BookmarkService @Inject constructor(
@@ -27,6 +28,7 @@ class BookmarkService @Inject constructor(
 ) {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val randomGenerator = Random()
 
     fun getBookmarkById(bookmarkId: Long): Flow<Bookmark> {
         return repository.getBookmarkById(bookmarkId)
@@ -38,7 +40,7 @@ class BookmarkService @Inject constructor(
     fun createOrUpdate(context: Context, bookmark: Bookmark): ReceiveChannel<Long> {
         return coroutineScope.produce {
             val id = repository.insertOrUpdateBookmark(bookmark)
-            schedulerAlarm(context, id, true)
+            scheduleAlarm(context, id, true)
             trySend(id)
         }
     }
@@ -52,14 +54,15 @@ class BookmarkService @Inject constructor(
         }
     }
 
-    fun schedulerAlarm(context: Context, bookmarkId: Long, isManuallyTriggered: Boolean) {
+    fun scheduleAlarm(context: Context, bookmarkId: Long, isManuallyTriggered: Boolean) {
         fetchBookmarkById(bookmarkId) {
             if (isManuallyTriggered || !it.autoRepeat) {
+                val bookmark = it.saveBookmarkWithNewInterval()
                 Timber.d("creating a new ticker for bookmark $bookmarkId")
-                notificationManager.cancelAllNotifications(context, it)
+                notificationManager.cancelAllNotifications(context, bookmark)
 
                 Timber.d("showing running ticker notification")
-                notificationManager.showRunningNotification(context, it)
+                notificationManager.showRunningNotification(context, bookmark)
 
                 val alarmManger = context.getAlarmManager()
                 if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
@@ -67,13 +70,19 @@ class BookmarkService @Inject constructor(
                         IntentHelper.getAlarmEndedReceiverPendingIntent(context, bookmarkId)
                     alarmManger?.setExactAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
-                        it.intervalEnd,
+                        bookmark.intervalEnd,
                         alarmIntent
                     )
-                    Timber.d("Setting alarm to sound in ${(it.intervalEnd - System.currentTimeMillis()) / 1000}s")
+                    Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
                 }
             }
         }
+    }
+
+    private suspend fun Bookmark.saveBookmarkWithNewInterval(): Bookmark {
+        val interval = randomGenerator.nextInt((max - min + 1).toInt()) + min.millis
+        return copy(intervalEnd = interval + System.currentTimeMillis())
+            .also { repository.insertOrUpdateBookmark(it) }
     }
 
     fun cancelTicker(context: Context, bookmarkId: Long) {
@@ -101,5 +110,11 @@ class BookmarkService @Inject constructor(
         coroutineScope.launch {
             repository.getAllBookmarks().firstOrNull()?.forEach(action)
         }
+    }
+
+    fun fetchAllBookmarks() = repository.getAllBookmarks()
+
+    fun delete(bookmark: Bookmark) {
+        coroutineScope.launch { repository.deleteBookmark(bookmark) }
     }
 }
