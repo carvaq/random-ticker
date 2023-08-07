@@ -64,8 +64,10 @@ class NotificationCoordinator @Inject constructor() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setFullScreenIntent(context.getFullScreenIntent(bookmark), true)
             .addAction(getStopAction(context, bookmark))
-            .addAction(getRepeatAction(context))
 
+        if (!bookmark.autoRepeat) {
+            builder.addAction(getRepeatAction(context))
+        }
         channel?.let {
             builder.setSound(channel.sound, AudioManager.STREAM_ALARM)
         }
