@@ -70,10 +70,14 @@ private fun BookmarkView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = bookmark.name, style = MaterialTheme.typography.headlineSmall)
+                Text(
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    text = bookmark.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Text(
                     text = "${bookmark.min.format()} - ${bookmark.max.format()}",
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
             IconButton(onClick = { delete(bookmark) }) {
@@ -89,7 +93,6 @@ private fun BookmarkView(
                 )
             }
 
-            println("${bookmark.intervalEnd} ${System.currentTimeMillis()}")
             if (bookmark.intervalEnd > System.currentTimeMillis()) {
                 IconButton(onClick = { stop(bookmark) }) {
                     Icon(
