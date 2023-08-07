@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.ui.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +40,10 @@ class MainActivity : BaseActivity() {
                         })
                     },
                     floatingActionButton = {
-                        FloatingActionButton(onClick = { /* ... */ }) {
+                        FloatingActionButton(
+                            onClick = { /* ... */ },
+                            shape = CircleShape
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = stringResource(id = R.string.add_bookmark)
