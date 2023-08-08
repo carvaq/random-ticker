@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import com.fanstaticapps.randomticker.ui.main.compose.BookmarksOverview
+import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,14 +51,14 @@ class MainActivity : BaseActivity() {
                         }
                     }) { paddingValues ->
                     val bookmarks = viewModel.bookmarks.collectAsState(initial = emptyList()).value
-                    BookmarksOverview(
-                        paddingValues,
-                        bookmarks,
-                        {},
-                        { viewModel.startBookmark(this, it) },
-                        { viewModel.stopBookmark(this, it) },
-                        { viewModel.deleteBookmark(it) },
-                        calculateWindowSizeClass(this)
+                    TickerApp(
+                        paddingValues = paddingValues,
+                        bookmarks = bookmarks,
+                        edit = {},
+                        start = { viewModel.startBookmark(this, it) },
+                        stop = { viewModel.stopBookmark(this, it) },
+                        delete = { viewModel.deleteBookmark(it) },
+                        windowSize = calculateWindowSizeClass(activity = this)
                     )
                 }
             }
