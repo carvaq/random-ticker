@@ -41,7 +41,8 @@ fun BookmarkListOverview(
 ) {
     LazyColumn(
         modifier = modifier
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(bookmarks) {
             BookmarkView(it, edit, start, stop, delete)
@@ -131,7 +132,10 @@ private fun Boundary.format(): String {
 fun BookmarkListPreview() {
     AppTheme {
         BookmarkListOverview(
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
+            bookmarks = listOf(
+                Bookmark(maximumSeconds = 12, maximumHours = 1),
+                Bookmark(maximumSeconds = 12, maximumHours = 1)
+            ),
             delete = {},
             edit = {},
             start = {},
