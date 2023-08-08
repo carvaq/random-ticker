@@ -1,6 +1,10 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -46,6 +49,7 @@ fun BookmarkListOverview(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BookmarkView(
     bookmark: Bookmark,
@@ -54,14 +58,15 @@ private fun BookmarkView(
     stop: (Bookmark) -> Unit,
     delete: (Bookmark) -> Unit
 ) {
-    Card {
-        Row(
+    Card(modifier = Modifier.clickable(onClick = { edit(bookmark) })) {
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column {
                 Text(
                     modifier = Modifier.padding(bottom = 8.dp),
                     text = bookmark.name,
@@ -72,33 +77,40 @@ private fun BookmarkView(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            IconButton(onClick = { delete(bookmark) }) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(id = R.string.button_delete)
-                )
-            }
-            IconButton(onClick = { edit(bookmark) }) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit"
-                )
-            }
+            ButtonRow(delete, bookmark, stop, start)
+        }
+    }
+}
 
-            if (bookmark.intervalEnd > System.currentTimeMillis()) {
-                IconButton(onClick = { stop(bookmark) }) {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = stringResource(id = R.string.stop_button)
-                    )
-                }
-            } else {
-                IconButton(onClick = { start(bookmark) }) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = stringResource(id = R.string.start_button)
-                    )
-                }
+@Composable
+private fun ButtonRow(
+    delete: (Bookmark) -> Unit,
+    bookmark: Bookmark,
+    stop: (Bookmark) -> Unit,
+    start: (Bookmark) -> Unit
+) {
+    Row(horizontalArrangement = Arrangement.End) {
+        IconButton(onClick = { delete(bookmark) }) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = stringResource(id = R.string.button_delete)
+            )
+        }
+        if (bookmark.intervalEnd > System.currentTimeMillis()) {
+            IconButton(onClick = { stop(bookmark) }) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    tint = MaterialTheme.colorScheme.error,
+                    contentDescription = stringResource(id = R.string.stop_button)
+                )
+            }
+        } else {
+            IconButton(onClick = { start(bookmark) }) {
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    tint = MaterialTheme.colorScheme.secondary,
+                    contentDescription = stringResource(id = R.string.start_button)
+                )
             }
         }
     }
@@ -113,6 +125,7 @@ private fun Boundary.format(): String {
     }"
 }
 
+@Preview(showBackground = true, widthDp = 200)
 @Preview(showBackground = true)
 @Composable
 fun BookmarkListPreview() {

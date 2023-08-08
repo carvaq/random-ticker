@@ -3,6 +3,7 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -29,7 +31,8 @@ fun TickerApp(
     paddingValues: PaddingValues,
     stop: (Bookmark) -> Unit
 ) {
-    if (windowSize.widthSizeClass == WindowWidthSizeClass.Compact) {
+    val orientation = LocalConfiguration.current.orientation
+    if (isCompactOrInPortrait(windowSize, orientation)) {
         BookmarkListOverview(
             modifier = Modifier.padding(paddingValues),
             bookmarks = bookmarks,
@@ -57,6 +60,13 @@ fun TickerApp(
         }
     }
 }
+
+@Composable
+private fun isCompactOrInPortrait(
+    windowSize: WindowSizeClass,
+    orientation: Int
+) = (windowSize.widthSizeClass == WindowWidthSizeClass.Compact
+        || orientation == Configuration.ORIENTATION_PORTRAIT)
 
 @Preview(showBackground = true)
 @Composable
