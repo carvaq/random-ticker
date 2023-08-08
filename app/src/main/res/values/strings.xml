@@ -12,7 +12,7 @@
 	<string name="button_select_profile">Select bookmark</string>
 	<string name="button_delete">Delete</string>
 	<string name="add_bookmark">Add bookmark</string>
-	<string name="bookmark_hint">Add item</string>
+	<string name="bookmark_hint">Bookmark name</string>
 	<string name="notification_title">%s timer running</string>
 	<string name="foreground_channel_name">Alarm</string>
 	<string name="running_channel_name">Timer</string>
