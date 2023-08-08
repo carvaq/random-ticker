@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
@@ -56,25 +57,24 @@ class BookmarkService @Inject constructor(
 
     fun scheduleAlarm(context: Context, bookmarkId: Long, isManuallyTriggered: Boolean) {
         fetchBookmarkById(bookmarkId) {
-            if (isManuallyTriggered || !it.autoRepeat) {
-                val bookmark = it.saveBookmarkWithNewInterval()
-                Timber.d("creating a new ticker for bookmark $bookmarkId")
-                notificationManager.cancelAllNotifications(context, bookmark)
+            if (!isManuallyTriggered && it.autoRepeat) delay(it.autoRepeatInterval)
+            val bookmark = it.saveBookmarkWithNewInterval()
+            Timber.d("creating a new ticker for bookmark $bookmarkId")
+            notificationManager.cancelAllNotifications(context, bookmark)
 
-                Timber.d("showing running ticker notification")
-                notificationManager.showRunningNotification(context, bookmark)
+            Timber.d("showing running ticker notification")
+            notificationManager.showRunningNotification(context, bookmark)
 
-                val alarmManger = context.getAlarmManager()
-                if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
-                    val alarmIntent =
-                        IntentHelper.getAlarmEndedReceiverPendingIntent(context, bookmarkId)
-                    alarmManger?.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP,
-                        bookmark.intervalEnd,
-                        alarmIntent
-                    )
-                    Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
-                }
+            val alarmManger = context.getAlarmManager()
+            if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
+                val alarmIntent =
+                    IntentHelper.getAlarmEndedReceiverPendingIntent(context, bookmarkId)
+                alarmManger?.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    bookmark.intervalEnd,
+                    alarmIntent
+                )
+                Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
             }
         }
     }

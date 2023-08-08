@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "bookmarks")
 data class Bookmark(
-    @PrimaryKey(autoGenerate = true) val id: Long = DEFAULT,
+    @PrimaryKey(autoGenerate = true) val id: Long = NOT_SET_VALUE,
     @ColumnInfo(name = "name") val name: String = "Random Ticker",
     @ColumnInfo(name = "minimumHours") val minimumHours: Int = 0,
     @ColumnInfo(name = "minimumMinutes") val minimumMinutes: Int = 0,
@@ -16,13 +16,14 @@ data class Bookmark(
     @ColumnInfo(name = "maximumMinutes") val maximumMinutes: Int = 5,
     @ColumnInfo(name = "maximumSeconds") val maximumSeconds: Int = 0,
     @ColumnInfo(name = "autoRepeat") val autoRepeat: Boolean = false,
-    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = DEFAULT
+    @ColumnInfo(name = "autoRepeatInterval") val autoRepeatInterval: Long = DEFAULT_AUTO_REPEAT_INTERVAL,
+    @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = NOT_SET_VALUE,
 ) {
-    fun reset(): Bookmark = copy(intervalEnd = DEFAULT)
-    fun isIdSet() = id != DEFAULT
+    fun reset(): Bookmark = copy(intervalEnd = NOT_SET_VALUE)
+    fun isIdSet() = id != NOT_SET_VALUE
 
     @Ignore
-    constructor(name: String) : this(DEFAULT, name, 0, 0, 0, 0, 5, 0, false)
+    constructor(name: String) : this(NOT_SET_VALUE, name, 0, 0, 0, 0, 5, 0, false)
 
     @Ignore
     constructor(
@@ -33,7 +34,7 @@ data class Bookmark(
         autoRepeat: Boolean,
         intervalEnd: Long
     ) : this(
-        id ?: DEFAULT,
+        id ?: NOT_SET_VALUE,
         name,
         minimum.hours,
         minimum.minutes,
@@ -57,7 +58,8 @@ data class Bookmark(
     fun runningNotificationId() = id.toInt()
 
     private companion object {
-        const val DEFAULT: Long = 0
+        const val NOT_SET_VALUE: Long = 0
+        const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 200
     }
 }
 

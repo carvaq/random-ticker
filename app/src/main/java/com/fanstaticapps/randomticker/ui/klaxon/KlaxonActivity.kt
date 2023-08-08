@@ -76,8 +76,8 @@ class KlaxonActivity : BaseActivity() {
         viewModel.currentBookmark.observe(this) {
             if (it.autoRepeat) {
                 lifecycleScope.launch {
-                    delay(2000)
-                    autoRepeatTicker(it)
+                    delay(it.autoRepeatInterval)
+                    openMainActivity(it)
                 }
             }
         }
