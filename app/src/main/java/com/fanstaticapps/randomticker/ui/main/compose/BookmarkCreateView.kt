@@ -4,10 +4,14 @@ import android.widget.NumberPicker
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
@@ -39,14 +43,35 @@ fun BookmarkCreateView(
     save: (Bookmark) -> Unit,
     delete: (Bookmark) -> Unit
 ) {
-    Column(modifier = Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier
+            .padding(24.dp)
+            .verticalScroll(rememberScrollState())
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         val minBoundary = remember { mutableStateOf(bookmark.min) }
         val maxBoundary = remember { mutableStateOf(bookmark.max) }
-        Boundary(minBoundary, R.string.from)
-        Spacer(Modifier.height(24.dp))
-        Boundary(maxBoundary, R.string.to)
-        Spacer(Modifier.height(36.dp))
-        Button(modifier = Modifier.fillMaxWidth(), onClick = { save(bookmark) }) {
+        Column {
+            BoundaryView(
+                contentBindingModifier = Modifier
+                    .heightIn(max = 240.dp)
+                    .fillMaxWidth(),
+                boundary = minBoundary,
+                boundaryType = R.string.from
+            )
+            Spacer(Modifier.height(24.dp))
+            BoundaryView(
+                contentBindingModifier = Modifier
+                    .heightIn(max = 240.dp)
+                    .fillMaxWidth(),
+                boundary = maxBoundary,
+                boundaryType = R.string.to
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Button(modifier = Modifier.fillMaxWidth(),
+            onClick = { save(bookmark.updateBoundaries(minBoundary.value, maxBoundary.value)) }) {
             Icon(imageVector = Icons.Default.Save, contentDescription = null)
             Text(
                 modifier = Modifier.padding(start = 16.dp),
@@ -61,54 +86,81 @@ fun BookmarkCreateView(
                 text = stringResource(id = R.string.button_delete)
             )
         }
+
     }
 }
 
+
 @Composable
-private fun Boundary(boundary: MutableState<Boundary>, @StringRes boundaryType: Int) {
-    Card {
-        Column(modifier = Modifier.padding(24.dp)) {
+private fun BoundaryView(
+    modifier: Modifier = Modifier,
+    contentBindingModifier: Modifier = Modifier,
+    boundary: MutableState<Boundary>,
+    @StringRes boundaryType: Int
+) {
+    Card(modifier) {
+        Column(
+            modifier = Modifier
+                .padding(24.dp)
+                .fillMaxWidth()
+        ) {
             Text(text = stringResource(id = boundaryType), fontWeight = FontWeight.Bold)
             AndroidViewBinding(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                factory = BoundaryBinding::inflate
+                modifier = contentBindingModifier
+                    .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally), factory = BoundaryBinding::inflate
             ) {
-                hours.init(boundary.value.hours, 23, boundaryType, R.string.hours_label)
-                minutes.init(boundary.value.minutes, 59, boundaryType, R.string.minutes_label)
-                seconds.init(boundary.value.seconds, 59, boundaryType, R.string.seconds_label)
-                hours.setOnValueChangedListener { _, _, newValue ->
-                    boundary.value = boundary.value.copy(hours = newValue)
-                }
-                minutes.setOnValueChangedListener { _, _, newValue ->
-                    boundary.value = boundary.value.copy(minutes = newValue)
-                }
-                seconds.setOnValueChangedListener { _, _, newValue ->
-                    boundary.value = boundary.value.copy(seconds = newValue)
-                }
+                hours.initialize(
+                    boundary,
+                    { hours },
+                    { copy(hours = it) },
+                    23,
+                    boundaryType,
+                    R.string.hours_label
+                )
+                minutes.initialize(
+                    boundary,
+                    { minutes },
+                    { copy(minutes = it) },
+                    59,
+                    boundaryType,
+                    R.string.minutes_label
+                )
+                seconds.initialize(
+                    boundary,
+                    { seconds },
+                    { copy(seconds = it) },
+                    59,
+                    boundaryType,
+                    R.string.seconds_label
+                )
             }
         }
     }
 }
 
-private fun NumberPicker.init(
-    currentValue: Int,
+private fun NumberPicker.initialize(
+    boundary: MutableState<Boundary>,
+    getValue: Boundary.() -> Int,
+    setValue: Boundary.(Int) -> Boundary,
     max: Int,
     @StringRes fromToResId: Int,
     @StringRes type: Int
 ) {
-    value = currentValue
+    value = boundary.value.getValue()
     minValue = 0
     maxValue = max
     contentDescription = "${context.getString(fromToResId)} ${context.getString(type)}"
+    setOnValueChangedListener { _, _, value ->
+        boundary.value = boundary.value.setValue(value)
+
+    }
 }
 
 @Preview
 @Composable
 fun BookmarkCreatePreview() {
-    BookmarkCreateView(
-        bookmark = Bookmark(maximumSeconds = 12, maximumHours = 1),
+    BookmarkCreateView(bookmark = Bookmark(maximumSeconds = 12, maximumHours = 1),
         save = {},
         delete = {})
 }

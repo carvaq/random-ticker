@@ -19,25 +19,32 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.data.BookmarkService
+import org.koin.compose.koinInject
 
 @Composable
 fun TickerApp(
     paddingValues: PaddingValues,
     windowSize: WindowSizeClass,
     bookmarks: List<Bookmark>,
-    delete: (Bookmark) -> Unit,
-    save: (Bookmark) -> Unit,
-    start: (Bookmark) -> Unit,
-    stop: (Bookmark) -> Unit
+    start: (Bookmark) -> Unit
 ) {
     val orientation = LocalConfiguration.current.orientation
     var selectedBookmarkId by rememberSaveable { mutableStateOf(NO_BOOKMARK_SELECTED) }
     val selectedBookmark = bookmarks.find { it.id == selectedBookmarkId }
+    val bookmarkService = koinInject<BookmarkService>()
+    val context = LocalContext.current.applicationContext
+    val delete = { bookmark: Bookmark -> bookmarkService.delete(context, bookmark) }
+    val save = { bookmark: Bookmark ->
+        bookmarkService.save(bookmark)
+        selectedBookmarkId = NO_BOOKMARK_SELECTED
+    }
     if (isCompactOrInPortrait(windowSize, orientation)) {
         if (selectedBookmark == null) {
             BookmarkListOverview(
@@ -45,17 +52,14 @@ fun TickerApp(
                 bookmarks = bookmarks,
                 edit = { selectedBookmarkId = it.id },
                 start = start,
-                stop = stop,
+                stop = { bookmarkService.cancelTicker(context, it.id) },
                 delete = delete
             )
         } else {
             BookmarkCreateView(
                 modifier = Modifier.padding(paddingValues),
                 bookmark = selectedBookmark,
-                save = {
-                    save(it)
-                    selectedBookmarkId = NO_BOOKMARK_SELECTED
-                },
+                save = save,
                 delete = delete
             )
         }
@@ -70,17 +74,14 @@ fun TickerApp(
                 bookmarks = bookmarks,
                 edit = { selectedBookmarkId = it.id },
                 start = start,
-                stop = stop,
+                stop = { bookmarkService.cancelTicker(context, it.id) },
                 delete = delete
             )
             if (selectedBookmark != null) {
                 BookmarkCreateView(
                     modifier = Modifier.weight(0.6f),
                     bookmark = selectedBookmark,
-                    save = {
-                        save(it)
-                        selectedBookmarkId = NO_BOOKMARK_SELECTED
-                    },
+                    save = save,
                     delete = delete
                 )
             } else {
@@ -104,13 +105,10 @@ private fun isCompactOrInPortrait(
 fun TickerPreview() {
     AppTheme {
         TickerApp(
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(400.dp, 900.dp)),
-            delete = {},
-            save = {},
-            start = {},
             paddingValues = PaddingValues(0.dp),
-            stop = {})
+            windowSize = WindowSizeClass.calculateFromSize(DpSize(400.dp, 900.dp)),
+            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+        ) {}
     }
 }
 
@@ -119,13 +117,10 @@ fun TickerPreview() {
 fun TickerPreviewTablet() {
     AppTheme {
         TickerApp(
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(700.dp, 500.dp)),
-            delete = {},
-            save = {},
-            start = {},
             paddingValues = PaddingValues(0.dp),
-            stop = {})
+            windowSize = WindowSizeClass.calculateFromSize(DpSize(700.dp, 500.dp)),
+            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+        ) {}
     }
 }
 
@@ -134,13 +129,10 @@ fun TickerPreviewTablet() {
 fun TickerPreviewTabletPortrait() {
     AppTheme {
         TickerApp(
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(500.dp, 700.dp)),
-            delete = {},
-            save = {},
-            start = {},
             paddingValues = PaddingValues(0.dp),
-            stop = {})
+            windowSize = WindowSizeClass.calculateFromSize(DpSize(500.dp, 700.dp)),
+            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+        ) {}
     }
 }
 
@@ -149,13 +141,10 @@ fun TickerPreviewTabletPortrait() {
 fun TickerPreviewDesktop() {
     AppTheme {
         TickerApp(
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(1100.dp, 600.dp)),
-            delete = {},
-            save = {},
-            start = {},
             paddingValues = PaddingValues(0.dp),
-            stop = {})
+            windowSize = WindowSizeClass.calculateFromSize(DpSize(1100.dp, 600.dp)),
+            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+        ) {}
     }
 }
 
@@ -164,12 +153,9 @@ fun TickerPreviewDesktop() {
 fun TickerPreviewDesktopPortrait() {
     AppTheme {
         TickerApp(
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(600.dp, 1100.dp)),
-            delete = {},
-            save = {},
-            start = {},
             paddingValues = PaddingValues(0.dp),
-            stop = {})
+            windowSize = WindowSizeClass.calculateFromSize(DpSize(600.dp, 1100.dp)),
+            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+        ) {}
     }
 }

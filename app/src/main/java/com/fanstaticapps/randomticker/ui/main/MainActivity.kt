@@ -51,13 +51,9 @@ class MainActivity : BaseActivity() {
                         mainViewModel.bookmarks.collectAsState(initial = emptyList()).value
                     TickerApp(
                         paddingValues = paddingValues,
-                        bookmarks = bookmarks,
-                        save = {},
-                        start = { mainViewModel.startBookmark(this, it) },
-                        stop = { mainViewModel.stopBookmark(this, it) },
-                        delete = { mainViewModel.deleteBookmark(it) },
-                        windowSize = calculateWindowSizeClass(activity = this)
-                    )
+                        windowSize = calculateWindowSizeClass(activity = this),
+                        bookmarks = bookmarks
+                    ) { mainViewModel.startBookmark(this, it) }
                 }
             }
         }

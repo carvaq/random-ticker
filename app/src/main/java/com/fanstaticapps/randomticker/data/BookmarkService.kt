@@ -8,10 +8,7 @@ import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -35,12 +32,9 @@ class BookmarkService(
             .filterNotNull()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun createOrUpdate(context: Context, bookmark: Bookmark): ReceiveChannel<Long> {
-        return coroutineScope.produce {
-            val id = repository.insertOrUpdateBookmark(bookmark)
-            scheduleAlarm(context, id, true)
-            trySend(id)
+    fun save(bookmark: Bookmark) {
+        coroutineScope.launch {
+            repository.insertOrUpdateBookmark(bookmark)
         }
     }
 
@@ -112,7 +106,8 @@ class BookmarkService(
 
     fun fetchAllBookmarks() = repository.getAllBookmarks()
 
-    fun delete(bookmark: Bookmark) {
+    fun delete(context: Context, bookmark: Bookmark) {
+        cancelTicker(context, bookmark.id)
         coroutineScope.launch { repository.deleteBookmark(bookmark) }
     }
 }

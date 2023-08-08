@@ -115,7 +115,7 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
-    runtimeOnly("io.insert-koin:koin-androidx-compose:3.4.6")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.6")
     implementation("io.insert-koin:koin-android:3.4.3")
 
     implementation("com.jakewharton.timber:timber:5.0.1")

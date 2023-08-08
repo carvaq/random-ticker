@@ -56,6 +56,16 @@ data class Bookmark(
     fun klaxonNotificationId() = Int.MAX_VALUE - id.toInt()
     fun runningChannelId() = "$name-RUNNING"
     fun runningNotificationId() = id.toInt()
+    fun updateBoundaries(min: Boundary, max: Boundary): Bookmark {
+        return copy(
+            minimumHours = min.hours,
+            minimumMinutes = min.minutes,
+            minimumSeconds = min.seconds,
+            maximumHours = max.hours,
+            maximumMinutes = max.minutes,
+            maximumSeconds = max.seconds,
+        )
+    }
 
     private companion object {
         const val NOT_SET_VALUE: Long = 0
