@@ -33,24 +33,25 @@ fun TickerApp(
     paddingValues: PaddingValues,
     windowSize: WindowSizeClass,
     bookmarks: List<Bookmark>,
+    selectedBookmarkId: Long = NO_BOOKMARK_SELECTED,
     start: (Bookmark) -> Unit
 ) {
     val orientation = LocalConfiguration.current.orientation
-    var selectedBookmarkId by rememberSaveable { mutableStateOf(NO_BOOKMARK_SELECTED) }
-    val selectedBookmark = bookmarks.find { it.id == selectedBookmarkId }
+    var selectedBookmark by rememberSaveable { mutableStateOf(bookmarks.find { it.id == selectedBookmarkId }) }
     val bookmarkService = koinInject<BookmarkService>()
     val context = LocalContext.current.applicationContext
     val delete = { bookmark: Bookmark -> bookmarkService.delete(context, bookmark) }
     val save = { bookmark: Bookmark ->
         bookmarkService.save(bookmark)
-        selectedBookmarkId = NO_BOOKMARK_SELECTED
+        selectedBookmark = null
     }
+    val bookmark = selectedBookmark
     if (isCompactOrInPortrait(windowSize, orientation)) {
-        if (selectedBookmark == null) {
+        if (bookmark == null) {
             BookmarkListOverview(
                 modifier = Modifier.padding(paddingValues),
                 bookmarks = bookmarks,
-                edit = { selectedBookmarkId = it.id },
+                edit = { selectedBookmark = it },
                 start = start,
                 stop = { bookmarkService.cancelTicker(context, it.id) },
                 delete = delete
@@ -58,7 +59,7 @@ fun TickerApp(
         } else {
             BookmarkCreateView(
                 modifier = Modifier.padding(paddingValues),
-                bookmark = selectedBookmark,
+                bookmark = bookmark,
                 save = save,
                 delete = delete
             )
@@ -72,15 +73,15 @@ fun TickerApp(
             BookmarkListOverview(
                 modifier = Modifier.weight(0.4f),
                 bookmarks = bookmarks,
-                edit = { selectedBookmarkId = it.id },
+                edit = { selectedBookmark = it },
                 start = start,
                 stop = { bookmarkService.cancelTicker(context, it.id) },
                 delete = delete
             )
-            if (selectedBookmark != null) {
+            if (bookmark != null) {
                 BookmarkCreateView(
                     modifier = Modifier.weight(0.6f),
-                    bookmark = selectedBookmark,
+                    bookmark = bookmark,
                     save = save,
                     delete = delete
                 )
@@ -141,6 +142,7 @@ fun TickerPreviewTabletPortrait() {
 fun TickerPreviewDesktop() {
     AppTheme {
         TickerApp(
+            selectedBookmarkId = 0,
             paddingValues = PaddingValues(0.dp),
             windowSize = WindowSizeClass.calculateFromSize(DpSize(1100.dp, 600.dp)),
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))

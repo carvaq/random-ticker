@@ -7,14 +7,6 @@ import com.fanstaticapps.randomticker.data.BookmarkService
 
 class MainViewModel(private val bookmarkService: BookmarkService) :
     ViewModel() {
-    fun deleteBookmark(bookmark: Bookmark) {
-        bookmarkService.delete(bookmark)
-    }
-
-    fun stopBookmark(context: Context, bookmark: Bookmark) {
-        bookmarkService.cancelTicker(context, bookmark.id)
-    }
-
     fun startBookmark(context: Context, bookmark: Bookmark) {
         bookmarkService.scheduleAlarm(context, bookmark.id, true)
     }

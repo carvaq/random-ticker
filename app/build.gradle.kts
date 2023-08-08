@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-kapt")
     id("com.github.triplet.play") version "3.8.3"
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.gms.google-services")
