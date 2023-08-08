@@ -165,10 +165,6 @@ play {
     }
 }
 
-kapt {
-    generateStubs = false
-    correctErrorTypes = true
-}
 repositories {
     mavenCentral()
 }

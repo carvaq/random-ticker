@@ -69,7 +69,9 @@ fun BookmarkCreateView(
                 boundaryType = R.string.to
             )
         }
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(
+            modifier = Modifier.height(36.dp)
+        )
         Button(modifier = Modifier.fillMaxWidth(),
             onClick = { save(bookmark.updateBoundaries(minBoundary.value, maxBoundary.value)) }) {
             Icon(imageVector = Icons.Default.Save, contentDescription = null)
@@ -157,7 +159,7 @@ private fun NumberPicker.initialize(
     }
 }
 
-@Preview
+@Preview(heightDp = 635, showBackground = true)
 @Composable
 fun BookmarkCreatePreview() {
     BookmarkCreateView(bookmark = Bookmark(maximumSeconds = 12, maximumHours = 1),

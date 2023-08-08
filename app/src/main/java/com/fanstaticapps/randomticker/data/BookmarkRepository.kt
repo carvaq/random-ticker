@@ -16,7 +16,7 @@ class BookmarkRepository constructor(private val bookmarkDao: BookmarkDao) {
         bookmarkDao.delete(bookmark.id)
     }
 
-    suspend fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
+    fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
         return bookmarkDao.insert(newBookmark)
     }
 }

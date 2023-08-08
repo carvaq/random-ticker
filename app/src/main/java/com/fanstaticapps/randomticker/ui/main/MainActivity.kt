@@ -2,6 +2,7 @@ package com.fanstaticapps.randomticker.ui.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -14,6 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
@@ -31,6 +33,7 @@ class MainActivity : BaseActivity() {
         setContent {
             AppTheme {
                 Scaffold(
+                    modifier = Modifier.fillMaxSize(),
                     topBar = {
                         TopAppBar(title = {
                             Text(stringResource(id = R.string.app_name))
@@ -38,7 +41,7 @@ class MainActivity : BaseActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { /* ... */ },
+                            onClick = { mainViewModel.createNewBookmark() },
                             shape = CircleShape
                         ) {
                             Icon(
@@ -49,9 +52,12 @@ class MainActivity : BaseActivity() {
                     }) { paddingValues ->
                     val bookmarks =
                         mainViewModel.bookmarks.collectAsState(initial = emptyList()).value
+                    val newBookmarkId =
+                        mainViewModel.createdBookmarkId.collectAsState(initial = null).value
                     TickerApp(
                         paddingValues = paddingValues,
                         windowSize = calculateWindowSizeClass(activity = this),
+                        newlyCreatedBookmarkId = newBookmarkId,
                         bookmarks = bookmarks
                     ) { mainViewModel.startBookmark(this, it) }
                 }

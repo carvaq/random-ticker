@@ -13,7 +13,7 @@ interface BookmarkDao {
     fun getAllBookmarks(): Flow<List<Bookmark>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(bookmark: Bookmark): Long
+    fun insert(bookmark: Bookmark): Long
 
     @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
     fun getById(id: Long): Flow<Bookmark>

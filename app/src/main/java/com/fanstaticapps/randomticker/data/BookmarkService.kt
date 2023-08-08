@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.Random
 
@@ -35,6 +36,12 @@ class BookmarkService(
     fun save(bookmark: Bookmark) {
         coroutineScope.launch {
             repository.insertOrUpdateBookmark(bookmark)
+        }
+    }
+
+    suspend fun createNew(): Long {
+        return withContext(coroutineScope.coroutineContext) {
+            repository.insertOrUpdateBookmark(Bookmark())
         }
     }
 
