@@ -13,6 +13,10 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,24 +27,38 @@ import com.fanstaticapps.randomticker.data.Bookmark
 
 @Composable
 fun TickerApp(
-    bookmarks: List<Bookmark>,
-    windowSize: WindowSizeClass,
-    delete: (Bookmark) -> Unit,
-    edit: (Bookmark) -> Unit,
-    start: (Bookmark) -> Unit,
     paddingValues: PaddingValues,
+    windowSize: WindowSizeClass,
+    bookmarks: List<Bookmark>,
+    delete: (Bookmark) -> Unit,
+    save: (Bookmark) -> Unit,
+    start: (Bookmark) -> Unit,
     stop: (Bookmark) -> Unit
 ) {
     val orientation = LocalConfiguration.current.orientation
+    var selectedBookmarkId by rememberSaveable { mutableStateOf(NO_BOOKMARK_SELECTED) }
+    val selectedBookmark = bookmarks.find { it.id == selectedBookmarkId }
     if (isCompactOrInPortrait(windowSize, orientation)) {
-        BookmarkListOverview(
-            modifier = Modifier.padding(paddingValues),
-            bookmarks = bookmarks,
-            edit = edit,
-            start = start,
-            stop = stop,
-            delete = delete
-        )
+        if (selectedBookmark == null) {
+            BookmarkListOverview(
+                modifier = Modifier.padding(paddingValues),
+                bookmarks = bookmarks,
+                edit = { selectedBookmarkId = it.id },
+                start = start,
+                stop = stop,
+                delete = delete
+            )
+        } else {
+            BookmarkCreateView(
+                modifier = Modifier.padding(paddingValues),
+                bookmark = selectedBookmark,
+                save = {
+                    save(it)
+                    selectedBookmarkId = NO_BOOKMARK_SELECTED
+                },
+                delete = delete
+            )
+        }
     } else {
         Row(
             modifier = Modifier
@@ -50,16 +68,29 @@ fun TickerApp(
             BookmarkListOverview(
                 modifier = Modifier.weight(0.4f),
                 bookmarks = bookmarks,
-                edit = edit,
+                edit = { selectedBookmarkId = it.id },
                 start = start,
                 stop = stop,
                 delete = delete
             )
-            Box(modifier = Modifier.weight(0.6f))
-
+            if (selectedBookmark != null) {
+                BookmarkCreateView(
+                    modifier = Modifier.weight(0.6f),
+                    bookmark = selectedBookmark,
+                    save = {
+                        save(it)
+                        selectedBookmarkId = NO_BOOKMARK_SELECTED
+                    },
+                    delete = delete
+                )
+            } else {
+                Box(modifier = Modifier.weight(0.6f))
+            }
         }
     }
 }
+
+private const val NO_BOOKMARK_SELECTED = -1L
 
 @Composable
 private fun isCompactOrInPortrait(
@@ -76,10 +107,10 @@ fun TickerPreview() {
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
             windowSize = WindowSizeClass.calculateFromSize(DpSize(400.dp, 900.dp)),
             delete = {},
-            edit = {},
+            save = {},
             start = {},
-            paddingValues = PaddingValues(0.dp)
-        ) {}
+            paddingValues = PaddingValues(0.dp),
+            stop = {})
     }
 }
 
@@ -91,10 +122,10 @@ fun TickerPreviewTablet() {
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
             windowSize = WindowSizeClass.calculateFromSize(DpSize(700.dp, 500.dp)),
             delete = {},
-            edit = {},
+            save = {},
             start = {},
-            paddingValues = PaddingValues(0.dp)
-        ) {}
+            paddingValues = PaddingValues(0.dp),
+            stop = {})
     }
 }
 
@@ -106,10 +137,10 @@ fun TickerPreviewTabletPortrait() {
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
             windowSize = WindowSizeClass.calculateFromSize(DpSize(500.dp, 700.dp)),
             delete = {},
-            edit = {},
+            save = {},
             start = {},
-            paddingValues = PaddingValues(0.dp)
-        ) {}
+            paddingValues = PaddingValues(0.dp),
+            stop = {})
     }
 }
 
@@ -121,10 +152,10 @@ fun TickerPreviewDesktop() {
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
             windowSize = WindowSizeClass.calculateFromSize(DpSize(1100.dp, 600.dp)),
             delete = {},
-            edit = {},
+            save = {},
             start = {},
-            paddingValues = PaddingValues(0.dp)
-        ) {}
+            paddingValues = PaddingValues(0.dp),
+            stop = {})
     }
 }
 
@@ -136,9 +167,9 @@ fun TickerPreviewDesktopPortrait() {
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1)),
             windowSize = WindowSizeClass.calculateFromSize(DpSize(600.dp, 1100.dp)),
             delete = {},
-            edit = {},
+            save = {},
             start = {},
-            paddingValues = PaddingValues(0.dp)
-        ) {}
+            paddingValues = PaddingValues(0.dp),
+            stop = {})
     }
 }

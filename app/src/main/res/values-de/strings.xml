@@ -30,5 +30,6 @@
 	<string name="auto_repeat">Wiederholen nach 2 Sekunden</string>
 	<string name="please_allow_alarm_scheduling">Du hast Alarmplanung für den Random-Ticker deaktiviert. Bitte gehe zu den Einstellungen und gib die Erlaubnis frei.</string>
 	<string name="notification_ticker_ended">Zeit abgelaufen</string>
+	<string name="save_button">Speichern</string>
 
 </resources>

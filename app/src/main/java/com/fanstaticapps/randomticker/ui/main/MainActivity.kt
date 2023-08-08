@@ -52,7 +52,7 @@ class MainActivity : BaseActivity() {
                     TickerApp(
                         paddingValues = paddingValues,
                         bookmarks = bookmarks,
-                        edit = {},
+                        save = {},
                         start = { mainViewModel.startBookmark(this, it) },
                         stop = { mainViewModel.stopBookmark(this, it) },
                         delete = { mainViewModel.deleteBookmark(it) },

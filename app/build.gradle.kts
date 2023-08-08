@@ -130,6 +130,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation("androidx.compose.runtime:runtime-livedata")
+    implementation("androidx.compose.ui:ui-viewbinding")
     implementation("androidx.activity:activity-compose:1.7.2")
 
     testImplementation("org.mockito:mockito-core:5.4.0")
