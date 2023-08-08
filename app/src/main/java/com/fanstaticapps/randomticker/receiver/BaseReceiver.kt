@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.extensions.getBookmarkId
+import org.koin.core.Koin
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import timber.log.Timber
-import javax.inject.Inject
 
-abstract class BaseReceiver : BroadcastReceiver() {
-
-    @Inject
-    internal lateinit var bookmarkService: BookmarkService
+abstract class BaseReceiver : BroadcastReceiver(), KoinComponent {
+    protected val bookmarkService: BookmarkService by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         val bookmarkId = intent.getBookmarkId()
@@ -24,4 +25,6 @@ abstract class BaseReceiver : BroadcastReceiver() {
     }
 
     abstract fun handleBookmark(context: Context, bookmarkId: Long)
+
+    override fun getKoin(): Koin = get()
 }

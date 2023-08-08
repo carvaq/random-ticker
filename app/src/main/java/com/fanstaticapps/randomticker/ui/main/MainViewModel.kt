@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkService
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(private val bookmarkService: BookmarkService) :
+class MainViewModel(private val bookmarkService: BookmarkService) :
     ViewModel() {
     fun deleteBookmark(bookmark: Bookmark) {
         bookmarkService.delete(bookmark)

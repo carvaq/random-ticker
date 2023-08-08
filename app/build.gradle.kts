@@ -4,7 +4,6 @@ plugins {
     id("kotlin-kapt")
     id("com.github.triplet.play") version "3.8.3"
     id("com.google.android.gms.oss-licenses-plugin")
-    id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp") version "1.8.22-1.0.11"
 }
@@ -116,12 +115,10 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
-    implementation("com.google.dagger:hilt-android:2.46.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    runtimeOnly("io.insert-koin:koin-androidx-compose:3.4.6")
+    implementation("io.insert-koin:koin-android:3.4.3")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("com.airbnb.android:lottie:6.1.0")
 
     val composeBom = platform("androidx.compose:compose-bom:2023.06.01")
     implementation(composeBom)
@@ -143,10 +140,7 @@ dependencies {
     testImplementation("androidx.test:runner:1.5.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2")
     testImplementation("com.google.truth:truth:1.1.5")
-    testImplementation("com.google.dagger:hilt-android-testing:2.46.1")
-    kaptTest("com.google.dagger:hilt-android-compiler:2.46.1")
 
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
     androidTestImplementation("androidx.room:room-testing:2.5.2")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -157,7 +151,6 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
     androidTestImplementation("androidx.test.ext:truth:1.5.0")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.46.1")
     androidTestUtil("androidx.test:orchestrator:1.4.2")
 }
 

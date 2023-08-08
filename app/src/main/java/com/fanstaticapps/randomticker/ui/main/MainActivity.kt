@@ -2,7 +2,6 @@ package com.fanstaticapps.randomticker.ui.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,18 +19,16 @@ import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModel()
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             AppTheme {
                 Scaffold(
                     topBar = {
@@ -50,14 +47,15 @@ class MainActivity : BaseActivity() {
                             )
                         }
                     }) { paddingValues ->
-                    val bookmarks = viewModel.bookmarks.collectAsState(initial = emptyList()).value
+                    val bookmarks =
+                        mainViewModel.bookmarks.collectAsState(initial = emptyList()).value
                     TickerApp(
                         paddingValues = paddingValues,
                         bookmarks = bookmarks,
                         edit = {},
-                        start = { viewModel.startBookmark(this, it) },
-                        stop = { viewModel.stopBookmark(this, it) },
-                        delete = { viewModel.deleteBookmark(it) },
+                        start = { mainViewModel.startBookmark(this, it) },
+                        stop = { mainViewModel.stopBookmark(this, it) },
+                        delete = { mainViewModel.deleteBookmark(it) },
                         windowSize = calculateWindowSizeClass(activity = this)
                     )
                 }

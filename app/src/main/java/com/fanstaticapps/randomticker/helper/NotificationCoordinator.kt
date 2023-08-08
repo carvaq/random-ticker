@@ -16,9 +16,8 @@ import com.fanstaticapps.randomticker.extensions.createTimerChannel
 import com.fanstaticapps.randomticker.extensions.getKlaxonChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
-import javax.inject.Inject
 
-class NotificationCoordinator @Inject constructor() {
+object NotificationCoordinator {
 
     fun cancelAllNotifications(context: Context, bookmark: Bookmark) {
         val notificationManager = context.getNotificationManager()

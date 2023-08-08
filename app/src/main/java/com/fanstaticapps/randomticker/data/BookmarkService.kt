@@ -21,11 +21,9 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Random
-import javax.inject.Inject
 
-class BookmarkService @Inject constructor(
+class BookmarkService(
     private val repository: BookmarkRepository,
-    private val notificationManager: NotificationCoordinator,
 ) {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -48,7 +46,7 @@ class BookmarkService @Inject constructor(
 
     fun intervalEnded(context: Context, bookmarkId: Long) {
         fetchBookmarkById(bookmarkId) {
-            notificationManager.showNotificationWithFullScreenIntent(
+            NotificationCoordinator.showNotificationWithFullScreenIntent(
                 context,
                 it
             )
@@ -60,10 +58,10 @@ class BookmarkService @Inject constructor(
             if (!isManuallyTriggered && it.autoRepeat) delay(it.autoRepeatInterval)
             val bookmark = it.saveBookmarkWithNewInterval()
             Timber.d("creating a new ticker for bookmark $bookmarkId")
-            notificationManager.cancelAllNotifications(context, bookmark)
+            NotificationCoordinator.cancelAllNotifications(context, bookmark)
 
             Timber.d("showing running ticker notification")
-            notificationManager.showRunningNotification(context, bookmark)
+            NotificationCoordinator.showRunningNotification(context, bookmark)
 
             val alarmManger = context.getAlarmManager()
             if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
@@ -89,7 +87,7 @@ class BookmarkService @Inject constructor(
         fetchBookmarkById(bookmarkId) {
             Timber.d("cancel bookmark $it")
             repository.insertOrUpdateBookmark(it.reset())
-            notificationManager.cancelAllNotifications(context, it)
+            NotificationCoordinator.cancelAllNotifications(context, it)
             context.getAlarmManager()
                 ?.cancel(
                     IntentHelper.getAlarmEndedReceiverCancelPendingIntent(

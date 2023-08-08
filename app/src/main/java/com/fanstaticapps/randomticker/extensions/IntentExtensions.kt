@@ -10,5 +10,5 @@ fun Intent.getBookmarkId(): Long? =
     getLongExtra(EXTRA_BOOKMARK_ID, DEFAULT_BOOKMARK_ID)
         .takeUnless { it == DEFAULT_BOOKMARK_ID }
 
-fun SavedStateHandle.getBookmarkId(default: Long = DEFAULT_BOOKMARK_ID): Long? =
-    get(EXTRA_BOOKMARK_ID) ?: default.takeUnless { it == DEFAULT_BOOKMARK_ID }
+fun SavedStateHandle.getBookmarkId(): Long? = get<Long>(EXTRA_BOOKMARK_ID)
+    .takeUnless { it == DEFAULT_BOOKMARK_ID }

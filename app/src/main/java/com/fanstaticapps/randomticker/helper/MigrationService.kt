@@ -9,13 +9,9 @@ import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.extensions.createKlaxonChannel
 import com.fanstaticapps.randomticker.extensions.createTimerChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.scopes.ActivityScoped
-import javax.inject.Inject
 
-@ActivityScoped
-class Migration @Inject constructor(
-    @ActivityContext private val context: Context,
+class MigrationService(
+    private val context: Context,
     private val bookmarkService: BookmarkService
 ) {
 

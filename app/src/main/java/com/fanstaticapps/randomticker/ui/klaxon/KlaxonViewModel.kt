@@ -3,31 +3,28 @@ package com.fanstaticapps.randomticker.ui.klaxon
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import com.fanstaticapps.randomticker.TickerPreferences
+import androidx.lifecycle.liveData
 import com.fanstaticapps.randomticker.data.BookmarkService
-import com.fanstaticapps.randomticker.extensions.EXTRA_BOOKMARK_ID
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import com.fanstaticapps.randomticker.extensions.getBookmarkId
+import kotlinx.coroutines.flow.firstOrNull
 
-@HiltViewModel
-class KlaxonViewModel @Inject constructor(
-    tickerPreferences: TickerPreferences,
+
+class KlaxonViewModel(
     savedStateHandle: SavedStateHandle,
     private val service: BookmarkService
 ) : ViewModel() {
-    private val bookmarkId =
-        savedStateHandle[EXTRA_BOOKMARK_ID] ?: tickerPreferences.currentSelectedId
 
-    val currentBookmark = service.getBookmarkById(bookmarkId)
-        .asLiveData(viewModelScope.coroutineContext)
+    private val bookmarkId = savedStateHandle.getBookmarkId()
+
+    val currentBookmark = liveData {
+        emit(bookmarkId?.let { service.getBookmarkById(it).firstOrNull() })
+    }
 
     fun cancelTimer(context: Context) {
-        service.cancelTicker(context, bookmarkId)
+        bookmarkId?.let { service.cancelTicker(context, it) }
     }
 
     fun scheduleTicker(context: Context) {
-        service.scheduleAlarm(context, bookmarkId, true)
+        bookmarkId?.let { service.scheduleAlarm(context, it, true) }
     }
 }

@@ -2,7 +2,6 @@ package com.fanstaticapps.randomticker.ui.klaxon
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -49,22 +48,21 @@ import com.fanstaticapps.randomticker.extensions.turnScreenOffAndKeyguardOn
 import com.fanstaticapps.randomticker.extensions.turnScreenOnAndKeyguardOff
 import com.fanstaticapps.randomticker.helper.IntentHelper
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@AndroidEntryPoint
 class KlaxonActivity : BaseActivity() {
 
-    private val viewModel: KlaxonViewModel by viewModels()
+    private val klaxonViewModel: KlaxonViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val bookmark = viewModel.currentBookmark.observeAsState().value
+            val bookmark = klaxonViewModel.currentBookmark.observeAsState().value
             if (bookmark != null) {
                 val windowSizeClass = calculateWindowSizeClass(this)
                 KlaxonView(
@@ -73,8 +71,8 @@ class KlaxonActivity : BaseActivity() {
                 )
             }
         }
-        viewModel.currentBookmark.observe(this) {
-            if (it.autoRepeat) {
+        klaxonViewModel.currentBookmark.observe(this) {
+            if (it != null && it.autoRepeat) {
                 lifecycleScope.launch {
                     delay(it.autoRepeatInterval)
                     openMainActivity(it)
@@ -105,7 +103,7 @@ class KlaxonActivity : BaseActivity() {
                 ) {
                     Pulsating(size = size)
                     IconButton(onClick = {
-                        viewModel.cancelTimer(this@KlaxonActivity)
+                        klaxonViewModel.cancelTimer(this@KlaxonActivity)
                         openMainActivity(bookmark)
                     }) {
                         Icon(
@@ -162,7 +160,7 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun autoRepeatTicker(bookmark: Bookmark) {
-        viewModel.scheduleTicker(this)
+        klaxonViewModel.scheduleTicker(this)
         openMainActivity(bookmark)
     }
 

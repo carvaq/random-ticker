@@ -1,18 +1,16 @@
 package com.fanstaticapps.randomticker.ui.cancel
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class CancelActivity : BaseActivity() {
 
-    private val viewModel: CancelViewModel by viewModels()
+    private val cancelViewModel: CancelViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.cancelTicker(this)
+        cancelViewModel.cancelTicker(this)
         noOpenOrCloseTransitions()
         finish()
     }
