@@ -89,6 +89,14 @@ class BookmarkService(
     }
 
     fun cancelTicker(context: Context, bookmarkId: Long) {
+        cancelTicker(context, bookmarkId) {}
+    }
+
+    private fun cancelTicker(
+        context: Context,
+        bookmarkId: Long,
+        afterCancelling: suspend () -> Unit
+    ) {
         fetchBookmarkById(bookmarkId) {
             Timber.d("cancel bookmark $it")
             repository.insertOrUpdateBookmark(it.reset())
@@ -100,6 +108,7 @@ class BookmarkService(
                         bookmarkId
                     )
                 )
+            afterCancelling()
         }
     }
 
@@ -118,7 +127,8 @@ class BookmarkService(
     fun fetchAllBookmarks() = repository.getAllBookmarks()
 
     fun delete(context: Context, bookmark: Bookmark) {
-        cancelTicker(context, bookmark.id)
-        coroutineScope.launch { repository.deleteBookmark(bookmark) }
+        cancelTicker(context, bookmark.id) {
+            repository.deleteBookmark(bookmark)
+        }
     }
 }

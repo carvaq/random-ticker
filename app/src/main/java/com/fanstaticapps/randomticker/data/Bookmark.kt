@@ -52,24 +52,14 @@ data class Bookmark(
     @Ignore
     val max = Boundary(maximumHours, maximumMinutes, maximumSeconds)
 
-    fun klaxonChannelId() = "$name-KLAXON"
+    fun klaxonChannelId() = "$id-KLAXON"
     fun klaxonNotificationId() = Int.MAX_VALUE - id.toInt()
-    fun runningChannelId() = "$name-RUNNING"
+    fun runningChannelId() = "$id-RUNNING"
     fun runningNotificationId() = id.toInt()
-    fun updateBoundaries(min: Boundary, max: Boundary): Bookmark {
-        return copy(
-            minimumHours = min.hours,
-            minimumMinutes = min.minutes,
-            minimumSeconds = min.seconds,
-            maximumHours = max.hours,
-            maximumMinutes = max.minutes,
-            maximumSeconds = max.seconds,
-        )
-    }
 
     private companion object {
         const val NOT_SET_VALUE: Long = 0
-        const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 200
+        const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 2000
     }
 }
 
