@@ -7,7 +7,6 @@ import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val bookmarkService: BookmarkService) :
@@ -29,9 +28,9 @@ class MainViewModel(private val bookmarkService: BookmarkService) :
         selectedBookmarkId.value = bookmarkId
     }
 
-    fun createNewBookmark() {
+    fun createNewBookmark(context: Context) {
         viewModelScope.launch {
-            selectedBookmarkId.emit(bookmarkService.createNew())
+            selectedBookmarkId.emit(bookmarkService.createNew(context))
         }
     }
 

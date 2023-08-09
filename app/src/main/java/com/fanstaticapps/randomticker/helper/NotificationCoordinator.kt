@@ -134,4 +134,16 @@ object NotificationCoordinator {
             PendingIntent.FLAG_IMMUTABLE
         )
     }
+
+    fun triggerNotificationChannelNotification(context: Context, bookmark: Bookmark) {
+        context.createKlaxonChannel(bookmark)
+        NotificationCompat.Builder(context, bookmark.klaxonChannelId())
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setSmallIcon(R.drawable.ic_stat_timer)
+            .setSilent(true)
+            .build()
+            .show(context, bookmark.runningNotificationId())
+        val notificationManager = context.getNotificationManager()
+        notificationManager.cancel(bookmark.runningNotificationId())
+    }
 }

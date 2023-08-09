@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -69,6 +70,7 @@ class MainActivity : BaseActivity() {
                             BackNavigation(isSinglePane, editableBookmark)
                         },
                         actions = {
+                            NotificationSettingsAction(editableBookmark)
                             SaveAction(editableBookmark)
                         })
                 }, floatingActionButton = {
@@ -111,10 +113,33 @@ class MainActivity : BaseActivity() {
     }
 
     @Composable
+    private fun NotificationSettingsAction(selectedBookmark: State<Bookmark>?) {
+        if (selectedBookmark != null) {
+            IconButton(
+                onClick = {
+                    val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                        putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                        putExtra(
+                            Settings.EXTRA_CHANNEL_ID,
+                            selectedBookmark.value.klaxonChannelId()
+                        )
+                    }
+                    startActivity(intent)
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.EditNotifications,
+                    contentDescription = stringResource(id = R.string.open_notification_channel_title)
+                )
+            }
+        }
+    }
+
+    @Composable
     private fun AddBookmarkButton(isSinglePane: Boolean, selectedBookmark: State<Bookmark>?) {
         if (!isSinglePane || selectedBookmark == null) {
             FloatingActionButton(
-                onClick = { mainViewModel.createNewBookmark() }, shape = CircleShape
+                onClick = { mainViewModel.createNewBookmark(this) }, shape = CircleShape
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

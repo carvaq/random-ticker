@@ -39,9 +39,13 @@ class BookmarkService(
         }
     }
 
-    suspend fun createNew(): Long {
+    suspend fun createNew(context: Context): Long {
         return withContext(coroutineScope.coroutineContext) {
-            repository.insertOrUpdateBookmark(Bookmark())
+            var newBookmark = Bookmark()
+            val id = repository.insertOrUpdateBookmark(newBookmark)
+            newBookmark = newBookmark.copy(id = id)
+            NotificationCoordinator.triggerNotificationChannelNotification(context, newBookmark)
+            id
         }
     }
 
