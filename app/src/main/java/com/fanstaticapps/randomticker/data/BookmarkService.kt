@@ -82,7 +82,7 @@ class BookmarkService(
         }
     }
 
-    private suspend fun Bookmark.saveBookmarkWithNewInterval(): Bookmark {
+    private fun Bookmark.saveBookmarkWithNewInterval(): Bookmark {
         val interval = randomGenerator.nextInt((max - min + 1).toInt()) + min.millis
         return copy(intervalEnd = interval + System.currentTimeMillis())
             .also { repository.insertOrUpdateBookmark(it) }
