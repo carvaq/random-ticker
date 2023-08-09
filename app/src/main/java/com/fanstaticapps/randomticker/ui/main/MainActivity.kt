@@ -30,7 +30,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -59,9 +58,10 @@ class MainActivity : BaseActivity() {
                 val isSinglePane = isCompactOrInPortrait()
                 val bookmarks = mainViewModel.bookmarks.collectAsState(initial = emptyList()).value
                 val editableBookmark =
-                    mainViewModel.selectedBookmark.collectAsState(initial = null).value
+                    mainViewModel.selectedBookmark.collectAsState(initial = null).value?.let {
+                        mutableStateOf(it)
+                    }
                 val bookmarkToStart = remember { mutableStateOf<Bookmark?>(null) }
-
                 val permissionLauncher = requestNotificationPermission(bookmarkToStart)
                 Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
                     TopAppBar(title = { Text(stringResource(id = R.string.app_name)) },
@@ -94,12 +94,15 @@ class MainActivity : BaseActivity() {
 
 
     @Composable
-    private fun SaveAction(selectedBookmark: Bookmark?) {
+    private fun SaveAction(selectedBookmark: State<Bookmark>?) {
         if (selectedBookmark != null) {
-            IconButton(onClick = {
-                mainViewModel.save(selectedBookmark)
-                mainViewModel.select(null)
-            }) {
+            IconButton(
+                onClick = {
+                    mainViewModel.save(selectedBookmark.value)
+                    mainViewModel.select(null)
+                },
+                enabled = selectedBookmark.value.min < selectedBookmark.value.max
+            ) {
                 Icon(
                     imageVector = Icons.Outlined.Save, contentDescription = "Save"
                 )
@@ -108,7 +111,7 @@ class MainActivity : BaseActivity() {
     }
 
     @Composable
-    private fun AddBookmarkButton(isSinglePane: Boolean, selectedBookmark: Bookmark?) {
+    private fun AddBookmarkButton(isSinglePane: Boolean, selectedBookmark: State<Bookmark>?) {
         if (!isSinglePane || selectedBookmark == null) {
             FloatingActionButton(
                 onClick = { mainViewModel.createNewBookmark() }, shape = CircleShape
@@ -122,7 +125,7 @@ class MainActivity : BaseActivity() {
     }
 
     @Composable
-    private fun BackNavigation(isSinglePane: Boolean, selectedBookmark: Bookmark?) {
+    private fun BackNavigation(isSinglePane: Boolean, selectedBookmark: State<Bookmark>?) {
         if (isSinglePane && selectedBookmark != null) {
             IconButton(onClick = { mainViewModel.select(null) }) {
                 Icon(

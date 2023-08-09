@@ -13,14 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -43,8 +39,8 @@ import com.fanstaticapps.randomticker.databinding.BoundaryBinding
 @Composable
 fun BookmarkCreateView(
     modifier: Modifier = Modifier,
-    bookmark: Bookmark,
-    delete: (Bookmark) -> Unit
+    bookmarkState: MutableState<Bookmark>,
+    delete: (Bookmark) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -53,34 +49,47 @@ fun BookmarkCreateView(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val minBoundary = remember { mutableStateOf(bookmark.min) }
-        val maxBoundary = remember { mutableStateOf(bookmark.max) }
-        val name = remember { mutableStateOf(bookmark.name) }
-        val autoRepeat = remember { mutableStateOf(bookmark.autoRepeat) }
-        BookmarkName(name.value) { name.value = it }
+        val bookmark = bookmarkState.value
+        BookmarkName(bookmark.name) {
+            bookmarkState.value = bookmark.copy(name = it)
+        }
         Spacer(Modifier.height(16.dp))
         Column {
             BoundaryView(
                 contentBindingModifier = Modifier
                     .heightIn(max = 240.dp)
                     .fillMaxWidth(),
-                boundary = minBoundary,
+                boundary = bookmark.min,
                 boundaryType = R.string.from
-            )
+            ) { hours, minutes, seconds ->
+                bookmarkState.value = bookmark.copy(
+                    minimumHours = hours,
+                    minimumMinutes = minutes,
+                    minimumSeconds = seconds
+                )
+            }
             Spacer(Modifier.height(16.dp))
             BoundaryView(
                 contentBindingModifier = Modifier
                     .heightIn(max = 240.dp)
                     .fillMaxWidth(),
-                boundary = maxBoundary,
+                boundary = bookmark.max,
                 boundaryType = R.string.to
-            )
+            ) { hours, minutes, seconds ->
+                bookmarkState.value = bookmark.copy(
+                    maximumHours = hours,
+                    maximumMinutes = minutes,
+                    maximumSeconds = seconds
+                )
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        AutoRepeat(autoRepeat.value) { autoRepeat.value = it }
+        AutoRepeat(bookmark.autoRepeat) { bookmarkState.value = bookmark.copy(autoRepeat = it) }
         Spacer(modifier = Modifier.height(36.dp))
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = { delete(bookmark) }, colors = ButtonDefaults.textButtonColors()) {
+        Button(
+            onClick = { delete(bookmarkState.value) },
+            colors = ButtonDefaults.textButtonColors()
+        ) {
             Text(
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(start = 8.dp),
@@ -88,31 +97,6 @@ fun BookmarkCreateView(
             )
         }
 
-    }
-}
-
-@Composable
-private fun SaveButton(
-    minBoundary: MutableState<Boundary>,
-    maxBoundary: MutableState<Boundary>,
-    save: (Bookmark) -> Unit,
-    bookmark: Bookmark,
-    name: MutableState<String>,
-    autoRepeat: MutableState<Boolean>
-) {
-    Button(modifier = Modifier.fillMaxWidth(),
-        enabled = minBoundary.value < maxBoundary.value,
-        onClick = {
-            save(
-                bookmark.updateBoundaries(minBoundary.value, maxBoundary.value)
-                    .copy(name = name.value, autoRepeat = autoRepeat.value)
-            )
-        }) {
-        Icon(imageVector = Icons.Default.Save, contentDescription = null)
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = stringResource(id = R.string.save_button)
-        )
     }
 }
 
@@ -145,8 +129,9 @@ fun BookmarkName(bookmarkName: String, updateName: (String) -> Unit) {
 private fun BoundaryView(
     modifier: Modifier = Modifier,
     contentBindingModifier: Modifier = Modifier,
-    boundary: MutableState<Boundary>,
-    @StringRes boundaryType: Int
+    boundary: Boundary,
+    @StringRes boundaryType: Int,
+    changeListener: BoundaryChangeListener
 ) {
     Card(modifier) {
         Column(
@@ -163,7 +148,7 @@ private fun BoundaryView(
                 hours.initialize(
                     boundary,
                     { hours },
-                    { copy(hours = it) },
+                    { changeListener.onChange(it, minutes, seconds) },
                     23,
                     boundaryType,
                     R.string.hours_label
@@ -171,7 +156,7 @@ private fun BoundaryView(
                 minutes.initialize(
                     boundary,
                     { minutes },
-                    { copy(minutes = it) },
+                    { changeListener.onChange(hours, it, seconds) },
                     59,
                     boundaryType,
                     R.string.minutes_label
@@ -179,7 +164,7 @@ private fun BoundaryView(
                 seconds.initialize(
                     boundary,
                     { seconds },
-                    { copy(seconds = it) },
+                    { changeListener.onChange(hours, minutes, it) },
                     59,
                     boundaryType,
                     R.string.seconds_label
@@ -190,26 +175,31 @@ private fun BoundaryView(
 }
 
 private fun NumberPicker.initialize(
-    boundary: MutableState<Boundary>,
+    boundary: Boundary,
     getValue: Boundary.() -> Int,
-    setValue: Boundary.(Int) -> Boundary,
+    setValue: Boundary.(Int) -> Unit,
     max: Int,
     @StringRes fromToResId: Int,
     @StringRes type: Int
 ) {
-    value = boundary.value.getValue()
+    value = boundary.getValue()
     minValue = 0
     maxValue = max
     contentDescription = "${context.getString(fromToResId)} ${context.getString(type)}"
     setOnValueChangedListener { _, _, value ->
-        boundary.value = boundary.value.setValue(value)
-
+        boundary.setValue(value)
     }
+}
+
+fun interface BoundaryChangeListener {
+    fun onChange(hours: Int, minutes: Int, seconds: Int)
 }
 
 @Preview(heightDp = 2000, showBackground = true)
 @Composable
 fun BookmarkCreatePreview() {
-    BookmarkCreateView(bookmark = Bookmark(maximumSeconds = 12, maximumHours = 1),
+    BookmarkCreateView(bookmarkState = remember {
+        mutableStateOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+    },
         delete = {})
 }

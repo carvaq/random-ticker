@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +23,7 @@ fun TickerApp(
     paddingValues: PaddingValues,
     isSinglePane: Boolean,
     bookmarks: List<Bookmark>,
-    selectedBookmark: Bookmark? = null,
+    selectedBookmark: MutableState<Bookmark>? = null,
     start: (Bookmark) -> Unit
 ) {
     val context = LocalContext.current.applicationContext
@@ -38,7 +39,7 @@ fun TickerApp(
         } else {
             BookmarkCreateView(
                 modifier = Modifier.padding(paddingValues),
-                bookmark = selectedBookmark,
+                bookmarkState = selectedBookmark,
                 delete = delete
             )
         }
@@ -57,7 +58,7 @@ fun TickerApp(
             if (selectedBookmark != null) {
                 BookmarkCreateView(
                     modifier = Modifier.weight(0.6f),
-                    bookmark = selectedBookmark,
+                    bookmarkState = selectedBookmark,
                     delete = delete
                 )
             } else {
