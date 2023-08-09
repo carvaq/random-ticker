@@ -57,7 +57,7 @@ object NotificationCoordinator {
         val channel = context.getKlaxonChannel(bookmark)
         val builder = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
             .setSmallIcon(R.drawable.ic_stat_timer)
-            .setContentTitle(context.getString(R.string.app_name))
+            .setContentTitle(bookmark.name)
             .setContentText(context.getString(R.string.notification_ticker_ended))
             .setCategory(Notification.CATEGORY_ALARM)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
