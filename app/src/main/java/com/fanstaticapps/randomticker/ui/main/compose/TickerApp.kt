@@ -1,64 +1,44 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-
 package com.fanstaticapps.randomticker.ui.main.compose
 
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.data.BookmarkService
-import org.koin.compose.koinInject
+import com.fanstaticapps.randomticker.ui.main.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TickerApp(
+    viewModel: MainViewModel = koinViewModel(),
     paddingValues: PaddingValues,
-    windowSize: WindowSizeClass,
+    isSinglePane: Boolean,
     bookmarks: List<Bookmark>,
-    newlyCreatedBookmarkId: Long? = null,
+    selectedBookmark: Bookmark? = null,
     start: (Bookmark) -> Unit
 ) {
-    val selectedBookmarkId = rememberSaveable { mutableStateOf(newlyCreatedBookmarkId) }
-    val orientation = LocalConfiguration.current.orientation
-    val bookmarkService = koinInject<BookmarkService>()
     val context = LocalContext.current.applicationContext
-    val delete = { bookmark: Bookmark -> bookmarkService.delete(context, bookmark) }
-    val save = { bookmark: Bookmark ->
-        bookmarkService.save(bookmark)
-        selectedBookmarkId.value = null
-    }
-    val selectedBookmark = bookmarks.find { it.id == selectedBookmarkId.value }
-    if (isCompactOrInPortrait(windowSize, orientation)) {
+    val delete = { bookmark: Bookmark -> viewModel.delete(context, bookmark) }
+    if (isSinglePane) {
         if (selectedBookmark == null) {
             BookmarkListOverview(
                 modifier = Modifier.padding(paddingValues),
                 bookmarks = bookmarks,
-                edit = { selectedBookmarkId.value = it.id },
-                start = start,
-                stop = { bookmarkService.cancelTicker(context, it.id) },
-                delete = delete
-            )
+                edit = { viewModel.select(it.id) },
+                start = start
+            ) { viewModel.cancelTicker(context, it.id) }
         } else {
             BookmarkCreateView(
                 modifier = Modifier.padding(paddingValues),
                 bookmark = selectedBookmark,
-                save = save,
                 delete = delete
             )
         }
@@ -71,16 +51,13 @@ fun TickerApp(
             BookmarkListOverview(
                 modifier = Modifier.weight(0.4f),
                 bookmarks = bookmarks,
-                edit = { selectedBookmarkId.value = it.id },
-                start = start,
-                stop = { bookmarkService.cancelTicker(context, it.id) },
-                delete = delete
-            )
+                edit = { viewModel.select(it.id) },
+                start = start
+            ) { viewModel.cancelTicker(context, it.id) }
             if (selectedBookmark != null) {
                 BookmarkCreateView(
                     modifier = Modifier.weight(0.6f),
                     bookmark = selectedBookmark,
-                    save = save,
                     delete = delete
                 )
             } else {
@@ -90,20 +67,13 @@ fun TickerApp(
     }
 }
 
-@Composable
-private fun isCompactOrInPortrait(
-    windowSize: WindowSizeClass,
-    orientation: Int
-) = (windowSize.widthSizeClass == WindowWidthSizeClass.Compact
-        || orientation == Configuration.ORIENTATION_PORTRAIT)
-
 @Preview(showBackground = true)
 @Composable
 fun TickerPreview() {
     AppTheme {
         TickerApp(
             paddingValues = PaddingValues(0.dp),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(400.dp, 900.dp)),
+            isSinglePane = true,
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
         ) {}
     }
@@ -111,48 +81,11 @@ fun TickerPreview() {
 
 @Preview(showBackground = true, widthDp = 700, heightDp = 500)
 @Composable
-fun TickerPreviewTablet() {
+fun TickerPreviewTable() {
     AppTheme {
         TickerApp(
             paddingValues = PaddingValues(0.dp),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(700.dp, 500.dp)),
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
-        ) {}
-    }
-}
-
-@Preview(showBackground = true, widthDp = 500, heightDp = 700)
-@Composable
-fun TickerPreviewTabletPortrait() {
-    AppTheme {
-        TickerApp(
-            paddingValues = PaddingValues(0.dp),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(500.dp, 700.dp)),
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
-        ) {}
-    }
-}
-
-@Preview(showBackground = true, widthDp = 1100, heightDp = 600)
-@Composable
-fun TickerPreviewDesktop() {
-    AppTheme {
-        TickerApp(
-            newlyCreatedBookmarkId = 0,
-            paddingValues = PaddingValues(0.dp),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(1100.dp, 600.dp)),
-            bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
-        ) {}
-    }
-}
-
-@Preview(showBackground = true, widthDp = 600, heightDp = 1100)
-@Composable
-fun TickerPreviewDesktopPortrait() {
-    AppTheme {
-        TickerApp(
-            paddingValues = PaddingValues(0.dp),
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(600.dp, 1100.dp)),
+            isSinglePane = false,
             bookmarks = listOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
         ) {}
     }

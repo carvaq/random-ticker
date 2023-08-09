@@ -37,7 +37,6 @@ fun BookmarkListOverview(
     edit: (Bookmark) -> Unit,
     start: (Bookmark) -> Unit,
     stop: (Bookmark) -> Unit,
-    delete: (Bookmark) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier
@@ -45,7 +44,7 @@ fun BookmarkListOverview(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(bookmarks) {
-            BookmarkView(it, edit, start, stop, delete)
+            BookmarkView(it, edit, start, stop)
         }
     }
 }
@@ -57,7 +56,6 @@ private fun BookmarkView(
     edit: (Bookmark) -> Unit,
     start: (Bookmark) -> Unit,
     stop: (Bookmark) -> Unit,
-    delete: (Bookmark) -> Unit
 ) {
     Card(modifier = Modifier.clickable(onClick = { edit(bookmark) })) {
         FlowRow(
@@ -78,25 +76,18 @@ private fun BookmarkView(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            ButtonRow(delete, bookmark, stop, start)
+            ButtonRow(bookmark, stop, start)
         }
     }
 }
 
 @Composable
 private fun ButtonRow(
-    delete: (Bookmark) -> Unit,
     bookmark: Bookmark,
     stop: (Bookmark) -> Unit,
     start: (Bookmark) -> Unit
 ) {
     Row(horizontalArrangement = Arrangement.End) {
-        IconButton(onClick = { delete(bookmark) }) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = stringResource(id = R.string.button_delete)
-            )
-        }
         if (bookmark.intervalEnd > System.currentTimeMillis()) {
             IconButton(onClick = { stop(bookmark) }) {
                 Icon(
@@ -136,10 +127,8 @@ fun BookmarkListPreview() {
                 Bookmark(maximumSeconds = 12, maximumHours = 1),
                 Bookmark(maximumSeconds = 12, maximumHours = 1)
             ),
-            delete = {},
             edit = {},
-            start = {},
-            stop = {}
-        )
+            start = {}
+        ) {}
     }
 }

@@ -44,7 +44,6 @@ import com.fanstaticapps.randomticker.databinding.BoundaryBinding
 fun BookmarkCreateView(
     modifier: Modifier = Modifier,
     bookmark: Bookmark,
-    save: (Bookmark) -> Unit,
     delete: (Bookmark) -> Unit
 ) {
     Column(
@@ -80,11 +79,10 @@ fun BookmarkCreateView(
         Spacer(modifier = Modifier.height(16.dp))
         AutoRepeat(autoRepeat.value) { autoRepeat.value = it }
         Spacer(modifier = Modifier.height(36.dp))
-        SaveButton(minBoundary, maxBoundary, save, bookmark, name, autoRepeat)
         Spacer(Modifier.height(16.dp))
         Button(onClick = { delete(bookmark) }, colors = ButtonDefaults.textButtonColors()) {
-            Icon(imageVector = Icons.Default.Delete, contentDescription = null)
             Text(
+                color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(start = 8.dp),
                 text = stringResource(id = R.string.button_delete)
             )
@@ -213,6 +211,5 @@ private fun NumberPicker.initialize(
 @Composable
 fun BookmarkCreatePreview() {
     BookmarkCreateView(bookmark = Bookmark(maximumSeconds = 12, maximumHours = 1),
-        save = {},
         delete = {})
 }

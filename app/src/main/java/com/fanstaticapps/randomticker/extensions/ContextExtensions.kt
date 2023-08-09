@@ -1,10 +1,12 @@
 package com.fanstaticapps.randomticker.extensions
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
@@ -54,4 +56,12 @@ fun Context.createTimerChannel(bookmark: Bookmark) {
         NotificationManager.IMPORTANCE_LOW
     ).apply { group = notificationChannelGroup.id }
     getNotificationManager().createNotificationChannel(channel)
+}
+
+fun Context.needsPostNotificationPermission(): Boolean {
+    return isAtLeastT() && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+}
+fun Context.needsScheduleAlarmPermission(): Boolean {
+    return isAtLeastS() && getAlarmManager()?.canScheduleExactAlarms() != true
 }
