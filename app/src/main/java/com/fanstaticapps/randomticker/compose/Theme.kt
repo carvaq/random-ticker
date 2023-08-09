@@ -5,9 +5,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.fanstaticapps.randomticker.extensions.isAtLeastS
 
 
 private val lightColors = lightColorScheme(
@@ -85,16 +89,25 @@ val shapes = Shapes(
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
-        lightColors
-    } else {
-        darkColors
+    val dynamicColor = isAtLeastS()
+    val colorScheme = when {
+        dynamicColor && useDarkTheme -> {
+            dynamicDarkColorScheme(LocalContext.current)
+        }
+
+        dynamicColor && !useDarkTheme -> {
+            dynamicLightColorScheme(LocalContext.current)
+        }
+
+        useDarkTheme -> darkColors
+        else -> lightColors
     }
 
+
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = colorScheme,
         content = content,
         shapes = shapes
     )
