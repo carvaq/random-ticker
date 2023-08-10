@@ -6,8 +6,7 @@ import android.net.Uri
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.data.BookmarkService
-import com.fanstaticapps.randomticker.extensions.createKlaxonChannel
-import com.fanstaticapps.randomticker.extensions.createTimerChannel
+import com.fanstaticapps.randomticker.extensions.createNotificationChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 
 class MigrationService(
@@ -25,10 +24,9 @@ class MigrationService(
             context.getNotificationManager().deleteNotificationChannel("RandomTickerChannel:01")
             context.getNotificationManager().deleteNotificationChannel("RandomTickerChannel:03")
             bookmarkService.applyForAllBookmarks {
-                context.createTimerChannel(it)
                 val soundUri = kotlin.runCatching { Uri.parse(ringtonePref) }
                     .getOrNull() ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                context.createKlaxonChannel(it, soundUri, vibratorPref)
+                context.createNotificationChannel(it, soundUri, vibratorPref)
             }
             prefs.edit {
                 remove(ringtonePrefKey)

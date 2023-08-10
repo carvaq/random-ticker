@@ -4,10 +4,12 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.EXTRA_BOOKMARK_ID
 import com.fanstaticapps.randomticker.receiver.AlarmEndedReceiver
 import com.fanstaticapps.randomticker.receiver.CreateAlarmReceiver
 import com.fanstaticapps.randomticker.ui.cancel.CancelActivity
+import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
 
 object IntentHelper {
@@ -36,15 +38,12 @@ object IntentHelper {
 
     fun getOpenAppPendingIntent(
         context: Context,
-        requestCode: Int,
-        bookmarkId: Long?
+        requestCode: Int
     ): PendingIntent {
         return PendingIntent.getActivity(
             context,
             requestCode,
-            Intent(context, MainActivity::class.java).apply {
-                putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
-            },
+            Intent(context, MainActivity::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
         )
     }
@@ -91,6 +90,15 @@ object IntentHelper {
             REQUEST_CODE_REPEAT,
             Intent(context, CreateAlarmReceiver::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
+        )
+    }
+
+    fun getFullScreenIntent(context: Context, bookmark: Bookmark): PendingIntent {
+        return PendingIntent.getActivity(
+            context,
+            bookmark.klaxonNotificationId,
+            Intent(context, KlaxonActivity::class.java),
+            PendingIntent.FLAG_IMMUTABLE
         )
     }
 

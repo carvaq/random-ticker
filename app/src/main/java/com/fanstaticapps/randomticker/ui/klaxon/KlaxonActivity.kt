@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -54,13 +53,7 @@ class KlaxonActivity : BaseActivity() {
 
         setContent {
             AppTheme {
-                val bookmark = klaxonViewModel.currentBookmark.observeAsState().value
-                if (bookmark != null) {
-                    val windowSizeClass = calculateWindowSizeClass(this)
-                    KlaxonView(
-                        bookmark
-                    )
-                }
+                klaxonViewModel.currentBookmark.observeAsState().value?.let { KlaxonView(it) }
             }
         }
         klaxonViewModel.currentBookmark.observe(this) {
@@ -109,7 +102,7 @@ class KlaxonActivity : BaseActivity() {
                 Button(
                     modifier = buttonModifier,
                     onClick = {
-                        klaxonViewModel.cancelTimer(this@KlaxonActivity)
+                        klaxonViewModel.cancelTimer()
                         openMainActivity(bookmark)
                     },
                     shape = ButtonDefaults.outlinedShape
@@ -147,7 +140,7 @@ class KlaxonActivity : BaseActivity() {
     }
 
     private fun autoRepeatTicker(bookmark: Bookmark) {
-        klaxonViewModel.scheduleTicker(this)
+        klaxonViewModel.scheduleTicker()
         openMainActivity(bookmark)
     }
 

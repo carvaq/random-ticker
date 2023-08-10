@@ -1,11 +1,6 @@
 package com.fanstaticapps.randomticker.data
 
-import android.app.AlarmManager
-import android.content.Context
-import com.fanstaticapps.randomticker.extensions.deleteChannels
-import com.fanstaticapps.randomticker.extensions.getAlarmManager
-import com.fanstaticapps.randomticker.extensions.isAtLeastS
-import com.fanstaticapps.randomticker.helper.IntentHelper
+import com.fanstaticapps.randomticker.helper.AlarmCoordinator
 import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +18,8 @@ import java.util.Random
 
 class BookmarkService(
     private val repository: BookmarkRepository,
+    private val notificationCoordinator: NotificationCoordinator,
+    private val alarmCoordinator: AlarmCoordinator
 ) {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -40,46 +37,33 @@ class BookmarkService(
         }
     }
 
-    suspend fun createNew(context: Context): Long {
+    suspend fun createNew(): Long {
         return withContext(coroutineScope.coroutineContext) {
             var newBookmark = Bookmark()
             val id = repository.insertOrUpdateBookmark(newBookmark)
             newBookmark = newBookmark.copy(id = id)
-            NotificationCoordinator.triggerNotificationChannelNotification(context, newBookmark)
+            notificationCoordinator.triggerNotificationChannelNotification(newBookmark)
             id
         }
     }
 
-    fun intervalEnded(context: Context, bookmarkId: Long) {
+    fun intervalEnded(bookmarkId: Long) {
         fetchBookmarkById(bookmarkId) {
-            NotificationCoordinator.showNotificationWithFullScreenIntent(
-                context,
-                it
-            )
+            notificationCoordinator.showKlaxonNotification(it)
+            if (it.autoRepeat) scheduleAlarm(bookmarkId, false)
         }
     }
 
-    fun scheduleAlarm(context: Context, bookmarkId: Long, isManuallyTriggered: Boolean) {
+    fun scheduleAlarm(bookmarkId: Long, isManuallyTriggered: Boolean) {
         fetchBookmarkById(bookmarkId) {
             if (!isManuallyTriggered && it.autoRepeat) delay(it.autoRepeatInterval)
             val bookmark = it.saveBookmarkWithNewInterval()
-            Timber.d("creating a new ticker for bookmark $bookmarkId")
-            NotificationCoordinator.cancelAllNotifications(context, bookmark)
+            Timber.d("creating a new ticker for bookmark $bookmark")
+            notificationCoordinator.cancelAllNotifications(bookmark)
 
             Timber.d("showing running ticker notification")
-            NotificationCoordinator.showRunningNotification(context, bookmark)
-
-            val alarmManger = context.getAlarmManager()
-            if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
-                val alarmIntent =
-                    IntentHelper.getAlarmEndedReceiverPendingIntent(context, bookmarkId)
-                alarmManger?.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    bookmark.intervalEnd,
-                    alarmIntent
-                )
-                Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
-            }
+            notificationCoordinator.showRunningNotification(bookmark)
+            alarmCoordinator.scheduleAlarm(bookmark)
         }
     }
 
@@ -89,26 +73,19 @@ class BookmarkService(
             .also { repository.insertOrUpdateBookmark(it) }
     }
 
-    fun cancelTicker(context: Context, bookmarkId: Long) {
-        cancelTicker(context, bookmarkId) {}
+    fun cancelTicker(bookmarkId: Long) {
+        cancelTicker(bookmarkId) {}
     }
 
     private fun cancelTicker(
-        context: Context,
         bookmarkId: Long,
         afterCancelling: suspend () -> Unit
     ) {
         fetchBookmarkById(bookmarkId) {
             Timber.d("cancel bookmark $it")
             repository.insertOrUpdateBookmark(it.reset())
-            NotificationCoordinator.cancelAllNotifications(context, it)
-            context.getAlarmManager()
-                ?.cancel(
-                    IntentHelper.getAlarmEndedReceiverCancelPendingIntent(
-                        context,
-                        bookmarkId
-                    )
-                )
+            notificationCoordinator.cancelAllNotifications(it)
+            alarmCoordinator.cancelAlarm(bookmarkId)
             afterCancelling()
         }
     }
@@ -127,9 +104,9 @@ class BookmarkService(
 
     fun fetchAllBookmarks() = repository.getAllBookmarks()
 
-    fun delete(context: Context, bookmark: Bookmark) {
-        cancelTicker(context, bookmark.id) {
-            context.deleteChannels(bookmark)
+    fun delete(bookmark: Bookmark) {
+        cancelTicker(bookmark.id) {
+            notificationCoordinator.deleteChannelsForBookmark(bookmark)
             repository.deleteBookmark(bookmark)
         }
     }

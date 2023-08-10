@@ -3,7 +3,6 @@ package com.fanstaticapps.randomticker.extensions
 import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationChannel
-import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -12,26 +11,22 @@ import android.media.RingtoneManager
 import android.net.Uri
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 
 fun Context.getNotificationManager() = NotificationManagerCompat.from(this)
 
 fun Context.getAlarmManager() = ContextCompat.getSystemService(this, AlarmManager::class.java)
 
-fun Context.createKlaxonChannel(
+fun Context.createNotificationChannel(
     bookmark: Bookmark,
     soundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
     enableVibration: Boolean = true
-) {
-    val notificationChannelGroup = NotificationChannelGroup("${bookmark.id}", bookmark.name)
-    getNotificationManager().createNotificationChannelGroup(notificationChannelGroup)
+): NotificationChannel? {
     val channel = NotificationChannel(
-        bookmark.klaxonChannelId,
-        getString(R.string.foreground_channel_name),
+        bookmark.notificationChannelId,
+        bookmark.name,
         NotificationManager.IMPORTANCE_HIGH
     ).apply {
-        group = notificationChannelGroup.id
         setSound(
             soundUri,
             AudioAttributes.Builder()
@@ -41,33 +36,21 @@ fun Context.createKlaxonChannel(
         enableVibration(enableVibration)
     }
     getNotificationManager().createNotificationChannel(channel)
+    return getNotificationManager().getNotificationChannel(bookmark.notificationChannelId)
 }
 
-fun Context.getKlaxonChannel(bookmark: Bookmark): NotificationChannel? {
-    return getNotificationManager().getNotificationChannel(bookmark.klaxonChannelId)
-}
-
-fun Context.deleteChannels(bookmark: Bookmark) {
-    getNotificationManager().deleteNotificationChannelGroup(bookmark.channelGroupId)
-    getNotificationManager().deleteNotificationChannel(bookmark.klaxonChannelId)
-    getNotificationManager().deleteNotificationChannel(bookmark.runningChannelId)
-}
-
-fun Context.createTimerChannel(bookmark: Bookmark) {
-    val notificationChannelGroup = NotificationChannelGroup(bookmark.channelGroupId, bookmark.name)
-    getNotificationManager().createNotificationChannelGroup(notificationChannelGroup)
-    val channel = NotificationChannel(
-        bookmark.runningChannelId,
-        getString(R.string.running_channel_name),
-        NotificationManager.IMPORTANCE_LOW
-    ).apply { group = notificationChannelGroup.id }
-    getNotificationManager().createNotificationChannel(channel)
+fun Context.deleteChannel(bookmark: Bookmark) {
+    getNotificationManager().deleteNotificationChannel(bookmark.notificationChannelId)
 }
 
 fun Context.needsPostNotificationPermission(): Boolean {
-    return isAtLeastT() && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+    return isAtLeastT() && ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.POST_NOTIFICATIONS
+    ) !=
             PackageManager.PERMISSION_GRANTED
 }
+
 fun Context.needsScheduleAlarmPermission(): Boolean {
     return isAtLeastS() && getAlarmManager()?.canScheduleExactAlarms() != true
 }

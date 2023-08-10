@@ -1,6 +1,5 @@
 package com.fanstaticapps.randomticker.ui.klaxon
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -20,11 +19,11 @@ class KlaxonViewModel(
         emit(bookmarkId?.let { service.getBookmarkById(it).firstOrNull() })
     }
 
-    fun cancelTimer(context: Context) {
-        bookmarkId?.let { service.cancelTicker(context, it) }
+    fun cancelTimer() {
+        bookmarkId?.let { service.cancelTicker(it) }
     }
 
-    fun scheduleTicker(context: Context) {
-        bookmarkId?.let { service.scheduleAlarm(context, it, true) }
+    fun scheduleTicker() {
+        bookmarkId?.let { service.scheduleAlarm(it, true) }
     }
 }

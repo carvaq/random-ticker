@@ -122,7 +122,7 @@ class MainActivity : BaseActivity() {
                         putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
                         putExtra(
                             Settings.EXTRA_CHANNEL_ID,
-                            selectedBookmark.value.klaxonChannelId()
+                            selectedBookmark.value.notificationChannelId
                         )
                     }
                     startActivity(intent)
@@ -140,7 +140,7 @@ class MainActivity : BaseActivity() {
     private fun AddBookmarkButton(isSinglePane: Boolean, selectedBookmark: State<Bookmark>?) {
         if (!isSinglePane || selectedBookmark == null) {
             FloatingActionButton(
-                onClick = { mainViewModel.createNewBookmark(this) }, shape = CircleShape
+                onClick = { mainViewModel.createNewBookmark() }, shape = CircleShape
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -199,6 +199,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun State<Bookmark?>.startBookmark() {
-        value?.let { bookmark -> mainViewModel.startBookmark(this@MainActivity, bookmark) }
+        value?.let { bookmark -> mainViewModel.startBookmark(bookmark) }
     }
 }

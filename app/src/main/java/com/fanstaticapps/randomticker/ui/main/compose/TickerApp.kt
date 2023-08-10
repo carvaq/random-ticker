@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.compose.AppTheme
@@ -26,8 +25,7 @@ fun TickerApp(
     selectedBookmark: MutableState<Bookmark>? = null,
     start: (Bookmark) -> Unit
 ) {
-    val context = LocalContext.current.applicationContext
-    val delete = { bookmark: Bookmark -> viewModel.delete(context, bookmark) }
+    val delete = { bookmark: Bookmark -> viewModel.delete(bookmark) }
     if (isSinglePane) {
         if (selectedBookmark == null) {
             BookmarkListOverview(
@@ -35,7 +33,7 @@ fun TickerApp(
                 bookmarks = bookmarks,
                 edit = { viewModel.select(it.id) },
                 start = start
-            ) { viewModel.cancelTicker(context, it.id) }
+            ) { viewModel.cancelTicker(it.id) }
         } else {
             BookmarkCreateView(
                 modifier = Modifier.padding(paddingValues),
@@ -54,7 +52,7 @@ fun TickerApp(
                 bookmarks = bookmarks,
                 edit = { viewModel.select(it.id) },
                 start = start
-            ) { viewModel.cancelTicker(context, it.id) }
+            ) { viewModel.cancelTicker(it.id) }
             if (selectedBookmark != null) {
                 BookmarkCreateView(
                     modifier = Modifier.weight(0.6f),

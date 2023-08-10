@@ -10,7 +10,7 @@ class CancelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cancelViewModel.cancelTicker(this)
+        cancelViewModel.cancelTicker()
         noOpenOrCloseTransitions()
         finish()
     }

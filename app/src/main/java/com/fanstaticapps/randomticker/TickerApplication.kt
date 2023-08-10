@@ -5,7 +5,9 @@ import androidx.room.Room
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.helper.AlarmCoordinator
 import com.fanstaticapps.randomticker.helper.MigrationService
+import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import com.fanstaticapps.randomticker.ui.cancel.CancelViewModel
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonViewModel
 import com.fanstaticapps.randomticker.ui.main.MainViewModel
@@ -42,6 +44,11 @@ class TickerApplication : Application() {
             }
             single { get<TickerDatabase>().tickerDataDao() }
             factoryOf(::BookmarkRepository)
+        },
+
+        module {
+            factoryOf(::NotificationCoordinator)
+            factoryOf(::AlarmCoordinator)
         },
         module { factoryOf(::BookmarkService) },
         module { factoryOf(::MigrationService) },

@@ -52,19 +52,13 @@ data class Bookmark(
     val max = Boundary(maximumHours, maximumMinutes, maximumSeconds)
 
     @Ignore
-    val klaxonChannelId = "$id-KLAXON"
+    val notificationChannelId = "$id-KLAXON"
 
     @Ignore
     val klaxonNotificationId = Int.MAX_VALUE - id.toInt()
 
     @Ignore
-    val runningChannelId = "$id-RUNNING"
-
-    @Ignore
     val runningNotificationId = id.toInt()
-
-    @Ignore
-    val channelGroupId = id.toString()
 
     private companion object {
         const val NOT_SET_VALUE: Long = 0
