@@ -42,6 +42,7 @@ import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
+import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -178,7 +179,7 @@ class MainActivity : BaseActivity() {
         return rememberLauncherForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
-            if (isGranted && needsPostNotificationPermission()) {
+            if (isGranted && needsScheduleAlarmPermission()) {
                 requestScheduleAlarmPermission(askScheduleAlamPermission)
             } else if (isGranted) {
                 selectedBookmark.startBookmark()

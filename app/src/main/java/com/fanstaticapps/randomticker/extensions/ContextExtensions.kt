@@ -27,7 +27,7 @@ fun Context.createKlaxonChannel(
     val notificationChannelGroup = NotificationChannelGroup("${bookmark.id}", bookmark.name)
     getNotificationManager().createNotificationChannelGroup(notificationChannelGroup)
     val channel = NotificationChannel(
-        bookmark.klaxonChannelId(),
+        bookmark.klaxonChannelId,
         getString(R.string.foreground_channel_name),
         NotificationManager.IMPORTANCE_HIGH
     ).apply {
@@ -44,14 +44,20 @@ fun Context.createKlaxonChannel(
 }
 
 fun Context.getKlaxonChannel(bookmark: Bookmark): NotificationChannel? {
-    return getNotificationManager().getNotificationChannel(bookmark.klaxonChannelId())
+    return getNotificationManager().getNotificationChannel(bookmark.klaxonChannelId)
+}
+
+fun Context.deleteChannels(bookmark: Bookmark) {
+    getNotificationManager().deleteNotificationChannelGroup(bookmark.channelGroupId)
+    getNotificationManager().deleteNotificationChannel(bookmark.klaxonChannelId)
+    getNotificationManager().deleteNotificationChannel(bookmark.runningChannelId)
 }
 
 fun Context.createTimerChannel(bookmark: Bookmark) {
-    val notificationChannelGroup = NotificationChannelGroup("${bookmark.id}", bookmark.name)
+    val notificationChannelGroup = NotificationChannelGroup(bookmark.channelGroupId, bookmark.name)
     getNotificationManager().createNotificationChannelGroup(notificationChannelGroup)
     val channel = NotificationChannel(
-        bookmark.runningChannelId(),
+        bookmark.runningChannelId,
         getString(R.string.running_channel_name),
         NotificationManager.IMPORTANCE_LOW
     ).apply { group = notificationChannelGroup.id }

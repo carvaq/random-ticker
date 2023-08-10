@@ -21,8 +21,8 @@ object NotificationCoordinator {
 
     fun cancelAllNotifications(context: Context, bookmark: Bookmark) {
         val notificationManager = context.getNotificationManager()
-        notificationManager.cancel(bookmark.runningNotificationId())
-        notificationManager.cancel(bookmark.klaxonNotificationId())
+        notificationManager.cancel(bookmark.runningNotificationId)
+        notificationManager.cancel(bookmark.klaxonNotificationId)
     }
 
 
@@ -32,12 +32,12 @@ object NotificationCoordinator {
         val alarmPendingIntent =
             IntentHelper.getOpenAppPendingIntent(
                 context,
-                bookmark.runningNotificationId(),
+                bookmark.runningNotificationId,
                 bookmark.id
             )
         val cancelAction = getCancelAction(context, bookmark)
 
-        val notification = NotificationCompat.Builder(context, bookmark.runningChannelId())
+        val notification = NotificationCompat.Builder(context, bookmark.runningChannelId)
             .addAction(cancelAction)
             .setContentTitle(bookmark.name)
             .setShowWhen(true)
@@ -48,14 +48,14 @@ object NotificationCoordinator {
             .setSmallIcon(R.drawable.ic_stat_timer)
             .build()
 
-        notification.show(context, bookmark.runningNotificationId())
+        notification.show(context, bookmark.runningNotificationId)
     }
 
 
     fun showNotificationWithFullScreenIntent(context: Context, bookmark: Bookmark) {
         context.createKlaxonChannel(bookmark)
         val channel = context.getKlaxonChannel(bookmark)
-        val builder = NotificationCompat.Builder(context, bookmark.klaxonChannelId())
+        val builder = NotificationCompat.Builder(context, bookmark.klaxonChannelId)
             .setSmallIcon(R.drawable.ic_stat_timer)
             .setContentTitle(bookmark.name)
             .setContentText(context.getString(R.string.notification_ticker_ended))
@@ -74,14 +74,14 @@ object NotificationCoordinator {
         val notification = builder.build()
         notification.flags = notification.flags or Notification.FLAG_INSISTENT
 
-        notification.show(context, bookmark.runningNotificationId())
+        notification.show(context, bookmark.runningNotificationId)
     }
 
     private fun getCancelAction(context: Context, bookmark: Bookmark): NotificationCompat.Action {
         val cancelPendingIntent =
             IntentHelper.getCancelActionPendingIntent(
                 context,
-                bookmark.runningNotificationId(),
+                bookmark.runningNotificationId,
                 bookmark.id
             )
         return NotificationCompat.Action(
@@ -95,7 +95,7 @@ object NotificationCoordinator {
         val cancelPendingIntent =
             IntentHelper.getCancelActionPendingIntent(
                 context,
-                bookmark.klaxonNotificationId(),
+                bookmark.klaxonNotificationId,
                 bookmark.id
             )
         return NotificationCompat.Action(
@@ -129,7 +129,7 @@ object NotificationCoordinator {
         val intent = Intent(this, KlaxonActivity::class.java)
         return PendingIntent.getActivity(
             this,
-            bookmark.klaxonNotificationId(),
+            bookmark.klaxonNotificationId,
             intent,
             PendingIntent.FLAG_IMMUTABLE
         )
@@ -137,13 +137,13 @@ object NotificationCoordinator {
 
     fun triggerNotificationChannelNotification(context: Context, bookmark: Bookmark) {
         context.createKlaxonChannel(bookmark)
-        NotificationCompat.Builder(context, bookmark.klaxonChannelId())
+        NotificationCompat.Builder(context, bookmark.klaxonChannelId)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setSmallIcon(R.drawable.ic_stat_timer)
             .setSilent(true)
             .build()
-            .show(context, bookmark.runningNotificationId())
+            .show(context, bookmark.runningNotificationId)
         val notificationManager = context.getNotificationManager()
-        notificationManager.cancel(bookmark.runningNotificationId())
+        notificationManager.cancel(bookmark.runningNotificationId)
     }
 }

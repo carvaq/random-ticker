@@ -2,6 +2,7 @@ package com.fanstaticapps.randomticker.data
 
 import android.app.AlarmManager
 import android.content.Context
+import com.fanstaticapps.randomticker.extensions.deleteChannels
 import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
 import com.fanstaticapps.randomticker.helper.IntentHelper
@@ -128,6 +129,7 @@ class BookmarkService(
 
     fun delete(context: Context, bookmark: Bookmark) {
         cancelTicker(context, bookmark.id) {
+            context.deleteChannels(bookmark)
             repository.deleteBookmark(bookmark)
         }
     }

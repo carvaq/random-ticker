@@ -20,7 +20,6 @@ data class Bookmark(
     @ColumnInfo(name = "intervalEnd") val intervalEnd: Long = NOT_SET_VALUE,
 ) {
     fun reset(): Bookmark = copy(intervalEnd = NOT_SET_VALUE)
-    fun isIdSet() = id != NOT_SET_VALUE
 
     @Ignore
     constructor(name: String) : this(NOT_SET_VALUE, name, 0, 0, 0, 0, 5, 0, false)
@@ -52,10 +51,20 @@ data class Bookmark(
     @Ignore
     val max = Boundary(maximumHours, maximumMinutes, maximumSeconds)
 
-    fun klaxonChannelId() = "$id-KLAXON"
-    fun klaxonNotificationId() = Int.MAX_VALUE - id.toInt()
-    fun runningChannelId() = "$id-RUNNING"
-    fun runningNotificationId() = id.toInt()
+    @Ignore
+    val klaxonChannelId = "$id-KLAXON"
+
+    @Ignore
+    val klaxonNotificationId = Int.MAX_VALUE - id.toInt()
+
+    @Ignore
+    val runningChannelId = "$id-RUNNING"
+
+    @Ignore
+    val runningNotificationId = id.toInt()
+
+    @Ignore
+    val channelGroupId = id.toString()
 
     private companion object {
         const val NOT_SET_VALUE: Long = 0
