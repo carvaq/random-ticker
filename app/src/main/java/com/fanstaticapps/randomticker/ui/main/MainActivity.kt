@@ -43,18 +43,22 @@ import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
 import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
+import com.fanstaticapps.randomticker.helper.MigrationService
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
 
     private val mainViewModel: MainViewModel by viewModel()
+    private val migrationService: MigrationService by inject()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        migrationService.migrate()
         setContent {
             AppTheme {
                 val isSinglePane = isCompactOrInPortrait()

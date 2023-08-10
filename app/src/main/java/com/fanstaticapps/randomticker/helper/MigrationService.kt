@@ -17,10 +17,10 @@ class MigrationService(
     fun migrate() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val ringtonePrefKey = "pref_ringtone"
-        val vibratorPrefKey = "pref_vibration"
         val ringtonePref = prefs.getString(ringtonePrefKey, null)
-        val vibratorPref = prefs.getBoolean(vibratorPrefKey, false)
         if (ringtonePref != null) {
+            val vibratorPrefKey = "pref_vibration"
+            val vibratorPref = prefs.getBoolean(vibratorPrefKey, false)
             context.getNotificationManager().deleteNotificationChannel("RandomTickerChannel:01")
             context.getNotificationManager().deleteNotificationChannel("RandomTickerChannel:03")
             bookmarkService.applyForAllBookmarks {
