@@ -16,10 +16,10 @@ import kotlin.reflect.KClass
 
 object IntentHelper {
 
-    fun getOpenAppPendingIntent(context: Context, requestCode: Int): PendingIntent {
+    fun getOpenAppPendingIntent(context: Context, bookmark: Bookmark): PendingIntent {
         return getActivity(
             context,
-            requestCode,
+            bookmark.openAppRequestCode,
             Intent(context, MainActivity::class.java),
             FLAG_UPDATE_CURRENT
         )
@@ -27,12 +27,11 @@ object IntentHelper {
 
     fun getCancelActionPendingIntent(
         context: Context,
-        requestCode: Int,
         bookmark: Bookmark
     ): PendingIntent {
         return getActivity(
             context,
-            requestCode,
+            bookmark.cancelActionRequestCode,
             context.intent(CancelActivity::class, bookmark),
             FLAG_UPDATE_CURRENT
         )
@@ -41,16 +40,16 @@ object IntentHelper {
     fun getRepeatReceiverPendingIntent(context: Context, bookmark: Bookmark): PendingIntent {
         return getBroadcast(
             context,
-            REQUEST_CODE_REPEAT,
+            bookmark.repeatReceiverRequestCode,
             context.intent(CreateAlarmReceiver::class, bookmark),
             FLAG_UPDATE_CURRENT
         )
     }
 
-    fun getFullScreenIntent(context: Context, bookmark: Bookmark): PendingIntent {
+    fun getKlaxonActivityPendingIntent(context: Context, bookmark: Bookmark): PendingIntent {
         return getActivity(
             context,
-            bookmark.klaxonNotificationId,
+            bookmark.klaxonActivityRequestCode,
             context.intent(KlaxonActivity::class, bookmark),
             FLAG_IMMUTABLE
         )
@@ -62,5 +61,4 @@ object IntentHelper {
         }
 
     private const val FLAG_UPDATE_CURRENT = PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
-    private const val REQUEST_CODE_REPEAT = 112
 }

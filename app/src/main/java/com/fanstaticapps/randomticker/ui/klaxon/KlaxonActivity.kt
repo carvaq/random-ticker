@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
+import androidx.core.view.WindowCompat
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.EXTRA_BOOKMARK_ID
@@ -20,6 +21,7 @@ class KlaxonActivity : BaseActivity() {
     private val klaxonViewModel: KlaxonViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         val bookmarkId = intent.requireBookmarkId()
         setContent {

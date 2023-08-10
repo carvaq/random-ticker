@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlin.random.Random
 
 @Entity(tableName = "bookmarks")
 data class Bookmark(
@@ -46,6 +47,9 @@ data class Bookmark(
     )
 
     @Ignore
+    private val requestCodeGenerator = Random(id)
+
+    @Ignore
     val min = Boundary(minimumHours, minimumMinutes, minimumSeconds)
 
     @Ignore
@@ -59,6 +63,18 @@ data class Bookmark(
 
     @Ignore
     val runningNotificationId = id.toInt()
+
+    @Ignore
+    val openAppRequestCode = requestCodeGenerator.nextInt()
+
+    @Ignore
+    val cancelActionRequestCode = requestCodeGenerator.nextInt()
+
+    @Ignore
+    val repeatReceiverRequestCode = requestCodeGenerator.nextInt()
+
+    @Ignore
+    val klaxonActivityRequestCode = requestCodeGenerator.nextInt()
 
     private companion object {
         const val NOT_SET_VALUE: Long = 0

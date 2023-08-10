@@ -12,6 +12,7 @@ import com.fanstaticapps.randomticker.extensions.deleteChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
 import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
 import com.fanstaticapps.randomticker.helper.IntentHelper.getCancelActionPendingIntent
+import com.fanstaticapps.randomticker.helper.IntentHelper.getKlaxonActivityPendingIntent
 import com.fanstaticapps.randomticker.helper.IntentHelper.getOpenAppPendingIntent
 
 class NotificationCoordinator(private val context: Context) {
@@ -44,14 +45,13 @@ class NotificationCoordinator(private val context: Context) {
             .addAction(
                 getCancelAction(
                     bookmark,
-                    bookmark.runningNotificationId,
                     android.R.string.cancel
                 )
             )
             .setContentTitle(bookmark.name)
             .setShowWhen(true)
             .setWhen(bookmark.intervalEnd)
-            .setContentIntent(getOpenAppPendingIntent(context, bookmark.runningNotificationId))
+            .setContentIntent(getOpenAppPendingIntent(context, bookmark))
             .setSilent(true)
             .setChronometerCountDown(true)
             .setUsesChronometer(true)
@@ -70,11 +70,10 @@ class NotificationCoordinator(private val context: Context) {
             .setContentText(context.getString(R.string.notification_ticker_ended))
             .setCategory(Notification.CATEGORY_ALARM)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setFullScreenIntent(IntentHelper.getFullScreenIntent(context, bookmark), true)
+            .setFullScreenIntent(getKlaxonActivityPendingIntent(context, bookmark), true)
             .addAction(
                 getCancelAction(
                     bookmark,
-                    bookmark.klaxonNotificationId,
                     R.string.action_stop
                 )
             )
@@ -91,13 +90,12 @@ class NotificationCoordinator(private val context: Context) {
 
     private fun getCancelAction(
         bookmark: Bookmark,
-        notificationId: Int,
         actionResId: Int
     ): NotificationCompat.Action {
         return NotificationCompat.Action(
             R.drawable.ic_action_stop_timer,
             context.getString(actionResId),
-            getCancelActionPendingIntent(context, notificationId, bookmark)
+            getCancelActionPendingIntent(context, bookmark)
         )
     }
 
