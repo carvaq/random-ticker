@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.fanstaticapps.randomticker.data.BookmarkRepository
 import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.data.TickerDatabase
+import com.fanstaticapps.randomticker.data.TickerDatabase.Companion.migrations
 import com.fanstaticapps.randomticker.helper.AlarmCoordinator
 import com.fanstaticapps.randomticker.helper.MigrationService
 import com.fanstaticapps.randomticker.helper.NotificationCoordinator
@@ -40,6 +41,7 @@ class TickerApplication : Application() {
         module(createdAtStart = true) {
             single {
                 Room.databaseBuilder(androidContext(), TickerDatabase::class.java, "tickerV2.db")
+                    .addMigrations(*migrations)
                     .build()
             }
             single { get<TickerDatabase>().tickerDataDao() }
