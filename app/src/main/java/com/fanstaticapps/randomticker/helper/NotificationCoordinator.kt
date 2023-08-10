@@ -40,7 +40,6 @@ class NotificationCoordinator(private val context: Context) {
 
     internal fun showRunningNotification(bookmark: Bookmark) {
         context.createNotificationChannel(bookmark)
-
         val notification = NotificationCompat.Builder(context, bookmark.notificationChannelId)
             .addAction(
                 getCancelAction(
@@ -81,7 +80,7 @@ class NotificationCoordinator(private val context: Context) {
             )
 
         if (!bookmark.autoRepeat) {
-            builder.addAction(getRepeatAction(context))
+            builder.addAction(getRepeatAction(context, bookmark))
         }
         channel?.let { builder.setSound(channel.sound, AudioManager.STREAM_ALARM) }
 
@@ -98,15 +97,15 @@ class NotificationCoordinator(private val context: Context) {
         return NotificationCompat.Action(
             R.drawable.ic_action_stop_timer,
             context.getString(actionResId),
-            getCancelActionPendingIntent(context, notificationId, bookmark.id)
+            getCancelActionPendingIntent(context, notificationId, bookmark)
         )
     }
 
-    private fun getRepeatAction(context: Context): NotificationCompat.Action {
+    private fun getRepeatAction(context: Context, bookmark: Bookmark): NotificationCompat.Action {
         return NotificationCompat.Action(
             R.drawable.ic_action_repeat_timer,
             context.getString(R.string.action_repeat),
-            IntentHelper.getRepeatReceiverPendingIntent(context)
+            IntentHelper.getRepeatReceiverPendingIntent(context, bookmark)
         )
     }
 

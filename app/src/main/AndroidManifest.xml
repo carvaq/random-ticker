@@ -32,24 +32,7 @@
 				android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-
 				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-
-			<meta-data
-					android:name="default-url"
-					android:value="https://randomticker-84c18.firebaseapp.com/index" />
-
-			<intent-filter android:autoVerify="true">
-				<action android:name="android.intent.action.VIEW" />
-
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-
-				<data android:scheme="https" />
-				<data android:host="randomticker-84c18.firebaseapp.com" />
-				<data android:scheme="http" />
-				<data android:host="randomticker-84c18.firebaseapp.com" />
 			</intent-filter>
 		</activity>
 		<activity
@@ -58,10 +41,6 @@
 				android:showOnLockScreen="true"
 				android:turnScreenOn="true"
 				tools:targetApi="o_mr1" />
-		<activity
-				android:name=".ui.preferences.SettingsActivity"
-				android:label="@string/title_activity_settings"
-				android:parentActivityName=".ui.main.MainActivity" />
 		<activity android:name=".ui.cancel.CancelActivity" />
 
 		<activity
@@ -69,7 +48,6 @@
 				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:parentActivityName=".ui.preferences.SettingsActivity"
 				android:theme="@style/AppTheme.Licenses" />
 	</application>
 

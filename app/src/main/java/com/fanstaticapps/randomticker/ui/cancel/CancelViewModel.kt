@@ -1,18 +1,10 @@
 package com.fanstaticapps.randomticker.ui.cancel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.fanstaticapps.randomticker.data.BookmarkService
-import com.fanstaticapps.randomticker.extensions.getBookmarkId
 
-class CancelViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val service: BookmarkService
-) : ViewModel() {
-    private val bookmarkId = savedStateHandle.getBookmarkId()
-
-    fun cancelTicker() {
+class CancelViewModel(private val service: BookmarkService) : ViewModel() {
+    fun cancelTicker(bookmarkId: Long?) {
         bookmarkId?.let { service.cancelTicker(it) }
     }
-
 }

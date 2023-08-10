@@ -49,6 +49,7 @@ class BookmarkService(
 
     fun intervalEnded(bookmarkId: Long) {
         fetchBookmarkById(bookmarkId) {
+            notificationCoordinator.cancelAllNotifications(it)
             notificationCoordinator.showKlaxonNotification(it)
             if (it.autoRepeat) scheduleAlarm(bookmarkId, false)
         }
@@ -85,7 +86,7 @@ class BookmarkService(
             Timber.d("cancel bookmark $it")
             repository.insertOrUpdateBookmark(it.reset())
             notificationCoordinator.cancelAllNotifications(it)
-            alarmCoordinator.cancelAlarm(bookmarkId)
+            alarmCoordinator.cancelAlarm(it)
             afterCancelling()
         }
     }

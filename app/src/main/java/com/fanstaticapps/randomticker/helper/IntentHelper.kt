@@ -1,109 +1,66 @@
 package com.fanstaticapps.randomticker.helper
 
 import android.app.PendingIntent
-import android.content.ComponentName
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.getActivity
+import android.app.PendingIntent.getBroadcast
 import android.content.Context
 import android.content.Intent
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.EXTRA_BOOKMARK_ID
-import com.fanstaticapps.randomticker.receiver.AlarmEndedReceiver
 import com.fanstaticapps.randomticker.receiver.CreateAlarmReceiver
 import com.fanstaticapps.randomticker.ui.cancel.CancelActivity
 import com.fanstaticapps.randomticker.ui.klaxon.KlaxonActivity
 import com.fanstaticapps.randomticker.ui.main.MainActivity
+import kotlin.reflect.KClass
 
 object IntentHelper {
 
-    fun getMainActivity(context: Context, bookmarkId: Long?): Intent {
-        return Intent(context, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
-        }
+    fun getOpenAppPendingIntent(context: Context, requestCode: Int): PendingIntent {
+        return getActivity(
+            context,
+            requestCode,
+            Intent(context, MainActivity::class.java),
+            FLAG_UPDATE_CURRENT
+        )
     }
 
     fun getCancelActionPendingIntent(
         context: Context,
         requestCode: Int,
-        bookmarkId: Long?
+        bookmark: Bookmark
     ): PendingIntent {
-        return PendingIntent.getActivity(
+        return getActivity(
             context,
             requestCode,
-            Intent(context, CancelActivity::class.java).apply {
-                putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
+            context.intent(CancelActivity::class, bookmark),
+            FLAG_UPDATE_CURRENT
         )
     }
 
-    fun getOpenAppPendingIntent(
-        context: Context,
-        requestCode: Int
-    ): PendingIntent {
-        return PendingIntent.getActivity(
-            context,
-            requestCode,
-            Intent(context, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
-        )
-    }
-
-    fun getAlarmEndedReceiverPendingIntent(context: Context, bookmarkId: Long?): PendingIntent? {
-        return getAlarmEndedReceiverPendingIntent(
-            context,
-            PendingIntent.FLAG_UPDATE_CURRENT,
-            bookmarkId
-        )
-    }
-
-    fun getAlarmEndedReceiverCancelPendingIntent(
-        context: Context,
-        bookmarkId: Long?
-    ): PendingIntent? {
-        return getAlarmEndedReceiverPendingIntent(
-            context,
-            PendingIntent.FLAG_CANCEL_CURRENT,
-            bookmarkId
-        )
-    }
-
-    private fun getAlarmEndedReceiverPendingIntent(
-        context: Context,
-        flag: Int,
-        bookmarkId: Long?
-    ): PendingIntent? {
-        val intent = Intent("com.fanstaticapps.randomticker.ALARM").apply {
-            component = ComponentName(context, AlarmEndedReceiver::class.java)
-            putExtra(EXTRA_BOOKMARK_ID, bookmarkId)
-        }
-        return PendingIntent.getBroadcast(
-            context,
-            REQUEST_CODE_ALARM,
-            intent,
-            flag.asImmutable
-        )
-    }
-
-    fun getRepeatReceiverPendingIntent(context: Context): PendingIntent {
-        return PendingIntent.getBroadcast(
+    fun getRepeatReceiverPendingIntent(context: Context, bookmark: Bookmark): PendingIntent {
+        return getBroadcast(
             context,
             REQUEST_CODE_REPEAT,
-            Intent(context, CreateAlarmReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT.asImmutable
+            context.intent(CreateAlarmReceiver::class, bookmark),
+            FLAG_UPDATE_CURRENT
         )
     }
 
     fun getFullScreenIntent(context: Context, bookmark: Bookmark): PendingIntent {
-        return PendingIntent.getActivity(
+        return getActivity(
             context,
             bookmark.klaxonNotificationId,
-            Intent(context, KlaxonActivity::class.java),
-            PendingIntent.FLAG_IMMUTABLE
+            context.intent(KlaxonActivity::class, bookmark),
+            FLAG_IMMUTABLE
         )
     }
 
-    private val Int.asImmutable
-        get() = this or PendingIntent.FLAG_IMMUTABLE
+    private fun Context.intent(kclass: KClass<*>, bookmark: Bookmark) =
+        Intent(this, kclass.java).apply {
+            putExtra(EXTRA_BOOKMARK_ID, bookmark.id)
+        }
+
+    private const val FLAG_UPDATE_CURRENT = PendingIntent.FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
     private const val REQUEST_CODE_REPEAT = 112
-    private const val REQUEST_CODE_ALARM = 421
 }

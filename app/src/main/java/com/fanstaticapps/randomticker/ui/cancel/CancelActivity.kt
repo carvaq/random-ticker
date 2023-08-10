@@ -1,6 +1,7 @@
 package com.fanstaticapps.randomticker.ui.cancel
 
 import android.os.Bundle
+import com.fanstaticapps.randomticker.extensions.getBookmarkId
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -10,7 +11,7 @@ class CancelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cancelViewModel.cancelTicker()
+        cancelViewModel.cancelTicker(intent.getBookmarkId())
         noOpenOrCloseTransitions()
         finish()
     }
