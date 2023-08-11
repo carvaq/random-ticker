@@ -31,7 +31,7 @@ abstract class TickerDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE temp_bookmarks RENAME TO bookmarks")
             }
         }
-        val migrations = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+        val MIGRATIONS = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
     }
 
 }
