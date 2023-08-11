@@ -19,10 +19,10 @@ import java.util.Random
 class BookmarkService(
     private val repository: BookmarkRepository,
     private val notificationCoordinator: NotificationCoordinator,
-    private val alarmCoordinator: AlarmCoordinator
+    private val alarmCoordinator: AlarmCoordinator,
+    private val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 ) {
 
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val randomGenerator = Random()
 
     fun getBookmarkById(bookmarkId: Long): Flow<Bookmark> {
@@ -78,6 +78,13 @@ class BookmarkService(
         cancelTicker(bookmarkId) {}
     }
 
+    fun delete(bookmark: Bookmark) {
+        cancelTicker(bookmark.id) {
+            notificationCoordinator.deleteChannelsForBookmark(bookmark)
+            repository.deleteBookmark(bookmark)
+        }
+    }
+
     private fun cancelTicker(
         bookmarkId: Long,
         afterCancelling: suspend () -> Unit
@@ -105,10 +112,5 @@ class BookmarkService(
 
     fun fetchAllBookmarks() = repository.getAllBookmarks()
 
-    fun delete(bookmark: Bookmark) {
-        cancelTicker(bookmark.id) {
-            notificationCoordinator.deleteChannelsForBookmark(bookmark)
-            repository.deleteBookmark(bookmark)
-        }
-    }
+
 }

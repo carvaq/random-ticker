@@ -130,23 +130,16 @@ dependencies {
     implementation("androidx.compose.ui:ui-viewbinding")
     implementation("androidx.activity:activity-compose:1.7.2")
 
-    testImplementation("org.mockito:mockito-core:5.4.0")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.10.3")
     testImplementation("io.mockk:mockk:1.13.5")
-    testImplementation("androidx.test:core-ktx:1.5.0")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation("androidx.test:runner:1.5.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2")
-    testImplementation("com.google.truth:truth:1.1.5")
+    testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation("androidx.room:room-testing:2.5.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test:core-ktx:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
     androidTestImplementation("androidx.test.ext:truth:1.5.0")
-    androidTestUtil("androidx.test:orchestrator:1.4.2")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
 play {
