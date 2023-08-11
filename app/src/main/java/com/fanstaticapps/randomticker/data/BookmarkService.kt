@@ -21,8 +21,18 @@ class BookmarkService(
     private val repository: BookmarkRepository,
     private val notificationCoordinator: NotificationCoordinator,
     private val alarmCoordinator: AlarmCoordinator,
-    private val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val coroutineScope: CoroutineScope
 ) {
+    constructor(
+        repository: BookmarkRepository,
+        notificationCoordinator: NotificationCoordinator,
+        alarmCoordinator: AlarmCoordinator
+    ) : this(
+        repository,
+        notificationCoordinator,
+        alarmCoordinator,
+        CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    )
 
     private val randomGenerator = Random()
 

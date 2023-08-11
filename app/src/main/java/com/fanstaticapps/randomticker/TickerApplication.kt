@@ -52,7 +52,7 @@ class TickerApplication : Application() {
             factoryOf(::NotificationCoordinator)
             factoryOf(::AlarmCoordinator)
         },
-        module { factoryOf(::BookmarkService) },
+        module { factory { BookmarkService(get(), get(), get()) } },
         module { factoryOf(::MigrationService) },
         module {
             viewModelOf(::MainViewModel)
