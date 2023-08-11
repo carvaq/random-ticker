@@ -13,7 +13,7 @@
 	<string name="open_notification_channel_title">Open app notification settings</string>
 	<string name="action_repeat">Repeat</string>
 	<string name="action_stop">Stop</string>
-	<string name="auto_repeat">Auto repeat after 2 seconds</string>
+	<string name="auto_repeat">Auto repeat after 5 seconds</string>
 	<string name="please_allow_alarm_scheduling">You have disabled alarm scheduling for Random Ticker, please go to settings and grant the permission.</string>
 	<string name="notification_ticker_ended">Time\'s up!</string>
 	<string name="save_button">Save</string>
