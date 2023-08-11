@@ -17,4 +17,6 @@
 	<string name="please_allow_alarm_scheduling">Ha deshabilitado la programación de alarmas para Random Ticker, ve a la configuración y conceda el permiso.</string>
 	<string name="notification_ticker_ended">¡Se acabó el tiempo!</string>
 	<string name="save_button">Guardar</string>
+	<string name="open_settings">Abrir</string>
+	<string name="notification_settings_blocked">Hace falta permission para las notificacions, activala en los ajustes</string>
 </resources>

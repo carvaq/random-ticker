@@ -45,7 +45,8 @@
 
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+				android:theme="@style/AppTheme.Licenses" />
 		<activity
 				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
 				android:theme="@style/AppTheme.Licenses" />

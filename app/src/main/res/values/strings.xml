@@ -17,4 +17,6 @@
 	<string name="please_allow_alarm_scheduling">You have disabled alarm scheduling for Random Ticker, please go to settings and grant the permission.</string>
 	<string name="notification_ticker_ended">Time\'s up!</string>
 	<string name="save_button">Save</string>
+	<string name="open_settings">Open</string>
+	<string name="notification_settings_blocked">Notification permission is required, please enable it in the settings</string>
 </resources>

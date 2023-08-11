@@ -17,5 +17,7 @@
 	<string name="please_allow_alarm_scheduling">Du hast Alarmplanung für den Random-Ticker deaktiviert. Bitte gehe zu den Einstellungen und gib die Erlaubnis frei.</string>
 	<string name="notification_ticker_ended">Die Zeit ist um!</string>
 	<string name="save_button">Speichern</string>
+	<string name="open_settings">Öffnen</string>
+	<string name="notification_settings_blocked">Erlaubnis für Benachrichtungen benötigt, bitte ändere es in der Systemeinstellungen</string>
 
 </resources>
