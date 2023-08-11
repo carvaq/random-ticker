@@ -1,3 +1,4 @@
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,13 +9,9 @@ plugins {
 }
 
 
-val major = 1
-val minor = 7
-val patch = 6
-
-val generatedVersionName = String.format("%s%02d%02d", major, minor, patch)
-val generateVersionCode = Integer.parseInt(generatedVersionName)
-
+val major = 2
+val minor = 0
+val patch = 0
 
 android {
 
@@ -26,8 +23,8 @@ android {
         targetSdk = 33
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
-        versionCode = generateVersionCode
-        versionName = generatedVersionName
+        versionCode = 10706
+        versionName = String.format("%s%02d%02d", major, minor, patch)
 
         testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
 
@@ -147,6 +144,7 @@ play {
     if (file("$rootDir/play_store_secret.json").exists()) {
         defaultToAppBundles.set(true)
         serviceAccountCredentials.set(file("$rootDir/play_store_secret.json"))
+        resolutionStrategy.set(ResolutionStrategy.AUTO)
     } else {
         enabled.set(false)
     }
