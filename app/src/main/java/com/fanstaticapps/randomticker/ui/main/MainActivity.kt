@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.extensions.getBookmarkId
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
 import com.fanstaticapps.randomticker.extensions.isAtLeastT
 import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
@@ -60,6 +61,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainViewModel.select(intent.getBookmarkId())
         migrationService.migrate()
         setContent {
             AppTheme {

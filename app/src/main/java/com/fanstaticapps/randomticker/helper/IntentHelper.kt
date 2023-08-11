@@ -20,7 +20,7 @@ object IntentHelper {
         return getActivity(
             context,
             bookmark.openAppRequestCode,
-            Intent(context, MainActivity::class.java),
+            context.intent(MainActivity::class, bookmark),
             FLAG_UPDATE_CURRENT
         )
     }
