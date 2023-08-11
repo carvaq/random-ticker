@@ -1,6 +1,10 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,19 +34,25 @@ fun TickerApp(
 ) {
     val delete = { bookmark: Bookmark -> viewModel.delete(bookmark) }
     if (isSinglePane) {
-        if (selectedBookmark == null) {
-            BookmarkListOverview(
-                modifier = Modifier.padding(paddingValues),
-                bookmarks = bookmarks,
-                edit = { viewModel.select(it.id) },
-                start = start
-            ) { viewModel.cancelTicker(it.id) }
-        } else {
-            BookmarkCreateView(
-                modifier = Modifier.padding(paddingValues),
-                bookmarkState = selectedBookmark,
-                delete = delete
-            )
+        Crossfade(
+            targetState = selectedBookmark,
+            animationSpec = tween(easing = LinearOutSlowInEasing),
+            label = "MainView"
+        ) { state ->
+            if (state == null) {
+                BookmarkListOverview(
+                    modifier = Modifier.padding(paddingValues),
+                    bookmarks = bookmarks,
+                    edit = { viewModel.select(it.id) },
+                    start = start
+                ) { viewModel.cancelTicker(it.id) }
+            } else {
+                BookmarkCreateView(
+                    modifier = Modifier.padding(paddingValues),
+                    bookmarkState = state,
+                    delete = delete
+                )
+            }
         }
     } else {
         Row(
@@ -56,19 +66,22 @@ fun TickerApp(
                 edit = { viewModel.select(it.id) },
                 start = start
             ) { viewModel.cancelTicker(it.id) }
-            if (selectedBookmark != null) {
-                BookmarkCreateView(
-                    modifier = Modifier.weight(0.6f),
-                    bookmarkState = selectedBookmark,
-                    delete = delete
-                )
-            } else {
-                EmptyView(
-                    Modifier.weight(0.6f),
-                    imageVector = Icons.Outlined.Bookmarks,
-                    text = stringResource(id = R.string.select_bookmark)
-                )
+            AnimatedVisibility(visible = selectedBookmark == null) {
+                if (selectedBookmark != null) {
+                    BookmarkCreateView(
+                        modifier = Modifier.weight(0.6f),
+                        bookmarkState = selectedBookmark,
+                        delete = delete
+                    )
+                } else {
+                    EmptyView(
+                        Modifier.weight(0.6f),
+                        imageVector = Icons.Outlined.Bookmarks,
+                        text = stringResource(id = R.string.select_bookmark)
+                    )
+                }
             }
+
         }
     }
 }

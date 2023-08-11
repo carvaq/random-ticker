@@ -12,11 +12,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.BookmarkAdd
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -142,12 +143,12 @@ class MainActivity : BaseActivity() {
 
     @Composable
     private fun AddBookmarkButton(isSinglePane: Boolean, selectedBookmark: State<Bookmark>?) {
-        if (!isSinglePane || selectedBookmark == null) {
+        AnimatedVisibility(visible = !isSinglePane || selectedBookmark == null) {
             FloatingActionButton(
                 onClick = { mainViewModel.createNewBookmark() }, shape = CircleShape
             ) {
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    imageVector = Icons.Default.BookmarkAdd,
                     contentDescription = stringResource(id = R.string.add_bookmark)
                 )
             }
