@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
@@ -182,8 +183,11 @@ class MainActivity : BaseActivity() {
     private fun isCompactOrInPortrait(
         windowSize: WindowSizeClass = calculateWindowSizeClass(activity = this),
         orientation: Int = LocalConfiguration.current.orientation
-    ) =
-        (windowSize.widthSizeClass == WindowWidthSizeClass.Compact || orientation == Configuration.ORIENTATION_PORTRAIT)
+    ): Boolean {
+        return windowSize.widthSizeClass == WindowWidthSizeClass.Compact
+                || windowSize.heightSizeClass == WindowHeightSizeClass.Compact
+                || orientation == Configuration.ORIENTATION_PORTRAIT
+    }
 
     private fun State<Bookmark?>.startBookmark() {
         if (!needsPostNotificationPermission() && !needsScheduleAlarmPermission()) {
