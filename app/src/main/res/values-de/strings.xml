@@ -6,13 +6,9 @@
 	<string name="hours_label">Stunden</string>
 	<string name="minutes_label">Minuten</string>
 	<string name="seconds_label">Sekunden</string>
-	<string name="random_ticker_introduction">Definier den Zeitraum, in dem ein Alarm zufällig läuten wird.</string>
 	<string name="button_delete">Löschen</string>
 	<string name="add_bookmark">Lesezeichen hinzufügen</string>
-	<string name="title_activity_settings">Einstellungen</string>
-	<string name="show_notification">Zeige Benachrichtigungen</string>
-	<string name="foreground_channel_name">Alarm</string>
-	<string name="running_channel_name">Timer</string>
+	<string name="select_bookmark">Lesezeichen auswählen</string>
 	<string name="bookmark_hint">Lesezeichen Name</string>
 	<string name="open_notification_channel_title">Öffne die Systemeinstellungen für Benachrichtungen</string>
 	<string name="action_repeat">Wiederholen</string>

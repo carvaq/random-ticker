@@ -6,14 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.outlined.BookmarkAdd
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,14 +39,22 @@ fun BookmarkListOverview(
     start: (Bookmark) -> Unit,
     stop: (Bookmark) -> Unit,
 ) {
-    LazyColumn(
-        modifier = modifier
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(bookmarks) {
-            BookmarkView(it, edit, start, stop)
+    if (bookmarks.isNotEmpty()) {
+        LazyColumn(
+            modifier = modifier
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(bookmarks) {
+                BookmarkView(it, edit, start, stop)
+            }
         }
+    } else {
+        EmptyView(
+            Modifier.fillMaxSize(),
+            imageVector = Icons.Outlined.BookmarkAdd,
+            text = stringResource(id = R.string.add_bookmark)
+        )
     }
 }
 
@@ -115,6 +124,19 @@ private fun Boundary.format(): String {
             id = R.string.seconds
         )
     }"
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BookmarkListEmptyPreview() {
+    AppTheme {
+        BookmarkListOverview(
+            bookmarks = listOf(
+            ),
+            edit = {},
+            start = {}
+        ) {}
+    }
 }
 
 @Preview(showBackground = true, widthDp = 200)

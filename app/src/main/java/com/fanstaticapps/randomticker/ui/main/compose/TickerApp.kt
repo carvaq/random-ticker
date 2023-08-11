@@ -1,16 +1,19 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.ui.main.MainViewModel
@@ -60,7 +63,11 @@ fun TickerApp(
                     delete = delete
                 )
             } else {
-                Box(modifier = Modifier.weight(0.6f))
+                EmptyView(
+                    Modifier.weight(0.6f),
+                    imageVector = Icons.Outlined.Bookmarks,
+                    text = stringResource(id = R.string.select_bookmark)
+                )
             }
         }
     }
