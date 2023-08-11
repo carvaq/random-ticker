@@ -1,73 +1,47 @@
 package com.fanstaticapps.randomticker.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.fanstaticapps.randomticker.TickerPreferences
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.data.BookmarkRepository
-import com.fanstaticapps.randomticker.data.IntervalDefinition
-import com.fanstaticapps.randomticker.helper.TimerHelper
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import com.fanstaticapps.randomticker.data.BookmarkService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-
-@HiltViewModel
-class MainViewModel @Inject constructor(
-    private val tickerPreferences: TickerPreferences,
-    private val timerHelper: TimerHelper,
-    private val repository: BookmarkRepository
-) : ViewModel() {
-
-    private val currentBookmarkId = tickerPreferences.currentSelectedBookmarkIdLD
-
-    val timerCreationStatus = MutableLiveData<TimerCreationStatus>()
-    val currentBookmark: LiveData<Bookmark> =
-        currentBookmarkId.switchMap { currentBookmarkId ->
-            liveData(context = viewModelScope.coroutineContext + Dispatchers.IO) {
-                repository.getBookmarkById(currentBookmarkId)?.let { emit(it) }
-            }
-        }
-
-    fun createTimer(
-        bookmarkName: String,
-        minimum: IntervalDefinition,
-        maximum: IntervalDefinition,
-        autoRepeat: Boolean
-    ) {
-        val timerCreated = timerHelper.createTicker(minimum, maximum)
-        if (timerCreated) {
-            createOrUpdateBookmark(bookmarkName, minimum, maximum, autoRepeat)
-
-            timerCreationStatus.value = TimerCreationStatus.TIMER_STARTED
-        } else {
-            timerCreationStatus.value = TimerCreationStatus.INVALID_DATES
-        }
-
+class MainViewModel(private val bookmarkService: BookmarkService) :
+    ViewModel() {
+    private val selectedBookmarkId = MutableStateFlow<Long?>(null)
+    val bookmarks = bookmarkService.fetchAllBookmarks()
+    val selectedBookmark = combine(
+        selectedBookmarkId,
+        bookmarks
+    ) { selectedBookmarkId, bookmarks ->
+        bookmarks.find { it.id == selectedBookmarkId }
     }
 
-    private fun createOrUpdateBookmark(
-        name: String,
-        minimum: IntervalDefinition,
-        maximum: IntervalDefinition,
-        autoRepeat: Boolean
-    ) {
-        val currentBookmark = Bookmark(
-            name = name,
-            minimum = minimum,
-            maximum = maximum,
-            id = tickerPreferences.currentSelectedId,
-            autoRepeat = autoRepeat
-        )
+    fun startBookmark(bookmark: Bookmark) {
+        bookmarkService.scheduleAlarm(bookmark.id, true)
+    }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val id = repository.insertOrUpdateBookmark(currentBookmark)
-            tickerPreferences.currentSelectedId = id
+    fun select(bookmarkId: Long?) {
+        selectedBookmarkId.value = bookmarkId
+    }
+
+    fun createNewBookmark() {
+        viewModelScope.launch {
+            selectedBookmarkId.emit(bookmarkService.createNew())
         }
+    }
+
+    fun cancelTicker(bookmarkId: Long) {
+        bookmarkService.cancelTicker(bookmarkId)
+    }
+
+    fun save(bookmark: Bookmark) {
+        bookmarkService.save(bookmark)
+    }
+
+    fun delete(bookmark: Bookmark) {
+        bookmarkService.delete(bookmark)
     }
 }

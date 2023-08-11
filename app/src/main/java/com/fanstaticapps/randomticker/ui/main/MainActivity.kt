@@ -1,201 +1,191 @@
 package com.fanstaticapps.randomticker.ui.main
 
+import android.Manifest
 import android.content.Intent
-import android.os.Build
+import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Menu
-import android.widget.EditText
-import android.widget.NumberPicker
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
-import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.Lifecycle
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BookmarkAdd
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.R
-import com.fanstaticapps.randomticker.TickerPreferences
+import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
-import com.fanstaticapps.randomticker.data.IntervalDefinition
-import com.fanstaticapps.randomticker.databinding.ActivityMainBinding
-import com.fanstaticapps.randomticker.extensions.getAlarmManager
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
 import com.fanstaticapps.randomticker.extensions.isAtLeastT
-import com.fanstaticapps.randomticker.extensions.viewBinding
-import com.fanstaticapps.randomticker.helper.IntentHelper
-import com.fanstaticapps.randomticker.helper.TimerHelper
-import com.fanstaticapps.randomticker.helper.livedata.nonNull
+import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
+import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
+import com.fanstaticapps.randomticker.helper.MigrationService
 import com.fanstaticapps.randomticker.ui.BaseActivity
-import com.fanstaticapps.randomticker.ui.bookmarks.BookmarkDialog
-import com.fanstaticapps.randomticker.ui.preferences.SettingsActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
+import com.fanstaticapps.randomticker.ui.main.compose.TopBar
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
-    @Inject
-    lateinit var timerHelper: TimerHelper
-
-    @Inject
-    lateinit var tickerPreferences: TickerPreferences
-
-    private val viewModel: MainViewModel by viewModels()
-
-    private val viewBinding by viewBinding(ActivityMainBinding::inflate)
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) createTimerIfScheduleAlarmGranted()
-        }
-    private val scheduleAlarmLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            createTimerIfScheduleAlarmGranted()
-        }
+    private val mainViewModel: MainViewModel by viewModel()
+    private val migrationService: MigrationService by inject()
+    private val requestNotificationInSettings = mutableStateOf(false)
+    private val requestNotificationPermission = mutableStateOf(false)
+    private val requestScheduleAlarmPermission = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (timerHelper.isCurrentlyTickerRunning()) {
-            // if the timer is running we should move the KlaxonActivity
-            startAlarmActivity()
-        } else {
-            setContentView(viewBinding.root)
+        migrationService.migrate()
+        setContent {
+            AppTheme {
+                val isSinglePane = isCompactOrInPortrait()
+                val bookmarks = mainViewModel.bookmarks.collectAsState(initial = emptyList()).value
+                val editableBookmark =
+                    mainViewModel.selectedBookmark.collectAsState(initial = null).value?.let {
+                        mutableStateOf(it)
+                    }
+                val bookmarkToStart = remember { mutableStateOf<Bookmark?>(null) }
+                RequestPermissions(bookmarkToStart)
+                Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+                    TopBar(isSinglePane, editableBookmark)
+                }, floatingActionButton = {
+                    AddBookmarkButton(isSinglePane, editableBookmark)
+                }, snackbarHost = {
+                    if (requestNotificationInSettings.value) {
+                        PermissionRequestSnackbar()
+                    }
 
-            setupToolbar()
-
-            initializeStartButtonListener()
-            initializeBookmarks()
-            initializeTimerCreationStatus()
-        }
-    }
-
-    private fun setupToolbar() {
-        setSupportActionBar(viewBinding.appbar.toolbar)
-        viewBinding.appbar.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
-                    true
+                }) { paddingValues ->
+                    TickerApp(
+                        paddingValues = paddingValues,
+                        isSinglePane = isSinglePane,
+                        selectedBookmark = editableBookmark,
+                        bookmarks = bookmarks,
+                        start = startBookmark(bookmarkToStart)
+                    )
                 }
-                else -> false
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.menu_main_activity, menu)
-        return true
-    }
-
-
-    private fun initializeBookmarks() {
-        viewModel.currentBookmark
-            .nonNull()
-            .observe(this) {
-                renderBookmark(it)
-            }
-        viewBinding.content.bookmarks.btnSelectBookmark.setOnClickListener {
-            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                BookmarkDialog().show(supportFragmentManager, "BookmarkSelector")
-            }
+    @Composable
+    private fun PermissionRequestSnackbar() {
+        Snackbar(
+            action = {
+                Button(onClick = {
+                    requestNotificationInSettings.value = false
+                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        data = Uri.fromParts("package", packageName, null)
+                    })
+                }) {
+                    Text(text = stringResource(id = R.string.open_settings))
+                }
+            },
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(text = stringResource(id = R.string.notification_settings_blocked))
         }
     }
 
-    private fun initializeStartButtonListener() {
-        viewBinding.content.btnStartTicker.setOnClickListener {
-            if (isAtLeastT()) {
-                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+    @Composable
+    private fun RequestPermissions(selectedBookmark: MutableState<Bookmark?>) {
+        val notificationPermissionLauncher = rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted && needsScheduleAlarmPermission()) {
+                requestScheduleAlarmPermission.value = true
+            } else if (isGranted) {
+                selectedBookmark.startBookmark()
             } else {
-                createTimerIfScheduleAlarmGranted()
+                requestNotificationInSettings.value = true
             }
         }
-    }
 
-    private fun initializeTimerCreationStatus() {
-        viewModel.timerCreationStatus.observe(this) {
-            when (it) {
-                TimerCreationStatus.TIMER_STARTED -> {
-                    timerHelper.startTicker(this)
-                    startAlarmActivity()
-                }
-                TimerCreationStatus.INVALID_DATES -> {
-                    toast(R.string.error_min_is_bigger_than_max)
-                }
-                else -> {
-                }
+        if (requestNotificationPermission.value && isAtLeastT()) {
+            requestNotificationPermission.value = false
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else if (requestScheduleAlarmPermission.value && isAtLeastS()) {
+            val askScheduleAlamPermission = rememberLauncherForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) {
+                requestNotificationPermission.value = false
+                selectedBookmark.startBookmark()
             }
-        }
-        viewBinding.content.contentMin.minHours.init(10, R.string.from, R.string.hours_label)
-        viewBinding.content.contentMin.minMin.init(59, R.string.from, R.string.minutes_label)
-        viewBinding.content.contentMin.minSec.init(59, R.string.from, R.string.seconds_label)
-        viewBinding.content.contentMax.maxHours.init(23, R.string.to, R.string.hours_label)
-        viewBinding.content.contentMax.maxMin.init(59, R.string.to, R.string.minutes_label)
-        viewBinding.content.contentMax.maxSec.init(59, R.string.to, R.string.seconds_label)
-    }
-
-
-    private fun renderBookmark(bookmark: Bookmark) {
-        with(bookmark) {
-            viewBinding.content.bookmarks.etBookmarkName.setText(name)
-            viewBinding.content.contentMin.minHours.value = minimumHours
-            viewBinding.content.contentMin.minMin.value = minimumMinutes
-            viewBinding.content.contentMin.minSec.value = minimumSeconds
-            viewBinding.content.contentMax.maxHours.value = maximumHours
-            viewBinding.content.contentMax.maxMin.value = maximumMinutes
-            viewBinding.content.contentMax.maxSec.value = maximumSeconds
-            viewBinding.content.cbAutoRepeat.isChecked = bookmark.autoRepeat
+            AlertDialog(
+                confirmButton = {
+                    Button(onClick = { askScheduleAlamPermission.launch(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)) }) {
+                        Text(stringResource(id = android.R.string.ok))
+                    }
+                },
+                dismissButton = { Text(stringResource(id = android.R.string.cancel)) },
+                text = { Text(stringResource(id = R.string.please_allow_alarm_scheduling)) },
+                onDismissRequest = {})
         }
     }
 
-    private fun createTimerIfScheduleAlarmGranted() {
-        if (!isAtLeastS() || canScheduleAlarms()) {
-            createTimer()
+    private fun startBookmark(bookmarkToStart: MutableState<Bookmark?>): (Bookmark) -> Unit = {
+        bookmarkToStart.value = it
+        if (needsPostNotificationPermission()) {
+            requestNotificationPermission.value = true
+        } else if (needsScheduleAlarmPermission()) {
+            requestScheduleAlarmPermission.value = true
         } else {
-            MaterialAlertDialogBuilder(this).apply {
-                setMessage(R.string.please_allow_alarm_scheduling)
-                setPositiveButton(android.R.string.ok) { _, _ ->
-                    scheduleAlarmLauncher.launch(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
-                }
-                setPositiveButton(android.R.string.cancel, null)
-            }
-
+            bookmarkToStart.startBookmark()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun canScheduleAlarms() =
-        kotlin.runCatching { getAlarmManager()?.canScheduleExactAlarms() == true }
-            .getOrDefault(NotificationManagerCompat.from(this).areNotificationsEnabled())
-
-    private fun createTimer() {
-        viewModel.createTimer(
-            viewBinding.content.bookmarks.etBookmarkName.name(),
-            IntervalDefinition(
-                viewBinding.content.contentMin.minHours.value,
-                viewBinding.content.contentMin.minMin.value,
-                viewBinding.content.contentMin.minSec.value
-            ),
-            IntervalDefinition(
-                viewBinding.content.contentMax.maxHours.value,
-                viewBinding.content.contentMax.maxMin.value,
-                viewBinding.content.contentMax.maxSec.value
-            ),
-            viewBinding.content.cbAutoRepeat.isChecked
-        )
+    @Composable
+    private fun AddBookmarkButton(isSinglePane: Boolean, selectedBookmark: State<Bookmark>?) {
+        AnimatedVisibility(visible = !isSinglePane || selectedBookmark == null) {
+            FloatingActionButton(
+                onClick = { mainViewModel.createNewBookmark() }, shape = CircleShape
+            ) {
+                Icon(
+                    imageVector = Icons.Default.BookmarkAdd,
+                    contentDescription = stringResource(id = R.string.add_bookmark)
+                )
+            }
+        }
     }
 
-    private fun startAlarmActivity() {
-        startActivity(IntentHelper.getKlaxonActivity(this, false))
-        finish()
-    }
 
-    private fun EditText.name(): String =
-        if (this.text.isNullOrBlank()) "Random Ticker" else this.text.toString()
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    @Composable
+    private fun isCompactOrInPortrait(
+        windowSize: WindowSizeClass = calculateWindowSizeClass(activity = this),
+        orientation: Int = LocalConfiguration.current.orientation
+    ) =
+        (windowSize.widthSizeClass == WindowWidthSizeClass.Compact || orientation == Configuration.ORIENTATION_PORTRAIT)
 
-    private fun NumberPicker.init(max: Int, @StringRes fromToResId: Int, @StringRes type: Int) {
-        minValue = 0
-        maxValue = max
-        contentDescription = "${getString(fromToResId)} ${getString(type)}"
+    private fun State<Bookmark?>.startBookmark() {
+        if (!needsPostNotificationPermission() && !needsScheduleAlarmPermission()) {
+            value?.let { bookmark -> mainViewModel.startBookmark(bookmark) }
+        }
     }
 }

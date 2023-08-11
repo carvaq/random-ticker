@@ -1,13 +1,55 @@
 package com.fanstaticapps.randomticker.extensions
 
+import android.Manifest
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
-import android.os.Vibrator
+import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.net.Uri
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.fanstaticapps.randomticker.data.Bookmark
 
 fun Context.getNotificationManager() = NotificationManagerCompat.from(this)
 
 fun Context.getAlarmManager() = ContextCompat.getSystemService(this, AlarmManager::class.java)
 
-fun Context.getVibrator() = ContextCompat.getSystemService(this, Vibrator::class.java)
+fun Context.createNotificationChannel(
+    bookmark: Bookmark,
+    soundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+    enableVibration: Boolean = true
+): NotificationChannel? {
+    val channel = NotificationChannel(
+        bookmark.notificationChannelId,
+        bookmark.name,
+        NotificationManager.IMPORTANCE_HIGH
+    ).apply {
+        setSound(
+            soundUri,
+            AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build()
+        )
+        enableVibration(enableVibration)
+    }
+    getNotificationManager().createNotificationChannel(channel)
+    return getNotificationManager().getNotificationChannel(bookmark.notificationChannelId)
+}
+
+fun Context.deleteChannel(bookmark: Bookmark) {
+    getNotificationManager().deleteNotificationChannel(bookmark.notificationChannelId)
+}
+
+fun Context.needsPostNotificationPermission(): Boolean {
+    return isAtLeastT() && ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.POST_NOTIFICATIONS
+    ) != PackageManager.PERMISSION_GRANTED
+}
+
+fun Context.needsScheduleAlarmPermission(): Boolean {
+    return isAtLeastS() && getAlarmManager()?.canScheduleExactAlarms() != true
+}

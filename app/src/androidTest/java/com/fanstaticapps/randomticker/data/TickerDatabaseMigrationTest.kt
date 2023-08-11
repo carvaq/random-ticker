@@ -8,6 +8,7 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
@@ -17,12 +18,6 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class TickerDatabaseMigrationTest {
-    companion object {
-        private const val TEST_DB_NAME = "migration-test"
-        private val ALL_MIGRATIONS =
-            arrayOf(TickerDatabase.MIGRATION_1_2, TickerDatabase.MIGRATION_2_3)
-    }
-
     @get:Rule
     val testHelper: MigrationTestHelper = MigrationTestHelper(
         InstrumentationRegistry.getInstrumentation(),
@@ -41,10 +36,10 @@ class TickerDatabaseMigrationTest {
             TickerDatabase::class.java,
             TEST_DB_NAME
         )
-            .addMigrations(*ALL_MIGRATIONS).build().apply {
+            .addMigrations(*TickerDatabase.MIGRATIONS).build().apply {
                 openHelper.writableDatabase
                 val bookmark = runBlocking {
-                    tickerDataDao().getById(1)
+                    tickerDataDao().getById(1).firstOrNull()
                 }
                 assert(bookmark != null)
                 bookmark?.run {
@@ -52,12 +47,13 @@ class TickerDatabaseMigrationTest {
                     assertThat(maximumHours).isEqualTo(0)
                     assertThat(minimumHours).isEqualTo(0)
                     assertThat(autoRepeat).isFalse()
+                    assertThat(autoRepeatInterval).isEqualTo(2000)
+                    assertThat(intervalEnd).isEqualTo(0)
                 }
 
                 close()
             }
     }
-
 
     private fun createEarliestDatabase() {
         testHelper.createDatabase(TEST_DB_NAME, 1).apply {
@@ -73,5 +69,10 @@ class TickerDatabaseMigrationTest {
             )
             close()
         }
+    }
+
+
+    companion object {
+        private const val TEST_DB_NAME = "migration-test"
     }
 }

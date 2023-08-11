@@ -1,15 +1,14 @@
 package com.fanstaticapps.randomticker.data
 
-import androidx.lifecycle.LiveData
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDao) {
+class BookmarkRepository constructor(private val bookmarkDao: BookmarkDao) {
 
-    suspend fun getBookmarkById(id: Long): Bookmark? {
+    fun getBookmarkById(id: Long): Flow<Bookmark> {
         return bookmarkDao.getById(id)
     }
 
-    fun getAllBookmarks(): LiveData<List<Bookmark>> {
+    fun getAllBookmarks(): Flow<List<Bookmark>> {
         return bookmarkDao.getAllBookmarks()
     }
 
@@ -17,7 +16,7 @@ class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDa
         bookmarkDao.delete(bookmark.id)
     }
 
-    suspend fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
+    fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
         return bookmarkDao.insert(newBookmark)
     }
 }
