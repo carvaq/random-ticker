@@ -1,3 +1,4 @@
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 plugins {
     id("com.android.application")
     id("kotlin-android")
