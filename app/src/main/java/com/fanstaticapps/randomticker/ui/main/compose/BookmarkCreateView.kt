@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
@@ -44,8 +45,10 @@ fun BookmarkCreateView(
 ) {
     Column(
         modifier = modifier
-            .padding(24.dp)
+            .padding(horizontal = 24.dp)
+            .padding(top = 16.dp)
             .verticalScroll(rememberScrollState())
+            .imePadding()
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -83,10 +86,11 @@ fun BookmarkCreateView(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         AutoRepeat(bookmark.autoRepeat) { bookmarkState.value = bookmark.copy(autoRepeat = it) }
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Button(
+            modifier = Modifier.padding(bottom = 24.dp),
             onClick = { delete(bookmarkState.value) },
             colors = ButtonDefaults.textButtonColors()
         ) {
