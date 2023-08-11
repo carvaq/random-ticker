@@ -9,4 +9,9 @@ fun Intent.getBookmarkId(): Long? =
     getLongExtra(EXTRA_BOOKMARK_ID, DEFAULT_BOOKMARK_ID)
         .takeUnless { it == DEFAULT_BOOKMARK_ID }
 
+fun Intent.resetBookmarkId() {
+    val removeId: Long? = null
+    putExtra(EXTRA_BOOKMARK_ID, removeId)
+}
+
 fun Intent.requireBookmarkId() = getBookmarkId()!!

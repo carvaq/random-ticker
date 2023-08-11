@@ -33,6 +33,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -40,11 +41,13 @@ import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
+import com.fanstaticapps.randomticker.data.BookmarkSaver
 import com.fanstaticapps.randomticker.extensions.getBookmarkId
 import com.fanstaticapps.randomticker.extensions.isAtLeastS
 import com.fanstaticapps.randomticker.extensions.isAtLeastT
 import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
 import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
+import com.fanstaticapps.randomticker.extensions.resetBookmarkId
 import com.fanstaticapps.randomticker.helper.MigrationService
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
@@ -62,22 +65,25 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.select(intent.getBookmarkId())
+        intent.getBookmarkId()?.let {
+            mainViewModel.select(it)
+            intent.resetBookmarkId()
+        }
         migrationService.migrate()
         setContent {
             AppTheme {
                 val isSinglePane = isCompactOrInPortrait()
                 val bookmarks = mainViewModel.bookmarks.collectAsState(initial = emptyList()).value
-                val editableBookmark =
+                val editingBookmark =
                     mainViewModel.selectedBookmark.collectAsState(initial = null).value?.let {
-                        mutableStateOf(it)
+                        rememberSaveable(stateSaver = BookmarkSaver.saver) { mutableStateOf(it) }
                     }
                 val bookmarkToStart = remember { mutableStateOf<Bookmark?>(null) }
                 RequestPermissions(bookmarkToStart)
                 Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-                    TopBar(isSinglePane, editableBookmark)
+                    TopBar(isSinglePane, editingBookmark)
                 }, floatingActionButton = {
-                    AddBookmarkButton(isSinglePane, editableBookmark)
+                    AddBookmarkButton(isSinglePane, editingBookmark)
                 }, snackbarHost = {
                     if (requestNotificationInSettings.value) {
                         PermissionRequestSnackbar()
@@ -87,7 +93,7 @@ class MainActivity : BaseActivity() {
                     TickerApp(
                         paddingValues = paddingValues,
                         isSinglePane = isSinglePane,
-                        selectedBookmark = editableBookmark,
+                        selectedBookmark = editingBookmark,
                         bookmarks = bookmarks,
                         start = startBookmark(bookmarkToStart)
                     )
