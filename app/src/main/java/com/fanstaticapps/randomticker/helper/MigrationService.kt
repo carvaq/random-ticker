@@ -3,8 +3,6 @@ package com.fanstaticapps.randomticker.helper
 import android.content.Context
 import android.media.RingtoneManager
 import android.net.Uri
-import androidx.core.content.edit
-import androidx.preference.PreferenceManager
 import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.extensions.createNotificationChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
@@ -15,7 +13,8 @@ class MigrationService(
 ) {
 
     fun migrate() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefs =
+            context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
         val ringtonePrefKey = "pref_ringtone"
         val ringtonePref = prefs.getString(ringtonePrefKey, null)
         if (ringtonePref != null) {
@@ -28,10 +27,7 @@ class MigrationService(
                     .getOrNull() ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
                 context.createNotificationChannel(it, soundUri, vibratorPref)
             }
-            prefs.edit {
-                remove(ringtonePrefKey)
-                remove(vibratorPrefKey)
-            }
+            prefs.edit().clear().apply()
         }
     }
 }
