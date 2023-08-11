@@ -4,6 +4,7 @@ import com.fanstaticapps.randomticker.helper.AlarmCoordinator
 import com.fanstaticapps.randomticker.helper.NotificationCoordinator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -47,16 +48,16 @@ class BookmarkService(
         }
     }
 
-    fun intervalEnded(bookmarkId: Long) {
-        fetchBookmarkById(bookmarkId) {
+    fun intervalEnded(bookmarkId: Long): Job {
+        return fetchBookmarkById(bookmarkId) {
             notificationCoordinator.cancelAllNotifications(it)
             notificationCoordinator.showKlaxonNotification(it)
             if (it.autoRepeat) scheduleAlarm(bookmarkId, false)
         }
     }
 
-    fun scheduleAlarm(bookmarkId: Long, isManuallyTriggered: Boolean) {
-        fetchBookmarkById(bookmarkId) {
+    fun scheduleAlarm(bookmarkId: Long, isManuallyTriggered: Boolean): Job {
+        return fetchBookmarkById(bookmarkId) {
             if (!isManuallyTriggered && it.autoRepeat) delay(it.autoRepeatInterval)
             val bookmark = it.saveBookmarkWithNewInterval()
             Timber.d("creating a new ticker for bookmark $bookmark")
@@ -74,12 +75,12 @@ class BookmarkService(
             .also { repository.insertOrUpdateBookmark(it) }
     }
 
-    fun cancelTicker(bookmarkId: Long) {
-        cancelTicker(bookmarkId) {}
+    fun cancelTicker(bookmarkId: Long): Job {
+        return cancelTicker(bookmarkId) {}
     }
 
-    fun delete(bookmark: Bookmark) {
-        cancelTicker(bookmark.id) {
+    fun delete(bookmark: Bookmark): Job {
+        return cancelTicker(bookmark.id) {
             notificationCoordinator.deleteChannelsForBookmark(bookmark)
             repository.deleteBookmark(bookmark)
         }
@@ -88,8 +89,8 @@ class BookmarkService(
     private fun cancelTicker(
         bookmarkId: Long,
         afterCancelling: suspend () -> Unit
-    ) {
-        fetchBookmarkById(bookmarkId) {
+    ): Job {
+        return fetchBookmarkById(bookmarkId) {
             Timber.d("cancel bookmark $it")
             repository.insertOrUpdateBookmark(it.reset())
             notificationCoordinator.cancelAllNotifications(it)
@@ -98,14 +99,14 @@ class BookmarkService(
         }
     }
 
-    private fun fetchBookmarkById(bookmarkId: Long, onBookmark: suspend (Bookmark) -> Unit) {
-        coroutineScope.launch {
+    private fun fetchBookmarkById(bookmarkId: Long, onBookmark: suspend (Bookmark) -> Unit): Job {
+        return coroutineScope.launch {
             getBookmarkById(bookmarkId).take(1).collect(onBookmark)
         }
     }
 
-    fun applyForAllBookmarks(action: (Bookmark) -> Unit) {
-        coroutineScope.launch {
+    fun applyForAllBookmarks(action: (Bookmark) -> Unit): Job {
+        return coroutineScope.launch {
             repository.getAllBookmarks().firstOrNull()?.forEach(action)
         }
     }
