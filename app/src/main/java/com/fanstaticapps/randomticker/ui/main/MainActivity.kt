@@ -18,8 +18,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.BookmarkAdd
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,8 +37,10 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -47,6 +52,7 @@ import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
 import com.fanstaticapps.randomticker.helper.MigrationService
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.main.compose.TickerApp
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -78,6 +84,7 @@ class MainActivity : BaseActivity() {
                         actions = {
                             NotificationSettingsAction(editableBookmark)
                             SaveAction(editableBookmark)
+                            OverFlowAction()
                         })
                 }, floatingActionButton = {
                     AddBookmarkButton(isSinglePane, editableBookmark)
@@ -97,6 +104,32 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun OverFlowAction() {
+        var showMenu by remember { mutableStateOf(false) }
+        IconButton(onClick = { showMenu = !showMenu }) {
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = null
+            )
+        }
+        DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = { showMenu = false }
+        ) {
+            DropdownMenuItem(onClick = {
+                startActivity(
+                    Intent(
+                        this@MainActivity,
+                        OssLicensesMenuActivity::class.java
+                    )
+                )
+            }, text = {
+                Text(text = stringResource(id = R.string.license))
+            })
         }
     }
 
