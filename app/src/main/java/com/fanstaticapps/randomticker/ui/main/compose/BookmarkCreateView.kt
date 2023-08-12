@@ -1,7 +1,9 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
+import android.content.res.Configuration
 import android.widget.NumberPicker
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,8 +30,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
@@ -36,18 +43,14 @@ import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.Boundary
 import com.fanstaticapps.randomticker.databinding.BoundaryBinding
-import com.fanstaticapps.randomticker.ui.main.MainViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BookmarkCreateView(
     modifier: Modifier = Modifier,
     bookmarkState: MutableState<Bookmark>,
+    delete: (Bookmark) -> Unit,
+    isSinglePane: Boolean
 ) {
-    val viewModel = koinViewModel<MainViewModel>()
-    val delete = { bookmark: Bookmark ->
-        viewModel.delete(bookmark)
-    }
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)
@@ -62,33 +65,55 @@ fun BookmarkCreateView(
             bookmarkState.value = bookmark.copy(name = it)
         }
         Spacer(Modifier.height(16.dp))
-        Column {
-            BoundaryView(
-                contentBindingModifier = Modifier
-                    .heightIn(max = 240.dp)
-                    .fillMaxWidth(),
-                boundary = bookmark.min,
-                boundaryType = R.string.from
-            ) { hours, minutes, seconds ->
-                bookmarkState.value = bookmark.copy(
-                    minimumHours = hours,
-                    minimumMinutes = minutes,
-                    minimumSeconds = seconds
-                )
+        if (isSinglePane && LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
+                BoundaryView(
+                    modifier = Modifier.weight(0.5f),
+                    boundary = bookmark.min,
+                    boundaryType = R.string.from
+                ) { hours, minutes, seconds ->
+                    bookmarkState.value = bookmark.copy(
+                        minimumHours = hours,
+                        minimumMinutes = minutes,
+                        minimumSeconds = seconds
+                    )
+                }
+                Spacer(Modifier.width(16.dp))
+                BoundaryView(
+                    modifier = Modifier.weight(0.5f),
+                    boundary = bookmark.max,
+                    boundaryType = R.string.to
+                ) { hours, minutes, seconds ->
+                    bookmarkState.value = bookmark.copy(
+                        maximumHours = hours,
+                        maximumMinutes = minutes,
+                        maximumSeconds = seconds
+                    )
+                }
             }
-            Spacer(Modifier.height(16.dp))
-            BoundaryView(
-                contentBindingModifier = Modifier
-                    .heightIn(max = 240.dp)
-                    .fillMaxWidth(),
-                boundary = bookmark.max,
-                boundaryType = R.string.to
-            ) { hours, minutes, seconds ->
-                bookmarkState.value = bookmark.copy(
-                    maximumHours = hours,
-                    maximumMinutes = minutes,
-                    maximumSeconds = seconds
-                )
+        } else {
+            Column {
+                BoundaryView(
+                    boundary = bookmark.min,
+                    boundaryType = R.string.from
+                ) { hours, minutes, seconds ->
+                    bookmarkState.value = bookmark.copy(
+                        minimumHours = hours,
+                        minimumMinutes = minutes,
+                        minimumSeconds = seconds
+                    )
+                }
+                Spacer(Modifier.height(16.dp))
+                BoundaryView(
+                    boundary = bookmark.max,
+                    boundaryType = R.string.to
+                ) { hours, minutes, seconds ->
+                    bookmarkState.value = bookmark.copy(
+                        maximumHours = hours,
+                        maximumMinutes = minutes,
+                        maximumSeconds = seconds
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -105,7 +130,6 @@ fun BookmarkCreateView(
                 text = stringResource(id = R.string.button_delete)
             )
         }
-
     }
 }
 
@@ -119,16 +143,30 @@ fun AutoRepeat(value: Boolean, onCheckedChanged: (Boolean) -> Unit) {
 
 @Composable
 fun BookmarkName(bookmarkName: String, updateName: (String) -> Unit) {
+    val maxChar = 20
+    val rememberFocused = remember { mutableStateOf(false) }
     OutlinedTextField(
+        singleLine = true,
         value = bookmarkName,
-        onValueChange = updateName,
+        onValueChange = { if (it.length <= maxChar) updateName(it) },
         label = {
             Text(
                 text = stringResource(id = R.string.bookmark_hint),
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
-        modifier = Modifier.fillMaxWidth(),
+        supportingText = {
+            if (rememberFocused.value) {
+                Text(
+                    text = "${bookmarkName.length} / $maxChar",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.End,
+                )
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged { rememberFocused.value = it.isFocused },
         textStyle = MaterialTheme.typography.bodyMedium,
     )
 }
@@ -137,7 +175,6 @@ fun BookmarkName(bookmarkName: String, updateName: (String) -> Unit) {
 @Composable
 private fun BoundaryView(
     modifier: Modifier = Modifier,
-    contentBindingModifier: Modifier = Modifier,
     boundary: Boundary,
     @StringRes boundaryType: Int,
     changeListener: BoundaryChangeListener
@@ -150,7 +187,9 @@ private fun BoundaryView(
         ) {
             Text(text = stringResource(id = boundaryType), fontWeight = FontWeight.Bold)
             AndroidViewBinding(
-                modifier = contentBindingModifier
+                modifier = Modifier
+                    .heightIn(max = 240.dp)
+                    .fillMaxWidth()
                     .wrapContentHeight()
                     .align(Alignment.CenterHorizontally), factory = BoundaryBinding::inflate
             ) {
@@ -204,10 +243,20 @@ fun interface BoundaryChangeListener {
     fun onChange(hours: Int, minutes: Int, seconds: Int)
 }
 
-@Preview(heightDp = 2000, showBackground = true)
+
+@Preview(device = Devices.TABLET, showBackground = true, heightDp = 1000)
+@Composable
+fun BookmarkCreateLandscapePreview() {
+    BookmarkCreateView(bookmarkState = remember {
+        mutableStateOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
+    }, delete = {}, isSinglePane = true)
+}
+
+
+@Preview(heightDp = 1000, showBackground = true)
 @Composable
 fun BookmarkCreatePreview() {
     BookmarkCreateView(bookmarkState = remember {
         mutableStateOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
-    })
+    }, delete = {}, isSinglePane = false)
 }

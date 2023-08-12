@@ -48,6 +48,9 @@ fun TickerApp(
             permissionGrantedAction.value
         )
     }
+    val delete = { bookmark: Bookmark ->
+        viewModel.delete(bookmark)
+    }
     if (isSinglePane) {
         Crossfade(
             targetState = selectedBookmark,
@@ -65,7 +68,9 @@ fun TickerApp(
             } else {
                 BookmarkCreateView(
                     modifier = Modifier.padding(paddingValues),
-                    bookmarkState = state
+                    bookmarkState = state,
+                    isSinglePane = true,
+                    delete = delete
                 )
             }
         }
@@ -87,7 +92,9 @@ fun TickerApp(
                 if (selectedBookmark != null) {
                     BookmarkCreateView(
                         modifier = Modifier.weight(0.6f),
-                        bookmarkState = selectedBookmark
+                        bookmarkState = selectedBookmark,
+                        delete = delete,
+                        isSinglePane = false
                     )
                 } else {
                     EmptyView(
