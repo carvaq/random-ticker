@@ -56,7 +56,7 @@ data class Bookmark(
 
     private companion object {
         const val NOT_SET_VALUE: Long = 0
-        const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 2000
+        const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 5000
     }
 }
 

@@ -47,13 +47,9 @@ class AlarmCoordinator(private val context: Context) {
         intent.putExtra(EXTRA_BOOKMARK_ID, bookmark.id)
         return PendingIntent.getBroadcast(
             this,
-            REQUEST_CODE_ALARM,
+            bookmark.klaxonNotificationId,
             intent,
             flag or PendingIntent.FLAG_IMMUTABLE
         )
-    }
-
-    private companion object {
-        const val REQUEST_CODE_ALARM = 421
     }
 }
