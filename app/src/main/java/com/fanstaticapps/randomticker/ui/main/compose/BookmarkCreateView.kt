@@ -36,13 +36,18 @@ import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.Boundary
 import com.fanstaticapps.randomticker.databinding.BoundaryBinding
+import com.fanstaticapps.randomticker.ui.main.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BookmarkCreateView(
     modifier: Modifier = Modifier,
     bookmarkState: MutableState<Bookmark>,
-    delete: (Bookmark) -> Unit,
 ) {
+    val viewModel = koinViewModel<MainViewModel>()
+    val delete = { bookmark: Bookmark ->
+        viewModel.delete(bookmark)
+    }
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)
@@ -204,6 +209,5 @@ fun interface BoundaryChangeListener {
 fun BookmarkCreatePreview() {
     BookmarkCreateView(bookmarkState = remember {
         mutableStateOf(Bookmark(maximumSeconds = 12, maximumHours = 1))
-    },
-        delete = {})
+    })
 }
