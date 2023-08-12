@@ -59,6 +59,7 @@ object PermissionHandler {
             if (isGranted && context.needsScheduleAlarmPermission()) {
                 requestScheduleAlarmPermissionDialog.value = true
             } else if (isGranted) {
+                requestNotificationPermissionInSettings.value = true
                 onPermissionsGranted()
             } else {
                 requestNotificationPermissionInSettings.value = true
