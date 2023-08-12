@@ -3,15 +3,17 @@ package com.fanstaticapps.randomticker.ui.main.compose
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
@@ -20,7 +22,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,45 +51,19 @@ fun BookmarkListOverview(
     stop: (Bookmark) -> Unit,
     permissionGrantedAction: MutableState<() -> Unit>,
 ) {
-    LazyColumn(
-        modifier = modifier
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(400.dp),
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(bookmarks) {
-            BookmarkView(it, edit, start, stop)
+        items(bookmarks.size) {
+            BookmarkView(bookmarks[it], edit, start, stop)
         }
-        item {
-            val context = LocalContext.current
-            val viewModel = koinViewModel<MainViewModel>()
-            Button(
-                onClick = {
-                    permissionGrantedAction.value = { viewModel.createNewBookmark() }
-                    doActionWithPermissionsRequired(
-                        context, permissionGrantedAction.value
-                    )
-
-                },
-                modifier = Modifier
-                    .height(64.dp)
-                    .fillMaxWidth(),
-                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
-                colors = ButtonDefaults.outlinedButtonColors()
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.BookmarkAdd, contentDescription = null,
-                )
-                Text(
-                    text = stringResource(id = R.string.add_bookmark),
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-        }
+        item { AddBookmark(permissionGrantedAction) }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BookmarkView(
     bookmark: Bookmark,
@@ -97,14 +72,14 @@ private fun BookmarkView(
     stop: (Bookmark) -> Unit,
 ) {
     Card(modifier = Modifier.clickable(onClick = { edit(bookmark) })) {
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
                 Text(
                     modifier = Modifier.padding(bottom = 8.dp),
                     text = bookmark.name,
@@ -115,35 +90,64 @@ private fun BookmarkView(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            ButtonRow(bookmark, stop, start)
+            Spacer(modifier = Modifier.weight(1f))
+            if (bookmark.intervalEnd > System.currentTimeMillis()) {
+                Box(modifier = Modifier
+                    .size(72.dp)
+                    .clickable { stop(bookmark) }) {
+                    Icon(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        imageVector = Icons.Default.Stop,
+                        tint = MaterialTheme.colorScheme.error,
+                        contentDescription = stringResource(id = android.R.string.cancel)
+                    )
+                }
+            } else {
+                Box(modifier = Modifier
+                    .size(72.dp)
+                    .clickable { start(bookmark) }) {
+                    Icon(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        imageVector = Icons.Default.PlayArrow,
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = stringResource(id = R.string.start_button)
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun ButtonRow(
-    bookmark: Bookmark,
-    stop: (Bookmark) -> Unit,
-    start: (Bookmark) -> Unit
-) {
-    Row(horizontalArrangement = Arrangement.End) {
-        if (bookmark.intervalEnd > System.currentTimeMillis()) {
-            IconButton(onClick = { stop(bookmark) }) {
-                Icon(
-                    imageVector = Icons.Default.Stop,
-                    tint = MaterialTheme.colorScheme.error,
-                    contentDescription = stringResource(id = android.R.string.cancel)
-                )
-            }
-        } else {
-            IconButton(onClick = { start(bookmark) }) {
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    tint = MaterialTheme.colorScheme.secondary,
-                    contentDescription = stringResource(id = R.string.start_button)
-                )
-            }
-        }
+private fun AddBookmark(permissionGrantedAction: MutableState<() -> Unit>) {
+    val context = LocalContext.current
+    val viewModel = koinViewModel<MainViewModel>()
+    Button(
+        onClick = {
+            permissionGrantedAction.value = { viewModel.createNewBookmark() }
+            doActionWithPermissionsRequired(
+                context, permissionGrantedAction.value
+            )
+
+        },
+        modifier = Modifier
+            .height(64.dp)
+            .fillMaxWidth(),
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
+        colors = ButtonDefaults.outlinedButtonColors()
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.BookmarkAdd, contentDescription = null,
+        )
+        Text(
+            text = stringResource(id = R.string.add_bookmark),
+            modifier = Modifier.padding(start = 16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
 
