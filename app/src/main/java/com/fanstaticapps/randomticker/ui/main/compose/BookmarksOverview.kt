@@ -57,10 +57,10 @@ fun BookmarkListOverview(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        item { AddBookmark(permissionGrantedAction) }
         items(bookmarks.size) {
             BookmarkView(bookmarks[it], edit, start, stop)
         }
-        item { AddBookmark(permissionGrantedAction) }
     }
 }
 
@@ -135,7 +135,7 @@ private fun AddBookmark(permissionGrantedAction: MutableState<() -> Unit>) {
 
         },
         modifier = Modifier
-            .height(64.dp)
+            .height(56.dp)
             .fillMaxWidth(),
         border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
         colors = ButtonDefaults.outlinedButtonColors()
