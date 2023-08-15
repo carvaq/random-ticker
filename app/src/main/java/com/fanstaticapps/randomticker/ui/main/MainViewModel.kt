@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val bookmarkService: BookmarkService) :
-    ViewModel() {
+    ViewModel(), MainTickerViewModel {
     private val selectedBookmarkId = MutableStateFlow<Long?>(null)
     val bookmarks = bookmarkService.fetchAllBookmarks()
     val selectedBookmark = combine(
@@ -19,29 +19,38 @@ class MainViewModel(private val bookmarkService: BookmarkService) :
         bookmarks.find { it.id == selectedBookmarkId }
     }
 
-    fun startBookmark(bookmark: Bookmark) {
+    override fun startBookmark(bookmark: Bookmark) {
         bookmarkService.scheduleAlarm(bookmark.id, true)
     }
 
-    fun select(bookmarkId: Long?) {
+    override fun select(bookmarkId: Long?) {
         selectedBookmarkId.value = bookmarkId
     }
 
-    fun createNewBookmark() {
+    override fun createNewBookmark() {
         viewModelScope.launch {
             selectedBookmarkId.emit(bookmarkService.createNew())
         }
     }
 
-    fun cancelTicker(bookmarkId: Long) {
+    override fun cancelTicker(bookmarkId: Long) {
         bookmarkService.cancelTicker(bookmarkId)
     }
 
-    fun save(bookmark: Bookmark) {
+    override fun save(bookmark: Bookmark) {
         bookmarkService.save(bookmark)
     }
 
-    fun delete(bookmark: Bookmark) {
+    override fun delete(bookmark: Bookmark) {
         bookmarkService.delete(bookmark)
     }
+}
+
+interface MainTickerViewModel {
+    fun startBookmark(bookmark: Bookmark)
+    fun select(bookmarkId: Long?)
+    fun createNewBookmark()
+    fun cancelTicker(bookmarkId: Long)
+    fun save(bookmark: Bookmark)
+    fun delete(bookmark: Bookmark)
 }
