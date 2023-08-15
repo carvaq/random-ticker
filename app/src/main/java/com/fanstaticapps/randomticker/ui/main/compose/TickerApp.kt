@@ -2,7 +2,6 @@ package com.fanstaticapps.randomticker.ui.main.compose
 
 
 import android.content.Context
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -26,13 +25,14 @@ import com.fanstaticapps.randomticker.compose.AppTheme
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.needsPostNotificationPermission
 import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
+import com.fanstaticapps.randomticker.ui.main.MainTickerViewModel
 import com.fanstaticapps.randomticker.ui.main.MainViewModel
 import com.fanstaticapps.randomticker.ui.main.PermissionHandler
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TickerApp(
-    viewModel: MainViewModel = koinViewModel(),
+    viewModel: MainTickerViewModel = koinViewModel<MainViewModel>(),
     paddingValues: PaddingValues,
     isSinglePane: Boolean,
     bookmarks: List<Bookmark>,
@@ -88,28 +88,26 @@ fun TickerApp(
                 { viewModel.cancelTicker(it.id) },
                 permissionGrantedAction
             )
-            AnimatedVisibility(visible = selectedBookmark == null) {
-                if (selectedBookmark != null) {
-                    BookmarkCreateView(
-                        modifier = Modifier.weight(0.6f),
-                        bookmarkState = selectedBookmark,
-                        delete = delete,
-                        isSinglePane = false
-                    )
-                } else {
-                    EmptyView(
-                        Modifier.weight(0.6f),
-                        imageVector = Icons.Outlined.Bookmarks,
-                        text = stringResource(id = R.string.select_bookmark)
-                    )
-                }
+            if (selectedBookmark != null) {
+                BookmarkCreateView(
+                    modifier = Modifier.weight(0.6f),
+                    bookmarkState = selectedBookmark,
+                    delete = delete,
+                    isSinglePane = false
+                )
+            } else {
+                EmptyView(
+                    Modifier.weight(0.6f),
+                    imageVector = Icons.Outlined.Bookmarks,
+                    text = stringResource(id = R.string.select_bookmark)
+                )
             }
-
         }
+
     }
 }
 
-private fun Bookmark.startBookmark(context: Context, viewModel: MainViewModel) {
+private fun Bookmark.startBookmark(context: Context, viewModel: MainTickerViewModel) {
     if (!context.needsPostNotificationPermission() && !context.needsScheduleAlarmPermission()) {
         viewModel.startBookmark(this)
     }
