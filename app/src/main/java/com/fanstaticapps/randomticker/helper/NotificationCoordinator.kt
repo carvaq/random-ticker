@@ -16,7 +16,7 @@ import com.fanstaticapps.randomticker.helper.IntentHelper.getKlaxonActivityPendi
 import com.fanstaticapps.randomticker.helper.IntentHelper.getOpenAppPendingIntent
 
 class NotificationCoordinator(private val context: Context) {
-    val groupKey = "com.fanstaticapps.randomticker.KLAXON"
+    private val groupKey = "com.fanstaticapps.randomticker.KLAXON"
 
     fun cancelAllNotifications(bookmark: Bookmark) {
         val notificationManager = context.getNotificationManager()
@@ -50,12 +50,11 @@ class NotificationCoordinator(private val context: Context) {
                 )
             )
             .setContentTitle(bookmark.name)
-            .setShowWhen(true)
-            .setWhen(bookmark.intervalEnd)
             .setGroup(groupKey)
             .setContentIntent(getOpenAppPendingIntent(context, bookmark))
             .setSilent(true)
-            .setChronometerCountDown(true)
+            .setProgress(0, 100, true)
+            .setChronometerCountDown(false)
             .setUsesChronometer(true)
             .setSmallIcon(R.drawable.ic_stat_timer)
             .build()

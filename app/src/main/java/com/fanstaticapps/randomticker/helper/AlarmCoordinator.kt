@@ -16,26 +16,25 @@ class AlarmCoordinator(private val context: Context) {
     fun scheduleAlarm(bookmark: Bookmark) {
         val alarmManger = context.getAlarmManager()
         if (!isAtLeastS() || alarmManger?.canScheduleExactAlarms() == true) {
-            val alarmIntent = context.getAlarmEndedReceiverPendingIntent(
+            context.getAlarmEndedReceiverPendingIntent(
                 PendingIntent.FLAG_UPDATE_CURRENT,
                 bookmark
-            )
-            alarmManger?.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                bookmark.intervalEnd,
-                alarmIntent
-            )
-            Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
+            )?.let { alarmIntent ->
+                alarmManger?.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    bookmark.intervalEnd,
+                    alarmIntent
+                )
+                Timber.d("Setting alarm to sound in ${(bookmark.intervalEnd - System.currentTimeMillis()) / 1000}s")
+            }
         }
     }
 
     fun cancelAlarm(bookmark: Bookmark) {
-        context.getAlarmManager()?.cancel(
-            context.getAlarmEndedReceiverPendingIntent(
-                PendingIntent.FLAG_CANCEL_CURRENT,
-                bookmark
-            )
-        )
+        context.getAlarmEndedReceiverPendingIntent(
+            PendingIntent.FLAG_CANCEL_CURRENT,
+            bookmark
+        )?.let { context.getAlarmManager()?.cancel(it) }
     }
 
     private fun Context.getAlarmEndedReceiverPendingIntent(
