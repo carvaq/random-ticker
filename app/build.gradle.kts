@@ -1,11 +1,12 @@
 import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("com.github.triplet.play") version "3.8.3"
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
+    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
 }
 
 
@@ -15,12 +16,12 @@ val patch = 0
 
 android {
 
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
 
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = 10706
@@ -63,7 +64,7 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        viewBinding = false
         compose = true
     }
     composeOptions {
@@ -90,32 +91,31 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.7.2")
-    implementation("androidx.fragment:fragment-ktx:1.6.1")
+    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.room:room-ktx:2.6.0")
+    ksp("androidx.room:room-compiler:2.6.0")
 
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
-    implementation("io.insert-koin:koin-androidx-compose:3.4.6")
-    implementation("io.insert-koin:koin-android:3.4.3")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation("io.insert-koin:koin-android:3.5.0")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    val composeBom = platform("androidx.compose:compose-bom:2023.06.01")
-    implementation(composeBom)
+    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui")
@@ -125,13 +125,13 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class")
     implementation("androidx.compose.runtime:runtime-livedata")
     implementation("androidx.compose.ui:ui-viewbinding")
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.8.0")
 
-    testImplementation("io.mockk:mockk:1.13.5")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("junit:junit:4.13.2")
 
-    androidTestImplementation("androidx.room:room-testing:2.5.2")
+    androidTestImplementation("androidx.room:room-testing:2.6.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
     androidTestImplementation("androidx.test.ext:truth:1.5.0")
