@@ -90,8 +90,15 @@ private fun BookmarkView(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
-            if (bookmark.intervalEnd > System.currentTimeMillis()) {
+            if (bookmark.isRunning()) {
+                Spacer(modifier = Modifier.weight(1f))
+                CountUp(now = System.currentTimeMillis()) {
+                    Text(
+                        modifier = Modifier.padding(end = 8.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        text = it
+                    )
+                }
                 Box(modifier = Modifier
                     .size(72.dp)
                     .clickable { stop(bookmark) }) {
@@ -105,6 +112,7 @@ private fun BookmarkView(
                     )
                 }
             } else {
+                Spacer(modifier = Modifier.weight(1f))
                 Box(modifier = Modifier
                     .size(72.dp)
                     .clickable { start(bookmark) }) {

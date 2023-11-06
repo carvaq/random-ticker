@@ -54,6 +54,8 @@ data class Bookmark(
     @Ignore
     val klaxonActivityRequestCode = requestCodeGenerator.nextInt()
 
+    fun isRunning() = intervalEnd > System.currentTimeMillis()
+
     private companion object {
         const val NOT_SET_VALUE: Long = 0
         const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 5000
