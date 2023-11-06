@@ -2,18 +2,8 @@ package com.fanstaticapps.randomticker.extensions
 
 import android.app.Activity
 import android.app.KeyguardManager
-import android.view.LayoutInflater
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.viewbinding.ViewBinding
-
-inline fun <T : ViewBinding> AppCompatActivity.viewBinding(
-    crossinline bindingInflater: (LayoutInflater) -> T
-) =
-    lazy(LazyThreadSafetyMode.NONE) {
-        bindingInflater.invoke(layoutInflater)
-    }
 
 fun Activity.turnScreenOnAndKeyguardOff() {
     if (isAtLeastO_MR1()) {

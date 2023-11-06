@@ -6,7 +6,7 @@ plugins {
     id("com.github.triplet.play") version "3.8.3"
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.gms.google-services")
-    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
 }
 
 
@@ -64,11 +64,11 @@ android {
     }
 
     buildFeatures {
-        viewBinding = false
+        viewBinding = true
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.8"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     testOptions {
         unitTests.apply {
