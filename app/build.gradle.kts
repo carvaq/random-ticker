@@ -114,7 +114,7 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material.icons.extended)
-    implementation(libs.material3.window.size.class1)
+    implementation(libs.material3.window.size)
     implementation(libs.ui.viewbinding)
     debugImplementation(libs.ui.tooling)
 
