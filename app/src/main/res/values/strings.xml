@@ -1,22 +1,49 @@
 <resources>
 	<string name="from">From</string>
 	<string name="to">To</string>
-	<string name="start_button">Start</string>
-	<string name="stop_button" translatable="false">@string/action_stop</string>
-	<string name="hours_label">hours</string>
-	<string name="minutes_label">minutes</string>
-	<string name="seconds_label">seconds</string>
+
 	<string name="button_delete">Delete</string>
-	<string name="add_bookmark">Add bookmark</string>
-	<string name="bookmark_hint">Bookmark name</string>
-	<string name="select_bookmark">Select bookmark</string>
-	<string name="open_notification_channel_title">Open app notification settings</string>
-	<string name="action_repeat">Repeat</string>
-	<string name="action_stop">Stop</string>
-	<string name="auto_repeat">Auto repeat after 5 seconds</string>
-	<string name="please_allow_alarm_scheduling">You have disabled alarm scheduling for Random Ticker, please go to settings and grant the permission.</string>
-	<string name="notification_ticker_ended">Time\'s up!</string>
+	<string name="add_timer">New Timer</string>
+	<string name="edit_timer">Edit Timer</string>
+	<string name="create_timer">Create Timer</string>
+
+	<string name="action_repeat">Auto-Repeat</string>
+	<string name="auto_repeat">Timer will automatically restart when finished.</string>
+	<string name="notification_ticker_ended">Time\'s Up!</string>
+
 	<string name="save_button">Save</string>
-	<string name="open_settings">Open</string>
-	<string name="notification_settings_blocked">Notification permission is required, please enable it in the settings</string>
+	<string name="button_open_settings">Open Settings</string>
+
+	<string name="alarm_sound">Alarm Sound</string>
+	<string name="selected_sound">Selected: %1$s</string>
+	<string name="select_alarm_sound">Select Alarm Sound</string>
+
+	<string name="minimum_interval_title">Minimum Interval</string>
+	<string name="maximum_interval_title">Maximum Interval</string>
+
+	<string name="empty_editor_title">Nothing Selected</string>
+	<string name="empty_editor_message">Select a timer from the list to see its details, or tap \'Create New Timer\' to get started.</string>
+	<string name="empty_editor_icon_desc">Hourglass icon indicating no timer is selected.</string>
+
+	<string name="create_new_timer_button">Create New Timer</string>
+	<string name="create_new_timer_button_desc">Create a new timer</string>
+
+	<string name="set_random_interval">Set Random Interval</string>
+
+	<string name="start_timer">Start Timer</string>
+	<string name="stop_timer">Stop Timer</string>
+
+	<string name="notification_permission_title">Enable Notifications</string>
+	<string name="notification_permission_rationale_timer">To alert you when timers finish, this app needs permission to show notifications. Please grant this permission for timer alerts.</string>
+	<string name="button_grant_permission">Allow Notifications</string>
+	<string name="button_cancel">Cancel</string>
+
+	<string name="notification_permission_denied_title">Notifications Disabled</string>
+	<string name="notification_permission_denied_message">You\'ve disabled notifications. To receive timer alerts, please enable notifications for this app in system settings.</string>
+
+	<string name="no_timers_message">No timers yet!</string>
+	<string name="add_first_timer">Add Your First Timer</string>
+
+	<string name="interval_information">Interval: %1$s – %2$s</string>
+
 </resources>

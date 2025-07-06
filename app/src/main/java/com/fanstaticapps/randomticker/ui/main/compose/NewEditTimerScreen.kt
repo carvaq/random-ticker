@@ -154,6 +154,7 @@ fun NewEditTimerScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = stringResource(R.string.auto_repeat),
                     style = MaterialTheme.typography.bodyLarge
                 )
