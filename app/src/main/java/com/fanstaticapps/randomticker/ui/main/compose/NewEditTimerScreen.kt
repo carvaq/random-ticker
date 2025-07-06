@@ -15,28 +15,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,10 +59,10 @@ import kotlin.time.Duration.Companion.minutes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewEditTimerScreen(
+    modifier: Modifier = Modifier,
     timerDetails: TimerItemUiState? = null,
     onSave: (TimerItemUiState) -> Unit,
     onCancel: () -> Unit,
-    onDelete: () -> Unit
 ) {
     var timerName by remember { mutableStateOf(timerDetails?.name ?: "") }
 
@@ -88,135 +82,132 @@ fun NewEditTimerScreen(
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             alarmSoundUri = readUri(it)
         }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OutlinedTextField(
+                value = timerName,
+                onValueChange = { timerName = it },
+                label = { Text(stringResource(R.string.app_name)) },
+                placeholder = { Text("e.g., Pomodoro Break, Workout Set") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp) // Expressive shape
+            )
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = timerDetails?.let { stringResource(R.string.edit_timer, it.name) }
-                        ?: stringResource(R.string.create_timer))
+
+            Text(
+                "Set Random Interval",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            IntervalSelectorRow(
+                label = stringResource(R.string.from),
+                duration = minInterval,
+                onClick = { showMinIntervalDialog = true }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            IntervalSelectorRow(
+                label = stringResource(R.string.to),
+                duration = maxInterval,
+                onClick = { showMaxIntervalDialog = true }
+            )
+
+
+            HorizontalDivider(Modifier.padding(vertical = 24.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = stringResource(R.string.auto_repeat),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Switch(
+                    checked = autoRepeatEnabled,
+                    onCheckedChange = { autoRepeatEnabled = it },
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            RingtoneSelector(launcher, alarmSoundName, alarmSoundUri)
+        }
+
+        ButtonRow(onCancel) {
+            val newConfig = TimerItemUiState(
+                id = timerDetails?.id ?: 0,
+                name = timerName,
+                minInterval = minInterval,
+                maxInterval = maxInterval,
+                autoRepeat = autoRepeatEnabled,
+                alarmSound = alarmSoundUri,
+                timerEnd = 0
+            )
+            onSave(newConfig)
+        }
+
+        if (showMinIntervalDialog) {
+            DurationPickerDialog(
+                stringResource(R.string.minimum_interval_title),
+                minInterval,
+                {
+                    minInterval = it
+                    showMinIntervalDialog = false
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-                actions = {
-                    if (timerDetails != null) { // Only show delete if editing an existing timer
-                        IconButton(onClick = { onDelete() }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.button_delete)
-                            )
-                        }
-                    }
-                }
+                { showMinIntervalDialog = false })
+        }
+        if (showMaxIntervalDialog) {
+            DurationPickerDialog(
+                stringResource(R.string.maximum_interval_title),
+                maxInterval,
+                {
+                    maxInterval = it
+                    showMaxIntervalDialog = false
+                },
+                { showMaxIntervalDialog = false })
+        }
+    }
+
+}
+
+@Composable
+private fun IntervalSelectorRow(label: String, duration: Duration, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp)
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(label, style = MaterialTheme.typography.bodyLarge)
+        Card(
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+        ) {
+            Text(
+                text = duration.toComponents { h, m, s, _ -> "${h}h ${m}m ${s}s" },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium
             )
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OutlinedTextField(
-                    value = timerName,
-                    onValueChange = { timerName = it },
-                    label = { Text(stringResource(R.string.app_name)) },
-                    placeholder = { Text("e.g., Pomodoro Break, Workout Set") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp) // Expressive shape
-                )
-
-
-                Text(
-                    "Set Random Interval",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-
-                IntervalSelectorRow(
-                    label = stringResource(R.string.from),
-                    duration = minInterval,
-                    onClick = { showMinIntervalDialog = true }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-
-                IntervalSelectorRow(
-                    label = stringResource(R.string.to),
-                    duration = maxInterval,
-                    onClick = { showMaxIntervalDialog = true }
-                )
-
-
-                HorizontalDivider(Modifier.padding(vertical = 24.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(R.string.auto_repeat),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Switch(
-                        checked = autoRepeatEnabled,
-                        onCheckedChange = { autoRepeatEnabled = it },
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                RingtoneSelector(launcher, alarmSoundName, alarmSoundUri)
-            }
-
-            ButtonRow(onCancel) {
-                val newConfig = TimerItemUiState(
-                    id = timerDetails?.id ?: 0,
-                    name = timerName,
-                    minInterval = minInterval,
-                    maxInterval = maxInterval,
-                    autoRepeat = autoRepeatEnabled,
-                    alarmSound = alarmSoundUri,
-                    timerEnd = 0
-                )
-                onSave(newConfig)
-            }
-
-            if (showMinIntervalDialog) {
-                DurationPickerDialog(
-                    stringResource(R.string.minimum_interval_title),
-                    minInterval,
-                    {
-                        minInterval = it
-                        showMinIntervalDialog = false
-                    },
-                    { showMinIntervalDialog = false })
-            }
-            if (showMaxIntervalDialog) {
-                DurationPickerDialog(
-                    stringResource(R.string.maximum_interval_title),
-                    maxInterval,
-                    {
-                        maxInterval = it
-                        showMaxIntervalDialog = false
-                    },
-                    { showMaxIntervalDialog = false })
-            }
-        }
-
     }
 }
 
@@ -301,40 +292,13 @@ private fun RingtoneSelector(
     }
 }
 
-
-@Composable
-private fun IntervalSelectorRow(label: String, duration: Duration, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(label, style = MaterialTheme.typography.bodyLarge)
-        Card(
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-        ) {
-            Text(
-                text = duration.toComponents { h, m, s, _ -> "${h}h ${m}m ${s}s" },
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium
-            )
-        }
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewEditTimerScreen() {
     MaterialTheme {
         NewEditTimerScreen(
-            onSave = { config -> println("Saved: $config") },
-            onCancel = { println("Cancelled") },
-            onDelete = { println("Deleted") }
-        )
+            onSave = { config -> println("Saved: $config") }
+        ) { println("Cancelled") }
     }
 }
 
@@ -353,9 +317,7 @@ fun PreviewEditExistingTimerScreen() {
     MaterialTheme {
         NewEditTimerScreen(
             timerDetails = existingConfig,
-            onSave = { config -> println("Updated: $config") },
-            onCancel = { println("Cancelled edit") },
-            onDelete = { println("Deleted") }
-        )
+            onSave = { config -> println("Updated: $config") }
+        ) { println("Cancelled edit") }
     }
 }

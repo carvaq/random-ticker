@@ -5,13 +5,19 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -44,28 +50,30 @@ fun RandomTimerAppContent(
     var selectedTimerForEdit: Long? by remember { mutableStateOf(selectedForEdit) }
     var showEditorScreen by remember { mutableStateOf(false) }
 
-    val onSaveTimer: (TimerItemUiState) -> Unit = { timerDetails ->
-        viewModel.save(timerDetails)
+    val hideEditor = {
         selectedTimerForEdit = null
         showEditorScreen = false
     }
 
-    val onCancelEdit: () -> Unit = {
-        selectedTimerForEdit = null
-        showEditorScreen = false
+    val onSaveTimer: (TimerItemUiState) -> Unit = { timerDetails ->
+        viewModel.save(timerDetails)
+        hideEditor()
     }
+
+    val onCancelEdit = hideEditor
 
     val onDelete: () -> Unit = {
         selectedTimerForEdit?.let { viewModel.delete(it) }
-        selectedTimerForEdit = null
-        showEditorScreen = false
+        hideEditor()
     }
+    val onStartTimer: (Long) -> Unit = { viewModel.start(it) }
+
 
     val isTwoPane = windowWidthSizeClass == WindowWidthSizeClass.Expanded
 
     Scaffold(
         floatingActionButton = {
-            if (!isTwoPane && !showEditorScreen) {
+            if (!showEditorScreen) {
                 FloatingActionButton(onClick = {
                     selectedTimerForEdit = null
                     showEditorScreen = true
@@ -73,7 +81,9 @@ fun RandomTimerAppContent(
                     Icon(Icons.Default.Add, stringResource(R.string.add_timer))
                 }
             }
-        }
+        },
+        topBar = { TopBar(showEditorScreen, selectedTimerForEdit, onDelete, onCancelEdit) }
+
     ) { paddingValues ->
         if (isTwoPane) {
             // Left pane: List
@@ -90,9 +100,8 @@ fun RandomTimerAppContent(
                 ) {
                     TimerListScreen(
                         timers = timers,
-                        onTimerClick = { timer -> selectedTimerForEdit = timer },
-                        onAddTimerClick = { /* FAB handles this in two-pane, or add a button */ },
-                        onStartTimerClick = { }
+                        onStartTimerClick = onStartTimer,
+                        onTimerClick = { timer -> selectedTimerForEdit = timer }
                     )
                 }
 
@@ -106,11 +115,9 @@ fun RandomTimerAppContent(
                     color = MaterialTheme.colorScheme.surface
                 ) {
                     NewEditTimerScreen(
-                        timerDetails = timers.first { it.id == selectedTimerForEdit },
+                        timerDetails = timers.firstOrNull { it.id == selectedTimerForEdit },
                         onSave = onSaveTimer,
-                        onCancel = onCancelEdit,
-                        onDelete = onDelete
-
+                        onCancel = onCancelEdit
                     )
                 }
             }
@@ -118,24 +125,69 @@ fun RandomTimerAppContent(
             // Single-pane layout for Compact/Medium width
             if (showEditorScreen) {
                 NewEditTimerScreen(
-                    timerDetails = timers.first { it.id == selectedTimerForEdit },
+                    modifier = Modifier.padding(paddingValues),
+                    timerDetails = timers.firstOrNull { it.id == selectedTimerForEdit },
                     onSave = onSaveTimer,
-                    onCancel = onCancelEdit,
-                    onDelete = onDelete
+                    onCancel = onCancelEdit
                 )
             } else {
                 TimerListScreen(
                     timers = timers,
+                    onStartTimerClick = onStartTimer,
                     onTimerClick = { timer ->
                         selectedTimerForEdit = timer
                         showEditorScreen = true
                     },
-                    onAddTimerClick = { /* Handled by FAB */ },
-                    onStartTimerClick = { }
+                    modifier = Modifier.padding(paddingValues)
                 )
             }
         }
     }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun TopBar(
+    showEditorScreen: Boolean,
+    selectedForEdit: Long?,
+    onDelete: () -> Unit,
+    onCancel: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = when {
+                    !showEditorScreen -> R.string.app_name
+                    selectedForEdit != null -> R.string.edit_timer
+                    else -> R.string.create_timer
+                }.let { stringResource(it) }
+            )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
+        actions = {
+            if (showEditorScreen && selectedForEdit != null) {
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.button_delete)
+                    )
+                }
+            }
+        },
+        navigationIcon = {
+            if (showEditorScreen) {
+                IconButton(onClick = onCancel) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.button_delete)
+                    )
+                }
+            }
+        }
+    )
 }
 
 // --- Preview Provider for WindowWidthSizeClass ---
@@ -147,7 +199,7 @@ class WindowWidthSizeClassProvider : PreviewParameterProvider<WindowWidthSizeCla
     )
 }
 
-private val viewModelBase = object : MainTickerViewModel {
+private val viewModelStub = object : MainTickerViewModel {
     override val timers: Flow<List<TimerItemUiState>> = flowOf(
         listOf(
             TimerItemUiState(
@@ -194,7 +246,7 @@ fun RandomTimerAppContentCompactPreview(
             Surface(modifier = Modifier.fillMaxSize()) {
                 RandomTimerAppContent(
                     windowWidthSizeClass = WindowWidthSizeClass.Compact,
-                    viewModelBase
+                    viewModelStub
                 )
             }
         }
@@ -216,7 +268,7 @@ fun RandomTimerAppContentMediumPreview(
             Surface(modifier = Modifier.fillMaxSize()) {
                 RandomTimerAppContent(
                     windowWidthSizeClass = WindowWidthSizeClass.Medium,
-                    viewModelBase
+                    viewModelStub
                 )
             }
         }
@@ -239,7 +291,7 @@ fun RandomTimerAppContentExpandedPreview(
             Surface(modifier = Modifier.fillMaxSize()) {
                 RandomTimerAppContent(
                     windowWidthSizeClass = WindowWidthSizeClass.Expanded,
-                    viewModelBase,
+                    viewModelStub,
                     2
                 )
             }
