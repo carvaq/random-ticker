@@ -2,7 +2,6 @@ package com.fanstaticapps.randomticker.data
 
 import com.fanstaticapps.randomticker.helper.AlarmCoordinator
 import com.fanstaticapps.randomticker.helper.NotificationCoordinator
-import java.util.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.Random
 
 class BookmarkService(
     private val repository: BookmarkRepository,
@@ -62,7 +62,7 @@ class BookmarkService(
         return fetchBookmarkById(bookmarkId) {
             notificationCoordinator.cancelAllNotifications(it)
             notificationCoordinator.showKlaxonNotification(it)
-            if (it.autoRepeat) scheduleAlarm(bookmarkId, false)
+            if (it.autoRepeat) scheduleAlarm(bookmarkId, false).join()
         }
     }
     
