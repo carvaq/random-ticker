@@ -19,14 +19,14 @@ data class TimerItemUiState(
         return minInterval.toComponents { minHours, minMinutes, minSeconds, _ ->
             maxInterval.toComponents { maxHours, maxMinutes, maxSeconds, _ ->
                 Bookmark(
-                    id,
-                    name,
-                    minHours.toInt(),
-                    minMinutes,
-                    minSeconds,
-                    maxHours.toInt(),
-                    maxMinutes,
-                    maxSeconds,
+                    id = id,
+                    name = name,
+                    minimumHours = minHours.toInt(),
+                    minimumMinutes = minMinutes,
+                    minimumSeconds = minSeconds,
+                    maximumHours = maxHours.toInt(),
+                    maximumMinutes = maxMinutes,
+                    maximumSeconds = maxSeconds,
                     autoRepeat = autoRepeat,
                     soundUri = alarmSound
                 )

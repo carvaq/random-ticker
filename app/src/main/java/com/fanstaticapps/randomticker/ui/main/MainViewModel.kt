@@ -16,8 +16,8 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
                 TimerItemUiState(
                     it.id,
                     it.name,
-                    it.max,
                     it.min,
+                    it.max,
                     it.intervalEnd,
                     it.autoRepeat,
                     it.soundUri
