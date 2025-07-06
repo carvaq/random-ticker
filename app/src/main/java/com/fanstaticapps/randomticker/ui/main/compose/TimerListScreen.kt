@@ -95,7 +95,7 @@ fun TimerListScreen(
                 }
 
                 notificationPermissionState.status is PermissionStatus.Denied &&
-                        !(notificationPermissionState.status as PermissionStatus.Denied).shouldShowRationale -> {
+                        (notificationPermissionState.status as PermissionStatus.Denied).shouldShowRationale -> {
                     showPermanentlyDeniedDialog = true
                 }
 

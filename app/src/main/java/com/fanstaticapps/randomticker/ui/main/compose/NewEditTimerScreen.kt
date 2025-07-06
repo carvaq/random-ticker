@@ -168,10 +168,11 @@ fun NewEditTimerScreen(
             RingtoneSelector(launcher, alarmSoundName, alarmSoundUri)
         }
 
+        val defaultTimerName = stringResource(R.string.app_name)
         ButtonRow(maxInterval > Duration.ZERO, onCancel) {
             val newConfig = TimerItemUiState(
                 id = timerDetails?.id ?: 0,
-                name = timerName,
+                name = timerName.takeIf { it.isNotEmpty() } ?: defaultTimerName,
                 minInterval = minInterval,
                 maxInterval = maxInterval,
                 autoRepeat = autoRepeatEnabled,
