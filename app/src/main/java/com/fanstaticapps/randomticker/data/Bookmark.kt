@@ -4,6 +4,9 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 @Entity(tableName = "bookmarks")
 data class Bookmark(
@@ -18,6 +21,7 @@ data class Bookmark(
     val autoRepeat: Boolean = false,
     val autoRepeatInterval: Long = DEFAULT_AUTO_REPEAT_INTERVAL,
     val intervalEnd: Long = NOT_SET_VALUE,
+    val soundUri: String? = null,
 ) {
     fun reset(): Bookmark = copy(intervalEnd = NOT_SET_VALUE)
 
@@ -28,10 +32,10 @@ data class Bookmark(
     private val requestCodeGenerator = Random(id)
 
     @Ignore
-    val min = Boundary(minimumHours, minimumMinutes, minimumSeconds)
+    val min = minimumHours.hours + minimumMinutes.minutes + minimumSeconds.seconds
 
     @Ignore
-    val max = Boundary(maximumHours, maximumMinutes, maximumSeconds)
+    val max = maximumHours.hours + maximumMinutes.minutes + maximumSeconds.seconds
 
     @Ignore
     val notificationChannelId = "$id-KLAXON"
@@ -54,11 +58,10 @@ data class Bookmark(
     @Ignore
     val klaxonActivityRequestCode = requestCodeGenerator.nextInt()
 
-    fun isRunning() = intervalEnd > System.currentTimeMillis()
-
     private companion object {
         const val NOT_SET_VALUE: Long = 0
         const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 5000
+        const val DEFAULT_URI = ""
     }
 }
 

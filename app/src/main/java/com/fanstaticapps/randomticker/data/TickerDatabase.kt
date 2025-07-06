@@ -6,7 +6,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [Bookmark::class], version = 4)
+@Database(entities = [Bookmark::class], version = 5)
 abstract class TickerDatabase : RoomDatabase() {
 
     abstract fun tickerDataDao(): BookmarkDao
@@ -31,7 +31,14 @@ abstract class TickerDatabase : RoomDatabase() {
                 db.execSQL("ALTER TABLE temp_bookmarks RENAME TO bookmarks")
             }
         }
-        val MIGRATIONS = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
-    }
 
+        private val MIGRATION_4_5 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE bookmarks ADD COLUMN soundUri TEXT")
+            }
+        }
+
+        val MIGRATIONS = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+
+    }
 }
