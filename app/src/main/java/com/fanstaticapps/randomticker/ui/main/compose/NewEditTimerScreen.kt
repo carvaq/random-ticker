@@ -1,5 +1,6 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
+import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
@@ -90,12 +91,15 @@ fun NewEditTimerScreen(
             timerDetails.alarmSound.toUri()
         } else {
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        }.let { RingtoneManager.getRingtone(context, it).getTitle(context) }
+        }.getTitle(context)
     }
 
     val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            alarmSoundUri = readUri(it)
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            readUri(activityResult)?.let { uri ->
+                alarmSoundUri = uri.toString()
+                alarmSoundName = uri.getTitle(context)
+            }
         }
     Column(
         modifier = modifier
@@ -239,7 +243,6 @@ private fun ButtonRow(canSave: Boolean, onCancel: () -> Unit, onSaveClick: () ->
     ) {
         OutlinedButton(
             onClick = onCancel,
-            enabled = canSave,
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
         ) {
@@ -248,6 +251,7 @@ private fun ButtonRow(canSave: Boolean, onCancel: () -> Unit, onSaveClick: () ->
         Spacer(modifier = Modifier.width(16.dp))
         Button(
             onClick = onSaveClick,
+            enabled = canSave,
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
@@ -256,12 +260,12 @@ private fun ButtonRow(canSave: Boolean, onCancel: () -> Unit, onSaveClick: () ->
     }
 }
 
-private fun readUri(result: ActivityResult): String? = result.data?.let { intent ->
+private fun readUri(result: ActivityResult): Uri? = result.data?.let { intent ->
     IntentCompat.getParcelableExtra(
         intent,
         RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
         Uri::class.java
-    )?.toString()
+    )
 }
 
 @Composable
@@ -307,6 +311,9 @@ private fun RingtoneSelector(
         }
     }
 }
+
+private fun Uri.getTitle(context: Context): String = RingtoneManager.getRingtone(context, this)
+    .getTitle(context) ?: "Unknown Sound"
 
 @Preview(showBackground = true)
 @Composable
