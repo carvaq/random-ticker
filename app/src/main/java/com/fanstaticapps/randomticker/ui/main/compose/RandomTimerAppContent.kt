@@ -1,5 +1,6 @@
 package com.fanstaticapps.randomticker.ui.main.compose
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -23,10 +27,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -37,6 +43,7 @@ import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.Editing
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.New
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.NotSelected
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.time.Duration.Companion.minutes
@@ -208,6 +215,7 @@ private fun TopBar(
                     )
                 }
             }
+            OverFlowAction()
         },
         navigationIcon = {
             if (selectionStatus !is NotSelected) {
@@ -220,6 +228,31 @@ private fun TopBar(
             }
         }
     )
+}
+
+
+@Composable
+private fun OverFlowAction() {
+    var showMenu by remember { mutableStateOf(false) }
+    IconButton(onClick = { showMenu = !showMenu }) {
+        Icon(
+            imageVector = Icons.Default.MoreVert,
+            contentDescription = null
+        )
+    }
+    DropdownMenu(
+        expanded = showMenu,
+        onDismissRequest = { showMenu = false }
+    ) {
+        val context = LocalContext.current
+        DropdownMenuItem(onClick = {
+            context.startActivity(
+                Intent(context, OssLicensesMenuActivity::class.java)
+            )
+        }, text = {
+            Text(text = stringResource(id = R.string.license))
+        })
+    }
 }
 
 // --- Preview Provider for WindowWidthSizeClass ---
