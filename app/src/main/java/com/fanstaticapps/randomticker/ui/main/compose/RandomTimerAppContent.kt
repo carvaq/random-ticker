@@ -93,7 +93,13 @@ fun RandomTimerAppContent(
         selectionStatus.id?.let { viewModel.delete(it) }
         hideEditor()
     }
-    val onStartTimer: (Long) -> Unit = { viewModel.start(it) }
+    val onStartTimer: (Long, Boolean) -> Unit = { timerId, isRunning ->
+        if (isRunning) {
+            viewModel.cancelTimer(timerId)
+        } else {
+            viewModel.start(timerId)
+        }
+    }
 
 
     val isTwoPane = windowWidthSizeClass == WindowWidthSizeClass.Expanded
@@ -124,7 +130,7 @@ fun RandomTimerAppContent(
                 ) {
                     TimerListScreen(
                         timers = timers,
-                        onStartTimerClick = onStartTimer,
+                        onTogglePlayStopClick = onStartTimer,
                         onTimerClick = { selectionStatus = Editing(it) }
                     )
                 }
@@ -152,7 +158,7 @@ fun RandomTimerAppContent(
             if (selectionStatus is NotSelected) {
                 TimerListScreen(
                     timers = timers,
-                    onStartTimerClick = onStartTimer,
+                    onTogglePlayStopClick = onStartTimer,
                     onTimerClick = { selectionStatus = Editing(it) },
                     modifier = Modifier.padding(paddingValues)
                 )
@@ -231,8 +237,8 @@ private val viewModelStub = object : MainTickerViewModel {
                 minInterval = 10.minutes,
                 maxInterval = 30.minutes,
                 autoRepeat = true,
-                timerEnd = 0,
-                alarmSound = ""
+                alarmSound = "",
+                isRunning = false
             ),
             TimerItemUiState(
                 id = 2,
@@ -240,14 +246,14 @@ private val viewModelStub = object : MainTickerViewModel {
                 minInterval = 10.minutes,
                 maxInterval = 30.minutes,
                 autoRepeat = false,
-                timerEnd = 0,
-                alarmSound = ""
+                alarmSound = "",
+                isRunning = false
             )
         )
     )
 
     override fun start(id: Long) {}
-    override fun cancelTicker(id: Long) {}
+    override fun cancelTimer(id: Long) {}
     override fun save(timerDetails: TimerItemUiState) {}
     override fun delete(id: Long) {}
 }

@@ -8,12 +8,11 @@ data class TimerItemUiState(
     val name: String,
     val minInterval: Duration,
     val maxInterval: Duration,
-    val timerEnd: Long,
     val autoRepeat: Boolean,
-    val alarmSound: String?
+    val alarmSound: String?,
+    val isRunning: Boolean = false,
+    val endTimeMillis: Long = 0
 ) {
-
-    fun isRunning() = timerEnd > System.currentTimeMillis()
 
     fun toBookmark(): Bookmark {
         return minInterval.toComponents { minHours, minMinutes, minSeconds, _ ->

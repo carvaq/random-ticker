@@ -51,8 +51,8 @@ import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 
 /**
@@ -176,7 +176,7 @@ fun NewEditTimerScreen(
                 maxInterval = maxInterval,
                 autoRepeat = autoRepeatEnabled,
                 alarmSound = alarmSoundUri,
-                timerEnd = 0
+                endTimeMillis = 0
             )
             onSave(newConfig)
         }
@@ -188,7 +188,7 @@ fun NewEditTimerScreen(
                 {
                     minInterval = it
                     if (minInterval > maxInterval) {
-                        maxInterval = minInterval + 999.milliseconds
+                        maxInterval = minInterval + 5.seconds
                     }
                     showMinIntervalDialog = false
                 },
@@ -200,6 +200,9 @@ fun NewEditTimerScreen(
                 maxInterval,
                 {
                     maxInterval = it
+                    if (minInterval > maxInterval) {
+                        minInterval = maxInterval - 5.seconds
+                    }
                     showMaxIntervalDialog = false
                 },
                 { showMaxIntervalDialog = false })
@@ -335,7 +338,7 @@ fun PreviewEditExistingTimerScreen() {
         minInterval = 10.minutes,
         maxInterval = 30.minutes,
         autoRepeat = true,
-        timerEnd = 0,
+        endTimeMillis = 0,
         alarmSound = ""
     )
     MaterialTheme {
