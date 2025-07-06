@@ -1,0 +1,54 @@
+[versions]
+koin = "4.1.0"
+coroutines = "1.10.2"
+lifecycleExtensions = "2.2.0"
+room = "2.7.2"
+kotlin = "2.2.0"
+coreKtx = "1.16.0"
+
+[libraries]
+compose-bom = { module = "androidx.compose:compose-bom", version = "2025.06.01" }
+foundation = { module = "androidx.compose.foundation:foundation" }
+ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
+ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+ui = { module = "androidx.compose.ui:ui" }
+material3 = { module = "androidx.compose.material3:material3" }
+material3-window-size = { module = "androidx.compose.material3:material3-window-size-class" }
+material = { module = "com.google.android.material:material", version = "1.12.0" }
+
+activity = { module = "androidx.activity:activity-compose", version = "1.10.1" }
+appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
+
+lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleExtensions" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+oss-licenses = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.1.0" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+
+timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
+
+runner = { module = "androidx.test:runner", version = "1.6.2" }
+mockk = { module = "io.mockk:mockk", version = "1.14.4" }
+android-junit = { module = "androidx.test.ext:junit-ktx", version = "1.2.1" }
+junit = { module = "junit:junit", version = "4.13.2" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+
+[plugins]
+android-application = { id = "com.android.application", version = "8.11.0" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+tripletPlay = { id = "com.github.triplet.play", version = "3.12.1" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.0-2.0.2" }
+oss-licenses = { id = "com.google.android.gms.oss-licenses-plugin", version = "0.10.6" }
+room = { id = "androidx.room", version.ref = "room" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

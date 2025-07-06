@@ -1,12 +1,13 @@
 import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("com.github.triplet.play") version "3.8.3"
-    id("com.google.android.gms.oss-licenses-plugin")
-    id("com.google.gms.google-services")
-    id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.tripletPlay)
+    alias(libs.plugins.oss.licenses)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.compose)
 }
 
 
@@ -16,22 +17,17 @@ val patch = 0
 
 android {
 
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig {
-
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = 10706
         versionName = String.format("%s%02d%02d", major, minor, patch)
 
         testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
     }
 
     signingConfigs {
@@ -64,11 +60,8 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        viewBinding = true
     }
     testOptions {
         unitTests.apply {
@@ -83,58 +76,59 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     namespace = "com.fanstaticapps.randomticker"
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+}
+dependencies {
+    implementation(libs.material)
+
+    implementation(libs.appcompat)
+    implementation(libs.activity)
+
+    ksp(libs.room.compiler)
+    implementation(libs.room.runtime)
+    implementation(libs.room)
+
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.extensions)
+
+    implementation(libs.kotlinx.coroutines.android)
+
+    implementation(libs.oss.licenses)
+
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.android)
+
+    implementation(libs.timber)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.material3)
+    implementation(libs.foundation)
+    implementation(libs.ui)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material.icons.extended)
+    implementation(libs.material3.window.size)
+    implementation(libs.ui.viewbinding)
+    debugImplementation(libs.ui.tooling)
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)
+
+    androidTestImplementation(libs.room.testing)
+    androidTestImplementation(libs.runner)
+    androidTestImplementation(libs.android.junit)
 }
 
-dependencies {
-    implementation("com.google.android.material:material:1.10.0")
-
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.8.0")
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
-
-    implementation("androidx.room:room-runtime:2.6.0")
-    implementation("androidx.room:room-ktx:2.6.0")
-    ksp("androidx.room:room-compiler:2.6.0")
-
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
-
-    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
-    implementation("io.insert-koin:koin-android:3.5.0")
-
-    implementation("com.jakewharton.timber:timber:5.0.1")
-
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material:material-icons-extended")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.material3:material3-window-size-class")
-    implementation("androidx.compose.runtime:runtime-livedata")
-    implementation("androidx.compose.ui:ui-viewbinding")
-    implementation("androidx.activity:activity-compose:1.8.0")
-
-    testImplementation("io.mockk:mockk:1.13.8")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("junit:junit:4.13.2")
-
-    androidTestImplementation("androidx.room:room-testing:2.6.0")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    androidTestImplementation("androidx.test.ext:truth:1.5.0")
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 play {
@@ -146,8 +140,4 @@ play {
     } else {
         enabled.set(false)
     }
-}
-
-repositories {
-    mavenCentral()
 }

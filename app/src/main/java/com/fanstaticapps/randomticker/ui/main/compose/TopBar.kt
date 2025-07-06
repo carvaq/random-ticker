@@ -3,6 +3,7 @@ package com.fanstaticapps.randomticker.ui.main.compose
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.EditNotifications
@@ -55,7 +56,7 @@ private fun BackNavigation(
     if (isSinglePane && selectedBookmark != null) {
         IconButton(onClick = { mainViewModel.select(null) }) {
             Icon(
-                imageVector = Icons.Filled.ArrowBack, contentDescription = "Navigation icon"
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Navigation icon"
             )
         }
     }

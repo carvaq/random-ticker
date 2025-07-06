@@ -9,11 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: set up JDK 21
-        uses: actions/setup-java@v3.14.1
+      - name: set up JDK
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: 21
       - name: Decode google-services.json
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
@@ -32,7 +32,7 @@ jobs:
         run: ./gradlew assemble publishBundle
 
       - name: Save artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           path: app/build/intermidiates/apk/release/app-release.apk
           if-no-files-found: ignore

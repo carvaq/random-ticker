@@ -15,9 +15,10 @@ import com.fanstaticapps.randomticker.ui.main.MainViewModel
 import com.google.android.material.color.DynamicColors
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.new
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -55,9 +56,9 @@ class TickerApplication : Application() {
         module { factory { BookmarkService(get(), get(), get()) } },
         module { factoryOf(::MigrationService) },
         module {
-            viewModelOf(::MainViewModel)
-            viewModelOf(::KlaxonViewModel)
-            viewModelOf(::CancelViewModel)
+            viewModel { new(::MainViewModel) }
+            viewModel { new(::KlaxonViewModel) }
+            viewModel { new(::CancelViewModel) }
         }
     )
 }
