@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
@@ -20,7 +21,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
             emit(System.currentTimeMillis())
         }
     }
-    override val timers: Flow<List<TimerItemUiState>> = runningTimers.combine(
+    override val timers: Flow<TimersScreenUiState> = runningTimers.combine(
         bookmarkService.fetchAllBookmarks()
     ) { tick, bookmarks ->
         bookmarks.map {
@@ -36,6 +37,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
             )
         }
     }.distinctUntilChanged()
+        .map { TimersScreenUiState.Success(it) }
 
 
     override fun start(id: Long) {
@@ -60,7 +62,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
 }
 
 interface MainTickerViewModel {
-    val timers: Flow<List<TimerItemUiState>>
+    val timers: Flow<TimersScreenUiState>
     fun start(id: Long)
     fun cancelTimer(id: Long)
     fun save(timerDetails: TimerItemUiState)

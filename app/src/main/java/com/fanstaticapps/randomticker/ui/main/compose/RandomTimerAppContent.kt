@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.ui.main.MainTickerViewModel
 import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
+import com.fanstaticapps.randomticker.ui.main.TimersScreenUiState
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.Editing
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.New
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.NotSelected
@@ -79,7 +80,7 @@ fun RandomTimerAppContent(
     windowWidthSizeClass: WindowWidthSizeClass,
     viewModel: MainTickerViewModel
 ) {
-    val timers by viewModel.timers.collectAsState(emptyList())
+    val timerState by viewModel.timers.collectAsState(TimersScreenUiState.Loading)
 
     var selectionStatus: SelectionStatus by rememberSaveable(stateSaver = SelectionStatusSaver) {
         mutableStateOf(NotSelected)
@@ -135,7 +136,7 @@ fun RandomTimerAppContent(
                     color = MaterialTheme.colorScheme.surfaceVariant
                 ) {
                     TimerListScreen(
-                        timers = timers,
+                        timerState = timerState,
                         onStartTimer,
                         onStopTimer,
                         onTimerClick = { selectionStatus = Editing(it) },
@@ -154,7 +155,7 @@ fun RandomTimerAppContent(
                         EmptyEditorScreen()
                     } else {
                         NewEditTimerScreen(
-                            timerDetails = timers.firstOrNull { it.id == selectionStatus.id },
+                            timerDetails = (timerState as? TimersScreenUiState.Success)?.timers?.firstOrNull { it.id == selectionStatus.id },
                             onSave = onSaveTimer,
                             onCancel = onCancelEdit
                         )
@@ -165,7 +166,7 @@ fun RandomTimerAppContent(
             // Single-pane layout for Compact/Medium width
             if (selectionStatus is NotSelected) {
                 TimerListScreen(
-                    timers = timers,
+                    timerState = timerState,
                     onStartTimerAction = onStartTimer,
                     onStopTimerAction = onStopTimer,
                     onTimerClick = { selectionStatus = Editing(it) },
@@ -175,7 +176,7 @@ fun RandomTimerAppContent(
             } else {
                 NewEditTimerScreen(
                     modifier = Modifier.padding(paddingValues),
-                    timerDetails = timers.firstOrNull { it.id == selectionStatus.id },
+                    timerDetails = (timerState as? TimersScreenUiState.Success)?.timers?.firstOrNull { it.id == selectionStatus.id },
                     onSave = onSaveTimer,
                     onCancel = onCancelEdit
                 )
@@ -265,8 +266,9 @@ class WindowWidthSizeClassProvider : PreviewParameterProvider<WindowWidthSizeCla
 }
 
 private val viewModelStub = object : MainTickerViewModel {
-    override val timers: Flow<List<TimerItemUiState>> = flowOf(
-        listOf(
+    override val timers: Flow<TimersScreenUiState> = flowOf(
+        TimersScreenUiState.Success(
+            listOf(
             TimerItemUiState(
                 id = 1,
                 name = "Morning Routine",
@@ -284,6 +286,7 @@ private val viewModelStub = object : MainTickerViewModel {
                 autoRepeat = false,
                 alarmSound = "",
                 isRunning = false
+            )
             )
         )
     )

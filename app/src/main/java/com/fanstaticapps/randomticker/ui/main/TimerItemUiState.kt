@@ -33,3 +33,7 @@ data class TimerItemUiState(
         }
     }
 }
+sealed interface TimersScreenUiState {
+    object Loading : TimersScreenUiState
+    data class Success(val timers: List<TimerItemUiState>) : TimersScreenUiState
+}

@@ -31,6 +31,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -53,6 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
+import com.fanstaticapps.randomticker.ui.main.TimersScreenUiState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
@@ -66,14 +68,14 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun TimerListScreen(
-    timers: List<TimerItemUiState>,
-    onStartTimerAction: (id: Long) -> Unit,
-    onStopTimerAction: (id: Long) -> Unit,
-    onTimerClick: (id: Long) -> Unit,
+    timerState: TimersScreenUiState,
+    onStartTimerAction: (Long) -> Unit,
+    onStopTimerAction: (Long) -> Unit,
+    onTimerClick: (Long) -> Unit,
     onAddTimerClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
+    
     val context = LocalContext.current
     var showPermissionRationaleDialog by remember { mutableStateOf(false) }
     var timerIdPendingPermission by remember { mutableStateOf<Long?>(null) }
@@ -83,7 +85,7 @@ fun TimerListScreen(
     } else {
         null
     }
-
+    
     val attemptToStartTimer = { timerId: Long ->
         if (notificationPermissionState == null || notificationPermissionState.status.isGranted) {
             onStartTimerAction(timerId)
@@ -93,27 +95,27 @@ fun TimerListScreen(
                 notificationPermissionState.status.shouldShowRationale -> {
                     showPermissionRationaleDialog = true
                 }
-
+                
                 notificationPermissionState.status is PermissionStatus.Denied &&
                         (notificationPermissionState.status as PermissionStatus.Denied).shouldShowRationale -> {
                     showPermanentlyDeniedDialog = true
                 }
-
+                
                 else -> {
                     notificationPermissionState.launchPermissionRequest()
                 }
             }
         }
     }
-
+    
     LaunchedEffect(notificationPermissionState?.status) {
         if (notificationPermissionState?.status?.isGranted == true && timerIdPendingPermission != null) {
             onStartTimerAction(timerIdPendingPermission!!)
             timerIdPendingPermission = null // Reset
         }
     }
-
-
+    
+    
     if (showPermissionRationaleDialog && timerIdPendingPermission != null) {
         RationaleDialog(
             title = stringResource(R.string.notification_permission_title),
@@ -131,30 +133,35 @@ fun TimerListScreen(
     if (showPermanentlyDeniedDialog) {
         PermanentlyDeniedDialog(context) { showPermanentlyDeniedDialog = false }
     }
-
+    
     Box(modifier = modifier.fillMaxSize()) {
-        if (timers.isEmpty()) {
-            NoTimersScreen(onAddTimerClick)
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(timers) { timer ->
-                    TimerCard(
-                        timerState = timer,
-                        onTogglePlayStopClick = {
-                            if (timer.isRunning) {
-                                onStopTimerAction(timer.id)
-                            } else {
-                                attemptToStartTimer(timer.id)
-                            }
-                        },
-                        onEditClick = { onTimerClick(timer.id) }
-                    )
+        if (timerState is TimersScreenUiState.Success) {
+            if (timerState.timers.isEmpty()) {
+                NoTimersScreen(onAddTimerClick)
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(timerState.timers) { timer ->
+                        TimerCard(
+                            timerState = timer,
+                            onTogglePlayStopClick = {
+                                if (timer.isRunning) {
+                                    onStopTimerAction(timer.id)
+                                } else {
+                                    attemptToStartTimer(timer.id)
+                                }
+                            },
+                            onEditClick = { onTimerClick(timer.id) }
+                        )
+                    }
                 }
             }
+        } else {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            
         }
     }
 }
@@ -187,7 +194,7 @@ private fun RationaleDialog(
     title: String,
     text: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -236,7 +243,7 @@ private fun PermanentlyDeniedDialog(context: Context, dismiss: () -> Unit) {
 private fun TimerCard(
     timerState: TimerItemUiState,
     onTogglePlayStopClick: () -> Unit,
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -275,7 +282,7 @@ private fun TimerCard(
                     Spacer(modifier = Modifier.height(6.dp))
                     AutoRepeatStatus(timerState)
                 }
-
+                
                 IconButton(
                     onClick = { onTogglePlayStopClick() },
                     modifier = Modifier.size(48.dp)
@@ -292,7 +299,7 @@ private fun TimerCard(
                     )
                 }
             }
-
+            
             if (timerState.isRunning) {
                 Spacer(modifier = Modifier.height(10.dp))
                 LinearProgressIndicator(
@@ -338,7 +345,7 @@ fun TimerListScreenPreview() {
     )
     MaterialTheme {
         TimerListScreen(
-            timers = sampleTimers,
+            timerState = TimersScreenUiState.Success(sampleTimers),
             onStartTimerAction = {},
             onStopTimerAction = {},
             onAddTimerClick = {},
