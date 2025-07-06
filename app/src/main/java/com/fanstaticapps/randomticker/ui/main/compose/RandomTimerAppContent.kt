@@ -23,7 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -48,6 +49,23 @@ private sealed interface SelectionStatus {
     val id: Long? get() = (this as? Editing)?.timerId
 }
 
+private val SelectionStatusSaver = listSaver<SelectionStatus, Any>(
+    save = { status ->
+        when (status) {
+            NotSelected -> listOf("NotSelected")
+            is Editing -> listOf("Editing", status.timerId)
+            New -> listOf("New")
+        }
+    },
+    restore = { list ->
+        when (list.getOrNull(0)) {
+            "NotSelected" -> NotSelected
+            "Editing" -> Editing(list[1] as Long)
+            else -> New
+        }
+    }
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RandomTimerAppContent(
@@ -56,7 +74,9 @@ fun RandomTimerAppContent(
 ) {
     val timers by viewModel.timers.collectAsState(emptyList())
 
-    var selectionStatus: SelectionStatus by remember { mutableStateOf(NotSelected) }
+    var selectionStatus: SelectionStatus by rememberSaveable(stateSaver = SelectionStatusSaver) {
+        mutableStateOf(NotSelected)
+    }
 
     val hideEditor = {
         selectionStatus = NotSelected

@@ -33,12 +33,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,23 +63,34 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun NewEditTimerScreen(
     modifier: Modifier = Modifier,
-    timerDetails: TimerItemUiState? = null,
+    timerDetails: TimerItemUiState?,
     onSave: (TimerItemUiState) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var timerName by remember { mutableStateOf(timerDetails?.name ?: "") }
-
-    var minInterval by remember { mutableStateOf(timerDetails?.minInterval ?: Duration.ZERO) }
-    var maxInterval by remember { mutableStateOf(timerDetails?.maxInterval ?: Duration.ZERO) }
+    var timerName by remember { mutableStateOf("") }
+    var minInterval by remember { mutableStateOf(Duration.ZERO) }
+    var maxInterval by remember { mutableStateOf(Duration.ZERO) }
+    var autoRepeatEnabled by remember { mutableStateOf(false) }
+    var alarmSoundUri by remember { mutableStateOf<String?>(null) }
+    var alarmSoundName by remember { mutableStateOf("Default") }
 
     var showMinIntervalDialog by remember { mutableStateOf(false) }
     var showMaxIntervalDialog by remember { mutableStateOf(false) }
 
-    var autoRepeatEnabled by remember { mutableStateOf(timerDetails?.autoRepeat ?: false) }
+    val context = LocalContext.current
 
-    var alarmSoundUri by remember { mutableStateOf<String?>(null) }
-    var alarmSoundName by remember { mutableStateOf("Default") }
-
+    LaunchedEffect(timerDetails) {
+        timerName = timerDetails?.name ?: ""
+        minInterval = timerDetails?.minInterval ?: Duration.ZERO
+        maxInterval = timerDetails?.maxInterval ?: Duration.ZERO
+        autoRepeatEnabled = timerDetails?.autoRepeat ?: false
+        alarmSoundUri = timerDetails?.alarmSound
+        alarmSoundName = if (timerDetails?.alarmSound != null) {
+            timerDetails.alarmSound.toUri()
+        } else {
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        }.let { RingtoneManager.getRingtone(context, it).getTitle(context) }
+    }
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -295,6 +308,7 @@ private fun RingtoneSelector(
 fun PreviewNewEditTimerScreen() {
     MaterialTheme {
         NewEditTimerScreen(
+            timerDetails = null,
             onSave = { config -> println("Saved: $config") }
         ) { println("Cancelled") }
     }
