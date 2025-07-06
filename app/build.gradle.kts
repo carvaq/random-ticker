@@ -123,6 +123,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
+    testImplementation(libs.roblectric)
 
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.runner)

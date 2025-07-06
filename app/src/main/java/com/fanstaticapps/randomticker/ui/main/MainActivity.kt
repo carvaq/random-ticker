@@ -19,7 +19,7 @@ class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        migrationService.migrate()
+        migrationService.runMigrationIfNeeded()
         setContent {
             AppTheme {
                 val windowWidthSizeClass = calculateWindowSizeClass(activity = this).widthSizeClass

@@ -44,6 +44,7 @@ mockk = { module = "io.mockk:mockk", version = "1.14.4" }
 android-junit = { module = "androidx.test.ext:junit-ktx", version = "1.2.1" }
 junit = { module = "junit:junit", version = "4.13.2" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+roblectric = { module = "org.robolectric:robolectric", version = "4.15.1" }
 
 [plugins]
 android-application = { id = "com.android.application", version = "8.11.0" }
