@@ -47,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -248,6 +249,7 @@ private fun TimerCard(
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
             .clickable(onClick = onEditClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp, pressedElevation = 8.dp),
         colors = CardDefaults.elevatedCardColors(
@@ -256,8 +258,7 @@ private fun TimerCard(
         )
     ) {
         Column(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

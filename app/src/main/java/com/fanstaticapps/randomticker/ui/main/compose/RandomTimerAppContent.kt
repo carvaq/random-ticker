@@ -10,6 +10,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -32,6 +32,7 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -193,7 +194,8 @@ private fun TopBar(
     onDelete: () -> Unit,
     onCancel: () -> Unit
 ) {
-    TopAppBar(
+    val tint = TopAppBarDefaults.centerAlignedTopAppBarColors().actionIconContentColor
+    CenterAlignedTopAppBar(
         title = {
             Text(
                 text = when (selectionStatus) {
@@ -203,25 +205,23 @@ private fun TopBar(
                 }.let { stringResource(it) }
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ),
         actions = {
             if (selectionStatus is Editing) {
                 IconButton(onClick = onDelete) {
                     Icon(
+                        tint = tint,
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(R.string.button_delete)
                     )
                 }
             }
-            OverFlowAction()
+            OverFlowAction(tint)
         },
         navigationIcon = {
             if (selectionStatus !is NotSelected) {
                 IconButton(onClick = onCancel) {
                     Icon(
+                        tint = tint,
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = stringResource(R.string.button_delete)
                     )
@@ -233,10 +233,11 @@ private fun TopBar(
 
 
 @Composable
-private fun OverFlowAction() {
+private fun OverFlowAction(tint: Color) {
     var showMenu by remember { mutableStateOf(false) }
     IconButton(onClick = { showMenu = !showMenu }) {
         Icon(
+            tint = tint,
             imageVector = Icons.Default.MoreVert,
             contentDescription = null
         )
@@ -269,24 +270,24 @@ private val viewModelStub = object : MainTickerViewModel {
     override val timers: Flow<TimersScreenUiState> = flowOf(
         TimersScreenUiState.Success(
             listOf(
-            TimerItemUiState(
-                id = 1,
-                name = "Morning Routine",
-                minInterval = 10.minutes,
-                maxInterval = 30.minutes,
-                autoRepeat = true,
-                alarmSound = "",
-                isRunning = false
-            ),
-            TimerItemUiState(
-                id = 2,
-                name = "Workout Routine",
-                minInterval = 10.minutes,
-                maxInterval = 30.minutes,
-                autoRepeat = false,
-                alarmSound = "",
-                isRunning = false
-            )
+                TimerItemUiState(
+                    id = 1,
+                    name = "Morning Routine",
+                    minInterval = 10.minutes,
+                    maxInterval = 30.minutes,
+                    autoRepeat = true,
+                    alarmSound = "",
+                    isRunning = false
+                ),
+                TimerItemUiState(
+                    id = 2,
+                    name = "Workout Routine",
+                    minInterval = 10.minutes,
+                    maxInterval = 30.minutes,
+                    autoRepeat = false,
+                    alarmSound = "",
+                    isRunning = false
+                )
             )
         )
     )

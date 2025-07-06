@@ -41,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -110,6 +111,7 @@ fun NewEditTimerScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
                 value = timerName,
@@ -122,7 +124,6 @@ fun NewEditTimerScreen(
                 singleLine = true,
                 shape = MaterialTheme.shapes.medium
             )
-
 
             Text(
                 stringResource(R.string.set_random_interval),
@@ -283,6 +284,7 @@ private fun RingtoneSelector(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
             .clickable {
                 launcher.launch(Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
                     putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL)
@@ -290,8 +292,7 @@ private fun RingtoneSelector(
                     putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, title)
                     putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, alarmSoundUri?.toUri())
                 })
-            }
-            .padding(horizontal = 8.dp),
+            },
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp
