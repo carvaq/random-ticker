@@ -1,5 +1,6 @@
 package com.fanstaticapps.randomticker.data
 
+import androidx.core.net.toUri
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -38,7 +39,7 @@ data class Bookmark(
     val max = maximumHours.hours + maximumMinutes.minutes + maximumSeconds.seconds
 
     @Ignore
-    val notificationChannelId = "$id-KLAXON"
+    val notificationChannelId = "KLAXON-${soundUri?.toUri()?.lastPathSegment ?: "default"}"
 
     @Ignore
     val klaxonNotificationId = Int.MAX_VALUE - id.toInt()
@@ -58,10 +59,9 @@ data class Bookmark(
     @Ignore
     val klaxonActivityRequestCode = requestCodeGenerator.nextInt()
 
-    private companion object {
+    companion object {
         const val NOT_SET_VALUE: Long = 0
         const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 5000
-        const val DEFAULT_URI = ""
     }
 }
 

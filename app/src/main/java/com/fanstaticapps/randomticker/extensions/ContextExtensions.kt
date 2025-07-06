@@ -11,6 +11,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.data.Bookmark
 
 fun Context.getNotificationManager() = NotificationManagerCompat.from(this)
@@ -19,12 +20,12 @@ fun Context.getAlarmManager() = ContextCompat.getSystemService(this, AlarmManage
 
 fun Context.createNotificationChannel(
     bookmark: Bookmark,
-    soundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+    soundUri: Uri? = bookmark.soundUri?.toUri(),
     enableVibration: Boolean = true
 ): NotificationChannel? {
     val channel = NotificationChannel(
         bookmark.notificationChannelId,
-        bookmark.name,
+        RingtoneManager.getRingtone(this, soundUri).getTitle(this),
         NotificationManager.IMPORTANCE_HIGH
     ).apply {
         setSound(
