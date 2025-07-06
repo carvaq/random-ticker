@@ -21,4 +21,6 @@ interface BookmarkDao {
     @Query("DELETE from bookmarks WHERE id = :id")
     suspend fun delete(id: Long?)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(bookmarks: List<Bookmark>)
 }

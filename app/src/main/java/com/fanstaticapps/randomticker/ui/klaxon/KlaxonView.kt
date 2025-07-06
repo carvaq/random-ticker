@@ -77,7 +77,7 @@ fun KlaxonView(
                 Icon(
                     imageVector = Icons.Filled.Stop,
                     tint = MaterialTheme.colorScheme.onPrimary,
-                    contentDescription = stringResource(id = R.string.action_stop)
+                    contentDescription = stringResource(id = R.string.stop_timer)
                 )
             }
             if (!bookmark.autoRepeat) {

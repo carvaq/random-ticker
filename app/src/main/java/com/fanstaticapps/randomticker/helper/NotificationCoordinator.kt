@@ -5,6 +5,7 @@ import android.app.Notification
 import android.content.Context
 import android.media.AudioManager
 import androidx.core.app.NotificationCompat
+import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.extensions.createNotificationChannel
@@ -64,6 +65,7 @@ class NotificationCoordinator(private val context: Context) {
 
 
     fun showKlaxonNotification(bookmark: Bookmark) {
+        val sound = bookmark.soundUri?.toUri()
         val channel = context.createNotificationChannel(bookmark)
         val builder = NotificationCompat.Builder(context, bookmark.notificationChannelId)
             .setSmallIcon(R.drawable.ic_stat_timer)
@@ -71,13 +73,9 @@ class NotificationCoordinator(private val context: Context) {
             .setContentText(context.getString(R.string.notification_ticker_ended))
             .setCategory(Notification.CATEGORY_ALARM)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(sound)
             .setFullScreenIntent(getKlaxonActivityPendingIntent(context, bookmark), true)
-            .addAction(
-                getCancelAction(
-                    bookmark,
-                    R.string.action_stop
-                )
-            )
+            .addAction(getCancelAction(bookmark, R.string.stop_timer))
 
         if (!bookmark.autoRepeat) {
             builder.addAction(getRepeatAction(context, bookmark))

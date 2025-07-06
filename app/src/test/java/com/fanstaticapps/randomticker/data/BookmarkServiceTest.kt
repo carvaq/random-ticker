@@ -12,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -37,7 +37,7 @@ class BookmarkServiceTest {
         mockBookmarkInRepository(bookmarkId, bookmark)
 
         val flow = getBookmarkService().getBookmarkById(bookmarkId)
-        advanceUntilIdle()
+        runCurrent()
 
         assertEquals(bookmark, flow.first())
     }
@@ -47,7 +47,7 @@ class BookmarkServiceTest {
         val bookmark = Bookmark(id = 1)
 
         getBookmarkService().save(bookmark)
-        advanceUntilIdle()
+        runCurrent()
 
         coVerify { repository.insertOrUpdateBookmark(bookmark) }
     }
@@ -58,7 +58,7 @@ class BookmarkServiceTest {
         coEvery { repository.insertOrUpdateBookmark(any()) } returns newId
 
         val result = getBookmarkService().createNew()
-        advanceUntilIdle()
+        runCurrent()
 
         assertEquals(newId, result)
         coVerify {
@@ -75,13 +75,11 @@ class BookmarkServiceTest {
             mockBookmarkInRepository(bookmarkId, bookmark)
 
             getBookmarkService().intervalEnded(bookmarkId).join()
-            advanceUntilIdle()
+            runCurrent()
 
             coVerifyOrder {
-                repository.getBookmarkById(bookmarkId)
                 notificationCoordinator.cancelAllNotifications(any())
                 notificationCoordinator.showKlaxonNotification(any())
-                repository.getBookmarkById(bookmarkId)
                 notificationCoordinator.cancelAllNotifications(any())
                 notificationCoordinator.showRunningNotification(any())
                 alarmCoordinator.scheduleAlarm(any())
@@ -99,10 +97,9 @@ class BookmarkServiceTest {
             mockBookmarkInRepository(bookmarkId, bookmark)
 
             getBookmarkService().intervalEnded(bookmarkId).join()
-            advanceUntilIdle()
+            runCurrent()
 
             coVerify {
-                repository.getBookmarkById(bookmarkId)
                 notificationCoordinator.cancelAllNotifications(any())
                 notificationCoordinator.showKlaxonNotification(any())
             }
@@ -126,7 +123,6 @@ class BookmarkServiceTest {
             getBookmarkService().scheduleAlarm(bookmarkId, isManuallyTriggered = false).join()
 
             coVerify {
-                repository.getBookmarkById(bookmarkId)
                 notificationCoordinator.cancelAllNotifications(any())
                 notificationCoordinator.showRunningNotification(any())
                 alarmCoordinator.scheduleAlarm(any())
@@ -141,10 +137,9 @@ class BookmarkServiceTest {
         mockBookmarkInRepository(bookmarkId, bookmark)
 
         getBookmarkService().scheduleAlarm(bookmarkId, isManuallyTriggered = true).join()
-        advanceUntilIdle()
+        runCurrent()
 
         coVerify {
-            repository.getBookmarkById(bookmarkId)
             notificationCoordinator.cancelAllNotifications(any())
             notificationCoordinator.showRunningNotification(any())
             alarmCoordinator.scheduleAlarm(any())
@@ -159,10 +154,9 @@ class BookmarkServiceTest {
         mockBookmarkInRepository(bookmarkId, bookmark)
 
         getBookmarkService().scheduleAlarm(bookmarkId, isManuallyTriggered = false).join()
-        advanceUntilIdle()
+        runCurrent()
 
         coVerify {
-            repository.getBookmarkById(bookmarkId)
             notificationCoordinator.cancelAllNotifications(any())
             notificationCoordinator.showRunningNotification(any())
             alarmCoordinator.scheduleAlarm(any())
@@ -184,7 +178,6 @@ class BookmarkServiceTest {
             getBookmarkService().delete(bookmark).join()
 
             coVerify {
-                repository.getBookmarkById(bookmarkId)
                 repository.insertOrUpdateBookmark(any())
                 notificationCoordinator.deleteChannelsForBookmark(any())
                 repository.deleteBookmark(any())

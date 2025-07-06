@@ -20,7 +20,7 @@ class KlaxonViewModel(private val service: BookmarkService) : ViewModel() {
         .asLiveData(viewModelScope.coroutineContext)
 
     fun cancelTimer(bookmark: Bookmark) {
-        service.cancelTicker(bookmark.id)
+        service.cancelTimer(bookmark.id)
     }
 
     fun scheduleTicker(bookmark: Bookmark) {

@@ -12,7 +12,7 @@ plugins {
 
 
 val major = 2
-val minor = 0
+val minor = 1
 val patch = 0
 
 android {
@@ -106,6 +106,8 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
 
+    implementation(libs.accompanist.permissions)
+
     implementation(libs.timber)
 
     implementation(platform(libs.compose.bom))
@@ -121,6 +123,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
+    testImplementation(libs.roblectric)
 
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.runner)

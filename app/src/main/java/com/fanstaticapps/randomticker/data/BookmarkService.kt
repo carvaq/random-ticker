@@ -21,33 +21,33 @@ class BookmarkService(
     private val repository: BookmarkRepository,
     private val notificationCoordinator: NotificationCoordinator,
     private val alarmCoordinator: AlarmCoordinator,
-    private val coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope,
 ) {
     constructor(
         repository: BookmarkRepository,
         notificationCoordinator: NotificationCoordinator,
-        alarmCoordinator: AlarmCoordinator
+        alarmCoordinator: AlarmCoordinator,
     ) : this(
         repository,
         notificationCoordinator,
         alarmCoordinator,
         CoroutineScope(SupervisorJob() + Dispatchers.IO)
     )
-
+    
     private val randomGenerator = Random()
-
+    
     fun getBookmarkById(bookmarkId: Long): Flow<Bookmark> {
         return repository.getBookmarkById(bookmarkId)
             .flowOn(Dispatchers.IO)
             .filterNotNull()
     }
-
+    
     fun save(bookmark: Bookmark) {
         coroutineScope.launch {
             repository.insertOrUpdateBookmark(bookmark)
         }
     }
-
+    
     suspend fun createNew(): Long {
         return withContext(coroutineScope.coroutineContext) {
             var newBookmark = Bookmark()
@@ -57,48 +57,49 @@ class BookmarkService(
             id
         }
     }
-
+    
     fun intervalEnded(bookmarkId: Long): Job {
         return fetchBookmarkById(bookmarkId) {
             notificationCoordinator.cancelAllNotifications(it)
             notificationCoordinator.showKlaxonNotification(it)
-            if (it.autoRepeat) scheduleAlarm(bookmarkId, false)
+            if (it.autoRepeat) scheduleAlarm(bookmarkId, false).join()
         }
     }
-
+    
     fun scheduleAlarm(bookmarkId: Long, isManuallyTriggered: Boolean): Job {
         return fetchBookmarkById(bookmarkId) {
             if (!isManuallyTriggered && it.autoRepeat) delay(it.autoRepeatInterval)
             val bookmark = it.saveBookmarkWithNewInterval()
             Timber.d("creating a new ticker for bookmark $bookmark")
             notificationCoordinator.cancelAllNotifications(bookmark)
-
+            
             Timber.d("showing running ticker notification")
             notificationCoordinator.showRunningNotification(bookmark)
             alarmCoordinator.scheduleAlarm(bookmark)
         }
     }
-
+    
     private fun Bookmark.saveBookmarkWithNewInterval(): Bookmark {
-        val interval = randomGenerator.nextInt((max - min + 1).toInt()) + min.millis
+        val interval =
+            randomGenerator.nextInt((max - min).inWholeMilliseconds.toInt()) + min.inWholeMilliseconds
         return copy(intervalEnd = interval + System.currentTimeMillis())
             .also { repository.insertOrUpdateBookmark(it) }
     }
-
-    fun cancelTicker(bookmarkId: Long): Job {
-        return cancelTicker(bookmarkId) {}
+    
+    fun cancelTimer(bookmarkId: Long): Job {
+        return cancelTimer(bookmarkId) {}
     }
-
+    
     fun delete(bookmark: Bookmark): Job {
-        return cancelTicker(bookmark.id) {
+        return cancelTimer(bookmark.id) {
             notificationCoordinator.deleteChannelsForBookmark(bookmark)
             repository.deleteBookmark(bookmark)
         }
     }
-
-    private fun cancelTicker(
+    
+    private fun cancelTimer(
         bookmarkId: Long,
-        afterCancelling: suspend () -> Unit
+        afterCancelling: suspend () -> Unit,
     ): Job {
         return fetchBookmarkById(bookmarkId) {
             Timber.d("cancel bookmark $it")
@@ -108,20 +109,24 @@ class BookmarkService(
             afterCancelling()
         }
     }
-
+    
     private fun fetchBookmarkById(bookmarkId: Long, onBookmark: suspend (Bookmark) -> Unit): Job {
         return coroutineScope.launch {
             getBookmarkById(bookmarkId).take(1).collect(onBookmark)
         }
     }
-
-    fun applyForAllBookmarks(action: (Bookmark) -> Unit): Job {
+    
+    fun updateBookmarks(action: (Bookmark) -> Bookmark): Job {
         return coroutineScope.launch {
-            repository.getAllBookmarks().firstOrNull()?.forEach(action)
+            val original = repository.getAllBookmarks().firstOrNull().orEmpty()
+            val updated = original.map(action)
+            if (original != updated) {
+                repository.bulkUpdate(updated)
+            }
         }
     }
-
+    
     fun fetchAllBookmarks() = repository.getAllBookmarks()
-
-
+    
+    
 }
