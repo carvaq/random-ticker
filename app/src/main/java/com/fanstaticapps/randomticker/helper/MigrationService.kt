@@ -2,7 +2,8 @@ package com.fanstaticapps.randomticker.helper
 
 import android.content.Context
 import android.media.RingtoneManager
-import android.net.Uri
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.data.BookmarkService
 import com.fanstaticapps.randomticker.extensions.createNotificationChannel
 import com.fanstaticapps.randomticker.extensions.getNotificationManager
@@ -23,11 +24,11 @@ class MigrationService(
             context.getNotificationManager().deleteNotificationChannel("RandomTickerChannel:01")
             context.getNotificationManager().deleteNotificationChannel("RandomTickerChannel:03")
             bookmarkService.applyForAllBookmarks {
-                val soundUri = kotlin.runCatching { Uri.parse(ringtonePref) }
+                val soundUri = kotlin.runCatching { ringtonePref.toUri() }
                     .getOrNull() ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
                 context.createNotificationChannel(it, soundUri, vibratorPref)
             }
-            prefs.edit().clear().apply()
+            prefs.edit { clear() }
         }
     }
 }

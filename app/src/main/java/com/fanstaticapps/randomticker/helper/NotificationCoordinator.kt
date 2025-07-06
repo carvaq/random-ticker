@@ -75,7 +75,7 @@ class NotificationCoordinator(private val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSound(sound)
             .setFullScreenIntent(getKlaxonActivityPendingIntent(context, bookmark), true)
-            .addAction(getCancelAction(bookmark, R.string.action_stop))
+            .addAction(getCancelAction(bookmark, R.string.stop_timer))
 
         if (!bookmark.autoRepeat) {
             builder.addAction(getRepeatAction(context, bookmark))

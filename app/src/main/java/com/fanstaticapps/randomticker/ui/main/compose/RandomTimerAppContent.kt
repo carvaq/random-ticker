@@ -93,12 +93,11 @@ fun RandomTimerAppContent(
         selectionStatus.id?.let { viewModel.delete(it) }
         hideEditor()
     }
-    val onStartTimer: (Long, Boolean) -> Unit = { timerId, isRunning ->
-        if (isRunning) {
-            viewModel.cancelTimer(timerId)
-        } else {
-            viewModel.start(timerId)
-        }
+    val onStartTimer: (Long) -> Unit = { timerId ->
+        viewModel.start(timerId)
+    }
+    val onStopTimer: (Long) -> Unit = { timerId ->
+        viewModel.cancelTimer(timerId)
     }
 
 
@@ -130,8 +129,10 @@ fun RandomTimerAppContent(
                 ) {
                     TimerListScreen(
                         timers = timers,
-                        onTogglePlayStopClick = onStartTimer,
-                        onTimerClick = { selectionStatus = Editing(it) }
+                        onStartTimer,
+                        onStopTimer,
+                        onTimerClick = { selectionStatus = Editing(it) },
+                        onAddTimerClick = { selectionStatus = New }
                     )
                 }
 
@@ -158,9 +159,11 @@ fun RandomTimerAppContent(
             if (selectionStatus is NotSelected) {
                 TimerListScreen(
                     timers = timers,
-                    onTogglePlayStopClick = onStartTimer,
+                    onStartTimerAction = onStartTimer,
+                    onStopTimerAction = onStopTimer,
                     onTimerClick = { selectionStatus = Editing(it) },
-                    modifier = Modifier.padding(paddingValues)
+                    modifier = Modifier.padding(paddingValues),
+                    onAddTimerClick = { selectionStatus = New }
                 )
             } else {
                 NewEditTimerScreen(

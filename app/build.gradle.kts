@@ -106,6 +106,8 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
 
+    implementation(libs.accompanist.permissions)
+
     implementation(libs.timber)
 
     implementation(platform(libs.compose.bom))

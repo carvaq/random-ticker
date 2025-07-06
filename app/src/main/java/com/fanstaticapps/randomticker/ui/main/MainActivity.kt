@@ -5,8 +5,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import com.fanstaticapps.randomticker.compose.AppTheme
-import com.fanstaticapps.randomticker.extensions.getBookmarkId
-import com.fanstaticapps.randomticker.extensions.resetBookmarkId
 import com.fanstaticapps.randomticker.helper.MigrationService
 import com.fanstaticapps.randomticker.ui.BaseActivity
 import com.fanstaticapps.randomticker.ui.main.compose.RandomTimerAppContent
@@ -21,9 +19,6 @@ class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        intent.getBookmarkId()?.let {
-            intent.resetBookmarkId()
-        }
         migrationService.migrate()
         setContent {
             AppTheme {
