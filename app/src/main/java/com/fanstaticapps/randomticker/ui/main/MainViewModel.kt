@@ -2,6 +2,7 @@ package com.fanstaticapps.randomticker.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fanstaticapps.randomticker.data.Bookmark.Companion.NOT_SET_VALUE
 import com.fanstaticapps.randomticker.data.BookmarkService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +33,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
                 maxInterval = it.max,
                 autoRepeat = it.autoRepeat,
                 alarmSound = it.soundUri,
-                isRunning = it.intervalEnd > tick,
+                isRunning = it.intervalEnd != NOT_SET_VALUE,
                 endTimeMillis = it.intervalEnd
             )
         }
