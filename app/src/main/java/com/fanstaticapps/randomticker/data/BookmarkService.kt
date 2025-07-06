@@ -80,23 +80,24 @@ class BookmarkService(
     }
 
     private fun Bookmark.saveBookmarkWithNewInterval(): Bookmark {
-        val interval = randomGenerator.nextInt((max - min + 1).toInt()) + min.millis
+        val interval =
+            randomGenerator.nextInt((max - min).inWholeMilliseconds.toInt()) + min.inWholeMilliseconds
         return copy(intervalEnd = interval + System.currentTimeMillis())
             .also { repository.insertOrUpdateBookmark(it) }
     }
 
-    fun cancelTicker(bookmarkId: Long): Job {
-        return cancelTicker(bookmarkId) {}
+    fun cancelTimer(bookmarkId: Long): Job {
+        return cancelTimer(bookmarkId) {}
     }
 
     fun delete(bookmark: Bookmark): Job {
-        return cancelTicker(bookmark.id) {
+        return cancelTimer(bookmark.id) {
             notificationCoordinator.deleteChannelsForBookmark(bookmark)
             repository.deleteBookmark(bookmark)
         }
     }
 
-    private fun cancelTicker(
+    private fun cancelTimer(
         bookmarkId: Long,
         afterCancelling: suspend () -> Unit
     ): Job {

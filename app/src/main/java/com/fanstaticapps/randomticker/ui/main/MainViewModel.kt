@@ -2,55 +2,54 @@ package com.fanstaticapps.randomticker.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkService
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val bookmarkService: BookmarkService) :
-    ViewModel(), MainTickerViewModel {
-    private val selectedBookmarkId = MutableStateFlow<Long?>(null)
-    val bookmarks = bookmarkService.fetchAllBookmarks()
-    val selectedBookmark = combine(
-        selectedBookmarkId,
-        bookmarks
-    ) { selectedBookmarkId, bookmarks ->
-        bookmarks.find { it.id == selectedBookmarkId }
+class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
+    MainTickerViewModel {
+    override val timers: Flow<List<TimerItemUiState>> =
+        bookmarkService.fetchAllBookmarks().map { bookmarks ->
+            bookmarks.map {
+                TimerItemUiState(
+                    it.id,
+                    it.name,
+                    it.max,
+                    it.min,
+                    it.intervalEnd,
+                    it.autoRepeat,
+                    it.soundUri
+                )
+            }
     }
 
-    override fun startBookmark(bookmark: Bookmark) {
-        bookmarkService.scheduleAlarm(bookmark.id, true)
+    override fun start(id: Long) {
+        bookmarkService.scheduleAlarm(id, true)
     }
 
-    override fun select(bookmarkId: Long?) {
-        selectedBookmarkId.value = bookmarkId
+    override fun cancelTicker(id: Long) {
+        bookmarkService.cancelTimer(id)
     }
 
-    override fun createNewBookmark() {
+    override fun save(timerDetails: TimerItemUiState) {
+        bookmarkService.save(timerDetails.toBookmark())
+    }
+
+    override fun delete(id: Long) {
         viewModelScope.launch {
-            selectedBookmarkId.emit(bookmarkService.createNew())
+            bookmarkService.getBookmarkById(id).firstOrNull()?.let {
+                bookmarkService.delete(it)
+            }
         }
-    }
-
-    override fun cancelTicker(bookmarkId: Long) {
-        bookmarkService.cancelTicker(bookmarkId)
-    }
-
-    override fun save(bookmark: Bookmark) {
-        bookmarkService.save(bookmark)
-    }
-
-    override fun delete(bookmark: Bookmark) {
-        bookmarkService.delete(bookmark)
     }
 }
 
 interface MainTickerViewModel {
-    fun startBookmark(bookmark: Bookmark)
-    fun select(bookmarkId: Long?)
-    fun createNewBookmark()
-    fun cancelTicker(bookmarkId: Long)
-    fun save(bookmark: Bookmark)
-    fun delete(bookmark: Bookmark)
+    val timers: Flow<List<TimerItemUiState>>
+    fun start(id: Long)
+    fun cancelTicker(id: Long)
+    fun save(timerDetails: TimerItemUiState)
+    fun delete(id: Long)
 }
