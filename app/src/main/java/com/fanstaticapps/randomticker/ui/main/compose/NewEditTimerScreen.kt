@@ -50,6 +50,7 @@ import androidx.core.net.toUri
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
 
@@ -163,7 +164,7 @@ fun NewEditTimerScreen(
             RingtoneSelector(launcher, alarmSoundName, alarmSoundUri)
         }
 
-        ButtonRow(onCancel) {
+        ButtonRow(maxInterval > Duration.ZERO, onCancel) {
             val newConfig = TimerItemUiState(
                 id = timerDetails?.id ?: 0,
                 name = timerName,
@@ -182,6 +183,9 @@ fun NewEditTimerScreen(
                 minInterval,
                 {
                     minInterval = it
+                    if (minInterval > maxInterval) {
+                        maxInterval = minInterval + 999.milliseconds
+                    }
                     showMinIntervalDialog = false
                 },
                 { showMinIntervalDialog = false })
@@ -225,7 +229,7 @@ private fun IntervalSelectorRow(label: String, duration: Duration, onClick: () -
 }
 
 @Composable
-private fun ButtonRow(onCancel: () -> Unit, onSaveClick: () -> Unit) {
+private fun ButtonRow(canSave: Boolean, onCancel: () -> Unit, onSaveClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -235,6 +239,7 @@ private fun ButtonRow(onCancel: () -> Unit, onSaveClick: () -> Unit) {
     ) {
         OutlinedButton(
             onClick = onCancel,
+            enabled = canSave,
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
         ) {
