@@ -18,7 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -86,12 +87,11 @@ fun NewEditTimerScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             OutlinedTextField(
                 value = timerName,
@@ -102,12 +102,12 @@ fun NewEditTimerScreen(
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp) // Expressive shape
+                shape = MaterialTheme.shapes.medium
             )
 
 
             Text(
-                "Set Random Interval",
+                stringResource(R.string.set_random_interval),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -223,7 +223,6 @@ private fun ButtonRow(onCancel: () -> Unit, onSaveClick: () -> Unit) {
         OutlinedButton(
             onClick = onCancel,
             modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
         ) {
             Text(stringResource(android.R.string.cancel))
@@ -232,7 +231,6 @@ private fun ButtonRow(onCancel: () -> Unit, onSaveClick: () -> Unit) {
         Button(
             onClick = onSaveClick,
             modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(stringResource(R.string.save_button))
@@ -267,7 +265,7 @@ private fun RingtoneSelector(
                 })
             }
             .padding(horizontal = 8.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp
     ) {

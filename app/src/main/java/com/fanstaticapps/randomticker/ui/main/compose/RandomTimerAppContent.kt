@@ -18,7 +18,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,25 +33,33 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.ui.main.MainTickerViewModel
 import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
+import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.Editing
+import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.New
+import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.NotSelected
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.time.Duration.Companion.minutes
+
+private sealed interface SelectionStatus {
+    object NotSelected : SelectionStatus
+    data class Editing(val timerId: Long) : SelectionStatus
+    object New : SelectionStatus
+
+    val id: Long? get() = (this as? Editing)?.timerId
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RandomTimerAppContent(
     windowWidthSizeClass: WindowWidthSizeClass,
-    viewModel: MainTickerViewModel,
-    selectedForEdit: Long? = null
+    viewModel: MainTickerViewModel
 ) {
     val timers by viewModel.timers.collectAsState(emptyList())
 
-    var selectedTimerForEdit: Long? by remember { mutableStateOf(selectedForEdit) }
-    var showEditorScreen by remember { mutableStateOf(false) }
+    var selectionStatus: SelectionStatus by remember { mutableStateOf(NotSelected) }
 
     val hideEditor = {
-        selectedTimerForEdit = null
-        showEditorScreen = false
+        selectionStatus = NotSelected
     }
 
     val onSaveTimer: (TimerItemUiState) -> Unit = { timerDetails ->
@@ -63,7 +70,7 @@ fun RandomTimerAppContent(
     val onCancelEdit = hideEditor
 
     val onDelete: () -> Unit = {
-        selectedTimerForEdit?.let { viewModel.delete(it) }
+        selectionStatus.id?.let { viewModel.delete(it) }
         hideEditor()
     }
     val onStartTimer: (Long) -> Unit = { viewModel.start(it) }
@@ -73,16 +80,13 @@ fun RandomTimerAppContent(
 
     Scaffold(
         floatingActionButton = {
-            if (!showEditorScreen) {
-                FloatingActionButton(onClick = {
-                    selectedTimerForEdit = null
-                    showEditorScreen = true
-                }) {
+            if (selectionStatus is NotSelected) {
+                FloatingActionButton(onClick = { selectionStatus = New }) {
                     Icon(Icons.Default.Add, stringResource(R.string.add_timer))
                 }
             }
         },
-        topBar = { TopBar(showEditorScreen, selectedTimerForEdit, onDelete, onCancelEdit) }
+        topBar = { TopBar(selectionStatus, onDelete, onCancelEdit) }
 
     ) { paddingValues ->
         if (isTwoPane) {
@@ -101,45 +105,45 @@ fun RandomTimerAppContent(
                     TimerListScreen(
                         timers = timers,
                         onStartTimerClick = onStartTimer,
-                        onTimerClick = { timer -> selectedTimerForEdit = timer }
+                        onTimerClick = { selectionStatus = Editing(it) }
                     )
                 }
 
                 // Right pane: Timer Editor
-                VerticalDivider()
-
                 Surface(
                     modifier = Modifier
                         .weight(0.6f)
                         .fillMaxHeight(),
                     color = MaterialTheme.colorScheme.surface
                 ) {
-                    NewEditTimerScreen(
-                        timerDetails = timers.firstOrNull { it.id == selectedTimerForEdit },
-                        onSave = onSaveTimer,
-                        onCancel = onCancelEdit
-                    )
+                    if (selectionStatus is NotSelected) {
+                        EmptyEditorScreen()
+                    } else {
+                        NewEditTimerScreen(
+                            timerDetails = timers.firstOrNull { it.id == selectionStatus.id },
+                            onSave = onSaveTimer,
+                            onCancel = onCancelEdit
+                        )
+                    }
                 }
             }
         } else {
             // Single-pane layout for Compact/Medium width
-            if (showEditorScreen) {
-                NewEditTimerScreen(
-                    modifier = Modifier.padding(paddingValues),
-                    timerDetails = timers.firstOrNull { it.id == selectedTimerForEdit },
-                    onSave = onSaveTimer,
-                    onCancel = onCancelEdit
-                )
-            } else {
+            if (selectionStatus is NotSelected) {
                 TimerListScreen(
                     timers = timers,
                     onStartTimerClick = onStartTimer,
-                    onTimerClick = { timer ->
-                        selectedTimerForEdit = timer
-                        showEditorScreen = true
-                    },
+                    onTimerClick = { selectionStatus = Editing(it) },
                     modifier = Modifier.padding(paddingValues)
                 )
+            } else {
+                NewEditTimerScreen(
+                    modifier = Modifier.padding(paddingValues),
+                    timerDetails = timers.firstOrNull { it.id == selectionStatus.id },
+                    onSave = onSaveTimer,
+                    onCancel = onCancelEdit
+                )
+
             }
         }
     }
@@ -148,18 +152,17 @@ fun RandomTimerAppContent(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun TopBar(
-    showEditorScreen: Boolean,
-    selectedForEdit: Long?,
+    selectionStatus: SelectionStatus,
     onDelete: () -> Unit,
     onCancel: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = when {
-                    !showEditorScreen -> R.string.app_name
-                    selectedForEdit != null -> R.string.edit_timer
-                    else -> R.string.create_timer
+                text = when (selectionStatus) {
+                    NotSelected -> R.string.app_name
+                    is Editing -> R.string.edit_timer
+                    New -> R.string.create_timer
                 }.let { stringResource(it) }
             )
         },
@@ -168,7 +171,7 @@ private fun TopBar(
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         actions = {
-            if (showEditorScreen && selectedForEdit != null) {
+            if (selectionStatus is Editing) {
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -178,7 +181,7 @@ private fun TopBar(
             }
         },
         navigationIcon = {
-            if (showEditorScreen) {
+            if (selectionStatus !is NotSelected) {
                 IconButton(onClick = onCancel) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
@@ -291,8 +294,7 @@ fun RandomTimerAppContentExpandedPreview(
             Surface(modifier = Modifier.fillMaxSize()) {
                 RandomTimerAppContent(
                     windowWidthSizeClass = WindowWidthSizeClass.Expanded,
-                    viewModelStub,
-                    2
+                    viewModelStub
                 )
             }
         }
