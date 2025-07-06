@@ -1,4 +1,4 @@
 <resources>
-	<string name="app_name" translatable="false">Random Ticker</string>
+	<string name="app_name" translatable="false">Random Timer</string>
 	<string name="license" translatable="false">Open Source Licenses</string>
 </resources>
