@@ -20,11 +20,9 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.new
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import timber.log.Timber
-import timber.log.Timber.DebugTree
 
 class TickerApplication : Application() {
-
+    
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
@@ -33,11 +31,8 @@ class TickerApplication : Application() {
             androidContext(this@TickerApplication)
             modules(modules)
         }
-        if (BuildConfig.DEBUG) {
-            Timber.plant(DebugTree())
-        }
     }
-
+    
     private val modules = listOf(
         module(createdAtStart = true) {
             single {
@@ -48,7 +43,7 @@ class TickerApplication : Application() {
             single { get<TickerDatabase>().tickerDataDao() }
             factoryOf(::BookmarkRepository)
         },
-
+        
         module {
             factoryOf(::NotificationCoordinator)
             factoryOf(::AlarmCoordinator)

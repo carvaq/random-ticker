@@ -99,9 +99,10 @@ private fun BookmarkView(
                         text = it
                     )
                 }
-                Box(modifier = Modifier
-                    .size(72.dp)
-                    .clickable { stop(bookmark) }) {
+                Box(
+                    modifier = Modifier
+                        .size(72.dp)
+                        .clickable { stop(bookmark) }) {
                     Icon(
                         modifier = Modifier
                             .fillMaxSize()
@@ -113,9 +114,10 @@ private fun BookmarkView(
                 }
             } else {
                 Spacer(modifier = Modifier.weight(1f))
-                Box(modifier = Modifier
-                    .size(72.dp)
-                    .clickable { start(bookmark) }) {
+                Box(
+                    modifier = Modifier
+                        .size(72.dp)
+                        .clickable { start(bookmark) }) {
                     Icon(
                         modifier = Modifier
                             .fillMaxSize()

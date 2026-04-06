@@ -3,19 +3,18 @@
 
 # Random Ticker
 
-A simple app for board games, workout or other situations where you need to inject a bit of random in your life.
+A simple app for board games, workout or other situations where you need to inject a bit of random
+in your life.
 
 <a href="https://play.google.com/store/apps/details?id=com.cvv.fanstaticapps.randomticker" target="_blank">
-<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="250"/>
+<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="250" alt="Badge"/>
 </a>
 
 
-This apps tries to use the latest greatest in Android libraries while simultaneously trying to be a fabulous app. If you have improvements feel free to create an issue, open a PR or to fork it.
-
-
+This apps tries to use the latest greatest in Android libraries while simultaneously trying to be a
+fabulous app. If you have improvements feel free to create an issue, open a PR or to fork it.
 
 ## License
-
 
 	Copyright 2023 Carla Vaquero
 

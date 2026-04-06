@@ -1,8 +1,8 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.tripletPlay)
     alias(libs.plugins.oss.licenses)
     alias(libs.plugins.room)
@@ -12,29 +12,27 @@ plugins {
 
 
 val major = 2
-val minor = 0
+val minor = 1
 val patch = 0
 
-android {
-
-    compileSdk = 36
+extensions.configure<ApplicationExtension> {
+    compileSdk { version = release(36) }
     defaultConfig {
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 26
-        targetSdk = 36
         applicationId = "com.cvv.fanstaticapps.randomticker"
-
+        
         versionCode = 10706
         versionName = String.format("%s%02d%02d", major, minor, patch)
-
+        
         testInstrumentationRunner = "com.fanstaticapps.randomticker.TickerTestRunner"
     }
-
+    
     signingConfigs {
         create("release") {
             val fanstaticKeyAlias = System.getenv("RELEASE_KEY_ALIAS")
             println("Adding release config for production $fanstaticKeyAlias")
-
+            
             if (fanstaticKeyAlias != null) {
                 println("Adding release config for production")
                 keyAlias = fanstaticKeyAlias
@@ -44,13 +42,13 @@ android {
             }
         }
     }
-
+    
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             setProguardFiles(
                 listOf(
-                    getDefaultProguardFile("proguard-android.txt"),
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
             )
@@ -58,7 +56,7 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-
+    
     buildFeatures {
         compose = true
         viewBinding = true
@@ -70,44 +68,45 @@ android {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
     }
-
+    
     sourceSets {
-        getByName("androidTest").assets.srcDirs("$projectDir/schemas")
+        getByName("androidTest").assets.directories.add("$projectDir/schemas")
     }
-
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-
+    
     namespace = "com.fanstaticapps.randomticker"
-
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
 }
-dependencies {
-    implementation(libs.material)
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    
     implementation(libs.appcompat)
     implementation(libs.activity)
-
+    
     ksp(libs.room.compiler)
     implementation(libs.room.runtime)
     implementation(libs.room)
-
+    
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.extensions)
-
+    
     implementation(libs.kotlinx.coroutines.android)
-
+    
     implementation(libs.oss.licenses)
-
+    
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
-
+    
+    implementation(libs.accompanist.permissions)
     implementation(libs.timber)
-
+    
     implementation(platform(libs.compose.bom))
     implementation(libs.material3)
     implementation(libs.foundation)
@@ -117,11 +116,11 @@ dependencies {
     implementation(libs.material3.window.size)
     implementation(libs.ui.viewbinding)
     debugImplementation(libs.ui.tooling)
-
+    
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
-
+    
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.runner)
     androidTestImplementation(libs.android.junit)

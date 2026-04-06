@@ -29,10 +29,10 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
-
+    
     private val mainViewModel: MainViewModel by viewModel()
     private val migrationService: MigrationService by inject()
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         intent.getBookmarkId()?.let {
@@ -63,17 +63,17 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-
+    
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Composable
     private fun isCompactOrInPortrait(
         windowSize: WindowSizeClass = calculateWindowSizeClass(activity = this),
-        orientation: Int = LocalConfiguration.current.orientation
+        orientation: Int = LocalConfiguration.current.orientation,
     ): Boolean {
         return windowSize.widthSizeClass == WindowWidthSizeClass.Compact
                 || windowSize.heightSizeClass == WindowHeightSizeClass.Compact
                 || orientation == Configuration.ORIENTATION_PORTRAIT
     }
-
-
+    
+    
 }

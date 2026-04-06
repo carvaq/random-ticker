@@ -4,7 +4,6 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.Save
@@ -27,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import com.fanstaticapps.randomticker.R
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.ui.main.MainViewModel
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -36,7 +35,8 @@ fun TopBar(
     isSinglePane: Boolean,
     editableBookmark: MutableState<Bookmark>?
 ) {
-    TopAppBar(title = { Text(stringResource(id = R.string.app_name)) },
+    TopAppBar(
+        title = { Text(stringResource(id = R.string.app_name)) },
         navigationIcon = {
             BackNavigation(isSinglePane, editableBookmark)
         },
@@ -56,7 +56,8 @@ private fun BackNavigation(
     if (isSinglePane && selectedBookmark != null) {
         IconButton(onClick = { mainViewModel.select(null) }) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Navigation icon"
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Navigation icon"
             )
         }
     }
