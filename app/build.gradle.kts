@@ -16,8 +16,9 @@ val minor = 1
 val patch = 0
 
 extensions.configure<ApplicationExtension> {
-    compileSdk { version = release(37) }
+    compileSdk = 37
     defaultConfig {
+        targetSdk = 37
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 26
         applicationId = "com.cvv.fanstaticapps.randomticker"
