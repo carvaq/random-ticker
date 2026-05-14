@@ -1,17 +1,14 @@
 package com.fanstaticapps.randomticker.ui.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.fanstaticapps.randomticker.data.Bookmark.Companion.NOT_SET_VALUE
 import com.fanstaticapps.randomticker.data.BookmarkService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
@@ -24,7 +21,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
     }
     override val timers: Flow<TimersScreenUiState> = runningTimers.combine(
         bookmarkService.fetchAllBookmarks()
-    ) { tick, bookmarks ->
+    ) { _, bookmarks ->
         bookmarks.map {
             TimerItemUiState(
                 id = it.id,
@@ -46,7 +43,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
     }
 
     override fun cancelTimer(id: Long) {
-        bookmarkService.cancelTimer(id)
+        bookmarkService.cancel(id)
     }
 
     override fun save(timerDetails: TimerItemUiState) {
@@ -54,11 +51,7 @@ class MainViewModel(private val bookmarkService: BookmarkService) : ViewModel(),
     }
 
     override fun delete(id: Long) {
-        viewModelScope.launch {
-            bookmarkService.getBookmarkById(id).firstOrNull()?.let {
-                bookmarkService.delete(it)
-            }
-        }
+        bookmarkService.delete(id)
     }
 }
 

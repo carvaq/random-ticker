@@ -18,6 +18,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.new
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import timber.log.Timber
@@ -46,14 +47,14 @@ class TickerApplication : Application() {
                     .build()
             }
             single { get<TickerDatabase>().tickerDataDao() }
-            factoryOf(::BookmarkRepository)
+            singleOf(::BookmarkRepository)
         },
 
         module {
             factoryOf(::NotificationCoordinator)
             factoryOf(::AlarmCoordinator)
         },
-        module { factory { BookmarkService(get(), get(), get()) } },
+        module { single { BookmarkService(get(), get(), get()) } },
         module { factoryOf(::MigrationService) },
         module {
             viewModel { new(::MainViewModel) }
