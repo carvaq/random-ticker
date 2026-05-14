@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.Random
+import kotlin.random.Random
 
 class BookmarkService(
     private val repository: BookmarkRepository,
@@ -33,8 +33,6 @@ class BookmarkService(
         alarmCoordinator,
         CoroutineScope(SupervisorJob() + Dispatchers.IO)
     )
-    
-    private val randomGenerator = Random()
     
     fun getBookmarkById(bookmarkId: Long): Flow<Bookmark> {
         return repository.getBookmarkById(bookmarkId)
@@ -80,8 +78,13 @@ class BookmarkService(
     }
     
     private fun Bookmark.saveBookmarkWithNewInterval(): Bookmark {
-        val interval =
-            randomGenerator.nextInt((max - min).inWholeMilliseconds.toInt()) + min.inWholeMilliseconds
+        val minMillis = min.inWholeMilliseconds
+        val maxMillis = max.inWholeMilliseconds
+        val interval = if (maxMillis > minMillis) {
+            Random.nextLong(minMillis, maxMillis + 1)
+        } else {
+            minMillis
+        }
         return copy(intervalEnd = interval + System.currentTimeMillis())
             .also { repository.insertOrUpdateBookmark(it) }
     }
