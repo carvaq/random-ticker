@@ -81,14 +81,14 @@ class MigrationServiceTest {
 
         migrationService.runMigrationIfNeeded()
 
-        verify(exactly = 0) { mockBookmarkService.updateBookmarks(any()) }
+        verify(exactly = 0) { mockBookmarkService.updateAllBookmarks(any()) }
         verify(exactly = 0) { mockSharedPreferencesEditor.putInt(any(), any()) }
     }
 
     @Test
     fun `migrateSoundSettings should update bookmark with default sound if soundUri is null and no old channel`() {
         val bookmarkSlot = slot<(Bookmark) -> Bookmark>()
-        every { mockBookmarkService.updateBookmarks(capture(bookmarkSlot)) } returns mockk()
+        every { mockBookmarkService.updateAllBookmarks(capture(bookmarkSlot)) } returns mockk()
         needsToRunMigration()
         every { mockNotificationManager.getNotificationChannel(any()) } returns null
 
@@ -98,7 +98,7 @@ class MigrationServiceTest {
         val originalBookmark = testBookmark.copy(soundUri = null)
         val updatedBookmark = bookmarkSlot.captured(originalBookmark)
         assertEquals(defaultAlarmSoundUri.toString(), updatedBookmark.soundUri)
-        verify { mockBookmarkService.updateBookmarks(any()) }
+        verify { mockBookmarkService.updateAllBookmarks(any()) }
     }
 
     @Test
@@ -112,7 +112,7 @@ class MigrationServiceTest {
         every { mockNotificationManager.getNotificationChannel(any()) } returns mockChannel
 
         val bookmarkSlot = slot<(Bookmark) -> Bookmark>()
-        every { mockBookmarkService.updateBookmarks(capture(bookmarkSlot)) } returns mockk()
+        every { mockBookmarkService.updateAllBookmarks(capture(bookmarkSlot)) } returns mockk()
 
         needsToRunMigration()
         migrationService.runMigrationIfNeeded()
@@ -120,7 +120,7 @@ class MigrationServiceTest {
         val originalBookmark = testBookmark.copy(soundUri = null)
         val updatedBookmark = bookmarkSlot.captured(originalBookmark)
         assertEquals(customSoundUri.toString(), updatedBookmark.soundUri)
-        verify { mockBookmarkService.updateBookmarks(any()) }
+        verify { mockBookmarkService.updateAllBookmarks(any()) }
         verify { mockNotificationManager.deleteNotificationChannel(oldChannelId) }
     }
 
@@ -130,7 +130,7 @@ class MigrationServiceTest {
         val bookmarkWithSound = testBookmark.copy(soundUri = existingSound)
 
         val bookmarkSlot = slot<(Bookmark) -> Bookmark>()
-        every { mockBookmarkService.updateBookmarks(capture(bookmarkSlot)) } returns mockk()
+        every { mockBookmarkService.updateAllBookmarks(capture(bookmarkSlot)) } returns mockk()
 
         needsToRunMigration()
         migrationService.runMigrationIfNeeded()
@@ -138,7 +138,7 @@ class MigrationServiceTest {
 
         val updatedBookmark = bookmarkSlot.captured(bookmarkWithSound)
         assertEquals(existingSound, updatedBookmark.soundUri)
-        verify { mockBookmarkService.updateBookmarks(any()) }
+        verify { mockBookmarkService.updateAllBookmarks(any()) }
     }
 
     private fun needsToRunMigration() {

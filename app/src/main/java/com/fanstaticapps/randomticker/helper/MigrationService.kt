@@ -34,7 +34,7 @@ class MigrationService(
 
     private fun migrateSoundSettings() {
         val manager = context.getNotificationManager()
-        bookmarkService.updateBookmarks { bookmark ->
+        bookmarkService.updateAllBookmarks { bookmark ->
             if (bookmark.soundUri.isNullOrEmpty()) {
                 val channel = manager.getNotificationChannel("${bookmark.id}-KLAXON")
                 channel?.id?.let { manager.deleteNotificationChannel(it) }

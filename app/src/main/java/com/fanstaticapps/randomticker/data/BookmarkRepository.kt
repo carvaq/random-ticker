@@ -8,18 +8,27 @@ class BookmarkRepository(private val bookmarkDao: BookmarkDao) {
         return bookmarkDao.getById(id)
     }
 
+    suspend fun getBookmarkByIdOnce(id: Long): Bookmark? {
+        return bookmarkDao.getByIdOnce(id)
+    }
+
     fun getAllBookmarks(): Flow<List<Bookmark>> {
         return bookmarkDao.getAllBookmarks()
+    }
+
+    suspend fun getAllBookmarksOnce(): List<Bookmark> {
+        return bookmarkDao.getAllBookmarksOnce()
     }
 
     suspend fun deleteBookmark(bookmark: Bookmark) {
         bookmarkDao.delete(bookmark.id)
     }
 
-    fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
+    suspend fun insertOrUpdateBookmark(newBookmark: Bookmark): Long {
         return bookmarkDao.insert(newBookmark)
     }
-    fun bulkUpdate(bookmarks: List<Bookmark>) {
-        bookmarkDao.insertAll(bookmarks)
+
+    suspend fun bulkUpdate(bookmarks: List<Bookmark>) {
+        bookmarkDao.insert(bookmarks)
     }
 }

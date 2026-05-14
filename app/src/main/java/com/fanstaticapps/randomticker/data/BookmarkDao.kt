@@ -13,10 +13,19 @@ interface BookmarkDao {
     fun getAllBookmarks(): Flow<List<Bookmark>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(bookmark: Bookmark): Long
+    suspend fun insert(bookmark: Bookmark): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(bookmarks: List<Bookmark>)
 
     @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
     fun getById(id: Long): Flow<Bookmark>
+
+    @Query("SELECT * from bookmarks WHERE id = :id LIMIT 1")
+    suspend fun getByIdOnce(id: Long): Bookmark?
+
+    @Query("SELECT * from bookmarks")
+    suspend fun getAllBookmarksOnce(): List<Bookmark>
 
     @Query("DELETE from bookmarks WHERE id = :id")
     suspend fun delete(id: Long?)

@@ -5,6 +5,6 @@ import com.fanstaticapps.randomticker.data.BookmarkService
 
 class CancelViewModel(private val service: BookmarkService) : ViewModel() {
     fun cancelTicker(bookmarkId: Long?) {
-        bookmarkId?.let { service.cancelTimer(it) }
+        bookmarkId?.let { service.cancel(it) }
     }
 }
