@@ -49,7 +49,7 @@ roblectric = { module = "org.robolectric:robolectric", version = "4.16.1" }
 android-application = { id = "com.android.application", version = "9.2.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 tripletPlay = { id = "com.github.triplet.play", version = "4.0.0" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.5" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.8" }
 oss-licenses = { id = "com.google.android.gms.oss-licenses-plugin", version = "0.12.0" }
 room = { id = "androidx.room", version.ref = "room" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
