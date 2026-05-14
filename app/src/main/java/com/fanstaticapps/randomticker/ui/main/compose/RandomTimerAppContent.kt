@@ -96,8 +96,6 @@ fun RandomTimerAppContent(
         hideEditor()
     }
 
-    val onCancelEdit = hideEditor
-
     val onDelete: () -> Unit = {
         selectionStatus.id?.let { viewModel.delete(it) }
         hideEditor()
@@ -120,7 +118,7 @@ fun RandomTimerAppContent(
                 }
             }
         },
-        topBar = { TopBar(selectionStatus, onDelete, onCancelEdit) }
+        topBar = { TopBar(selectionStatus, onDelete, hideEditor) }
 
     ) { paddingValues ->
         if (isTwoPane) {
@@ -158,7 +156,7 @@ fun RandomTimerAppContent(
                         NewEditTimerScreen(
                             timerDetails = (timerState as? TimersScreenUiState.Success)?.timers?.firstOrNull { it.id == selectionStatus.id },
                             onSave = onSaveTimer,
-                            onCancel = onCancelEdit
+                            onCancel = hideEditor
                         )
                     }
                 }
@@ -179,7 +177,7 @@ fun RandomTimerAppContent(
                     modifier = Modifier.padding(paddingValues),
                     timerDetails = (timerState as? TimersScreenUiState.Success)?.timers?.firstOrNull { it.id == selectionStatus.id },
                     onSave = onSaveTimer,
-                    onCancel = onCancelEdit
+                    onCancel = hideEditor
                 )
 
             }
