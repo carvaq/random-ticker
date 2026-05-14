@@ -7,32 +7,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: set up JDK
-        uses: actions/setup-java@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Decode google-services.json
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
-        run: echo $FIREBASE_CONFIG > app/google-services.json
+        run: echo "$FIREBASE_CONFIG" > app/google-services.json
 
       - name: Decode service account key
         env:
           SERVICE_ACCOUNT: ${{ secrets.PLAY_STORE_JSON }}
-        run: echo $SERVICE_ACCOUNT > play_store_secret.json
+        run: echo "$SERVICE_ACCOUNT" > play_store_secret.json
 
-      - name: Publish APK
+      - name: Publish and Build
         env:
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-        run: ./gradlew assemble publishBundle
+        run: ./gradlew assembleRelease publishBundle
 
-      - name: Save artifact
+      - name: Save APK artifact
         uses: actions/upload-artifact@v4
         with:
-          path: app/build/intermidiates/apk/release/app-release.apk
-          if-no-files-found: ignore
+          name: app-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: warn
+
+      - name: Save Bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-bundle
+          path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: warn

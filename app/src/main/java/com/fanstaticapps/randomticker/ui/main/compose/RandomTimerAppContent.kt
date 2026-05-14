@@ -45,7 +45,7 @@ import com.fanstaticapps.randomticker.ui.main.TimersScreenUiState
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.Editing
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.New
 import com.fanstaticapps.randomticker.ui.main.compose.SelectionStatus.NotSelected
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.time.Duration.Companion.minutes
@@ -194,7 +194,7 @@ private fun TopBar(
     onDelete: () -> Unit,
     onCancel: () -> Unit
 ) {
-    val tint = TopAppBarDefaults.centerAlignedTopAppBarColors().actionIconContentColor
+    val tint = TopAppBarDefaults.topAppBarColors().actionIconContentColor
     CenterAlignedTopAppBar(
         title = {
             Text(

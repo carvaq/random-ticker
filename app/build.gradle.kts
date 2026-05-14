@@ -1,8 +1,8 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.tripletPlay)
     alias(libs.plugins.oss.licenses)
     alias(libs.plugins.room)
@@ -15,13 +15,12 @@ val major = 2
 val minor = 1
 val patch = 0
 
-android {
-
-    compileSdk = 36
+extensions.configure<ApplicationExtension> {
+    compileSdk = 37
     defaultConfig {
+        targetSdk = 37
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 26
-        targetSdk = 36
         applicationId = "com.cvv.fanstaticapps.randomticker"
 
         versionCode = 10706
@@ -48,9 +47,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             setProguardFiles(
                 listOf(
-                    getDefaultProguardFile("proguard-android.txt"),
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
             )
@@ -61,7 +61,7 @@ android {
 
     buildFeatures {
         compose = true
-        viewBinding = true
+        buildConfig = true
     }
     testOptions {
         unitTests.apply {
@@ -72,7 +72,7 @@ android {
     }
 
     sourceSets {
-        getByName("androidTest").assets.srcDirs("$projectDir/schemas")
+        getByName("androidTest").assets.directories.add("$projectDir/schemas")
     }
 
     compileOptions {
@@ -81,13 +81,13 @@ android {
     }
 
     namespace = "com.fanstaticapps.randomticker"
-
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
 }
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
-    implementation(libs.material)
 
     implementation(libs.appcompat)
     implementation(libs.activity)
@@ -107,7 +107,6 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.accompanist.permissions)
-
     implementation(libs.timber)
 
     implementation(platform(libs.compose.bom))
@@ -124,7 +123,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
     testImplementation(libs.roblectric)
-
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.runner)
     androidTestImplementation(libs.android.junit)
