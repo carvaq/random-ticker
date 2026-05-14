@@ -2,7 +2,6 @@ name: Android CI
 
 on:
   push:
-    branches: [ master ]
     paths-ignore:
       - '**.md'
       - 'LICENSE'
@@ -22,7 +21,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-          cache: 'gradle'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Copy Google Services Json File
         run: cp google-services-for-ci.json app/google-services.json
