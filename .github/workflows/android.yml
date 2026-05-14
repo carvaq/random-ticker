@@ -2,27 +2,30 @@ name: Android CI
 
 on:
   push:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
   pull_request:
     branches: [ master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-      - name: set up JDK
-        uses: actions/setup-java@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 21
-      - uses: actions/checkout@v4
+          cache: 'gradle'
+
       - name: Copy Google Services Json File
-        uses: canastro/copy-file-action@master
-        with:
-          source: "google-services-for-ci.json"
-          target: "app/google-services.json"
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest
+        run: cp google-services-for-ci.json app/google-services.json
+
+      - name: Build and Test
+        run: ./gradlew lintDebug testDebugUnitTest assembleDebug
