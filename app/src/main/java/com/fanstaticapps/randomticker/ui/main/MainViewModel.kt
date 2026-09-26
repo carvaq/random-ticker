@@ -39,7 +39,7 @@ class MainViewModel(
                         endTimeMillis = it.intervalEnd
                     )
                 }
-            }.distinctUntilChanged()
+            }
             .map { TimersScreenUiState.Success(it) }
 
     override fun start(id: Long) {
