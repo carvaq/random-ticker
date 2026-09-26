@@ -1,10 +1,13 @@
 package com.fanstaticapps.randomticker.data
 
 import androidx.compose.runtime.saveable.SaverScope
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class BookmarkSaverTest {
     @Test
     fun `BookmarkSaver saves and restores all bookmark properties including soundUri`() {

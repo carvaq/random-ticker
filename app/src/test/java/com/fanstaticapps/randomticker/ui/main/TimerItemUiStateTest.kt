@@ -1,11 +1,14 @@
 package com.fanstaticapps.randomticker.ui.main
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+@RunWith(AndroidJUnit4::class)
 class TimerItemUiStateTest {
     @Test
     fun `toBookmark converts TimerItemUiState to Bookmark correctly`() {

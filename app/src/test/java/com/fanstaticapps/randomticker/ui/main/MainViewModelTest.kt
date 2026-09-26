@@ -1,5 +1,6 @@
 package com.fanstaticapps.randomticker.ui.main
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.fanstaticapps.randomticker.data.Bookmark
 import com.fanstaticapps.randomticker.data.BookmarkService
 import io.mockk.every
@@ -19,9 +20,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
+@RunWith(AndroidJUnit4::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModelTest {
     private val bookmarkService: BookmarkService = mockk(relaxed = true)
