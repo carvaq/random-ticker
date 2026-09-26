@@ -21,7 +21,7 @@ abstract class BaseReceiver : BroadcastReceiver() {
         if (bookmarkId != null) {
             Timber.d("Bookmark found")
             val pendingResult = goAsync()
-            val job = wrapper.handleBookmark(context, bookmarkId)
+            val job = wrapper.handleBookmark(bookmarkId)
             job?.invokeOnCompletion { pendingResult.finish() } ?: pendingResult.finish()
         } else {
             Timber.e("No bookmark ID passed")
@@ -29,7 +29,6 @@ abstract class BaseReceiver : BroadcastReceiver() {
     }
 
     abstract fun BroadcastWrapper.handleBookmark(
-        context: Context,
         bookmarkId: Long,
     ): Job?
 

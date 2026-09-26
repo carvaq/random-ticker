@@ -43,13 +43,8 @@
 				android:turnScreenOn="true"
 				tools:targetApi="o_mr1" />
 		<activity android:name=".ui.cancel.CancelActivity" />
-
 		<activity
-				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:theme="@style/AppTheme.Licenses" />
-		<activity
-				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+				android:name="com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity"
 				android:theme="@style/AppTheme.Licenses" />
 	</application>
 

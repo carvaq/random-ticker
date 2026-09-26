@@ -6,7 +6,7 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 
 fun Activity.turnScreenOnAndKeyguardOff() {
-    if (isAtLeastO_MR1()) {
+    if (isAtLeastOMR1()) {
         setShowWhenLocked(true)
         setTurnScreenOn(true)
     } else {
@@ -20,7 +20,7 @@ fun Activity.turnScreenOnAndKeyguardOff() {
 }
 
 fun Activity.turnScreenOffAndKeyguardOn() {
-    if (isAtLeastO_MR1()) {
+    if (isAtLeastOMR1()) {
         setShowWhenLocked(false)
         setTurnScreenOn(false)
     } else {

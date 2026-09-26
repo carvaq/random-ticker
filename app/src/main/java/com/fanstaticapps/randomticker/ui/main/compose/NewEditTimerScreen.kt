@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -55,7 +54,6 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-
 /**
  * Main screen for creating or editing a timer.
  * @param timerDetails The initial configuration to pre-fill the fields (for editing).
@@ -88,29 +86,25 @@ fun NewEditTimerScreen(
         maxInterval = timerDetails?.maxInterval ?: Duration.ZERO
         autoRepeatEnabled = timerDetails?.autoRepeat ?: false
         alarmSoundUri = timerDetails?.alarmSound
-        alarmSoundName = if (timerDetails?.alarmSound != null) {
-            timerDetails.alarmSound.toUri()
-        } else {
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        }.getTitle(context)
+        alarmSoundName =
+            if (timerDetails?.alarmSound != null) {
+                timerDetails.alarmSound.toUri()
+            } else {
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            }.getTitle(context)
     }
 
-    val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-            readUri(activityResult)?.let { uri ->
-                alarmSoundUri = uri.toString()
-                alarmSoundName = uri.getTitle(context)
-            }
-        }
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(16.dp)
     ) {
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState()),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
@@ -118,9 +112,10 @@ fun NewEditTimerScreen(
                 onValueChange = { timerName = it },
                 label = { Text(stringResource(R.string.app_name)) },
                 placeholder = { Text("e.g., Pomodoro Break, Workout Set") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
                 singleLine = true,
                 shape = MaterialTheme.shapes.medium
             )
@@ -144,13 +139,13 @@ fun NewEditTimerScreen(
                 onClick = { showMaxIntervalDialog = true }
             )
 
-
             HorizontalDivider(Modifier.padding(vertical = 24.dp))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -161,27 +156,31 @@ fun NewEditTimerScreen(
                 )
                 Switch(
                     checked = autoRepeatEnabled,
-                    onCheckedChange = { autoRepeatEnabled = it },
+                    onCheckedChange = { autoRepeatEnabled = it }
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            RingtoneSelector(launcher, alarmSoundName, alarmSoundUri)
+            RingtoneSelector(alarmSoundName, alarmSoundUri) { uri ->
+                alarmSoundUri = uri.toString()
+                alarmSoundName = uri.getTitle(context)
+            }
         }
 
         val defaultTimerName = stringResource(R.string.app_name)
         val canSave = maxInterval > Duration.ZERO && maxInterval >= minInterval && minInterval >= Duration.ZERO
         ButtonRow(canSave, onCancel) {
-            val newConfig = TimerItemUiState(
-                id = timerDetails?.id ?: 0,
-                name = timerName.takeIf { it.isNotEmpty() } ?: defaultTimerName,
-                minInterval = minInterval,
-                maxInterval = maxInterval,
-                autoRepeat = autoRepeatEnabled,
-                alarmSound = alarmSoundUri,
-                endTimeMillis = 0
-            )
+            val newConfig =
+                TimerItemUiState(
+                    id = timerDetails?.id ?: 0,
+                    name = timerName.takeIf { it.isNotEmpty() } ?: defaultTimerName,
+                    minInterval = minInterval,
+                    maxInterval = maxInterval,
+                    autoRepeat = autoRepeatEnabled,
+                    alarmSound = alarmSoundUri,
+                    endTimeMillis = 0
+                )
             onSave(newConfig)
         }
 
@@ -196,7 +195,8 @@ fun NewEditTimerScreen(
                     }
                     showMinIntervalDialog = false
                 },
-                { showMinIntervalDialog = false })
+                { showMinIntervalDialog = false }
+            )
         }
         if (showMaxIntervalDialog) {
             DurationPickerDialog(
@@ -209,19 +209,24 @@ fun NewEditTimerScreen(
                     }
                     showMaxIntervalDialog = false
                 },
-                { showMaxIntervalDialog = false })
+                { showMaxIntervalDialog = false }
+            )
         }
     }
-
 }
 
 @Composable
-private fun IntervalSelectorRow(label: String, duration: Duration, onClick: () -> Unit) {
+private fun IntervalSelectorRow(
+    label: String,
+    duration: Duration,
+    onClick: () -> Unit,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .clickable(onClick = onClick),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp)
+                .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -240,11 +245,16 @@ private fun IntervalSelectorRow(label: String, duration: Duration, onClick: () -
 }
 
 @Composable
-private fun ButtonRow(canSave: Boolean, onCancel: () -> Unit, onSaveClick: () -> Unit) {
+private fun ButtonRow(
+    canSave: Boolean,
+    onCancel: () -> Unit,
+    onSaveClick: () -> Unit,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.Bottom
     ) {
@@ -267,41 +277,50 @@ private fun ButtonRow(canSave: Boolean, onCancel: () -> Unit, onSaveClick: () ->
     }
 }
 
-private fun readUri(result: ActivityResult): Uri? = result.data?.let { intent ->
-    IntentCompat.getParcelableExtra(
-        intent,
-        RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
-        Uri::class.java
-    )
-}
+private fun readUri(result: ActivityResult): Uri? =
+    result.data?.let { intent ->
+        IntentCompat.getParcelableExtra(
+            intent,
+            RingtoneManager.EXTRA_RINGTONE_PICKED_URI,
+            Uri::class.java
+        )
+    }
 
 @Composable
 private fun RingtoneSelector(
-    launcher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     alarmSoundName: String,
-    alarmSoundUri: String?
+    alarmSoundUri: String?,
+    setAlarmSound: (Uri) -> Unit,
 ) {
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            readUri(activityResult)?.let { setAlarmSound(it) }
+        }
     val title = stringResource(R.string.select_alarm_sound)
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
-            .clickable {
-                launcher.launch(Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL)
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, title)
-                    putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, alarmSoundUri?.toUri())
-                })
-            },
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.medium)
+                .clickable {
+                    launcher.launch(
+                        Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL)
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, title)
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, alarmSoundUri?.toUri())
+                        }
+                    )
+                },
         shape = MaterialTheme.shapes.medium,
         color = MaterialTheme.colorScheme.surfaceVariant,
         tonalElevation = 2.dp
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -319,8 +338,10 @@ private fun RingtoneSelector(
     }
 }
 
-private fun Uri.getTitle(context: Context): String = RingtoneManager.getRingtone(context, this)
-    ?.getTitle(context) ?: "Unknown Sound"
+private fun Uri.getTitle(context: Context): String =
+    RingtoneManager
+        .getRingtone(context, this)
+        ?.getTitle(context) ?: "Unknown Sound"
 
 @Preview(showBackground = true)
 @Composable
@@ -336,15 +357,16 @@ fun PreviewNewEditTimerScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewEditExistingTimerScreen() {
-    val existingConfig = TimerItemUiState(
-        id = 1,
-        name = "Morning Routine",
-        minInterval = 10.minutes,
-        maxInterval = 30.minutes,
-        autoRepeat = true,
-        endTimeMillis = 0,
-        alarmSound = ""
-    )
+    val existingConfig =
+        TimerItemUiState(
+            id = 1,
+            name = "Morning Routine",
+            minInterval = 10.minutes,
+            maxInterval = 30.minutes,
+            autoRepeat = true,
+            endTimeMillis = 0,
+            alarmSound = ""
+        )
     MaterialTheme {
         NewEditTimerScreen(
             timerDetails = existingConfig,
