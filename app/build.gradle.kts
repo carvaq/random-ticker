@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-
 val major = 2
 val minor = 1
 val patch = 0
@@ -66,6 +65,7 @@ extensions.configure<ApplicationExtension> {
     testOptions {
         unitTests.apply {
             isReturnDefaultValues = true
+            isIncludeAndroidResources = true
         }
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
         animationsDisabled = true
@@ -123,6 +123,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
     testImplementation(libs.roblectric)
+    testImplementation(libs.uiTestJunit4)
+    debugImplementation(libs.uiTestManifest)
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.runner)
     androidTestImplementation(libs.android.junit)

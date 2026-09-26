@@ -65,7 +65,6 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun TimerListScreen(
@@ -76,17 +75,17 @@ fun TimerListScreen(
     onAddTimerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    
     val context = LocalContext.current
     var showPermissionRationaleDialog by remember { mutableStateOf(false) }
     var timerIdPendingPermission by remember { mutableStateOf<Long?>(null) }
     var showPermanentlyDeniedDialog by remember { mutableStateOf(false) }
-    val notificationPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
-    } else {
-        null
-    }
-    
+    val notificationPermissionState =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            null
+        }
+
     val attemptToStartTimer = { timerId: Long ->
         if (notificationPermissionState == null || notificationPermissionState.status.isGranted) {
             onStartTimerAction(timerId)
@@ -96,27 +95,26 @@ fun TimerListScreen(
                 notificationPermissionState.status.shouldShowRationale -> {
                     showPermissionRationaleDialog = true
                 }
-                
+
                 notificationPermissionState.status is PermissionStatus.Denied &&
-                        (notificationPermissionState.status as PermissionStatus.Denied).shouldShowRationale -> {
+                    (notificationPermissionState.status as PermissionStatus.Denied).shouldShowRationale -> {
                     showPermanentlyDeniedDialog = true
                 }
-                
+
                 else -> {
                     notificationPermissionState.launchPermissionRequest()
                 }
             }
         }
     }
-    
+
     LaunchedEffect(notificationPermissionState?.status) {
         if (notificationPermissionState?.status?.isGranted == true && timerIdPendingPermission != null) {
             onStartTimerAction(timerIdPendingPermission!!)
             timerIdPendingPermission = null // Reset
         }
     }
-    
-    
+
     if (showPermissionRationaleDialog && timerIdPendingPermission != null) {
         RationaleDialog(
             title = stringResource(R.string.notification_permission_title),
@@ -134,7 +132,7 @@ fun TimerListScreen(
     if (showPermanentlyDeniedDialog) {
         PermanentlyDeniedDialog(context) { showPermanentlyDeniedDialog = false }
     }
-    
+
     Box(modifier = modifier.fillMaxSize()) {
         if (timerState is TimersScreenUiState.Success) {
             if (timerState.timers.isEmpty()) {
@@ -162,7 +160,6 @@ fun TimerListScreen(
             }
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            
         }
     }
 }
@@ -215,7 +212,10 @@ private fun RationaleDialog(
 }
 
 @Composable
-private fun PermanentlyDeniedDialog(context: Context, dismiss: () -> Unit) {
+private fun PermanentlyDeniedDialog(
+    context: Context,
+    dismiss: () -> Unit,
+) {
     AlertDialog(
         onDismissRequest = dismiss,
         title = { Text(stringResource(R.string.notification_permission_denied_title)) },
@@ -239,7 +239,6 @@ private fun PermanentlyDeniedDialog(context: Context, dismiss: () -> Unit) {
     )
 }
 
-
 @Composable
 private fun TimerCard(
     timerState: TimerItemUiState,
@@ -247,15 +246,17 @@ private fun TimerCard(
     onEditClick: () -> Unit,
 ) {
     ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
-            .clickable(onClick = onEditClick),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.medium)
+                .clickable(onClick = onEditClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp, pressedElevation = 8.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = if (timerState.isRunning) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        colors =
+            CardDefaults.elevatedCardColors(
+                containerColor = if (timerState.isRunning) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            )
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -273,12 +274,13 @@ private fun TimerCard(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = stringResource(
-                            R.string.interval_information,
-                            timerState.minInterval,
-                            timerState.maxInterval
-                        ),
-                        style = MaterialTheme.typography.bodyMedium,
+                        text =
+                            stringResource(
+                                R.string.interval_information,
+                                timerState.minInterval,
+                                timerState.maxInterval
+                            ),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     AutoRepeatStatus(timerState)
@@ -290,11 +292,12 @@ private fun TimerCard(
                 ) {
                     Icon(
                         imageVector = if (timerState.isRunning) Icons.Filled.Stop else Icons.Filled.PlayArrow,
-                        contentDescription = if (timerState.isRunning) {
-                            stringResource(R.string.stop_timer)
-                        } else {
-                            stringResource(R.string.start_timer)
-                        },
+                        contentDescription =
+                            if (timerState.isRunning) {
+                                stringResource(R.string.stop_timer)
+                            } else {
+                                stringResource(R.string.start_timer)
+                            },
                         modifier = Modifier.size(32.dp), // Icon size
                         tint = if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary // Make play icon primary color
                     )
@@ -321,17 +324,19 @@ private fun AutoRepeatStatus(timerState: TimerItemUiState) {
             imageVector = if (timerState.autoRepeat) Icons.Filled.Repeat else Icons.Outlined.Repeat, // Assuming you have an outlined version
             contentDescription = if (timerState.autoRepeat) "Auto-repeat ON" else "Auto-repeat OFF",
             modifier = Modifier.size(18.dp),
-            tint = (if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant).copy(
-                alpha = 0.7f
-            )
+            tint =
+                (if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant).copy(
+                    alpha = 0.7f
+                )
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = if (timerState.autoRepeat) "Repeats" else "Does not repeat",
             style = MaterialTheme.typography.bodySmall,
-            color = (if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant).copy(
-                alpha = 0.7f
-            )
+            color =
+                (if (timerState.isRunning) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant).copy(
+                    alpha = 0.7f
+                )
         )
     }
 }
@@ -339,11 +344,12 @@ private fun AutoRepeatStatus(timerState: TimerItemUiState) {
 @Preview(showBackground = true)
 @Composable
 fun TimerListScreenPreview() {
-    val sampleTimers = listOf(
-        TimerItemUiState(1, "Kitchen Timer", 5.minutes, 15.minutes, true, "", true),
-        TimerItemUiState(2, "Workout", 30.seconds, 1.minutes, true, "", true),
-        TimerItemUiState(3, "Study Session", 45.minutes, 1.hours, true, "", false)
-    )
+    val sampleTimers =
+        listOf(
+            TimerItemUiState(1, "Kitchen Timer", 5.minutes, 15.minutes, true, "", true),
+            TimerItemUiState(2, "Workout", 30.seconds, 1.minutes, true, "", true),
+            TimerItemUiState(3, "Study Session", 45.minutes, 1.hours, true, "", false)
+        )
     MaterialTheme {
         TimerListScreen(
             timerState = TimersScreenUiState.Success(sampleTimers),

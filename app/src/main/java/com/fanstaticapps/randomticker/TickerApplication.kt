@@ -25,41 +25,45 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 class TickerApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
-        startKoin {
-            androidLogger()
-            androidContext(this@TickerApplication)
-            modules(modules)
+        if (org.koin.core.context.GlobalContext
+                .getOrNull() == null
+        ) {
+            startKoin {
+                androidLogger()
+                androidContext(this@TickerApplication)
+                modules(modules)
+            }
         }
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
     }
 
-    private val modules = listOf(
-        module(createdAtStart = true) {
-            single {
-                Room.databaseBuilder(androidContext(), TickerDatabase::class.java, "tickerV2.db")
-                    .addMigrations(*MIGRATIONS)
-                    .build()
+    private val modules =
+        listOf(
+            module(createdAtStart = true) {
+                single {
+                    Room
+                        .databaseBuilder(androidContext(), TickerDatabase::class.java, "tickerV2.db")
+                        .addMigrations(*MIGRATIONS)
+                        .build()
+                }
+                single { get<TickerDatabase>().tickerDataDao() }
+                singleOf(::BookmarkRepository)
+            },
+            module {
+                factoryOf(::NotificationCoordinator)
+                factoryOf(::AlarmCoordinator)
+            },
+            module { single { BookmarkService(get(), get(), get()) } },
+            module { factoryOf(::MigrationService) },
+            module {
+                viewModel { new(::MainViewModel) }
+                viewModel { new(::KlaxonViewModel) }
+                viewModel { new(::CancelViewModel) }
             }
-            single { get<TickerDatabase>().tickerDataDao() }
-            singleOf(::BookmarkRepository)
-        },
-
-        module {
-            factoryOf(::NotificationCoordinator)
-            factoryOf(::AlarmCoordinator)
-        },
-        module { single { BookmarkService(get(), get(), get()) } },
-        module { factoryOf(::MigrationService) },
-        module {
-            viewModel { new(::MainViewModel) }
-            viewModel { new(::KlaxonViewModel) }
-            viewModel { new(::CancelViewModel) }
-        }
-    )
+        )
 }

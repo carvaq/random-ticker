@@ -23,9 +23,10 @@ fun Context.createNotificationChannel(
     soundUri: Uri? = bookmark.soundUri?.toUri(),
     enableVibration: Boolean = true
 ): NotificationChannel? {
+    val channelName = RingtoneManager.getRingtone(this, soundUri)?.getTitle(this) ?: bookmark.name
     val channel = NotificationChannel(
         bookmark.notificationChannelId,
-        RingtoneManager.getRingtone(this, soundUri).getTitle(this),
+        channelName,
         NotificationManager.IMPORTANCE_HIGH
     ).apply {
         setSound(

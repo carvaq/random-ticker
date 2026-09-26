@@ -22,15 +22,17 @@ class BookmarkService(
     private val clock: Clock = Clock.System,
     private val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) {
-    
-    fun getBookmarkById(bookmarkId: Long): Flow<Bookmark> = repository.getBookmarkById(bookmarkId)
-        .flowOn(Dispatchers.IO)
-        .filterNotNull()
-    
-    fun save(bookmark: Bookmark): Job = coroutineScope.launch {
-        repository.insertOrUpdateBookmark(bookmark)
-    }
-    
+    fun getBookmarkById(bookmarkId: Long): Flow<Bookmark> =
+        repository
+            .getBookmarkById(bookmarkId)
+            .flowOn(Dispatchers.IO)
+            .filterNotNull()
+
+    fun save(bookmark: Bookmark): Job =
+        coroutineScope.launch {
+            repository.insertOrUpdateBookmark(bookmark)
+        }
+
     suspend fun createNew(): Long {
         val newBookmark = Bookmark()
         val id = repository.insertOrUpdateBookmark(newBookmark)
@@ -38,47 +40,59 @@ class BookmarkService(
         return id
     }
     
-    fun updateWithIntervalEnded(bookmarkId: Long): Job = coroutineScope.launch {
-        repository.getBookmarkByIdOnce(bookmarkId)?.let {
-            notificationCoordinator.cancelAllNotifications(it)
-            notificationCoordinator.showKlaxonNotification(it)
-            if (it.autoRepeat) {
-                scheduleBookmark(it, false)
+    fun updateWithIntervalEnded(bookmarkId: Long): Job =
+        coroutineScope.launch {
+            repository.getBookmarkByIdOnce(bookmarkId)?.let {
+                notificationCoordinator.cancelAllNotifications(it)
+                notificationCoordinator.showKlaxonNotification(it)
+                if (it.autoRepeat) {
+                    scheduleBookmark(it, false)
+                }
             }
         }
-    }
     
-    fun scheduleAlarm(bookmarkId: Long, isManuallyTriggered: Boolean): Job = coroutineScope.launch {
-        repository.getBookmarkByIdOnce(bookmarkId)?.let {
-            scheduleBookmark(it, isManuallyTriggered)
+    fun scheduleAlarm(
+        bookmarkId: Long,
+        isManuallyTriggered: Boolean,
+    ): Job =
+        coroutineScope.launch {
+            repository.getBookmarkByIdOnce(bookmarkId)?.let {
+                scheduleBookmark(it, isManuallyTriggered)
+            }
         }
-    }
     
-    fun cancel(bookmarkId: Long): Job = coroutineScope.launch {
-        cancelTimer(bookmarkId)
-    }
-    
-    fun delete(bookmarkId: Long): Job = coroutineScope.launch {
-        cancelTimer(bookmarkId)?.let { bookmark ->
-            notificationCoordinator.deleteChannelsForBookmark(bookmark)
-            repository.deleteBookmark(bookmark)
+    fun cancel(bookmarkId: Long): Job =
+        coroutineScope.launch {
+            cancelTimer(bookmarkId)
         }
-    }
     
-    fun updateAllBookmarks(updateAction: (Bookmark) -> Bookmark): Job = coroutineScope.launch {
-        val original = repository.getAllBookmarksOnce()
-        val updated = original.map(updateAction)
-        if (original != updated) {
-            repository.bulkUpdate(updated)
+    fun delete(bookmarkId: Long): Job =
+        coroutineScope.launch {
+            cancelTimer(bookmarkId)?.let { bookmark ->
+                notificationCoordinator.deleteChannelsForBookmark(bookmark)
+                repository.deleteBookmark(bookmark)
+            }
         }
-    }
     
+    fun updateAllBookmarks(updateAction: (Bookmark) -> Bookmark): Job =
+        coroutineScope.launch {
+            val original = repository.getAllBookmarksOnce()
+            val updated = original.map(updateAction)
+            if (original != updated) {
+                repository.bulkUpdate(updated)
+            }
+        }
+
     fun fetchAllBookmarks() = repository.getAllBookmarks()
-    private suspend fun scheduleBookmark(currentBookmark: Bookmark, isManuallyTriggered: Boolean) {
+    
+    private suspend fun scheduleBookmark(
+        currentBookmark: Bookmark,
+        isManuallyTriggered: Boolean,
+    ) {
         if (!isManuallyTriggered && currentBookmark.autoRepeat) {
             delay(currentBookmark.autoRepeatInterval)
         }
-        
+
         val newIntervalEnd = calculateNewIntervalEnd(currentBookmark)
         val updatedBookmark = currentBookmark.copy(intervalEnd = newIntervalEnd)
         
@@ -94,11 +108,12 @@ class BookmarkService(
     private fun calculateNewIntervalEnd(bookmark: Bookmark): Long {
         val minMillis = bookmark.min.inWholeMilliseconds
         val maxMillis = bookmark.max.inWholeMilliseconds
-        val interval = if (maxMillis > minMillis) {
-            Random.nextLong(minMillis, maxMillis + 1)
-        } else {
-            minMillis
-        }
+        val interval =
+            if (maxMillis > minMillis) {
+                Random.nextLong(minMillis, maxMillis + 1)
+            } else {
+                minMillis
+            }
         return interval + clock.now().toEpochMilliseconds()
     }
     
@@ -109,5 +124,4 @@ class BookmarkService(
             notificationCoordinator.cancelAllNotifications(it)
             alarmCoordinator.cancelAlarm(it)
         }
-    
 }

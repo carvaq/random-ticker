@@ -101,7 +101,7 @@ class NotificationCoordinator(private val context: Context) {
     private fun getRepeatAction(context: Context, bookmark: Bookmark): NotificationCompat.Action {
         return NotificationCompat.Action(
             R.drawable.ic_action_repeat_timer,
-            context.getString(R.string.action_repeat),
+            context.getString(R.string.action_auto_repeat),
             IntentHelper.getRepeatReceiverPendingIntent(context, bookmark)
         )
     }

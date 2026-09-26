@@ -319,7 +319,7 @@ private fun RingtoneSelector(
 }
 
 private fun Uri.getTitle(context: Context): String = RingtoneManager.getRingtone(context, this)
-    .getTitle(context) ?: "Unknown Sound"
+    ?.getTitle(context) ?: "Unknown Sound"
 
 @Preview(showBackground = true)
 @Composable

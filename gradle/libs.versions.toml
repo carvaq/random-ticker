@@ -9,6 +9,8 @@ coreKtx = "1.18.0"
 [libraries]
 compose-bom = { module = "androidx.compose:compose-bom", version = "2026.05.00" }
 foundation = { module = "androidx.compose.foundation:foundation" }
+uiTestJunit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+uiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
