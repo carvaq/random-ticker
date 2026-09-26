@@ -171,7 +171,8 @@ fun NewEditTimerScreen(
         }
 
         val defaultTimerName = stringResource(R.string.app_name)
-        ButtonRow(maxInterval > Duration.ZERO, onCancel) {
+        val canSave = maxInterval > Duration.ZERO && maxInterval >= minInterval && minInterval >= Duration.ZERO
+        ButtonRow(canSave, onCancel) {
             val newConfig = TimerItemUiState(
                 id = timerDetails?.id ?: 0,
                 name = timerName.takeIf { it.isNotEmpty() } ?: defaultTimerName,
@@ -204,7 +205,7 @@ fun NewEditTimerScreen(
                 {
                     maxInterval = it
                     if (minInterval > maxInterval) {
-                        minInterval = maxInterval - 5.seconds
+                        minInterval = (maxInterval - 5.seconds).coerceAtLeast(Duration.ZERO)
                     }
                     showMaxIntervalDialog = false
                 },

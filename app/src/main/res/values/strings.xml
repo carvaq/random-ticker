@@ -46,5 +46,8 @@
 	<string name="add_first_timer">Add Your First Timer</string>
 
 	<string name="interval_information">Interval: %1$s – %2$s</string>
+	<string name="remaining_time">Remaining: %1$s</string>
+	<string name="exact_alarm_permission_title">Exact Alarm Permission Required</string>
+	<string name="exact_alarm_permission_rationale">To ring alarms precisely on time, please allow exact alarm permission in system settings.</string>
 
 </resources>

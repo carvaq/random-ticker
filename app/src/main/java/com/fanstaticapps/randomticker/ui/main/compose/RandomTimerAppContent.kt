@@ -68,9 +68,9 @@ private val SelectionStatusSaver = listSaver<SelectionStatus, Any>(
     },
     restore = { list ->
         when (list.getOrNull(0)) {
-            "NotSelected" -> NotSelected
-            "Editing" -> Editing(list[1] as Long)
-            else -> New
+            "Editing" -> (list.getOrNull(1) as? Long)?.let { Editing(it) } ?: NotSelected
+            "New" -> New
+            else -> NotSelected
         }
     }
 )
@@ -221,7 +221,7 @@ private fun TopBar(
                     Icon(
                         tint = tint,
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.button_delete)
+                        contentDescription = stringResource(R.string.button_cancel)
                     )
                 }
             }
