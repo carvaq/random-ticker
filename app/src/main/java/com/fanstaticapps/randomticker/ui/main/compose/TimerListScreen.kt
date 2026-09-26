@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fanstaticapps.randomticker.R
+import com.fanstaticapps.randomticker.extensions.needsScheduleAlarmPermission
 import com.fanstaticapps.randomticker.ui.main.TimerItemUiState
 import com.fanstaticapps.randomticker.ui.main.TimersScreenUiState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -79,15 +80,17 @@ fun TimerListScreen(
     var showPermissionRationaleDialog by remember { mutableStateOf(false) }
     var timerIdPendingPermission by remember { mutableStateOf<Long?>(null) }
     var showPermanentlyDeniedDialog by remember { mutableStateOf(false) }
+    var showExactAlarmPermissionDialog by remember { mutableStateOf(false) }
     val notificationPermissionState =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
         } else {
             null
         }
-
     val attemptToStartTimer = { timerId: Long ->
-        if (notificationPermissionState == null || notificationPermissionState.status.isGranted) {
+        if (context.needsScheduleAlarmPermission()) {
+            showExactAlarmPermissionDialog = true
+        } else if (notificationPermissionState == null || notificationPermissionState.status.isGranted) {
             onStartTimerAction(timerId)
         } else {
             timerIdPendingPermission = timerId
@@ -131,6 +134,9 @@ fun TimerListScreen(
     }
     if (showPermanentlyDeniedDialog) {
         PermanentlyDeniedDialog(context) { showPermanentlyDeniedDialog = false }
+    }
+    if (showExactAlarmPermissionDialog) {
+        ExactAlarmPermissionDialog(context) { showExactAlarmPermissionDialog = false }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -240,6 +246,34 @@ private fun PermanentlyDeniedDialog(
 }
 
 @Composable
+private fun ExactAlarmPermissionDialog(context: Context, dismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = dismiss,
+        title = { Text(stringResource(R.string.exact_alarm_permission_title)) },
+        text = { Text(stringResource(R.string.exact_alarm_permission_rationale)) },
+        confirmButton = {
+            Button(onClick = {
+                dismiss()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Intent(
+                        Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+                        Uri.fromParts("package", context.packageName, null)
+                    ).also { context.startActivity(it) }
+                }
+            }) {
+                Text(stringResource(R.string.button_open_settings))
+            }
+        },
+        dismissButton = {
+            Button(onClick = dismiss) {
+                Text(stringResource(android.R.string.ok))
+            }
+        }
+    )
+}
+
+
+@Composable
 private fun TimerCard(
     timerState: TimerItemUiState,
     onTogglePlayStopClick: () -> Unit,
@@ -306,6 +340,16 @@ private fun TimerCard(
             
             if (timerState.isRunning) {
                 Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = stringResource(
+                        R.string.remaining_time,
+                        timerState.formattedRemainingTime()
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
                 LinearProgressIndicator(
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.primary,
