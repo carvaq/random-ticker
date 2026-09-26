@@ -12,7 +12,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
-
     private val mainViewModel: MainViewModel by viewModel()
     private val migrationService: MigrationService by inject()
 
@@ -24,10 +23,7 @@ class MainActivity : BaseActivity() {
             AppTheme {
                 val windowWidthSizeClass = calculateWindowSizeClass(activity = this).widthSizeClass
                 RandomTimerAppContent(windowWidthSizeClass, mainViewModel)
-
             }
         }
     }
-
-
 }

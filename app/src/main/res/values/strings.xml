@@ -7,7 +7,8 @@
 	<string name="edit_timer">Edit Timer</string>
 	<string name="create_timer">Create Timer</string>
 
-	<string name="action_repeat">Auto-Repeat</string>
+	<string name="action_auto_repeat">Auto-Repeat</string>
+	<string name="action_repeat">Repeat</string>
 	<string name="auto_repeat">Timer will automatically restart when finished.</string>
 	<string name="notification_ticker_ended">Time\'s Up!</string>
 
@@ -24,9 +25,6 @@
 	<string name="empty_editor_title">Nothing Selected</string>
 	<string name="empty_editor_message">Select a timer from the list to see its details, or tap \'Create New Timer\' to get started.</string>
 	<string name="empty_editor_icon_desc">Hourglass icon indicating no timer is selected.</string>
-
-	<string name="create_new_timer_button">Create New Timer</string>
-	<string name="create_new_timer_button_desc">Create a new timer</string>
 
 	<string name="set_random_interval">Set Random Interval</string>
 
@@ -45,5 +43,8 @@
 	<string name="add_first_timer">Add Your First Timer</string>
 
 	<string name="interval_information">Interval: %1$s – %2$s</string>
+	<string name="remaining_time">Remaining: %1$s</string>
+	<string name="exact_alarm_permission_title">Exact Alarm Permission Required</string>
+	<string name="exact_alarm_permission_rationale">To ring alarms precisely on time, please allow exact alarm permission in system settings.</string>
 
 </resources>

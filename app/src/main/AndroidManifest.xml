@@ -29,8 +29,8 @@
 
 		<activity
 				android:name=".ui.main.MainActivity"
-				android:windowSoftInputMode="adjustResize"
-				android:exported="true">
+				android:exported="true"
+				android:windowSoftInputMode="adjustResize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -43,14 +43,10 @@
 				android:turnScreenOn="true"
 				tools:targetApi="o_mr1" />
 		<activity android:name=".ui.cancel.CancelActivity" />
-
 		<activity
-				android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-				android:parentActivityName="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:theme="@style/AppTheme.Licenses" />
-		<activity
-				android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-				android:theme="@style/AppTheme.Licenses" />
+				android:name="com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity"
+				android:theme="@style/AppTheme.Licenses"
+				tools:replace="android:theme" />
 	</application>
 
 </manifest>

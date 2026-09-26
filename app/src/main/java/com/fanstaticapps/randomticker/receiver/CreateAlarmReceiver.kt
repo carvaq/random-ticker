@@ -1,11 +1,9 @@
 package com.fanstaticapps.randomticker.receiver
 
-import android.content.Context
-
 class CreateAlarmReceiver : BaseReceiver() {
-
-    override fun BroadcastWrapper.handleBookmark(context: Context, bookmarkId: Long) {
+    override fun BroadcastWrapper.handleBookmark(
+        bookmarkId: Long,
+    ) =
         bookmarkService.scheduleAlarm(bookmarkId, false)
-    }
 
 }

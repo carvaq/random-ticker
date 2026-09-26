@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +51,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlin.time.Duration.Companion.minutes
 
+@Stable
 private sealed interface SelectionStatus {
     object NotSelected : SelectionStatus
     data class Editing(val timerId: Long) : SelectionStatus
@@ -68,9 +70,9 @@ private val SelectionStatusSaver = listSaver<SelectionStatus, Any>(
     },
     restore = { list ->
         when (list.getOrNull(0)) {
-            "NotSelected" -> NotSelected
-            "Editing" -> Editing(list[1] as Long)
-            else -> New
+            "Editing" -> (list.getOrNull(1) as? Long)?.let { Editing(it) } ?: NotSelected
+            "New" -> New
+            else -> NotSelected
         }
     }
 )
@@ -221,7 +223,7 @@ private fun TopBar(
                     Icon(
                         tint = tint,
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.button_delete)
+                        contentDescription = stringResource(R.string.button_cancel)
                     )
                 }
             }

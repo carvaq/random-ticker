@@ -4,7 +4,6 @@ import androidx.core.net.toUri
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import kotlin.random.Random
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
@@ -30,9 +29,6 @@ data class Bookmark(
     constructor(name: String) : this(NOT_SET_VALUE, name, 0, 0, 0, 0, 5, 0, false)
 
     @Ignore
-    private val requestCodeGenerator = Random(id)
-
-    @Ignore
     val min = minimumHours.hours + minimumMinutes.minutes + minimumSeconds.seconds
 
     @Ignore
@@ -48,26 +44,19 @@ data class Bookmark(
     val runningNotificationId = id.toInt()
 
     @Ignore
-    val openAppRequestCode = requestCodeGenerator.nextInt()
+    val openAppRequestCode = ((id * 10) + 1).toInt()
 
     @Ignore
-    val cancelActionRequestCode = requestCodeGenerator.nextInt()
+    val cancelActionRequestCode = ((id * 10) + 2).toInt()
 
     @Ignore
-    val repeatReceiverRequestCode = requestCodeGenerator.nextInt()
+    val repeatReceiverRequestCode = ((id * 10) + 3).toInt()
 
     @Ignore
-    val klaxonActivityRequestCode = requestCodeGenerator.nextInt()
+    val klaxonActivityRequestCode = ((id * 10) + 4).toInt()
 
     companion object {
         const val NOT_SET_VALUE: Long = 0
         const val DEFAULT_AUTO_REPEAT_INTERVAL: Long = 5000
     }
 }
-
-
-
-
-
-
-

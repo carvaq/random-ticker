@@ -13,6 +13,19 @@ data class TimerItemUiState(
     val isRunning: Boolean = false,
     val endTimeMillis: Long = 0
 ) {
+    fun formattedRemainingTime(currentTimeMillis: Long = System.currentTimeMillis()): String {
+        if (!isRunning || (endTimeMillis <= currentTimeMillis)) return "00s"
+        val remainingMillis = endTimeMillis - currentTimeMillis
+        val secondsTotal = remainingMillis / 1000
+        val hours = secondsTotal / 3600
+        val minutes = (secondsTotal % 3600) / 60
+        val seconds = secondsTotal % 60
+        return when {
+            hours > 0 -> "${hours}h ${minutes}m ${seconds}s"
+            minutes > 0 -> "${minutes}m ${seconds}s"
+            else -> "${seconds}s"
+        }
+    }
 
     fun toBookmark(): Bookmark {
         return minInterval.toComponents { minHours, minMinutes, minSeconds, _ ->
