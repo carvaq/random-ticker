@@ -11,7 +11,7 @@ plugins {
 }
 
 val major = 2
-val minor = 1
+val minor = 2
 val patch = 0
 
 extensions.configure<ApplicationExtension> {
